@@ -115,7 +115,7 @@ public class ColorizerModel implements IBakedModel {
 				texture = blockTexture.getName().toString();
 			}
 
-			//newTexture.put("particle", texture);
+			newTexture.put("particle", texture);
 			newTexture.put("#texture", texture);
 			this.cache.put(blockState, generateModel(newTexture.build()));
 		}
