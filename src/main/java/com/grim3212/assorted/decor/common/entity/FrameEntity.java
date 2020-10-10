@@ -47,7 +47,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	public FrameEntity(World world) {
-		this(DecorEntities.FRAME.get(), world);
+		this(DecorEntityTypes.FRAME.get(), world);
 	}
 
 	public FrameEntity(World world, BlockPos pos, Direction direction, FrameMaterial type) {

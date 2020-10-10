@@ -22,6 +22,10 @@ public final class DecorConfig {
 		public final ForgeConfigSpec.BooleanValue copyDye;
 		public final ForgeConfigSpec.BooleanValue burnWallpaper;
 		public final ForgeConfigSpec.IntValue numWallpapers;
+		
+		public final ForgeConfigSpec.BooleanValue useAllBlocks;
+		public final ForgeConfigSpec.BooleanValue consumeBlock;
+		public final ForgeConfigSpec.IntValue smoothness;
 
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Wallpaper");
@@ -35,7 +39,21 @@ public final class DecorConfig {
 			dyeFrames = builder.comment("Set this to true if you want to be able to dye Frames.").define("dyeFrames", true);
 			burnFrames = builder.comment("Set this to true if you want frames to be able to get burnt.").define("burnFrames", true);
 			builder.pop();
+			
+			builder.push("Colorizer");
+			useAllBlocks = builder.comment("Set this to true if you would like the colorizer to accept any blocks").define("useAllBlocks", true);
 
+			// decorationBlocks = config.get(CONFIG_GENERAL_NAME, "DecorationBlocks", new
+			// String[] { "mossy_cobblestone", "diamond_ore" }).getStringList();
+
+			// if (!useAllBlocks.get())
+			// Don't waste time if we don't have to
+			// ConfigUtils.loadBlocksOntoMap(decorationBlocks, decorBlocks);
+
+			// TODO: change to use a brush that will store multiple charges for each block that way one block could texture like 10 blocks etc...
+			consumeBlock = builder.comment("Set this to true if the colorizers should consume a block when using them").define("consumeBlock", false);
+			smoothness = builder.comment("Set this to determine how smooth all of the different slopes collision boxes should be.").defineInRange("smoothness", 2, 1, 10);
+			builder.pop();
 		}
 	}
 

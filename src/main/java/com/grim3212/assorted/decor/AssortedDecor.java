@@ -5,11 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
 import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
-import com.grim3212.assorted.decor.client.model.LoaderModelProvider;
+import com.grim3212.assorted.decor.client.model.ColorizerModelProvider;
 import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
-import com.grim3212.assorted.decor.common.entity.DecorEntities;
+import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
@@ -59,7 +60,8 @@ public class AssortedDecor {
 
 		DecorBlocks.BLOCKS.register(modBus);
 		DecorItems.ITEMS.register(modBus);
-		DecorEntities.ENTITIES.register(modBus);
+		DecorTileEntityTypes.TILE_ENTITIES.register(modBus);
+		DecorEntityTypes.ENTITIES.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.CLIENT, DecorConfig.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(Type.COMMON, DecorConfig.COMMON_SPEC);
@@ -79,7 +81,7 @@ public class AssortedDecor {
 		}
 
 		if (event.includeClient()) {
-			LoaderModelProvider loadedModels = new LoaderModelProvider(datagenerator, event.getExistingFileHelper());
+			ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, event.getExistingFileHelper());
 			datagenerator.addProvider(new DecorBlockstateProvider(datagenerator, fileHelper, loadedModels));
 			datagenerator.addProvider(loadedModels);
 			datagenerator.addProvider(new DecorItemModelProvider(datagenerator, fileHelper));

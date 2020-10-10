@@ -1,7 +1,11 @@
 package com.grim3212.assorted.decor.client.data;
 
+import com.google.common.collect.ImmutableList;
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.client.model.LoaderModelProvider;
+import com.grim3212.assorted.decor.client.model.ColorizerModel.ColorizerLoader;
+import com.grim3212.assorted.decor.client.model.ColorizerModelBuilder;
+import com.grim3212.assorted.decor.client.model.ColorizerModelProvider;
+import com.grim3212.assorted.decor.common.block.DecorBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -14,9 +18,9 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DecorBlockstateProvider extends BlockStateProvider {
 
-	private final LoaderModelProvider loaderModels;
+	private final ColorizerModelProvider loaderModels;
 
-	public DecorBlockstateProvider(DataGenerator generator, ExistingFileHelper exFileHelper, LoaderModelProvider loader) {
+	public DecorBlockstateProvider(DataGenerator generator, ExistingFileHelper exFileHelper, ColorizerModelProvider loader) {
 		super(generator, AssortedDecor.MODID, exFileHelper);
 		this.loaderModels = loader;
 	}
@@ -28,12 +32,14 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		// LoaderModelBuilder parent =
-		// this.loaderModels.getBuilder("block/wallpaper").loader(WallpaperLoader.LOCATION);
-		// customLoaderState(DecorBlocks.WALLPAPER.get(), new
-		// ConfiguredModel(parent));
+		ColorizerModelBuilder parent = this.loaderModels.getBuilder("block/colorizer").loader(ColorizerLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube")));
+		customLoaderState(DecorBlocks.COLORIZER.get(), new ConfiguredModel(parent));
+		genericBlock(DecorBlocks.COLORIZER.get());
+		
+		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
+		genericBlock(DecorBlocks.HARDENED_WOOD.get());
 
-		//this.loaderModels.previousModels();
+		this.loaderModels.previousModels();
 	}
 
 	private ItemModelBuilder generatedItem(Block b) {

@@ -10,17 +10,17 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class LoaderModelProvider extends ModelProvider<LoaderModelBuilder> {
+public class ColorizerModelProvider extends ModelProvider<ColorizerModelBuilder> {
 
-	final Map<ResourceLocation, LoaderModelBuilder> previousModels = new HashMap<>();
+	final Map<ResourceLocation, ColorizerModelBuilder> previousModels = new HashMap<>();
 
-	public LoaderModelProvider(DataGenerator gen, ExistingFileHelper exHelper) {
-		super(gen, AssortedDecor.MODID, "block", LoaderModelBuilder::new, exHelper);
+	public ColorizerModelProvider(DataGenerator gen, ExistingFileHelper exHelper) {
+		super(gen, AssortedDecor.MODID, "block", ColorizerModelBuilder::new, exHelper);
 	}
 
 	@Override
 	public String getName() {
-		return "Decor Loader Models";
+		return "Colorizer model provider";
 	}
 
 	@Override

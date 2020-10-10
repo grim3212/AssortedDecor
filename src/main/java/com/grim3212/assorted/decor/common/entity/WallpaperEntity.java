@@ -59,7 +59,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	public WallpaperEntity(World world) {
-		this(DecorEntities.WALLPAPER.get(), world);
+		this(DecorEntityTypes.WALLPAPER.get(), world);
 	}
 
 	public WallpaperEntity(World world, BlockPos pos, Direction direction) {
