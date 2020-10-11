@@ -1,6 +1,5 @@
 package com.grim3212.assorted.decor.client.proxy;
 
-import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
@@ -24,18 +23,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockDisplayReader;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = AssortedDecor.MODID, bus = Bus.MOD)
 public class ClientProxy implements IProxy {
 
 	@Override
@@ -50,8 +45,9 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void setupClient(final FMLClientSetupEvent event) {
-
-		RenderTypeLookup.setRenderLayer(DecorBlocks.COLORIZER.get(), RenderType.getCutout());
+		for (Block b : DecorBlocks.colorizerBlocks()) {
+			RenderTypeLookup.setRenderLayer(b, RenderType.getCutout());
+		}
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
@@ -73,7 +69,7 @@ public class ClientProxy implements IProxy {
 					}
 					return 16777215;
 				}
-			}, DecorBlocks.COLORIZER.get());
+			}, DecorBlocks.colorizerBlocks());
 
 			items.register(new IItemColor() {
 				@Override
@@ -89,7 +85,7 @@ public class ClientProxy implements IProxy {
 					}
 					return 16777215;
 				}
-			}, DecorBlocks.COLORIZER.get());
+			}, DecorBlocks.colorizerBlocks());
 		});
 	}
 }

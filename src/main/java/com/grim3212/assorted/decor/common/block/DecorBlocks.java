@@ -20,9 +20,10 @@ public class DecorBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, AssortedDecor.MODID);
 	public static final DeferredRegister<Item> ITEMS = DecorItems.ITEMS;
 
-	public static final RegistryObject<ColorizerBlock> COLORIZER = register("colorizer", () -> new ColorizerBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f).notSolid().variableOpacity()));
+	public static final RegistryObject<ColorizerBlock> COLORIZER = register("colorizer", () -> new ColorizerBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE)));
+	public static final RegistryObject<ColorizerBlock> COLORIZER_CHAIR = register("colorizer_chair", () -> new ColorizerChairBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f)));
 	public static final RegistryObject<HardenedWoodBlock> HARDENED_WOOD = register("hardened_wood", () -> new HardenedWoodBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f)));
-	
+
 	private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
 		return register(name, sup, block -> item(block));
 	}
@@ -43,5 +44,9 @@ public class DecorBlocks {
 
 	private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block) {
 		return () -> new BlockItem(block.get(), new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP));
+	}
+
+	public static Block[] colorizerBlocks() {
+		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get() };
 	}
 }

@@ -44,15 +44,18 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.vector.TransformationMatrix;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.IModelLoader;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.data.EmptyModelData;
+import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
 
-public class ColorizerModel implements IBakedModel {
+public class ColorizerModel implements IDynamicBakedModel {
 
 	protected final Function<RenderMaterial, TextureAtlasSprite> spriteGetter;
 	protected final ImmutableList<ResourceLocation> modelLocation;
@@ -61,6 +64,7 @@ public class ColorizerModel implements IBakedModel {
 	protected final IUnbakedModel baseModel;
 	protected final ImmutableList<IUnbakedModel> modelParts;
 	protected final ModelBakery bakery;
+	protected final ImmutableMap<ItemCameraTransforms.TransformType, TransformationMatrix> transforms;
 
 	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, ImmutableList<ResourceLocation> modelLocation, ResourceLocation textureLocation, IModelTransform transform) {
 		this.bakery = bakery;
@@ -68,6 +72,7 @@ public class ColorizerModel implements IBakedModel {
 		this.modelLocation = modelLocation;
 		this.textureLocation = textureLocation;
 		this.transform = transform;
+		this.transforms = PerspectiveMapWrapper.getTransforms(transform);
 
 		this.baseModel = ModelLoader.instance().getModelOrLogError(this.modelLocation.get(0), "Base model not found " + this.modelLocation.get(0));
 
@@ -76,11 +81,6 @@ public class ColorizerModel implements IBakedModel {
 			builder.add(ModelLoader.instance().getModelOrLogError(this.modelLocation.get(i), "Model part not found " + this.modelLocation.get(i)));
 		}
 		this.modelParts = builder.build();
-	}
-
-	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-		return getQuads(state, side, rand, EmptyModelData.INSTANCE);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ColorizerModel implements IBakedModel {
 			}
 
 			newTexture.put("particle", texture);
-			newTexture.put("#texture", texture);
+			newTexture.put("#stored", texture);
 			this.cache.put(blockState, generateModel(newTexture.build()));
 		}
 
@@ -160,22 +160,22 @@ public class ColorizerModel implements IBakedModel {
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return getBakeBaseModel().isAmbientOcclusion();
+		return true;
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return getBakeBaseModel().isGui3d();
+		return true;
 	}
 
 	@Override
 	public boolean func_230044_c_() {
-		return getBakeBaseModel().func_230044_c_();
+		return true;
 	}
 
 	@Override
 	public boolean isBuiltInRenderer() {
-		return getBakeBaseModel().isBuiltInRenderer();
+		return false;
 	}
 
 	@Override
@@ -191,19 +191,21 @@ public class ColorizerModel implements IBakedModel {
 	public TextureAtlasSprite getParticleTexture() {
 		return this.getParticleTexture(EmptyModelData.INSTANCE);
 	}
-	
+
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
-		return getBakeBaseModel().getItemCameraTransforms();
+		return this.getBaseBakedModel().getItemCameraTransforms();
 	}
-	
-	public IBakedModel getBakeBaseModel() {
+
+	private IBakedModel getBaseBakedModel() {
 		return this.baseModel.bakeModel(bakery, spriteGetter, transform, textureLocation);
 	}
-	
+
+	public final ColorizerItemOverrideHandler INSTANCE = new ColorizerItemOverrideHandler();
+
 	@Override
 	public ItemOverrideList getOverrides() {
-		return ColorizerItemOverrideHandler.INSTANCE;
+		return INSTANCE;
 	}
 
 	public static class UnbakedColorizerPart extends BlockModel {
@@ -284,7 +286,7 @@ public class ColorizerModel implements IBakedModel {
 				base = new ResourceLocation(modelContents.get("texture").getAsString());
 
 			if (!modelContents.has("parts"))
-				throw new UnsupportedOperationException("Model location not found for a DecorModel");
+				throw new UnsupportedOperationException("Model location not found for a ColorizerModel");
 
 			String[] models = modelContents.get("parts").getAsString().replaceAll("\\[|\\]|\"", "").split(",");
 
@@ -303,21 +305,17 @@ public class ColorizerModel implements IBakedModel {
 		}
 	}
 
-	public static final class ColorizerItemOverrideHandler extends ItemOverrideList {
-		public static final ColorizerItemOverrideHandler INSTANCE = new ColorizerItemOverrideHandler();
-
-		private ColorizerItemOverrideHandler() {
-		}
+	public final class ColorizerItemOverrideHandler extends ItemOverrideList {
 
 		@Override
 		public IBakedModel func_239290_a_(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			ColorizerModel colorizerModel = (ColorizerModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {
-				return colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state")));
+				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getItemCameraTransforms()));
 			}
 
-			return colorizerModel.getCachedModel(Blocks.AIR.getDefaultState());
+			return new PerspectiveMapWrapper(colorizerModel.getCachedModel(Blocks.AIR.getDefaultState()), PerspectiveMapWrapper.getTransforms(colorizerModel.getItemCameraTransforms()));
 		}
 	}
 }

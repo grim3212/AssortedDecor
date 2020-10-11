@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "assorteddecor:block/colorizer_chair"
+    },
+    "facing=south": {
+      "model": "assorteddecor:block/colorizer_chair",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "assorteddecor:block/colorizer_chair",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "assorteddecor:block/colorizer_chair",
+      "y": 90
+    }
+  }
+}
