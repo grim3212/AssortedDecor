@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.item.DecorItems;
+import com.grim3212.assorted.decor.common.util.DecorUtil.SlopeType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -22,6 +23,7 @@ public class DecorBlocks {
 
 	public static final RegistryObject<ColorizerBlock> COLORIZER = register("colorizer", () -> new ColorizerBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE)));
 	public static final RegistryObject<ColorizerBlock> COLORIZER_CHAIR = register("colorizer_chair", () -> new ColorizerChairBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f)));
+	public static final RegistryObject<ColorizerBlock> COLORIZER_SLOPE = register("colorizer_slope", () -> new ColorizerSlopeBlock(SlopeType.SLOPE, Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f)));
 	public static final RegistryObject<HardenedWoodBlock> HARDENED_WOOD = register("hardened_wood", () -> new HardenedWoodBlock(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1.5f, 12.0f)));
 
 	private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
