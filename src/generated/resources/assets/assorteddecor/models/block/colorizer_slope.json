@@ -1,6 +1,6 @@
 {
-  "loader": "forge:obj",
-  "model": "assorteddecor:models/block/slope.obj",
-  "flip-v": true,
-  "detectCullableFaces": true
+  "loader": "assorteddecor:models/colorizer_obj",
+  "parts": [
+    "assorteddecor:models/block/slope.obj"
+  ]
 }

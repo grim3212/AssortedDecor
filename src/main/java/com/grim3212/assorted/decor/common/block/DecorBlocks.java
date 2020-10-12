@@ -49,6 +49,6 @@ public class DecorBlocks {
 	}
 
 	public static Block[] colorizerBlocks() {
-		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get() };
+		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get(), COLORIZER_SLOPE.get() };
 	}
 }

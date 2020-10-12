@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.client.proxy;
 
 import com.grim3212.assorted.decor.client.model.ColorizerModel;
+import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
@@ -41,6 +42,7 @@ public class ClientProxy implements IProxy {
 
 		if (Minecraft.getInstance() != null) {
 			ModelLoaderRegistry.registerLoader(ColorizerModel.ColorizerLoader.LOCATION, new ColorizerModel.ColorizerLoader());
+			ModelLoaderRegistry.registerLoader(ColorizerOBJModel.ColorizerOBJLoader.LOCATION, new ColorizerOBJModel.ColorizerOBJLoader());
 		}
 	}
 

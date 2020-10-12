@@ -17,7 +17,6 @@ import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
-import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.block.BlockState;
@@ -25,13 +24,10 @@ import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.BlockModel;
-import net.minecraft.client.renderer.model.BlockPart;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.IUnbakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ItemOverride;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.RenderMaterial;
@@ -53,31 +49,42 @@ import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.obj.OBJModel;
 
-public class ColorizerModel implements IDynamicBakedModel {
+public class ColorizerOBJModel implements IDynamicBakedModel {
 
+	protected final IModelConfiguration owner;
 	protected final Function<RenderMaterial, TextureAtlasSprite> spriteGetter;
-	protected final ImmutableList<ResourceLocation> modelLocation;
-	protected final ResourceLocation textureLocation;
+	protected final ResourceLocation modelLocation;
 	protected final IModelTransform transform;
-	protected final IUnbakedModel baseModel;
-	protected final ImmutableList<IUnbakedModel> modelParts;
 	protected final ModelBakery bakery;
+	protected final ItemOverrideList overrides;
 
-	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, ImmutableList<ResourceLocation> modelLocation, ResourceLocation textureLocation, IModelTransform transform) {
+	protected final ResourceLocation textureLocation;
+	protected final OBJModel baseModel;
+	protected final ImmutableList<OBJModel> modelParts;
+
+	public ColorizerOBJModel(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation, ResourceLocation texture, ImmutableList<ResourceLocation> parts) {
+		this.owner = owner;
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
+		this.transform = modelTransform;
+		this.overrides = overrides;
 		this.modelLocation = modelLocation;
-		this.textureLocation = textureLocation;
-		this.transform = transform;
+		this.textureLocation = texture;
 
-		this.baseModel = ModelLoader.instance().getModelOrLogError(this.modelLocation.get(0), "Base model not found " + this.modelLocation.get(0));
+		this.baseModel = OBJLoader.INSTANCE.loadModel(defaultSettings(parts.get(0)));
 
-		ImmutableList.Builder<IUnbakedModel> builder = ImmutableList.builder();
-		for (int i = 1; i < modelLocation.size(); i++) {
-			builder.add(ModelLoader.instance().getModelOrLogError(this.modelLocation.get(i), "Model part not found " + this.modelLocation.get(i)));
+		ImmutableList.Builder<OBJModel> builder = ImmutableList.builder();
+		for (int i = 1; i < parts.size(); i++) {
+			builder.add(OBJLoader.INSTANCE.loadModel(defaultSettings(parts.get(i))));
 		}
 		this.modelParts = builder.build();
+	}
+
+	private OBJModel.ModelSettings defaultSettings(ResourceLocation loc) {
+		return new OBJModel.ModelSettings(loc, true, true, true, true, null);
 	}
 
 	@Override
@@ -130,9 +137,9 @@ public class ColorizerModel implements IDynamicBakedModel {
 	 */
 	protected IBakedModel generateModel(ImmutableMap<String, String> texture) {
 		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
-		builder.add(UnbakedColorizerPart.from((BlockModel) this.baseModel).retexture(texture).bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
-		for (IUnbakedModel model : this.modelParts)
-			builder.add(model.bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
+		builder.add(this.baseModel.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
+		for (OBJModel model : this.modelParts)
+			builder.add(model.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
 
 		return new DecorCompositeModel(builder.build());
 	}
@@ -146,11 +153,11 @@ public class ColorizerModel implements IDynamicBakedModel {
 	 * @param models
 	 * @return
 	 */
-	protected IBakedModel generateModel(ImmutableMap<String, String> texture, IUnbakedModel... models) {
+	protected IBakedModel generateModel(ImmutableMap<String, String> texture, OBJModel... models) {
 		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
 		builder.add(this.generateModel(texture));
-		for (IUnbakedModel model : models)
-			builder.add(model.bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
+		for (OBJModel model : models)
+			builder.add(model.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
 
 		return new DecorCompositeModel(builder.build());
 	}
@@ -195,7 +202,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 	}
 
 	private IBakedModel getBaseBakedModel() {
-		return this.baseModel.bakeModel(bakery, spriteGetter, transform, textureLocation);
+		return this.baseModel.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation);
 	}
 
 	public final ColorizerItemOverrideHandler INSTANCE = new ColorizerItemOverrideHandler();
@@ -203,42 +210,6 @@ public class ColorizerModel implements IDynamicBakedModel {
 	@Override
 	public ItemOverrideList getOverrides() {
 		return INSTANCE;
-	}
-
-	public static class UnbakedColorizerPart extends BlockModel {
-		private final Map<String, RenderMaterial> replacements = new HashMap<>();
-
-		public static UnbakedColorizerPart from(BlockModel parent) {
-			UnbakedColorizerPart model = new UnbakedColorizerPart(parent.getParentLocation(), parent.getElements(), parent.textures, parent.ambientOcclusion, parent.func_230176_c_(), parent.getAllTransforms(), parent.getOverrides());
-			model.customData.copyFrom(parent.customData);
-			return model;
-		}
-
-		public UnbakedColorizerPart(ResourceLocation parentLocation, List<BlockPart> elements, Map<String, Either<RenderMaterial, String>> textures, boolean ambientOcclusion, GuiLight guiLight, ItemCameraTransforms cameraTransforms, List<ItemOverride> overrides) {
-			super(parentLocation, elements, textures, ambientOcclusion, guiLight, cameraTransforms, overrides);
-		}
-
-		@Override
-		public RenderMaterial resolveTextureName(String nameIn) {
-			if (this.replacements.containsKey(nameIn)) {
-				return this.replacements.get(nameIn);
-			}
-
-			return super.resolveTextureName(nameIn);
-		}
-
-		public void replaceTexture(String name, RenderMaterial texture) {
-			this.replacements.put(name, texture);
-		}
-
-		public void replaceTexture(String name, ResourceLocation texture) {
-			this.replacements.put(name, new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, texture));
-		}
-
-		public UnbakedColorizerPart retexture(ImmutableMap<String, String> textures) {
-			textures.forEach((name, texture) -> replaceTexture(name, new ResourceLocation(texture)));
-			return this;
-		}
 	}
 
 	public static class RawColorizerModel implements IModelGeometry<RawColorizerModel> {
@@ -257,7 +228,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		@Override
 		public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
-			return new ColorizerModel(bakery, spriteGetter, this.parts, this.texture, modelTransform);
+			return new ColorizerOBJModel(owner, bakery, spriteGetter, modelTransform, overrides, modelLocation, this.texture, this.parts);
 		}
 
 		@Override
@@ -266,8 +237,8 @@ public class ColorizerModel implements IDynamicBakedModel {
 		}
 	}
 
-	public static class ColorizerLoader implements IModelLoader<RawColorizerModel> {
-		public static final ResourceLocation LOCATION = new ResourceLocation(AssortedDecor.MODID, "models/colorizer");
+	public static class ColorizerOBJLoader implements IModelLoader<RawColorizerModel> {
+		public static final ResourceLocation LOCATION = new ResourceLocation(AssortedDecor.MODID, "models/colorizer_obj");
 
 		@Override
 		public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -306,7 +277,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		@Override
 		public IBakedModel func_239290_a_(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
-			ColorizerModel colorizerModel = (ColorizerModel) originalModel;
+			ColorizerOBJModel colorizerModel = (ColorizerOBJModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {
 				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getItemCameraTransforms()));
