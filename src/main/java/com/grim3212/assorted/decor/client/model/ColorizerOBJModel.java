@@ -254,7 +254,7 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 				base = new ResourceLocation(modelContents.get("texture").getAsString());
 
 			if (!modelContents.has("parts"))
-				throw new UnsupportedOperationException("Model location not found for a ColorizerModel");
+				throw new UnsupportedOperationException("Model location not found for a ColorizerOBJModel");
 
 			String[] models = modelContents.get("parts").getAsString().replaceAll("\\[|\\]|\"", "").split(",");
 

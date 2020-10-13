@@ -3,29 +3,28 @@
     "facing=north,half=top": {
       "model": "assorteddecor:block/colorizer_slope",
       "x": 180,
+      "y": 180,
       "uvlock": true
     },
     "facing=south,half=top": {
       "model": "assorteddecor:block/colorizer_slope",
       "x": 180,
-      "y": 180,
       "uvlock": true
     },
     "facing=west,half=top": {
       "model": "assorteddecor:block/colorizer_slope",
       "x": 180,
-      "y": 270,
+      "y": 90,
       "uvlock": true
     },
     "facing=east,half=top": {
       "model": "assorteddecor:block/colorizer_slope",
       "x": 180,
-      "y": 90,
+      "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom": {
-      "model": "assorteddecor:block/colorizer_slope",
-      "uvlock": true
+      "model": "assorteddecor:block/colorizer_slope"
     },
     "facing=south,half=bottom": {
       "model": "assorteddecor:block/colorizer_slope",

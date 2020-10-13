@@ -1,5 +1,6 @@
 package com.grim3212.assorted.decor.common.block;
 
+import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
@@ -100,11 +101,13 @@ public class ColorizerBlock extends Block implements IColorizer {
 			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
 			Block block = Block.getBlockFromItem(heldItem.getItem());
 
-			if (block != null && !(block instanceof ColorizerBlock)) {
+			if (block != null && block != Blocks.AIR && !(block instanceof ColorizerBlock)) {
 				// if (BlockHelper.getUsableBlocks().contains(block.getDefaultState())) {
 				// Can only set blockstate if it contains nothing or if
 				// in creative mode
 				if (te.getStoredBlockState() == Blocks.AIR.getDefaultState() || player.abilities.isCreativeMode) {
+					
+					
 					BlockState placeState = block.getStateForPlacement(new BlockItemUseContext(new ItemUseContext(player, hand, hit)));
 
 					setColorizer(worldIn, pos, state, placeState, player, hand, true);
@@ -120,8 +123,6 @@ public class ColorizerBlock extends Block implements IColorizer {
 				// } else {
 				// return ActionResultType.FAIL;
 				// }
-			} else {
-				return ActionResultType.FAIL;
 			}
 		}
 
