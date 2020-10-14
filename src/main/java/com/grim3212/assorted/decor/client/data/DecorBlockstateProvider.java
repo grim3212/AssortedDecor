@@ -42,18 +42,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		extraModels();
 
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder("block/colorizer").loader(ColorizerLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube")));
-		customLoaderState(DecorBlocks.COLORIZER.get(), new ConfiguredModel(colorizerParent));
-		genericBlock(DecorBlocks.COLORIZER.get());
+		colorizer(DecorBlocks.COLORIZER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube")));
+		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/chair")));
 
-		ColorizerModelBuilder colorizerChairParent = this.loaderModels.getBuilder("block/colorizer_chair").loader(ColorizerLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/chair")));
-		customLoaderStateRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ConfiguredModel(colorizerChairParent));
-		genericBlock(DecorBlocks.COLORIZER_CHAIR.get());
-
-		ColorizerModelBuilder colorizerSlopeParent = this.loaderModels.getBuilder("block/colorizer_slope").loader(ColorizerOBJLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
-		defaultPerspectiveFlipped(colorizerSlopeParent);
-		customLoaderStateRotate(DecorBlocks.COLORIZER_SLOPE.get(), new ConfiguredModel(colorizerSlopeParent));
-		genericBlock(DecorBlocks.COLORIZER_SLOPE.get());
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
 
 		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
 		genericBlock(DecorBlocks.HARDENED_WOOD.get());
@@ -71,12 +64,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		defaultPerspective(model);
 	}
 
-	private ItemModelBuilder generatedItem(Block b) {
-		return generatedItem(name(b));
+	private String prefix(String name) {
+		return loc(name).toString();
 	}
 
-	private ItemModelBuilder generatedItem(String name) {
-		return itemModels().withExistingParent(name, "item/generated").texture("layer0", prefix("item/" + name));
+	private static String name(Block i) {
+		return Registry.BLOCK.getKey(i).getPath();
 	}
 
 	private ItemModelBuilder genericBlock(Block b) {
@@ -84,12 +77,36 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		return itemModels().withExistingParent(name, prefix("block/" + name));
 	}
 
-	private static String name(Block i) {
-		return Registry.BLOCK.getKey(i).getPath();
+	private void colorizer(Block b, ImmutableList<ResourceLocation> parts) {
+		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, false);
 	}
 
-	private String prefix(String name) {
-		return loc(name).toString();
+	private void colorizerRotate(Block b, ImmutableList<ResourceLocation> parts) {
+		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, true);
+	}
+
+	private void colorizerOBJ(Block b, ImmutableList<ResourceLocation> parts) {
+		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true);
+	}
+
+	private void colorizer(ResourceLocation loader, Block b, ImmutableList<ResourceLocation> parts, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate) {
+		String name = name(b);
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).parts(parts);
+		if (defaultPerspective) {
+			if (defaultPerspectiveFlipped) {
+				defaultPerspectiveFlipped(colorizerParent);
+			} else {
+				defaultPerspective(colorizerParent);
+			}
+		}
+		ConfiguredModel colorizerModel = new ConfiguredModel(colorizerParent);
+		if (rotate) {
+			customLoaderStateRotate(b, colorizerModel);
+		} else {
+			customLoaderState(b, colorizerModel);
+		}
+
+		itemModels().getBuilder(name).parent(colorizerModel.model);
 	}
 
 	private ResourceLocation loc(String name) {

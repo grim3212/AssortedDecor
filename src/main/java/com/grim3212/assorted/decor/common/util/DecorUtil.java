@@ -114,6 +114,34 @@ public class DecorUtil {
 						return VoxelShapes.empty();
 					}
 				}
+			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_ANGLE.get()) {
+				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					case EAST:
+						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F - zeroOffset));
+					case NORTH:
+						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F - zeroOffset, oneOffset, 1.0F - zeroOffset));
+					case SOUTH:
+						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+					case WEST:
+						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F - zeroOffset, oneOffset, 1.0F));
+					default:
+						return VoxelShapes.empty();
+					}
+				} else {
+					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					case EAST:
+						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F - zeroOffset));
+					case NORTH:
+						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, 0.0F, 1.0F - zeroOffset, 1.0F, 1.0F - zeroOffset));
+					case SOUTH:
+						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+					case WEST:
+						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F - zeroOffset, 1.0F, 1.0F));
+					default:
+						return VoxelShapes.empty();
+					}
+				}
 			}
 
 		}
