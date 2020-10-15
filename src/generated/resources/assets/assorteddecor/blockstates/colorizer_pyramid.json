@@ -1,0 +1,57 @@
+{
+  "variants": {
+    "face=floor,facing=north": {
+      "model": "assorteddecor:block/colorizer_pyramid"
+    },
+    "face=wall,facing=north": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90
+    },
+    "face=ceiling,facing=north": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 180,
+      "y": 180
+    },
+    "face=floor,facing=south": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "y": 180
+    },
+    "face=wall,facing=south": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90,
+      "y": 180
+    },
+    "face=ceiling,facing=south": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 180
+    },
+    "face=floor,facing=west": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "y": 270
+    },
+    "face=wall,facing=west": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90,
+      "y": 270
+    },
+    "face=ceiling,facing=west": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 180,
+      "y": 90
+    },
+    "face=floor,facing=east": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "y": 90
+    },
+    "face=wall,facing=east": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90,
+      "y": 90
+    },
+    "face=ceiling,facing=east": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 180,
+      "y": 270
+    }
+  }
+}

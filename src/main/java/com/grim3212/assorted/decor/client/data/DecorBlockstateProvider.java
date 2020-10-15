@@ -10,6 +10,7 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
@@ -47,6 +48,13 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_intersection.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/oblique_slope.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_CORNER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/corner.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLANTED_CORNER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slanted_corner.obj")));
+		colorizerOBJSide(DecorBlocks.COLORIZER_PYRAMID.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/pyramid.obj")));
+		colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/full_pyramid.obj")));
+		colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_post.obj")));
 
 		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
 		genericBlock(DecorBlocks.HARDENED_WOOD.get());
@@ -78,18 +86,22 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizer(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, false);
+		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, false, false);
 	}
 
 	private void colorizerRotate(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, true);
+		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, true, false);
 	}
 
 	private void colorizerOBJ(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true);
+		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true, false);
 	}
 
-	private void colorizer(ResourceLocation loader, Block b, ImmutableList<ResourceLocation> parts, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate) {
+	private void colorizerOBJSide(Block b, ImmutableList<ResourceLocation> parts) {
+		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true, true);
+	}
+
+	private void colorizer(ResourceLocation loader, Block b, ImmutableList<ResourceLocation> parts, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
 		String name = name(b);
 		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).parts(parts);
 		if (defaultPerspective) {
@@ -101,7 +113,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		}
 		ConfiguredModel colorizerModel = new ConfiguredModel(colorizerParent);
 		if (rotate) {
-			customLoaderStateRotate(b, colorizerModel);
+			if (side) {
+				customLoaderStateSide(b, colorizerModel);
+			} else {
+				customLoaderStateRotate(b, colorizerModel);
+			}
 		} else {
 			customLoaderState(b, colorizerModel);
 		}
@@ -125,6 +141,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 			boolean uvlock = yRot != 0 || half == Half.TOP;
 			return ConfiguredModel.builder().modelFile(model.model).rotationY(yRot).rotationX(half == Half.TOP ? 180 : 0).uvLock(uvlock).build();
 		}, BlockStateProperties.WATERLOGGED);
+	}
+
+	private void customLoaderStateSide(Block block, ConfiguredModel model) {
+		getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(), BlockStateProperties.WATERLOGGED);
 	}
 
 	private void defaultPerspective(ModelBuilder<?> model) {
