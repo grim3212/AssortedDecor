@@ -41,7 +41,21 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return ColorizerCounterBlock.COUNTER;
+		switch (getFacing(state)) {
+		case DOWN:
+			return ColorizerCounterBlock.COUNTER_CEILING;
+		case EAST:
+			return ColorizerCounterBlock.COUNTER_EAST;
+		case NORTH:
+			return ColorizerCounterBlock.COUNTER_NORTH;
+		case SOUTH:
+			return ColorizerCounterBlock.COUNTER_SOUTH;
+		case WEST:
+			return ColorizerCounterBlock.COUNTER_WEST;
+		case UP:
+		default:
+			return ColorizerCounterBlock.COUNTER_FLOOR;
+		}
 	}
 
 	@Override

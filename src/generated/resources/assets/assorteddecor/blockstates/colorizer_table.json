@@ -28,13 +28,14 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=north,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "x": 180,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=north,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 270,
       "uvlock": true
     },
     "down=false,east=false,face=ceiling,facing=north,north=false,south=false,up=false,west=false": {
@@ -91,14 +92,14 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=south,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=south,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 450,
       "uvlock": true
     },
     "down=false,east=false,face=ceiling,facing=south,north=false,south=false,up=false,west=false": {
@@ -156,14 +157,14 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=west,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=west,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=false,east=false,face=ceiling,facing=west,north=false,south=false,up=false,west=false": {
@@ -221,14 +222,13 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=east,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=east,north=false,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=false,east=false,face=ceiling,facing=east,north=false,south=false,up=false,west=false": {
@@ -273,17 +273,18 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=north,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
       "y": 270,
       "uvlock": true
@@ -335,20 +336,20 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=south,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=south,north=true,south=false,up=false,west=false": {
@@ -400,20 +401,20 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "x": 180,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 540,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=west,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=west,north=true,south=false,up=false,west=false": {
@@ -465,20 +466,19 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 360,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=east,north=true,south=false,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=east,north=true,south=false,up=false,west=false": {
@@ -529,18 +529,20 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=north,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=north,north=false,south=true,up=false,west=false": {
@@ -590,19 +592,20 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=south,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=south,north=false,south=true,up=false,west=false": {
@@ -654,19 +657,20 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=west,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=west,north=false,south=true,up=false,west=false": {
@@ -718,19 +722,19 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "x": 180,
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=east,north=false,south=true,up=false,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=east,north=false,south=true,up=false,west=false": {
@@ -1051,8 +1055,9 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=north,north=false,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=north,north=false,south=false,up=true,west=false": {
@@ -1113,8 +1118,9 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=south,north=false,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=south,north=false,south=false,up=true,west=false": {
@@ -1178,8 +1184,9 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=west,north=false,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=west,north=false,south=false,up=true,west=false": {
@@ -1243,8 +1250,8 @@
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=east,north=false,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=true,face=wall,facing=east,north=false,south=false,up=true,west=false": {
@@ -1294,8 +1301,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=true,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=true,south=false,up=true,west=false": {
@@ -1354,8 +1362,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=true,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=true,south=false,up=true,west=false": {
@@ -1420,8 +1429,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=true,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=true,south=false,up=true,west=false": {
@@ -1486,8 +1496,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=true,south=false,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=true,south=false,up=true,west=false": {
@@ -1549,8 +1560,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=false,south=true,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=false,south=true,up=true,west=false": {
@@ -1609,8 +1621,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=false,south=true,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=false,south=true,up=true,west=false": {
@@ -1675,8 +1688,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=false,south=true,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=false,south=true,up=true,west=false": {
@@ -1741,8 +1755,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=false,south=true,up=true,west=false": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=false,south=true,up=true,west=false": {
@@ -2065,13 +2080,14 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 270,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=north,north=false,south=false,up=false,west=true": {
@@ -2126,14 +2142,14 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 450,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=south,north=false,south=false,up=false,west=true": {
@@ -2192,14 +2208,14 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 270,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=west,north=false,south=false,up=false,west=true": {
@@ -2258,14 +2274,13 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_n",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_n_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=false,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=false,east=true,face=wall,facing=east,north=false,south=false,up=false,west=true": {
@@ -2322,9 +2337,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=true,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
-      "y": 180,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=true,south=false,up=false,west=true": {
@@ -2384,9 +2399,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=true,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=true,south=false,up=false,west=true": {
@@ -2452,9 +2467,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=true,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=true,south=false,up=false,west=true": {
@@ -2520,9 +2535,8 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=true,south=false,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 180,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=true,south=false,up=false,west=true": {
@@ -2585,9 +2599,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=false,south=true,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
-      "y": 90,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=false,south=true,up=false,west=true": {
@@ -2647,9 +2661,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=false,south=true,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=false,south=true,up=false,west=true": {
@@ -2715,9 +2729,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=false,south=true,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=false,south=true,up=false,west=true": {
@@ -2783,9 +2797,8 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=false,south=true,up=false,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
-      "y": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=false,south=true,up=false,west=true": {
@@ -3107,8 +3120,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=north,north=false,south=false,up=true,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 180,
+      "y": 270,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=north,north=false,south=false,up=true,west=true": {
@@ -3167,8 +3181,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=south,north=false,south=false,up=true,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
+      "model": "assorteddecor:block/colorizer_table_se_wall",
       "x": 90,
+      "y": 450,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=south,north=false,south=false,up=true,west=true": {
@@ -3233,8 +3248,9 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=west,north=false,south=false,up=true,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "x": 270,
+      "y": 540,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=west,north=false,south=false,up=true,west=true": {
@@ -3299,8 +3315,8 @@
       "uvlock": true
     },
     "down=false,east=false,face=wall,facing=east,north=false,south=false,up=true,west=true": {
-      "model": "assorteddecor:block/colorizer_table_se",
-      "x": 90,
+      "model": "assorteddecor:block/colorizer_table_se_wall",
+      "y": 360,
       "uvlock": true
     },
     "down=true,east=false,face=wall,facing=east,north=false,south=false,up=true,west=true": {

@@ -10,6 +10,7 @@ import com.grim3212.assorted.decor.common.block.ColorizerTableBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -91,7 +92,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void colorizer(Block b, ImmutableList<ResourceLocation> parts) {
 		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, false, false);
 	}
-	
+
 	private void colorizerSide(Block b, ImmutableList<ResourceLocation> parts) {
 		colorizer(ColorizerLoader.LOCATION, b, parts, true, false, true, true);
 	}
@@ -131,103 +132,97 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		itemModels().getBuilder(name).parent(colorizerModel.model);
 	}
-	
+
 	private void colorizerTable() {
 		String name = name(DecorBlocks.COLORIZER_TABLE.get());
-		
+
 		ConfiguredModel colorizerCounterModel = getTableModel("colorizer_counter", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/counter")));
 		ConfiguredModel colorizerTableNModel = getTableModel("colorizer_table_n", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_n")));
 		ConfiguredModel colorizerTableSEModel = getTableModel("colorizer_table_se", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_se")));
+		ConfiguredModel colorizerTableNWallModel = getTableModel("colorizer_table_n_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_n_wall")));
+		ConfiguredModel colorizerTableSEWallModel = getTableModel("colorizer_table_se_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_se_wall")));
 		ConfiguredModel colorizerTableModel = getTableModel("colorizer_table", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table")));
-		
-		
+
 		getVariantBuilder(DecorBlocks.COLORIZER_TABLE.get()).forAllStatesExcept(state -> {
-				boolean east = state.get(ColorizerTableBlock.EAST);
-				boolean north = state.get(ColorizerTableBlock.NORTH);
-				boolean south = state.get(ColorizerTableBlock.SOUTH);
-				boolean west = state.get(ColorizerTableBlock.WEST);
-				boolean up = state.get(ColorizerTableBlock.UP);
-				boolean down = state.get(ColorizerTableBlock.DOWN);
-				
-				AttachFace face = state.get(BlockStateProperties.FACE);
-				Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
-				
-				int numConnections = countConnections(east, north, south, west, up, down);
-			
-				if(numConnections == 4 || numConnections == 3) {
-					return ConfiguredModel.builder()
-							.modelFile(colorizerCounterModel.model)
-							.rotationX(face.ordinal() * 90)
-							.rotationY((((int) facing.getHorizontalAngle() + 180)) % 360)
-							.uvLock(true)
-							.build();
-				} else  if (numConnections == 2) {
-					boolean oppositeEnds = (north && south) || (west && east) || (up && down);
-					
-					if(oppositeEnds) {
-						return ConfiguredModel.builder()
-								.modelFile(colorizerCounterModel.model)
-								.rotationX(face.ordinal() * 90)
-								.rotationY((((int) facing.getHorizontalAngle() + 180)) % 360)
-								.uvLock(true)
-								.build();
-					} else {
-						int rotY = west && south ? 90 : north && west ? 180 : north && east ? 270 : 0;
-						
-						if(face == AttachFace.CEILING) {
-							rotY += 90;
-						}
-						
-						return ConfiguredModel.builder()
-								.modelFile(colorizerTableSEModel.model)
-								.rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90)
-								.rotationY(rotY)
-								.uvLock(true)
-								.build();
-					}
-				} else if (numConnections == 1) {
-					int rotY = west ? 270 : east ? 90 : south ? 180 : 0;
+			boolean east = state.get(ColorizerTableBlock.EAST);
+			boolean north = state.get(ColorizerTableBlock.NORTH);
+			boolean south = state.get(ColorizerTableBlock.SOUTH);
+			boolean west = state.get(ColorizerTableBlock.WEST);
+			boolean up = state.get(ColorizerTableBlock.UP);
+			boolean down = state.get(ColorizerTableBlock.DOWN);
+
+			AttachFace face = state.get(BlockStateProperties.FACE);
+			Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+
+			int numConnections = countConnections(east, north, south, west, up, down);
+
+			if (numConnections == 4 || numConnections == 3) {
+				return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+			} else if (numConnections == 2) {
+				boolean oppositeEnds = (north && south) || (west && east) || (up && down);
+
+				if (oppositeEnds) {
+					return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+				} else {
+					int rotY = west && south ? 90 : north && west ? 180 : north && east ? 270 : 0;
 					int rotX = 0;
-					
-					if(face == AttachFace.CEILING) {
-						rotY += 180;
-					} else if(face == AttachFace.WALL) {
-						rotY = (((int) facing.getHorizontalAngle() + 180)) % 360;
-						rotY += up ? 180 : 0;
-						rotX = up ? 180 : 0;
+
+					if (face == AttachFace.CEILING) {
+						rotY += 90;
+					} else if (face == AttachFace.WALL) {
+						rotY = ((((int) facing.getHorizontalAngle() + 180)) % 360) + 270;
+
+						if (facing == Direction.NORTH)
+							rotX = down && east ? 0 : down && west ? 270 : up && west ? 180 : 90;
+						else if (facing == Direction.SOUTH)
+							rotX = down && east ? 270 : down && west ? 0 : up && west ? 90 : 180;
+						else if (facing == Direction.EAST)
+							rotX = south && up ? 90 : north && up ? 180 : north && down ? 270 : 0;
+						else if (facing == Direction.WEST)
+							rotX = south && up ? 180 : north && up ? 90 : north && down ? 0 : 270;
+
+						return ConfiguredModel.builder().modelFile(colorizerTableSEWallModel.model).rotationX(rotX).rotationY(rotY).uvLock(true).build();
 					}
-					
-					return ConfiguredModel.builder()
-							.modelFile(colorizerTableNModel.model)
-							.rotationX((face.ordinal() * 90) + rotX)
-							.rotationY(rotY)
-							.uvLock(true)
-							.build();
+
+					return ConfiguredModel.builder().modelFile(colorizerTableSEModel.model).rotationX((face.ordinal() * 90) + rotX).rotationY(rotY).uvLock(true).build();
 				}
-				
-				return ConfiguredModel.builder()
-						.modelFile(colorizerTableModel.model)
-						.rotationX(face.ordinal() * 90)
-						.rotationY((((int) facing.getHorizontalAngle() + 180)) % 360)
-						.uvLock(true)
-						.build();
-			}, BlockStateProperties.WATERLOGGED);
-		
+			} else if (numConnections == 1) {
+				int rotY = west ? 270 : east ? 90 : south ? 180 : 0;
+				int rotX = 0;
+
+				if (face == AttachFace.CEILING) {
+					rotY += 180;
+				} else if (face == AttachFace.WALL) {
+					rotY = (((int) facing.getHorizontalAngle() + 180)) % 360;
+					rotY += up ? 180 : down ? 0 : 270;
+					boolean flag = (south && facing == Direction.EAST) || (east && facing == Direction.NORTH) || (north && facing == Direction.WEST) || (west && facing == Direction.SOUTH);
+
+					rotX = up ? 180 : flag ? 180 : 0;
+
+					if (!(up || down)) {
+						return ConfiguredModel.builder().modelFile(colorizerTableNWallModel.model).rotationX(rotX).rotationY(rotY).uvLock(true).build();
+					}
+				}
+
+				return ConfiguredModel.builder().modelFile(colorizerTableNModel.model).rotationX((face.ordinal() * 90) + rotX).rotationY(rotY).uvLock(true).build();
+			}
+
+			return ConfiguredModel.builder().modelFile(colorizerTableModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+		}, BlockStateProperties.WATERLOGGED);
 
 		itemModels().getBuilder(name).parent(colorizerTableModel.model);
 	}
-	
-	private int countConnections(boolean ...connections) {
+
+	private int countConnections(boolean... connections) {
 		int numTrue = 0;
-		for(boolean connection : connections) {
+		for (boolean connection : connections) {
 			numTrue += connection ? 1 : 0;
 		}
 		return numTrue;
 	}
-	
+
 	private ConfiguredModel getTableModel(String builderName, ImmutableList<ResourceLocation> parts) {
 		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).parts(parts);
-		defaultPerspective(colorizerParent);
 		return new ConfiguredModel(colorizerParent);
 	}
 
