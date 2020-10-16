@@ -28,8 +28,7 @@ public class ColorizerSideBlock extends ColorizerBlock implements IWaterLoggable
 	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	public ColorizerSideBlock(Properties properties) {
-		super(properties);
+	public ColorizerSideBlock() {
 		this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(FACE, AttachFace.WALL).with(WATERLOGGED, false));
 	}
 
@@ -88,7 +87,7 @@ public class ColorizerSideBlock extends ColorizerBlock implements IWaterLoggable
 		if (stateIn.get(WATERLOGGED)) {
 			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
 		}
-		
+
 		return getFacing(stateIn).getOpposite() == facing && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 

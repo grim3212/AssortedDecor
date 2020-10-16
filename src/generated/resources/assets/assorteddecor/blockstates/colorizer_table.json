@@ -1,0 +1,4129 @@
+{
+  "variants": {
+    "down=false,east=false,face=floor,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=false,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=true,up=false,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 270,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 270,
+      "y": 360,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 270,
+      "y": 450,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 270,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=false,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=true,up=true,west=false": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 450,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 450,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 450,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_n",
+      "x": 180,
+      "y": 450,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=false,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=true,up=false,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table_se",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=false,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=false,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=north,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=south,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 180,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=west,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 270,
+      "uvlock": true
+    },
+    "down=false,east=false,face=floor,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=floor,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=floor,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=floor,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=wall,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=wall,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=wall,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=wall,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=false,face=ceiling,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_counter",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=false,face=ceiling,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=false,east=true,face=ceiling,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    },
+    "down=true,east=true,face=ceiling,facing=east,north=true,south=true,up=true,west=true": {
+      "model": "assorteddecor:block/colorizer_table",
+      "x": 180,
+      "y": 90,
+      "uvlock": true
+    }
+  }
+}

@@ -16,10 +16,6 @@ public class ColorizerChairBlock extends ColorizerRotateBlock {
 	private static final VoxelShape WEST = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 3.04F, 16F, 16F);
 	private static final VoxelShape SOUTH = Block.makeCuboidShape(0.0F, 0.0F, 12.96F, 16F, 16F, 16F);
 
-	public ColorizerChairBlock(Properties properties) {
-		super(properties);
-	}
-
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		switch (state.get(FACING)) {

@@ -1,25 +1,19 @@
 package com.grim3212.assorted.decor.common.block;
 
-import com.grim3212.assorted.decor.common.util.DecorUtil;
-import com.grim3212.assorted.decor.common.util.DecorUtil.SlopeType;
-
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 
-public class ColorizerSlopeBlock extends ColorizerRotateBlock {
+public class ColorizerCounterBlock extends ColorizerSideBlock {
 
-	private final SlopeType type;
-
-	public ColorizerSlopeBlock(SlopeType type) {
-		this.type = type;
-	}
+	public static final VoxelShape COUNTER = Block.makeCuboidShape(0.0F, 16.0F, 0.0F, 16.0F, 12.96F, 16.0F);
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return DecorUtil.addAxisAlignedBoxes(state, worldIn, pos, context, this.type.getNumPieces());
+		return COUNTER;
 	}
 
 }

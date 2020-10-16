@@ -24,8 +24,7 @@ public class ColorizerRotateBlock extends ColorizerBlock implements IWaterLoggab
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
 
-	public ColorizerRotateBlock(Properties properties) {
-		super(properties);
+	public ColorizerRotateBlock() {
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(HALF, Half.BOTTOM).with(WATERLOGGED, false));
 	}
 

@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,8 +36,8 @@ import net.minecraftforge.common.util.FakePlayer;
 
 public class ColorizerBlock extends Block implements IColorizer {
 
-	public ColorizerBlock(Properties properties) {
-		super(properties.hardnessAndResistance(1.5f, 12.0f).variableOpacity().notSolid());
+	public ColorizerBlock() {
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 12.0f).sound(SoundType.STONE).variableOpacity().notSolid());
 	}
 
 	@Override
@@ -53,6 +54,11 @@ public class ColorizerBlock extends Block implements IColorizer {
 	@OnlyIn(Dist.CLIENT)
 	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(worldIn, pos).getAmbientOcclusionLightValue(worldIn, pos) : super.getAmbientOcclusionLightValue(state, worldIn, pos);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return this.getStoredState(world, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(world, pos).getLightValue(world, pos) : super.getLightValue(state, world, pos);
 	}
 
 	protected BlockState getStoredState(IBlockReader worldIn, BlockPos pos) {

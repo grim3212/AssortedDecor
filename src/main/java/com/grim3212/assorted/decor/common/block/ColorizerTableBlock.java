@@ -1,0 +1,83 @@
+package com.grim3212.assorted.decor.common.block;
+
+import java.util.Map;
+
+import com.google.common.collect.Maps;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.AttachFace;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+
+public class ColorizerTableBlock extends ColorizerSideBlock {
+
+	public static final BooleanProperty NORTH = BooleanProperty.create("north");
+	public static final BooleanProperty EAST = BooleanProperty.create("east");
+	public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+	public static final BooleanProperty WEST = BooleanProperty.create("west");
+	public static final BooleanProperty UP = BooleanProperty.create("up");
+	public static final BooleanProperty DOWN = BooleanProperty.create("down");
+	public static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), (map) -> {
+		map.put(Direction.NORTH, NORTH);
+		map.put(Direction.EAST, EAST);
+		map.put(Direction.SOUTH, SOUTH);
+		map.put(Direction.WEST, WEST);
+		map.put(Direction.UP, UP);
+		map.put(Direction.DOWN, DOWN);
+	});
+
+	public ColorizerTableBlock() {
+		this.setDefaultState(getDefaultState().with(NORTH, false).with(SOUTH, false).with(WEST, false).with(EAST, false).with(UP, false).with(DOWN, false));
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return ColorizerCounterBlock.COUNTER;
+	}
+
+	@Override
+	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+		super.fillStateContainer(builder);
+		builder.add(NORTH, SOUTH, WEST, EAST, UP, DOWN);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		BlockPos blockpos = context.getPos();
+		BlockPos northPos = blockpos.north();
+		BlockPos eastPos = blockpos.east();
+		BlockPos southPos = blockpos.south();
+		BlockPos westPos = blockpos.west();
+		BlockPos upPos = blockpos.up();
+		BlockPos downPos = blockpos.down();
+		return super.getStateForPlacement(context).with(NORTH, this.canConnectTo(context.getWorld(), blockpos, northPos)).with(EAST, this.canConnectTo(context.getWorld(), blockpos, eastPos)).with(SOUTH, this.canConnectTo(context.getWorld(), blockpos, southPos)).with(WEST, this.canConnectTo(context.getWorld(), blockpos, westPos)).with(UP, this.canConnectTo(context.getWorld(), blockpos, upPos)).with(DOWN, this.canConnectTo(context.getWorld(), blockpos, downPos));
+	}
+
+	@Override
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		BlockState superState = super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return superState.with(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
+	}
+
+	public boolean canConnectTo(IBlockReader worldIn, BlockPos currentPos, BlockPos placePos) {
+		BlockState currentState = worldIn.getBlockState(currentPos);
+		BlockState placeState = worldIn.getBlockState(placePos);
+
+		if (currentState.getBlock() instanceof ColorizerTableBlock && placeState.getBlock() instanceof ColorizerTableBlock) {
+			if (currentState.getBlock() == currentState.getBlock() && currentState.get(FACE) == placeState.get(FACE)) {
+				return currentState.get(FACE) == AttachFace.WALL ? currentState.get(HORIZONTAL_FACING) == placeState.get(HORIZONTAL_FACING) : true;
+			}
+		}
+		return false;
+	}
+
+}

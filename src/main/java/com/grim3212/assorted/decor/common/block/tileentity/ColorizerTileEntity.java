@@ -83,6 +83,7 @@ public class ColorizerTileEntity extends TileEntity {
 
 		if (world != null) {
 			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 3);
+			world.getLightManager().checkBlock(getPos());
 			if (!world.isRemote) {
 				world.func_230547_a_(pos, getBlockState().getBlock());
 			}
