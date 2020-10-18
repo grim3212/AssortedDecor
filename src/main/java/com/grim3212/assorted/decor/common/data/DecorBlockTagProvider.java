@@ -17,5 +17,6 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 	@Override
 	protected void registerTags() {
 		this.getOrCreateBuilder(BlockTags.FENCES).addItemEntry(DecorBlocks.COLORIZER_FENCE.get());
+		this.getOrCreateBuilder(BlockTags.WALLS).addItemEntry(DecorBlocks.COLORIZER_WALL.get());
 	}
 }

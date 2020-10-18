@@ -1,0 +1,19 @@
+{
+    "textures": {
+        "particle": "assorteddecor:block/colorizer",
+		"stored": "assorteddecor:block/colorizer"
+    },
+    "elements": [
+        {   "from": [ 5, 0, 0 ],
+            "to": [ 11, 14, 8 ],
+            "faces": {
+                "down":  { "texture": "#stored", "tintindex": 0, "cullface": "down" },
+                "up":    { "texture": "#stored", "tintindex": 0 },
+                "north": { "texture": "#stored", "tintindex": 0, "cullface": "north" },
+                "west":  { "texture": "#stored", "tintindex": 0 },
+                "east":  { "texture": "#stored", "tintindex": 0 }
+            },
+            "__comment": "wall"
+        }
+    ]
+}

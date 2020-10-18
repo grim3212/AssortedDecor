@@ -1,5 +1,7 @@
 package com.grim3212.assorted.decor.client.data;
 
+import java.util.Map;
+
 import com.google.common.collect.ImmutableList;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerModel.ColorizerLoader;
@@ -13,7 +15,11 @@ import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.TrapDoorBlock;
+import net.minecraft.block.WallBlock;
+import net.minecraft.block.WallHeight;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.state.Property;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.Half;
@@ -56,6 +62,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerStool();
 		colorizerFence();
 		colorizerFenceGate();
+		colorizerWall();
+		colorizerTrapDoor();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -345,5 +353,44 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		fourWayMultipart(builder, colorizerFenceSideModel.model);
 
 		itemModels().getBuilder(prefix("item/colorizer_fence")).parent(colorizerFenceInventoryModel.model);
+	}
+
+	private void colorizerWall() {
+		ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_post")));
+		ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_side")));
+		ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_side_tall")));
+		ConfiguredModel colorizerWallInventoryModel = getModel("colorizer_wall_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_inventory")));
+
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_WALL.get()).part().modelFile(colorizerWallPostModel.model).addModel().condition(WallBlock.UP, true).end();
+		WALL_PROPS.entrySet().stream().filter(e -> e.getKey().getAxis().isHorizontal()).forEach(e -> {
+			wallSidePart(builder, colorizerWallSideModel.model, e, WallHeight.LOW);
+			wallSidePart(builder, colorizerWallSideTallModel.model, e, WallHeight.TALL);
+		});
+
+		itemModels().getBuilder(prefix("item/colorizer_wall")).parent(colorizerWallInventoryModel.model);
+	}
+
+	private void wallSidePart(MultiPartBlockStateBuilder builder, ModelFile model, Map.Entry<Direction, Property<WallHeight>> entry, WallHeight height) {
+		builder.part().modelFile(model).rotationY((((int) entry.getKey().getHorizontalAngle()) + 180) % 360).uvLock(true).addModel().condition(entry.getValue(), height);
+	}
+
+	private void colorizerTrapDoor() {
+		ConfiguredModel colorizerTrapdoorBottomModel = getModel("colorizer_trapdoor_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_bottom")));
+		ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_open")));
+		ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_top")));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_TRAP_DOOR.get()).forAllStatesExcept(state -> {
+			int xRot = 0;
+			int yRot = ((int) state.get(TrapDoorBlock.HORIZONTAL_FACING).getHorizontalAngle()) + 180;
+			boolean isOpen = state.get(TrapDoorBlock.OPEN);
+			if (isOpen && state.get(TrapDoorBlock.HALF) == Half.TOP) {
+				xRot += 180;
+				yRot += 180;
+			}
+			yRot %= 360;
+			return ConfiguredModel.builder().modelFile(isOpen ? colorizerTrapdoorOpenModel.model : state.get(TrapDoorBlock.HALF) == Half.TOP ? colorizerTrapdoorTopModel.model : colorizerTrapdoorBottomModel.model).rotationX(xRot).rotationY(yRot).build();
+		}, TrapDoorBlock.POWERED, TrapDoorBlock.WATERLOGGED);
+
+		itemModels().getBuilder(prefix("item/colorizer_trap_door")).parent(colorizerTrapdoorBottomModel.model);
 	}
 }

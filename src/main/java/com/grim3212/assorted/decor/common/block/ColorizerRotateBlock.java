@@ -18,7 +18,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorld;
 
-public class ColorizerRotateBlock extends ColorizerBlock implements IWaterLoggable {
+public abstract class ColorizerRotateBlock extends ColorizerBlock implements IWaterLoggable {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
