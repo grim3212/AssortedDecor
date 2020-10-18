@@ -14,6 +14,7 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.WallBlock;
@@ -22,6 +23,8 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.state.Property;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.DoorHingeSide;
+import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.state.properties.Half;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -64,6 +67,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerFenceGate();
 		colorizerWall();
 		colorizerTrapDoor();
+		colorizerDoor();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -392,5 +396,30 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		}, TrapDoorBlock.POWERED, TrapDoorBlock.WATERLOGGED);
 
 		itemModels().getBuilder(prefix("item/colorizer_trap_door")).parent(colorizerTrapdoorBottomModel.model);
+	}
+
+	private void colorizerDoor() {
+		ConfiguredModel colorizerDoorBottomModel = getModel("colorizer_door_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_bottom")));
+		ConfiguredModel colorizerDoorBottomRHModel = getModel("colorizer_door_bottom_rh", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_bottom_rh")));
+		ConfiguredModel colorizerDoorTopModel = getModel("colorizer_door_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_top")));
+		ConfiguredModel colorizerDoorTopRHModel = getModel("colorizer_door_top_rh", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_top_rh")));
+		ConfiguredModel colorizerDoorItemModel = getModel("colorizer_door", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/door")));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_DOOR.get()).forAllStatesExcept(state -> {
+			int yRot = ((int) state.get(DoorBlock.FACING).getHorizontalAngle()) + 90;
+			boolean rh = state.get(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
+			boolean open = state.get(DoorBlock.OPEN);
+			boolean right = rh ^ open;
+			if (open) {
+				yRot += 90;
+			}
+			if (rh && open) {
+				yRot += 180;
+			}
+			yRot %= 360;
+			return ConfiguredModel.builder().modelFile(state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? (right ? colorizerDoorBottomRHModel.model : colorizerDoorBottomModel.model) : (right ? colorizerDoorTopRHModel.model : colorizerDoorTopModel.model)).rotationY(yRot).build();
+		}, DoorBlock.POWERED);
+
+		itemModels().getBuilder(prefix("item/colorizer_door")).parent(colorizerDoorItemModel.model);
 	}
 }
