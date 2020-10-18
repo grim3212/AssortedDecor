@@ -1,0 +1,6 @@
+{
+  "parent": "assorteddecor:block/planter_pot_down",
+  "textures": {
+    "top": "minecraft:block/farmland"
+  }
+}
