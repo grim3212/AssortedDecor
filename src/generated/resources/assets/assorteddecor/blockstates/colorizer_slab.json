@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "assorteddecor:block/colorizer_slab_top"
+    },
+    "type=bottom": {
+      "model": "assorteddecor:block/colorizer_slab"
+    },
+    "type=double": {
+      "model": "assorteddecor:block/colorizer"
+    }
+  }
+}

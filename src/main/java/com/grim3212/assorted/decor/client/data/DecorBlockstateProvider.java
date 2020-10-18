@@ -16,6 +16,8 @@ import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.WallHeight;
@@ -26,6 +28,8 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoorHingeSide;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.state.properties.Half;
+import net.minecraft.state.properties.SlabType;
+import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -68,6 +72,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerWall();
 		colorizerTrapDoor();
 		colorizerDoor();
+		colorizerStairs();
+		colorizerSlab();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -421,5 +427,39 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		}, DoorBlock.POWERED);
 
 		itemModels().getBuilder(prefix("item/colorizer_door")).parent(colorizerDoorItemModel.model);
+	}
+
+	private void colorizerStairs() {
+		ConfiguredModel colorizerStairsModel = getModel("colorizer_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/stairs")));
+		ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/inner_stairs")));
+		ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/outer_stairs")));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_STAIRS.get()).forAllStatesExcept(state -> {
+			Direction facing = state.get(StairsBlock.FACING);
+			Half half = state.get(StairsBlock.HALF);
+			StairsShape shape = state.get(StairsBlock.SHAPE);
+			int yRot = (int) facing.rotateY().getHorizontalAngle(); // Stairs model is rotated 90 degrees clockwise for some reason
+			if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
+				yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
+			}
+			if (shape != StairsShape.STRAIGHT && half == Half.TOP) {
+				yRot += 90; // Top stairs are rotated 90 degrees clockwise
+			}
+			yRot %= 360;
+			boolean uvlock = yRot != 0 || half == Half.TOP; // Don't set uvlock for states that have no rotation
+			return ConfiguredModel.builder().modelFile(shape == StairsShape.STRAIGHT ? colorizerStairsModel.model : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? colorizerInnerStairsModel.model : colorizerOuterStairsModel.model).rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock).build();
+		}, StairsBlock.WATERLOGGED);
+
+		itemModels().getBuilder(prefix("item/colorizer_stairs")).parent(colorizerStairsModel.model);
+	}
+
+	private void colorizerSlab() {
+		ConfiguredModel colorizerSlabModel = getModel("colorizer_slab", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/slab")));
+		ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/slab_top")));
+		ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_SLAB.get()).partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(colorizerSlabModel).partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(colorizerSlabTopModel).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
+
+		itemModels().getBuilder(prefix("item/colorizer_slab")).parent(colorizerSlabModel.model);
 	}
 }

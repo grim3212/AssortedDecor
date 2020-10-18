@@ -1,0 +1,6 @@
+{
+  "loader": "assorteddecor:models/colorizer",
+  "parts": [
+    "assorteddecor:block/slab_top"
+  ]
+}
