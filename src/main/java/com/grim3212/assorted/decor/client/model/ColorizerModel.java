@@ -177,7 +177,12 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleTexture(IModelData data) {
+		if (data.getData(ColorizerTileEntity.BLOCK_STATE) == null) {
+			return null;
+		}
+
 		BlockModelShapes blockModel = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes();
+
 		if (data.getData(ColorizerTileEntity.BLOCK_STATE) != Blocks.AIR.getDefaultState()) {
 			return blockModel.getTexture(data.getData(ColorizerTileEntity.BLOCK_STATE));
 		}

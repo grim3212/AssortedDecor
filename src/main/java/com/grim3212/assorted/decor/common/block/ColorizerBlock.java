@@ -30,8 +30,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 
 public class ColorizerBlock extends Block implements IColorizer {
@@ -48,12 +46,6 @@ public class ColorizerBlock extends Block implements IColorizer {
 	@Override
 	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
 		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).getRaytraceShape(reader, pos, context) : super.getRayTraceShape(state, reader, pos, context);
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public float getAmbientOcclusionLightValue(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(worldIn, pos).getAmbientOcclusionLightValue(worldIn, pos) : super.getAmbientOcclusionLightValue(state, worldIn, pos);
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.grim3212.assorted.decor.client.model.ColorizerModelProvider;
 import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
+import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
@@ -78,10 +79,11 @@ public class AssortedDecor {
 
 		if (event.includeServer()) {
 			datagenerator.addProvider(new DecorRecipes(datagenerator));
+			datagenerator.addProvider(new DecorBlockTagProvider(datagenerator, fileHelper));
 		}
 
 		if (event.includeClient()) {
-			ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, event.getExistingFileHelper());
+			ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, fileHelper);
 			datagenerator.addProvider(new DecorBlockstateProvider(datagenerator, fileHelper, loadedModels));
 			datagenerator.addProvider(loadedModels);
 			datagenerator.addProvider(new DecorItemModelProvider(datagenerator, fileHelper));

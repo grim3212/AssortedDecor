@@ -26,6 +26,7 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DecorBlockstateProvider extends BlockStateProvider {
@@ -51,6 +52,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerSide(DecorBlocks.COLORIZER_COUNTER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/counter")));
 		colorizerTable();
 		colorizerStool();
+		colorizerFence();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -91,46 +93,6 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private ItemModelBuilder genericBlock(Block b) {
 		String name = name(b);
 		return itemModels().withExistingParent(name, prefix("block/" + name));
-	}
-
-	private void pot() {
-		BlockModelBuilder potModel = this.models().getBuilder(prefix("block/planter_pot_down")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("side", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot"));
-
-		potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case NORTH:
-			case SOUTH:
-			case WEST:
-				face.texture("#side").uvs(3, 0, 13, 16);
-				break;
-			case DOWN:
-				face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
-				break;
-			case UP:
-			default:
-				face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
-				break;
-			}
-		});
-
-		String[] textures = new String[] { "dirt", "sand", "gravel", "clay", "farmland", "netherrack", "soul_sand" };
-		getVariantBuilder(DecorBlocks.PLANTER_POT.get()).forAllStates(state -> {
-			boolean down = state.get(PlanterPotBlock.DOWN);
-			int top = state.get(PlanterPotBlock.TOP);
-
-			BlockModelBuilder newModel;
-
-			if (down) {
-				newModel = this.models().getBuilder(prefix("block/planter_pot_down_" + top)).parent(this.models().getExistingFile(potModel.getLocation())).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
-			} else {
-				newModel = this.models().getBuilder(prefix("block/planter_pot_" + top)).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/cube_top"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("side", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
-			}
-
-			return ConfiguredModel.builder().modelFile(models().getExistingFile(newModel.getLocation())).build();
-		});
-
-		itemModels().withExistingParent(prefix("item/planter_pot"), prefix("block/planter_pot_0"));
 	}
 
 	private void colorizer(Block b, ImmutableList<ResourceLocation> parts) {
@@ -177,6 +139,51 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		itemModels().getBuilder(name).parent(colorizerModel.model);
 	}
 
+	private int countConnections(boolean... connections) {
+		int numTrue = 0;
+		for (boolean connection : connections) {
+			numTrue += connection ? 1 : 0;
+		}
+		return numTrue;
+	}
+
+	private ConfiguredModel getModel(String builderName, ImmutableList<ResourceLocation> parts) {
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).parts(parts);
+		return new ConfiguredModel(colorizerParent);
+	}
+
+	private ResourceLocation loc(String name) {
+		return new ResourceLocation(AssortedDecor.MODID, name);
+	}
+
+	private void customLoaderState(Block block, ConfiguredModel model) {
+		getVariantBuilder(block).partialState().setModels(model);
+	}
+
+	private void customLoaderStateRotate(Block block, ConfiguredModel model) {
+		getVariantBuilder(block).forAllStatesExcept(state -> {
+			Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+			Half half = state.get(BlockStateProperties.HALF);
+			int yRot = ((int) facing.rotateY().getHorizontalAngle() + (half == Half.TOP ? 270 : 90)) % 360;
+			boolean uvlock = yRot != 0 || half == Half.TOP;
+			return ConfiguredModel.builder().modelFile(model.model).rotationY(yRot).rotationX(half == Half.TOP ? 180 : 0).uvLock(uvlock).build();
+		}, BlockStateProperties.WATERLOGGED);
+	}
+
+	private void customLoaderStateSide(Block block, ConfiguredModel model) {
+		getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(), BlockStateProperties.WATERLOGGED);
+	}
+
+	private void defaultPerspective(ModelBuilder<?> model) {
+		model.transforms().transform(Perspective.GUI).rotation(30, 225, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.GROUND).rotation(0, 0, 0).translation(0, 3, 0).scale(0.25f).end().transform(Perspective.FIXED).rotation(0, 0, 0).translation(0, 0, 0).scale(0.5f).end().transform(Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end().transform(Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).translation(0, 0, 0).scale(0.40f).end()
+				.transform(Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).translation(0, 0, 0).scale(0.40f).end();
+	}
+
+	private void defaultPerspectiveFlipped(ModelBuilder<?> model) {
+		model.transforms().transform(Perspective.GUI).rotation(30, 30, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.GROUND).rotation(0, 0, 0).translation(0, 3, 0).scale(0.25f).end().transform(Perspective.FIXED).rotation(0, 0, 0).translation(0, 0, 0).scale(0.5f).end().transform(Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end().transform(Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).translation(0, 0, 0).scale(0.40f).end()
+				.transform(Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).translation(0, 0, 0).scale(0.40f).end();
+	}
+
 	private void colorizerStool() {
 		String name = name(DecorBlocks.COLORIZER_STOOL.get());
 		ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/stool")));
@@ -184,6 +191,46 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.get(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
 				BlockStateProperties.WATERLOGGED);
 		itemModels().getBuilder(name).parent(colorizerStoolModel.model);
+	}
+
+	private void pot() {
+		BlockModelBuilder potModel = this.models().getBuilder(prefix("block/planter_pot_down")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("side", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot"));
+
+		potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case NORTH:
+			case SOUTH:
+			case WEST:
+				face.texture("#side").uvs(3, 0, 13, 16);
+				break;
+			case DOWN:
+				face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
+				break;
+			case UP:
+			default:
+				face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
+				break;
+			}
+		});
+
+		String[] textures = new String[] { "dirt", "sand", "gravel", "clay", "farmland", "netherrack", "soul_sand" };
+		getVariantBuilder(DecorBlocks.PLANTER_POT.get()).forAllStates(state -> {
+			boolean down = state.get(PlanterPotBlock.DOWN);
+			int top = state.get(PlanterPotBlock.TOP);
+
+			BlockModelBuilder newModel;
+
+			if (down) {
+				newModel = this.models().getBuilder(prefix("block/planter_pot_down_" + top)).parent(this.models().getExistingFile(potModel.getLocation())).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
+			} else {
+				newModel = this.models().getBuilder(prefix("block/planter_pot_" + top)).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/cube_top"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("side", new ResourceLocation(AssortedDecor.MODID, "block/planter_pot")).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
+			}
+
+			return ConfiguredModel.builder().modelFile(models().getExistingFile(newModel.getLocation())).build();
+		});
+
+		itemModels().withExistingParent(prefix("item/planter_pot"), prefix("block/planter_pot_0"));
 	}
 
 	private void colorizerTable() {
@@ -266,48 +313,140 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		itemModels().getBuilder(name).parent(colorizerTableModel.model);
 	}
 
-	private int countConnections(boolean... connections) {
-		int numTrue = 0;
-		for (boolean connection : connections) {
-			numTrue += connection ? 1 : 0;
-		}
-		return numTrue;
-	}
+	private void colorizerFence() {
+		models().getBuilder(prefix("block/fence_post")).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(6, 0, 6).to(10, 16, 10).allFaces((dir, face) -> {
+			switch (dir) {
+			case UP:
+			case DOWN:
+				face.texture("#stored").uvs(6, 6, 10, 10).tintindex(0).cullface(dir);
+				break;
+			case EAST:
+			case WEST:
+			case NORTH:
+			case SOUTH:
+			default:
+				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
+				break;
+			}
+		}).end();
 
-	private ConfiguredModel getModel(String builderName, ImmutableList<ResourceLocation> parts) {
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).parts(parts);
-		return new ConfiguredModel(colorizerParent);
-	}
+		models().getBuilder(prefix("block/fence_side")).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(7, 12, 0).to(9, 15, 9).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(0, 1, 9, 4).tintindex(0);
+				break;
+			case NORTH:
+				face.texture("#stored").uvs(7, 1, 9, 4).tintindex(0).cullface(Direction.NORTH);
+				break;
+			case UP:
+			case DOWN:
+				face.texture("#stored").uvs(7, 0, 9, 9).tintindex(0);
+				break;
+			default:
+				face.texture("#stored").tintindex(0);
+				break;
+			}
+		}).end().element().from(7, 6, 0).to(9, 9, 9).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(0, 7, 9, 10).tintindex(0);
+				break;
+			case NORTH:
+				face.texture("#stored").uvs(7, 7, 9, 10).tintindex(0).cullface(Direction.NORTH);
+				break;
+			case UP:
+			case DOWN:
+				face.texture("#stored").uvs(7, 0, 9, 9).tintindex(0);
+				break;
+			default:
+				face.texture("#stored").tintindex(0);
+				break;
+			}
+		}).end();
 
-	private ResourceLocation loc(String name) {
-		return new ResourceLocation(AssortedDecor.MODID, name);
-	}
+		models().getBuilder(prefix("block/fence_inventory")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(6, 0, 0).to(10, 16, 4).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(0, 0, 4, 16).tintindex(0);
+				break;
+			case NORTH:
+			case SOUTH:
+				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
+				break;
+			case UP:
+				face.texture("#stored").uvs(6, 0, 10, 4).tintindex(0);
+				break;
+			case DOWN:
+				face.texture("#stored").uvs(6, 0, 10, 4).tintindex(0).cullface(dir);
+				break;
+			default:
+				break;
+			}
+		}).end().element().from(6, 0, 12).to(10, 16, 16).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(12, 0, 16, 16).tintindex(0);
+				break;
+			case NORTH:
+			case SOUTH:
+				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
+				break;
+			case UP:
+				face.texture("#stored").uvs(6, 12, 10, 16).tintindex(0);
+				break;
+			case DOWN:
+				face.texture("#stored").uvs(6, 12, 10, 16).tintindex(0).cullface(dir);
+				break;
+			default:
+				break;
+			}
+		}).end().element().from(7, 13, -2).to(9, 15, 18).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(0, 1, 16, 3).tintindex(0);
+				break;
+			case NORTH:
+			case SOUTH:
+				face.texture("#stored").uvs(7, 1, 9, 3).tintindex(0);
+				break;
+			case UP:
+			case DOWN:
+				face.texture("#stored").uvs(7, 0, 9, 16).tintindex(0);
+				break;
+			default:
+				break;
+			}
+		}).end().element().from(7, 5, -2).to(9, 7, 18).allFaces((dir, face) -> {
+			switch (dir) {
+			case EAST:
+			case WEST:
+				face.texture("#stored").uvs(0, 9, 16, 11).tintindex(0);
+				break;
+			case NORTH:
+			case SOUTH:
+				face.texture("#stored").uvs(7, 9, 9, 11).tintindex(0);
+				break;
+			case UP:
+			case DOWN:
+				face.texture("#stored").uvs(7, 0, 9, 16).tintindex(0);
+				break;
+			default:
+				break;
+			}
+		}).end().ao(false).transforms().transform(Perspective.GUI).rotation(30, 135, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.FIXED).rotation(0, 90, 0).translation(0, 0, 0).scale(0.5f).end().end();
 
-	private void customLoaderState(Block block, ConfiguredModel model) {
-		getVariantBuilder(block).partialState().setModels(model);
-	}
+		ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_post")));
+		ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_side")));
+		ConfiguredModel colorizerFenceInventoryModel = getModel("colorizer_fence_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_inventory")));
 
-	private void customLoaderStateRotate(Block block, ConfiguredModel model) {
-		getVariantBuilder(block).forAllStatesExcept(state -> {
-			Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
-			Half half = state.get(BlockStateProperties.HALF);
-			int yRot = ((int) facing.rotateY().getHorizontalAngle() + (half == Half.TOP ? 270 : 90)) % 360;
-			boolean uvlock = yRot != 0 || half == Half.TOP;
-			return ConfiguredModel.builder().modelFile(model.model).rotationY(yRot).rotationX(half == Half.TOP ? 180 : 0).uvLock(uvlock).build();
-		}, BlockStateProperties.WATERLOGGED);
-	}
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_FENCE.get()).part().modelFile(colorizerFencePostModel.model).addModel().end();
+		fourWayMultipart(builder, colorizerFenceSideModel.model);
 
-	private void customLoaderStateSide(Block block, ConfiguredModel model) {
-		getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(), BlockStateProperties.WATERLOGGED);
-	}
-
-	private void defaultPerspective(ModelBuilder<?> model) {
-		model.transforms().transform(Perspective.GUI).rotation(30, 225, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.GROUND).rotation(0, 0, 0).translation(0, 3, 0).scale(0.25f).end().transform(Perspective.FIXED).rotation(0, 0, 0).translation(0, 0, 0).scale(0.5f).end().transform(Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end().transform(Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).translation(0, 0, 0).scale(0.40f).end()
-				.transform(Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).translation(0, 0, 0).scale(0.40f).end();
-	}
-
-	private void defaultPerspectiveFlipped(ModelBuilder<?> model) {
-		model.transforms().transform(Perspective.GUI).rotation(30, 30, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.GROUND).rotation(0, 0, 0).translation(0, 3, 0).scale(0.25f).end().transform(Perspective.FIXED).rotation(0, 0, 0).translation(0, 0, 0).scale(0.5f).end().transform(Perspective.THIRDPERSON_RIGHT).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end().transform(Perspective.FIRSTPERSON_RIGHT).rotation(0, 45, 0).translation(0, 0, 0).scale(0.40f).end()
-				.transform(Perspective.FIRSTPERSON_LEFT).rotation(0, 225, 0).translation(0, 0, 0).scale(0.40f).end();
+		itemModels().getBuilder(prefix("item/colorizer_fence")).parent(colorizerFenceInventoryModel.model);
 	}
 }
