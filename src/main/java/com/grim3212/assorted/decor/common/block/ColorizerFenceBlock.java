@@ -100,7 +100,7 @@ public class ColorizerFenceBlock extends ColorizerFourWayBlock {
 	public boolean canConnect(BlockState state, boolean isSideSolid, Direction direction) {
 		Block block = state.getBlock();
 		boolean flag = this.isAllowedFence(block);
-		boolean flag1 = block instanceof FenceGateBlock && FenceGateBlock.isParallel(state, direction);
+		boolean flag1 = (block instanceof FenceGateBlock || block instanceof ColorizerFenceGateBlock) && FenceGateBlock.isParallel(state, direction);
 		return !cannotAttach(block) && isSideSolid || flag || flag1;
 	}
 }

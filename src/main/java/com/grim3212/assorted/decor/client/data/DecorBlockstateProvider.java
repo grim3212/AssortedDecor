@@ -12,6 +12,7 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.FenceGateBlock;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -25,6 +26,7 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
+import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -53,6 +55,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerTable();
 		colorizerStool();
 		colorizerFence();
+		colorizerFenceGate();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -313,133 +316,27 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		itemModels().getBuilder(name).parent(colorizerTableModel.model);
 	}
 
+	private void colorizerFenceGate() {
+		ConfiguredModel colorizerFenceGateModel = getModel("colorizer_fence_gate", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate")));
+		ConfiguredModel colorizerFenceGateOpenModel = getModel("colorizer_fence_gate_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_open")));
+		ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall")));
+		ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall_open")));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_FENCE_GATE.get()).forAllStatesExcept(state -> {
+			ModelFile model = colorizerFenceGateModel.model;
+			if (state.get(FenceGateBlock.IN_WALL)) {
+				model = colorizerFenceGateWallModel.model;
+			}
+			if (state.get(FenceGateBlock.OPEN)) {
+				model = model == colorizerFenceGateWallModel.model ? colorizerFenceGateWallOpenModel.model : colorizerFenceGateOpenModel.model;
+			}
+			return ConfiguredModel.builder().modelFile(model).rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle()).uvLock(true).build();
+		}, FenceGateBlock.POWERED);
+
+		itemModels().getBuilder(prefix("item/colorizer_fence_gate")).parent(colorizerFenceGateModel.model);
+	}
+
 	private void colorizerFence() {
-		models().getBuilder(prefix("block/fence_post")).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(6, 0, 6).to(10, 16, 10).allFaces((dir, face) -> {
-			switch (dir) {
-			case UP:
-			case DOWN:
-				face.texture("#stored").uvs(6, 6, 10, 10).tintindex(0).cullface(dir);
-				break;
-			case EAST:
-			case WEST:
-			case NORTH:
-			case SOUTH:
-			default:
-				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
-				break;
-			}
-		}).end();
-
-		models().getBuilder(prefix("block/fence_side")).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(7, 12, 0).to(9, 15, 9).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(0, 1, 9, 4).tintindex(0);
-				break;
-			case NORTH:
-				face.texture("#stored").uvs(7, 1, 9, 4).tintindex(0).cullface(Direction.NORTH);
-				break;
-			case UP:
-			case DOWN:
-				face.texture("#stored").uvs(7, 0, 9, 9).tintindex(0);
-				break;
-			default:
-				face.texture("#stored").tintindex(0);
-				break;
-			}
-		}).end().element().from(7, 6, 0).to(9, 9, 9).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(0, 7, 9, 10).tintindex(0);
-				break;
-			case NORTH:
-				face.texture("#stored").uvs(7, 7, 9, 10).tintindex(0).cullface(Direction.NORTH);
-				break;
-			case UP:
-			case DOWN:
-				face.texture("#stored").uvs(7, 0, 9, 9).tintindex(0);
-				break;
-			default:
-				face.texture("#stored").tintindex(0);
-				break;
-			}
-		}).end();
-
-		models().getBuilder(prefix("block/fence_inventory")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).element().from(6, 0, 0).to(10, 16, 4).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(0, 0, 4, 16).tintindex(0);
-				break;
-			case NORTH:
-			case SOUTH:
-				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
-				break;
-			case UP:
-				face.texture("#stored").uvs(6, 0, 10, 4).tintindex(0);
-				break;
-			case DOWN:
-				face.texture("#stored").uvs(6, 0, 10, 4).tintindex(0).cullface(dir);
-				break;
-			default:
-				break;
-			}
-		}).end().element().from(6, 0, 12).to(10, 16, 16).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(12, 0, 16, 16).tintindex(0);
-				break;
-			case NORTH:
-			case SOUTH:
-				face.texture("#stored").uvs(6, 0, 10, 16).tintindex(0);
-				break;
-			case UP:
-				face.texture("#stored").uvs(6, 12, 10, 16).tintindex(0);
-				break;
-			case DOWN:
-				face.texture("#stored").uvs(6, 12, 10, 16).tintindex(0).cullface(dir);
-				break;
-			default:
-				break;
-			}
-		}).end().element().from(7, 13, -2).to(9, 15, 18).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(0, 1, 16, 3).tintindex(0);
-				break;
-			case NORTH:
-			case SOUTH:
-				face.texture("#stored").uvs(7, 1, 9, 3).tintindex(0);
-				break;
-			case UP:
-			case DOWN:
-				face.texture("#stored").uvs(7, 0, 9, 16).tintindex(0);
-				break;
-			default:
-				break;
-			}
-		}).end().element().from(7, 5, -2).to(9, 7, 18).allFaces((dir, face) -> {
-			switch (dir) {
-			case EAST:
-			case WEST:
-				face.texture("#stored").uvs(0, 9, 16, 11).tintindex(0);
-				break;
-			case NORTH:
-			case SOUTH:
-				face.texture("#stored").uvs(7, 9, 9, 11).tintindex(0);
-				break;
-			case UP:
-			case DOWN:
-				face.texture("#stored").uvs(7, 0, 9, 16).tintindex(0);
-				break;
-			default:
-				break;
-			}
-		}).end().ao(false).transforms().transform(Perspective.GUI).rotation(30, 135, 0).translation(0, 0, 0).scale(0.625f).end().transform(Perspective.FIXED).rotation(0, 90, 0).translation(0, 0, 0).scale(0.5f).end().end();
-
 		ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_post")));
 		ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_side")));
 		ConfiguredModel colorizerFenceInventoryModel = getModel("colorizer_fence_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_inventory")));
