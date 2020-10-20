@@ -8,6 +8,8 @@ import com.grim3212.assorted.decor.client.model.ColorizerModel.ColorizerLoader;
 import com.grim3212.assorted.decor.client.model.ColorizerModelBuilder;
 import com.grim3212.assorted.decor.client.model.ColorizerModelProvider;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel.ColorizerOBJLoader;
+import com.grim3212.assorted.decor.common.block.ColorizerLampPost;
+import com.grim3212.assorted.decor.common.block.ColorizerLampPost.LampPart;
 import com.grim3212.assorted.decor.common.block.ColorizerStoolBlock;
 import com.grim3212.assorted.decor.common.block.ColorizerTableBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
@@ -74,6 +76,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerDoor();
 		colorizerStairs();
 		colorizerSlab();
+		colorizerLampPost();
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
@@ -461,5 +464,16 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		getVariantBuilder(DecorBlocks.COLORIZER_SLAB.get()).partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(colorizerSlabModel).partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(colorizerSlabTopModel).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
 
 		itemModels().getBuilder(prefix("item/colorizer_slab")).parent(colorizerSlabModel.model);
+	}
+
+	private void colorizerLampPost() {
+		ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_bottom")));
+		ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_middle")));
+		ConfiguredModel colorizerLampPostTopModel = getModel("colorizer_lamp_post_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top")));
+		ConfiguredModel colorizerLampPostInventoryModel = getModel("colorizer_lamp_post_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory")));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(colorizerLampPostTopModel);
+
+		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel.model);
 	}
 }

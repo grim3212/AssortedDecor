@@ -34,6 +34,10 @@ import net.minecraftforge.common.util.FakePlayer;
 
 public class ColorizerBlock extends Block implements IColorizer {
 
+	public ColorizerBlock(Properties props) {
+		super(props);
+	}
+
 	public ColorizerBlock() {
 		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 12.0f).sound(SoundType.STONE).variableOpacity().notSolid());
 	}
