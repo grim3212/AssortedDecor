@@ -12,7 +12,9 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
@@ -290,20 +292,15 @@ public class ColorizerModel implements IDynamicBakedModel {
 			if (!modelContents.has("parts"))
 				throw new UnsupportedOperationException("Model location not found for a ColorizerModel");
 
-			String[] models = modelContents.get("parts").getAsString().replaceAll("\\[|\\]|\"", "").split(",");
+			JsonArray models = modelContents.get("parts").getAsJsonArray();
 
-			for (String model : models) {
-				AssortedDecor.LOGGER.info("Adding model : " + model);
-				modelLocations.add(new ResourceLocation(model));
+			for (JsonElement model : models) {
+				String modelLoc = model.getAsString();
+				AssortedDecor.LOGGER.info("Adding model : " + modelLoc);
+				modelLocations.add(new ResourceLocation(modelLoc));
 			}
 
-			ImmutableList<ResourceLocation> immutableModels = modelLocations.build();
-			for (int i = 1; i < immutableModels.size(); i++) {
-				// Load the extra models and this should load the sub-model textures
-				ModelLoader.instance().getModelOrLogError(immutableModels.get(i), "Model couldn't be found " + immutableModels.get(i));
-			}
-
-			return new RawColorizerModel(base, immutableModels);
+			return new RawColorizerModel(base, modelLocations.build());
 		}
 	}
 
