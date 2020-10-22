@@ -78,6 +78,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerSlab();
 		colorizerLampPost();
 
+		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush"))).extraTextures(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush_handle")));
+		itemModels().getBuilder(prefix("item/colorizer_brush")).parent(colorizerBrushModel);
+
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_intersection.obj")));

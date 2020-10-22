@@ -1,7 +1,11 @@
 {
 	"itemGroup.assorteddecor": "Assorted Decor",
 	
+	"tooltip.colorizer_brush.empty": "Empty",
+	"tooltip.colorizer_brush.stored": "Stored: %s",
+	
 	"item.assorteddecor.wallpaper": "Wallpaper",
 	"item.assorteddecor.wood_frame": "Wood Frame",
 	"item.assorteddecor.iron_frame": "Iron Frame"
+	
 }

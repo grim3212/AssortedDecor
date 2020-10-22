@@ -12,6 +12,7 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
 	private ResourceLocation loader;
 	private ImmutableList<ResourceLocation> parts;
+	private ImmutableList<ResourceLocation> extraTextures;
 
 	protected ColorizerModelBuilder(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper) {
 		super(outputLocation, existingFileHelper);
@@ -24,6 +25,11 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
 	public ColorizerModelBuilder parts(ImmutableList<ResourceLocation> parts) {
 		this.parts = parts;
+		return this;
+	}
+	
+	public ColorizerModelBuilder extraTextures(ImmutableList<ResourceLocation> extraTextures) {
+		this.extraTextures = extraTextures;
 		return this;
 	}
 
@@ -41,6 +47,14 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 				arr.add(loc.toString());
 
 			ret.add("parts", arr);
+		}
+		
+		if (extraTextures != null) {
+			JsonArray arr = new JsonArray();
+			for (ResourceLocation loc : extraTextures)
+				arr.add(loc.toString());
+
+			ret.add("extraTextures", arr);
 		}
 		return ret;
 	}

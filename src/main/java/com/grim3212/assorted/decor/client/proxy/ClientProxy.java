@@ -7,6 +7,7 @@ import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
+import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
@@ -20,8 +21,8 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientProxy implements IProxy {
 
@@ -77,9 +77,9 @@ public class ClientProxy implements IProxy {
 				@Override
 				public int getColor(ItemStack stack, int tint) {
 					if (stack != null && stack.hasTag()) {
-						if (stack.getTag().contains("registryName")) {
-							Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(NBTHelper.getString(stack, "registryName")));
-							ItemStack colorStack = new ItemStack(block);
+						if (stack.getTag().contains("stored_state")) {
+							BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+							ItemStack colorStack = new ItemStack(stored.getBlock());
 							if (colorStack.getItem() != null) {
 								return Minecraft.getInstance().getItemColors().getColor(colorStack, tint);
 							}
@@ -88,6 +88,22 @@ public class ClientProxy implements IProxy {
 					return 16777215;
 				}
 			}, DecorBlocks.colorizerBlocks());
+
+			items.register(new IItemColor() {
+				@Override
+				public int getColor(ItemStack stack, int tint) {
+					if (stack != null && stack.hasTag()) {
+						if (stack.getTag().contains("stored_state")) {
+							BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+							ItemStack colorStack = new ItemStack(stored.getBlock());
+							if (colorStack.getItem() != null) {
+								return Minecraft.getInstance().getItemColors().getColor(colorStack, tint);
+							}
+						}
+					}
+					return 16777215;
+				}
+			}, DecorItems.COLORIZER_BRUSH.get());
 		});
 	}
 }

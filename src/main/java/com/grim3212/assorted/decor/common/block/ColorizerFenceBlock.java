@@ -2,7 +2,6 @@ package com.grim3212.assorted.decor.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
@@ -61,13 +60,6 @@ public class ColorizerFenceBlock extends ColorizerFourWayBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (!heldItem.isEmpty()) {
-			Block block = Block.getBlockFromItem(heldItem.getItem());
-			if (block != null && block != Blocks.AIR) {
-				return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
-			}
-		}
 
 		if (worldIn.isRemote) {
 			return heldItem.getItem() == Items.LEAD ? ActionResultType.SUCCESS : ActionResultType.PASS;

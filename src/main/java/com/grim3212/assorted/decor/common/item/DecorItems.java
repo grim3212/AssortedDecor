@@ -18,6 +18,8 @@ public class DecorItems {
 	public static final RegistryObject<FrameItem> WOOD_FRAME = register("wood_frame", () -> new FrameItem(FrameMaterial.WOOD, new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 	public static final RegistryObject<FrameItem> IRON_FRAME = register("iron_frame", () -> new FrameItem(FrameMaterial.IRON, new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 
+	public static final RegistryObject<ColorizerBrush> COLORIZER_BRUSH = register("colorizer_brush", () -> new ColorizerBrush(new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
+
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);
 	}

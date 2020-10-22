@@ -161,29 +161,6 @@ public class ColorizerDoorBlock extends ColorizerBlock {
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (!heldItem.isEmpty()) {
-			// if (heldItem.getItem() == DecorItems.brush) {
-			// if (this.tryUseBrush(worldIn, player, handIn, pos)) {
-			// return true;
-			// }
-			// }
-
-			Block block = Block.getBlockFromItem(heldItem.getItem());
-			if (block != Blocks.AIR) {
-				if (super.onBlockActivated(state, worldIn, pos, player, handIn, hit).isSuccess()) {
-					if (state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
-						if (worldIn.getBlockState(pos.up()).getBlock() == this)
-							return super.onBlockActivated(state, worldIn, pos.up(), player, handIn, hit);
-					} else {
-						if (worldIn.getBlockState(pos.down()).getBlock() == this)
-							return super.onBlockActivated(state, worldIn, pos.down(), player, handIn, hit);
-					}
-				}
-			}
-		}
-
 		state = state.func_235896_a_(DoorBlock.OPEN);
 		worldIn.setBlockState(pos, state, 10);
 		worldIn.playEvent(player, state.get(DoorBlock.OPEN) ? this.getOpenSound() : this.getCloseSound(), pos, 0);
@@ -238,5 +215,33 @@ public class ColorizerDoorBlock extends ColorizerBlock {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(DoorBlock.HALF, DoorBlock.FACING, DoorBlock.OPEN, DoorBlock.HINGE, DoorBlock.POWERED);
+	}
+
+	@Override
+	public boolean clearColorizer(World worldIn, BlockPos pos, PlayerEntity player, Hand hand) {
+		if (super.clearColorizer(worldIn, pos, player, hand)) {
+			BlockState state = worldIn.getBlockState(pos);
+
+			if (state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
+				return super.clearColorizer(worldIn, pos.up(), player, hand);
+			}
+			return super.clearColorizer(worldIn, pos.down(), player, hand);
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean setColorizer(World worldIn, BlockPos pos, BlockState toSetState, PlayerEntity player, Hand hand, boolean consumeItem) {
+		if (super.setColorizer(worldIn, pos, toSetState, player, hand, consumeItem)) {
+			BlockState state = worldIn.getBlockState(pos);
+
+			if (state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
+				return super.setColorizer(worldIn, pos.up(), toSetState, player, hand, consumeItem);
+			}
+			return super.setColorizer(worldIn, pos.down(), toSetState, player, hand, consumeItem);
+		}
+
+		return false;
 	}
 }

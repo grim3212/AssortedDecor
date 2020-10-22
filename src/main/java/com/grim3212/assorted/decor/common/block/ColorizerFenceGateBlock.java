@@ -2,11 +2,9 @@ package com.grim3212.assorted.decor.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tags.BlockTags;
@@ -108,23 +106,6 @@ public class ColorizerFenceGateBlock extends ColorizerHorizontalBlock {
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (!heldItem.isEmpty()) {
-			// if (heldItem.getItem() == DecorItems.brush) {
-			// if (this.tryUseBrush(worldIn, player, handIn, pos)) {
-			// return true;
-			// }
-			// }
-
-			Block block = Block.getBlockFromItem(heldItem.getItem());
-			if (block != Blocks.AIR) {
-				if (super.onBlockActivated(state, worldIn, pos, player, handIn, hit).isSuccess()) {
-					return ActionResultType.SUCCESS;
-				}
-			}
-		}
-
 		if (state.get(FenceGateBlock.OPEN)) {
 			state = state.with(FenceGateBlock.OPEN, false);
 			worldIn.setBlockState(pos, state, 10);

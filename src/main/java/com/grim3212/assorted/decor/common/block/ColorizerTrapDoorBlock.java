@@ -13,7 +13,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.Half;
@@ -83,23 +82,6 @@ public class ColorizerTrapDoorBlock extends ColorizerRotateBlock {
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (!heldItem.isEmpty()) {
-			// if (heldItem.getItem() == DecorItems.brush) {
-			// if (this.tryUseBrush(worldIn, player, handIn, pos)) {
-			// return true;
-			// }
-			// }
-
-			Block block = Block.getBlockFromItem(heldItem.getItem());
-			if (block != Blocks.AIR) {
-				if (super.onBlockActivated(state, worldIn, pos, player, handIn, hit).isSuccess()) {
-					return ActionResultType.SUCCESS;
-				}
-			}
-		}
-
 		state = state.func_235896_a_(TrapDoorBlock.OPEN);
 		worldIn.setBlockState(pos, state, 2);
 		if (state.get(WATERLOGGED)) {

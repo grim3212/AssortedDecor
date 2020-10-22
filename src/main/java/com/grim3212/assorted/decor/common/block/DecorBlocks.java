@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.item.DecorItems;
-import com.grim3212.assorted.decor.common.util.DecorUtil.SlopeType;
+import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;

@@ -2,7 +2,6 @@ package com.grim3212.assorted.decor.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,12 +13,10 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -82,50 +79,6 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (!heldItem.isEmpty()) {
-			// if (heldItem.getItem() == DecorItems.brush) {
-			// if (this.tryUseBrush(worldIn, player, handIn, pos)) {
-			// return true;
-			// }
-			// }
-
-			Block block = Block.getBlockFromItem(heldItem.getItem());
-			if (block != Blocks.AIR) {
-				if (super.onBlockActivated(state, worldIn, pos, player, handIn, hit).isSuccess()) {
-					if (state.get(PART) == LampPart.BOTTOM) {
-						if (worldIn.getBlockState(pos.up()).getBlock() == this && worldIn.getBlockState(pos.up(2)).getBlock() == this) {
-							// Middle
-							super.onBlockActivated(state, worldIn, pos.up(), player, handIn, hit);
-							// Top
-							return super.onBlockActivated(state, worldIn, pos.up(2), player, handIn, hit);
-						}
-
-					} else if (state.get(PART) == LampPart.MIDDLE) {
-						if (worldIn.getBlockState(pos.up()).getBlock() == this && worldIn.getBlockState(pos.down()).getBlock() == this) {
-							// Bottom
-							super.onBlockActivated(state, worldIn, pos.down(), player, handIn, hit);
-							// Top
-							return super.onBlockActivated(state, worldIn, pos.up(), player, handIn, hit);
-						}
-					} else if (state.get(PART) == LampPart.TOP) {
-						if (worldIn.getBlockState(pos.down()).getBlock() == this && worldIn.getBlockState(pos.down(2)).getBlock() == this) {
-							// Middle
-							super.onBlockActivated(state, worldIn, pos.down(), player, handIn, hit);
-							// Bottom
-							return super.onBlockActivated(state, worldIn, pos.down(2), player, handIn, hit);
-						}
-					}
-				}
-			}
-		}
-
-		return super.onBlockActivated(state, worldIn, pos, player, handIn, hit);
-	}
-
-	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		worldIn.setBlockState(pos.up(), state.with(PART, LampPart.MIDDLE), 3);
 		worldIn.setBlockState(pos.up(2), state.with(PART, LampPart.TOP), 3);
@@ -161,6 +114,40 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 			worldIn.removeBlock(pos.down(), false);
 			worldIn.removeBlock(pos.down(2), false);
 		}
+	}
+
+	@Override
+	public boolean clearColorizer(World worldIn, BlockPos pos, PlayerEntity player, Hand hand) {
+		if (super.clearColorizer(worldIn, pos, player, hand)) {
+			BlockState state = worldIn.getBlockState(pos);
+
+			if (state.get(PART) == LampPart.BOTTOM) {
+				return super.clearColorizer(worldIn, pos.up(), player, hand) && super.clearColorizer(worldIn, pos.up(2), player, hand);
+			} else if (state.get(PART) == LampPart.MIDDLE) {
+				return super.clearColorizer(worldIn, pos.down(), player, hand) && super.clearColorizer(worldIn, pos.up(), player, hand);
+			} else if (state.get(PART) == LampPart.TOP) {
+				return super.clearColorizer(worldIn, pos.down(), player, hand) && super.clearColorizer(worldIn, pos.down(2), player, hand);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean setColorizer(World worldIn, BlockPos pos, BlockState toSetState, PlayerEntity player, Hand hand, boolean consumeItem) {
+		if (super.setColorizer(worldIn, pos, toSetState, player, hand, consumeItem)) {
+			BlockState state = worldIn.getBlockState(pos);
+
+			if (state.get(PART) == LampPart.BOTTOM) {
+				return super.setColorizer(worldIn, pos.up(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.up(2), toSetState, player, hand, consumeItem);
+			} else if (state.get(PART) == LampPart.MIDDLE) {
+				return super.setColorizer(worldIn, pos.down(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.up(), toSetState, player, hand, consumeItem);
+			} else if (state.get(PART) == LampPart.TOP) {
+				return super.setColorizer(worldIn, pos.down(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.down(2), toSetState, player, hand, consumeItem);
+			}
+		}
+
+		return false;
 	}
 
 	public static enum LampPart implements IStringSerializable {

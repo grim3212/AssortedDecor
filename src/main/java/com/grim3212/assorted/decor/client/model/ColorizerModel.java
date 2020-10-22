@@ -252,10 +252,16 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		private final ResourceLocation texture;
 		private final ImmutableList<ResourceLocation> parts;
+		private final ImmutableList<ResourceLocation> extraTextures;
 
 		RawColorizerModel(ResourceLocation texture, ImmutableList<ResourceLocation> parts) {
+			this(texture, parts, ImmutableList.of());
+		}
+
+		RawColorizerModel(ResourceLocation texture, ImmutableList<ResourceLocation> parts, ImmutableList<ResourceLocation> extraTextures) {
 			this.texture = texture;
 			this.parts = parts;
+			this.extraTextures = extraTextures;
 		}
 
 		public RawColorizerModel withTexture(ResourceLocation newTexture) {
@@ -269,7 +275,14 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		@Override
 		public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-			return ImmutableList.of(ModelLoaderRegistry.blockMaterial(texture));
+			ImmutableList.Builder<RenderMaterial> builder = ImmutableList.builder();
+			builder.add(ModelLoaderRegistry.blockMaterial(texture));
+
+			for (ResourceLocation tex : extraTextures) {
+				builder.add(ModelLoaderRegistry.blockMaterial(tex));
+			}
+
+			return builder.build();
 		}
 	}
 
@@ -283,6 +296,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 		@Override
 		public RawColorizerModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
 			ImmutableList.Builder<ResourceLocation> modelLocations = ImmutableList.builder();
+			ImmutableList.Builder<ResourceLocation> extraTextures = ImmutableList.builder();
 
 			ResourceLocation base = new ResourceLocation(AssortedDecor.MODID, "block/colorizer");
 
@@ -300,7 +314,17 @@ public class ColorizerModel implements IDynamicBakedModel {
 				modelLocations.add(new ResourceLocation(modelLoc));
 			}
 
-			return new RawColorizerModel(base, modelLocations.build());
+			if (modelContents.has("extraTextures")) {
+				JsonArray textures = modelContents.get("extraTextures").getAsJsonArray();
+
+				for (JsonElement tex : textures) {
+					String texLoc = tex.getAsString();
+					AssortedDecor.LOGGER.info("Adding extra texture : " + texLoc);
+					extraTextures.add(new ResourceLocation(texLoc));
+				}
+			}
+
+			return new RawColorizerModel(base, modelLocations.build(), extraTextures.build());
 		}
 	}
 
