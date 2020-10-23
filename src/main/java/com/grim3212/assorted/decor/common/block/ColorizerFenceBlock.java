@@ -1,98 +1,95 @@
 package com.grim3212.assorted.decor.common.block;
 
+import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.handler.DecorConfig;
+import com.grim3212.assorted.decor.common.util.NBTHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.LeadItem;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
-public class ColorizerFenceBlock extends ColorizerFourWayBlock {
-
-	private final VoxelShape[] renderShapes;
+public class ColorizerFenceBlock extends FenceBlock implements IColorizer {
 
 	public ColorizerFenceBlock() {
-		super(2.0F, 2.0F, 16.0F, 16.0F, 24.0F);
-		this.setDefaultState(this.stateContainer.getBaseState().with(NORTH, false).with(EAST, false).with(SOUTH, false).with(WEST, false).with(WATERLOGGED, false));
-		this.renderShapes = this.makeShapes(2.0F, 1.0F, 16.0F, 6.0F, 15.0F);
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 12.0f).sound(SoundType.STONE).variableOpacity().notSolid());
 	}
 
+	/// ===============================================
+	/// ======== DEFAULT COLORIZER STUFF BELOW ========
+	/// ===============================================
 	@Override
-	public VoxelShape getRenderShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return this.renderShapes[this.getIndex(state)];
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).propagatesSkylightDown(reader, pos) : super.propagatesSkylightDown(state, reader, pos);
 	}
 
 	@Override
 	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
-		return this.getShape(state, reader, pos, context);
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).getRaytraceShape(reader, pos, context) : super.getRayTraceShape(state, reader, pos, context);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-		}
-
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? stateIn.with(FACING_TO_PROPERTY_MAP.get(facing), this.canConnect(facingState, facingState.isSolidSide(worldIn, facingPos, facing.getOpposite()), facing.getOpposite())) : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return this.getStoredState(world, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(world, pos).getLightValue(world, pos) : super.getLightValue(state, world, pos);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(NORTH, EAST, WEST, SOUTH, WATERLOGGED);
-	}
-
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(handIn);
-
-		if (worldIn.isRemote) {
-			return heldItem.getItem() == Items.LEAD ? ActionResultType.SUCCESS : ActionResultType.PASS;
-		} else {
-			return LeadItem.bindPlayerMobs(player, worldIn, pos);
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBlockHarvested(worldIn, pos, state, player);
+		if (DecorConfig.COMMON.consumeBlock.get()) {
+			if (!player.abilities.isCreativeMode) {
+				if (this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState()) {
+					BlockState blockState = this.getStoredState(worldIn, pos);
+					spawnAsEntity(worldIn, pos, new ItemStack(blockState.getBlock(), 1));
+				}
+			}
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		IBlockReader iblockreader = context.getWorld();
-		BlockPos blockpos = context.getPos();
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		BlockPos blockpos1 = blockpos.north();
-		BlockPos blockpos2 = blockpos.east();
-		BlockPos blockpos3 = blockpos.south();
-		BlockPos blockpos4 = blockpos.west();
-		BlockState blockstate = iblockreader.getBlockState(blockpos1);
-		BlockState blockstate1 = iblockreader.getBlockState(blockpos2);
-		BlockState blockstate2 = iblockreader.getBlockState(blockpos3);
-		BlockState blockstate3 = iblockreader.getBlockState(blockpos4);
-		return super.getStateForPlacement(context).with(NORTH, this.canConnect(blockstate, blockstate.isSolidSide(iblockreader, blockpos1, Direction.SOUTH), Direction.SOUTH)).with(EAST, this.canConnect(blockstate1, blockstate1.isSolidSide(iblockreader, blockpos2, Direction.WEST), Direction.WEST)).with(SOUTH, this.canConnect(blockstate2, blockstate2.isSolidSide(iblockreader, blockpos3, Direction.NORTH), Direction.NORTH))
-				.with(WEST, this.canConnect(blockstate3, blockstate3.isSolidSide(iblockreader, blockpos4, Direction.EAST), Direction.EAST)).with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		ItemStack itemstack = new ItemStack(this);
+		NBTHelper.putTag(itemstack, "stored_state", NBTUtil.writeBlockState(Blocks.AIR.getDefaultState()));
+		return itemstack;
 	}
 
-	private boolean isAllowedFence(Block block) {
-		return block == this || block.isIn(BlockTags.FENCES);
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
-	public boolean canConnect(BlockState state, boolean isSideSolid, Direction direction) {
-		Block block = state.getBlock();
-		boolean flag = this.isAllowedFence(block);
-		boolean flag1 = (block instanceof FenceGateBlock || block instanceof ColorizerFenceGateBlock) && FenceGateBlock.isParallel(state, direction);
-		return !cannotAttach(block) && isSideSolid || flag || flag1;
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new ColorizerTileEntity();
+	}
+
+	@Override
+	public boolean addLandingEffects(BlockState state, ServerWorld worldObj, BlockPos blockPosition, BlockState iblockstate, LivingEntity entity, int numberOfParticles) {
+		TileEntity tileentity = (TileEntity) worldObj.getTileEntity(blockPosition);
+		if (tileentity instanceof ColorizerTileEntity) {
+			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
+			if (te.getStoredBlockState() == Blocks.AIR.getDefaultState()) {
+				return super.addLandingEffects(state, worldObj, blockPosition, iblockstate, entity, numberOfParticles);
+			} else {
+				worldObj.spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, te.getStoredBlockState()), entity.getPosX(), entity.getPosY(), entity.getPosZ(), numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D);
+			}
+		}
+		return true;
 	}
 }

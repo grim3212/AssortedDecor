@@ -1,166 +1,95 @@
 package com.grim3212.assorted.decor.common.block;
 
-import javax.annotation.Nullable;
+import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.handler.DecorConfig;
+import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.LadderBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.Half;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
-public class ColorizerTrapDoorBlock extends ColorizerRotateBlock {
-
-	protected static final VoxelShape EAST_OPEN_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
-	protected static final VoxelShape WEST_OPEN_AABB = Block.makeCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape SOUTH_OPEN_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
-	protected static final VoxelShape NORTH_OPEN_AABB = Block.makeCuboidShape(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape BOTTOM_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
-	protected static final VoxelShape TOP_AABB = Block.makeCuboidShape(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+public class ColorizerTrapDoorBlock extends TrapDoorBlock implements IColorizer {
 
 	public ColorizerTrapDoorBlock() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(TrapDoorBlock.OPEN, false).with(HALF, Half.BOTTOM).with(TrapDoorBlock.POWERED, false).with(WATERLOGGED, false));
+		super(Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 12.0f).sound(SoundType.STONE).variableOpacity().notSolid());
+	}
+
+	/// ===============================================
+	/// ======== DEFAULT COLORIZER STUFF BELOW ========
+	/// ===============================================
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).propagatesSkylightDown(reader, pos) : super.propagatesSkylightDown(state, reader, pos);
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
-		builder.add(TrapDoorBlock.OPEN, TrapDoorBlock.POWERED);
+	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).getRaytraceShape(reader, pos, context) : super.getRayTraceShape(state, reader, pos, context);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if (!state.get(TrapDoorBlock.OPEN)) {
-			return state.get(HALF) == Half.TOP ? TOP_AABB : BOTTOM_AABB;
-		} else {
-			switch ((Direction) state.get(FACING)) {
-			case NORTH:
-			default:
-				return NORTH_OPEN_AABB;
-			case SOUTH:
-				return SOUTH_OPEN_AABB;
-			case WEST:
-				return WEST_OPEN_AABB;
-			case EAST:
-				return EAST_OPEN_AABB;
-			}
-		}
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return this.getStoredState(world, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(world, pos).getLightValue(world, pos) : super.getLightValue(state, world, pos);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		switch (type) {
-		case LAND:
-			return state.get(TrapDoorBlock.OPEN);
-		case WATER:
-			return state.get(WATERLOGGED);
-		case AIR:
-			return state.get(TrapDoorBlock.OPEN);
-		default:
-			return false;
-		}
-	}
-
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		state = state.func_235896_a_(TrapDoorBlock.OPEN);
-		worldIn.setBlockState(pos, state, 2);
-		if (state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-		}
-
-		this.playSound(player, worldIn, pos, state.get(TrapDoorBlock.OPEN));
-		return ActionResultType.func_233537_a_(worldIn.isRemote);
-	}
-
-	protected void playSound(@Nullable PlayerEntity player, World worldIn, BlockPos pos, boolean p_185731_4_) {
-		if (p_185731_4_) {
-			int i = this.material == Material.IRON ? 1037 : 1007;
-			worldIn.playEvent(player, i, pos, 0);
-		} else {
-			int j = this.material == Material.IRON ? 1036 : 1013;
-			worldIn.playEvent(player, j, pos, 0);
-		}
-
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!worldIn.isRemote) {
-			boolean flag = worldIn.isBlockPowered(pos);
-			if (flag != state.get(TrapDoorBlock.POWERED)) {
-				if (state.get(TrapDoorBlock.OPEN) != flag) {
-					state = state.with(TrapDoorBlock.OPEN, flag);
-					this.playSound((PlayerEntity) null, worldIn, pos, flag);
-				}
-
-				worldIn.setBlockState(pos, state.with(TrapDoorBlock.POWERED, flag), 2);
-				if (state.get(WATERLOGGED)) {
-					worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBlockHarvested(worldIn, pos, state, player);
+		if (DecorConfig.COMMON.consumeBlock.get()) {
+			if (!player.abilities.isCreativeMode) {
+				if (this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState()) {
+					BlockState blockState = this.getStoredState(worldIn, pos);
+					spawnAsEntity(worldIn, pos, new ItemStack(blockState.getBlock(), 1));
 				}
 			}
-
 		}
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState blockstate = this.getDefaultState();
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		Direction direction = context.getFace();
-		if (!context.replacingClickedOnBlock() && direction.getAxis().isHorizontal()) {
-			blockstate = blockstate.with(FACING, direction).with(HALF, context.getHitVec().y - (double) context.getPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
-		} else {
-			blockstate = blockstate.with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
-		}
-
-		if (context.getWorld().isBlockPowered(context.getPos())) {
-			blockstate = blockstate.with(TrapDoorBlock.OPEN, true).with(TrapDoorBlock.POWERED, true);
-		}
-
-		return blockstate.with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		ItemStack itemstack = new ItemStack(this);
+		NBTHelper.putTag(itemstack, "stored_state", NBTUtil.writeBlockState(Blocks.AIR.getDefaultState()));
+		return itemstack;
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-		}
-
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new ColorizerTileEntity();
 	}
 
 	@Override
-	public boolean isLadder(BlockState state, IWorldReader world, BlockPos pos, LivingEntity entity) {
-		if (state.get(TrapDoorBlock.OPEN)) {
-			BlockState down = world.getBlockState(pos.down());
-			if (down.getBlock() == Blocks.LADDER)
-				return down.get(LadderBlock.FACING) == state.get(FACING);
+	public boolean addLandingEffects(BlockState state, ServerWorld worldObj, BlockPos blockPosition, BlockState iblockstate, LivingEntity entity, int numberOfParticles) {
+		TileEntity tileentity = (TileEntity) worldObj.getTileEntity(blockPosition);
+		if (tileentity instanceof ColorizerTileEntity) {
+			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
+			if (te.getStoredBlockState() == Blocks.AIR.getDefaultState()) {
+				return super.addLandingEffects(state, worldObj, blockPosition, iblockstate, entity, numberOfParticles);
+			} else {
+				worldObj.spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, te.getStoredBlockState()), entity.getPosX(), entity.getPosY(), entity.getPosZ(), numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D);
+			}
 		}
-		return false;
+		return true;
 	}
 }

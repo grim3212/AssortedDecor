@@ -26,13 +26,13 @@ public class DecorBlocks {
 	public static final RegistryObject<ColorizerBlock> COLORIZER_TABLE = register("colorizer_table", () -> new ColorizerTableBlock());
 	public static final RegistryObject<ColorizerBlock> COLORIZER_COUNTER = register("colorizer_counter", () -> new ColorizerCounterBlock());
 	public static final RegistryObject<ColorizerBlock> COLORIZER_STOOL = register("colorizer_stool", () -> new ColorizerStoolBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_FENCE = register("colorizer_fence", () -> new ColorizerFenceBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_FENCE_GATE = register("colorizer_fence_gate", () -> new ColorizerFenceGateBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_WALL = register("colorizer_wall", () -> new ColorizerWallBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_TRAP_DOOR = register("colorizer_trap_door", () -> new ColorizerTrapDoorBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_DOOR = register("colorizer_door", () -> new ColorizerDoorBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_SLAB = register("colorizer_slab", () -> new ColorizerSlabBlock());
-	public static final RegistryObject<ColorizerBlock> COLORIZER_STAIRS = register("colorizer_stairs", () -> new ColorizerStairsBlock());
+	public static final RegistryObject<ColorizerFenceBlock> COLORIZER_FENCE = register("colorizer_fence", () -> new ColorizerFenceBlock());
+	public static final RegistryObject<ColorizerFenceGateBlock> COLORIZER_FENCE_GATE = register("colorizer_fence_gate", () -> new ColorizerFenceGateBlock());
+	public static final RegistryObject<ColorizerWallBlock> COLORIZER_WALL = register("colorizer_wall", () -> new ColorizerWallBlock());
+	public static final RegistryObject<ColorizerTrapDoorBlock> COLORIZER_TRAP_DOOR = register("colorizer_trap_door", () -> new ColorizerTrapDoorBlock());
+	public static final RegistryObject<ColorizerDoorBlock> COLORIZER_DOOR = register("colorizer_door", () -> new ColorizerDoorBlock());
+	public static final RegistryObject<ColorizerSlabBlock> COLORIZER_SLAB = register("colorizer_slab", () -> new ColorizerSlabBlock());
+	public static final RegistryObject<ColorizerStairsBlock> COLORIZER_STAIRS = register("colorizer_stairs", () -> new ColorizerStairsBlock());
 	public static final RegistryObject<ColorizerBlock> COLORIZER_LAMP_POST = register("colorizer_lamp_post", () -> new ColorizerLampPost());
 
 	public static final RegistryObject<ColorizerBlock> COLORIZER_SLOPE = register("colorizer_slope", () -> new ColorizerSlopeBlock(SlopeType.SLOPE));

@@ -1,210 +1,95 @@
 package com.grim3212.assorted.decor.common.block;
 
-import java.util.stream.IntStream;
+import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.handler.DecorConfig;
+import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.StairsBlock;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.pathfinding.PathType;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.StairsShape;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.BlockParticleData;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
-public class ColorizerStairsBlock extends ColorizerBlock {
-
-	protected static final VoxelShape AABB_SLAB_TOP = ColorizerSlabBlock.TOP_SHAPE;
-	protected static final VoxelShape AABB_SLAB_BOTTOM = ColorizerSlabBlock.BOTTOM_SHAPE;
-	protected static final VoxelShape NWD_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 8.0D, 8.0D, 8.0D);
-	protected static final VoxelShape SWD_CORNER = Block.makeCuboidShape(0.0D, 0.0D, 8.0D, 8.0D, 8.0D, 16.0D);
-	protected static final VoxelShape NWU_CORNER = Block.makeCuboidShape(0.0D, 8.0D, 0.0D, 8.0D, 16.0D, 8.0D);
-	protected static final VoxelShape SWU_CORNER = Block.makeCuboidShape(0.0D, 8.0D, 8.0D, 8.0D, 16.0D, 16.0D);
-	protected static final VoxelShape NED_CORNER = Block.makeCuboidShape(8.0D, 0.0D, 0.0D, 16.0D, 8.0D, 8.0D);
-	protected static final VoxelShape SED_CORNER = Block.makeCuboidShape(8.0D, 0.0D, 8.0D, 16.0D, 8.0D, 16.0D);
-	protected static final VoxelShape NEU_CORNER = Block.makeCuboidShape(8.0D, 8.0D, 0.0D, 16.0D, 16.0D, 8.0D);
-	protected static final VoxelShape SEU_CORNER = Block.makeCuboidShape(8.0D, 8.0D, 8.0D, 16.0D, 16.0D, 16.0D);
-	protected static final VoxelShape[] SLAB_TOP_SHAPES = makeShapes(AABB_SLAB_TOP, NWD_CORNER, NED_CORNER, SWD_CORNER, SED_CORNER);
-	protected static final VoxelShape[] SLAB_BOTTOM_SHAPES = makeShapes(AABB_SLAB_BOTTOM, NWU_CORNER, NEU_CORNER, SWU_CORNER, SEU_CORNER);
-	private static final int[] field_196522_K = new int[] { 12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8 };
-
-	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
-		return IntStream.range(0, 16).mapToObj((p_199780_5_) -> {
-			return combineShapes(p_199780_5_, slabShape, nwCorner, neCorner, swCorner, seCorner);
-		}).toArray((p_199778_0_) -> {
-			return new VoxelShape[p_199778_0_];
-		});
-	}
+public class ColorizerStairsBlock extends StairsBlock implements IColorizer {
 
 	public ColorizerStairsBlock() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(StairsBlock.FACING, Direction.NORTH).with(StairsBlock.HALF, Half.BOTTOM).with(StairsBlock.SHAPE, StairsShape.STRAIGHT).with(StairsBlock.WATERLOGGED, false));
+		super(() -> DecorBlocks.COLORIZER.get().getDefaultState(), Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5f, 12.0f).sound(SoundType.STONE).variableOpacity().notSolid());
 	}
 
-	/**
-	 * combines the shapes according to the mode set in the bitfield
-	 */
-	private static VoxelShape combineShapes(int bitfield, VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
-		VoxelShape voxelshape = slabShape;
-		if ((bitfield & 1) != 0) {
-			voxelshape = VoxelShapes.or(slabShape, nwCorner);
-		}
-
-		if ((bitfield & 2) != 0) {
-			voxelshape = VoxelShapes.or(voxelshape, neCorner);
-		}
-
-		if ((bitfield & 4) != 0) {
-			voxelshape = VoxelShapes.or(voxelshape, swCorner);
-		}
-
-		if ((bitfield & 8) != 0) {
-			voxelshape = VoxelShapes.or(voxelshape, seCorner);
-		}
-
-		return voxelshape;
+	/// ===============================================
+	/// ======== DEFAULT COLORIZER STUFF BELOW ========
+	/// ===============================================
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).propagatesSkylightDown(reader, pos) : super.propagatesSkylightDown(state, reader, pos);
 	}
 
 	@Override
-	public boolean isTransparent(BlockState state) {
+	public VoxelShape getRayTraceShape(BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context) {
+		return this.getStoredState(reader, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(reader, pos).getRaytraceShape(reader, pos, context) : super.getRayTraceShape(state, reader, pos, context);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
+		return this.getStoredState(world, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(world, pos).getLightValue(world, pos) : super.getLightValue(state, world, pos);
+	}
+
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.onBlockHarvested(worldIn, pos, state, player);
+		if (DecorConfig.COMMON.consumeBlock.get()) {
+			if (!player.abilities.isCreativeMode) {
+				if (this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState()) {
+					BlockState blockState = this.getStoredState(worldIn, pos);
+					spawnAsEntity(worldIn, pos, new ItemStack(blockState.getBlock(), 1));
+				}
+			}
+		}
+	}
+
+	@Override
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+		ItemStack itemstack = new ItemStack(this);
+		NBTHelper.putTag(itemstack, "stored_state", NBTUtil.writeBlockState(Blocks.AIR.getDefaultState()));
+		return itemstack;
+	}
+
+	@Override
+	public boolean hasTileEntity(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return (state.get(StairsBlock.HALF) == Half.TOP ? SLAB_TOP_SHAPES : SLAB_BOTTOM_SHAPES)[field_196522_K[this.func_196511_x(state)]];
-	}
-
-	private int func_196511_x(BlockState state) {
-		return state.get(StairsBlock.SHAPE).ordinal() * 4 + state.get(StairsBlock.FACING).getHorizontalIndex();
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new ColorizerTileEntity();
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		Direction direction = context.getFace();
-		BlockPos blockpos = context.getPos();
-		FluidState fluidstate = context.getWorld().getFluidState(blockpos);
-		BlockState blockstate = this.getDefaultState().with(StairsBlock.FACING, context.getPlacementHorizontalFacing()).with(StairsBlock.HALF, direction != Direction.DOWN && (direction == Direction.UP || !(context.getHitVec().y - (double) blockpos.getY() > 0.5D)) ? Half.BOTTOM : Half.TOP).with(StairsBlock.WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
-		return blockstate.with(StairsBlock.SHAPE, getShapeProperty(blockstate, context.getWorld(), blockpos));
-	}
-
-	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(StairsBlock.WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
-		}
-
-		return facing.getAxis().isHorizontal() ? stateIn.with(StairsBlock.SHAPE, getShapeProperty(stateIn, worldIn, currentPos)) : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-	}
-
-	private static StairsShape getShapeProperty(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		Direction direction = state.get(StairsBlock.FACING);
-		BlockState blockstate = worldIn.getBlockState(pos.offset(direction));
-		if (isBlockStairs(blockstate) && state.get(StairsBlock.HALF) == blockstate.get(StairsBlock.HALF)) {
-			Direction direction1 = blockstate.get(StairsBlock.FACING);
-			if (direction1.getAxis() != state.get(StairsBlock.FACING).getAxis() && isDifferentStairs(state, worldIn, pos, direction1.getOpposite())) {
-				if (direction1 == direction.rotateYCCW()) {
-					return StairsShape.OUTER_LEFT;
-				}
-
-				return StairsShape.OUTER_RIGHT;
+	public boolean addLandingEffects(BlockState state, ServerWorld worldObj, BlockPos blockPosition, BlockState iblockstate, LivingEntity entity, int numberOfParticles) {
+		TileEntity tileentity = (TileEntity) worldObj.getTileEntity(blockPosition);
+		if (tileentity instanceof ColorizerTileEntity) {
+			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
+			if (te.getStoredBlockState() == Blocks.AIR.getDefaultState()) {
+				return super.addLandingEffects(state, worldObj, blockPosition, iblockstate, entity, numberOfParticles);
+			} else {
+				worldObj.spawnParticle(new BlockParticleData(ParticleTypes.BLOCK, te.getStoredBlockState()), entity.getPosX(), entity.getPosY(), entity.getPosZ(), numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15000000596046448D);
 			}
 		}
-
-		BlockState blockstate1 = worldIn.getBlockState(pos.offset(direction.getOpposite()));
-		if (isBlockStairs(blockstate1) && state.get(StairsBlock.HALF) == blockstate1.get(StairsBlock.HALF)) {
-			Direction direction2 = blockstate1.get(StairsBlock.FACING);
-			if (direction2.getAxis() != state.get(StairsBlock.FACING).getAxis() && isDifferentStairs(state, worldIn, pos, direction2)) {
-				if (direction2 == direction.rotateYCCW()) {
-					return StairsShape.INNER_LEFT;
-				}
-
-				return StairsShape.INNER_RIGHT;
-			}
-		}
-
-		return StairsShape.STRAIGHT;
-	}
-
-	private static boolean isDifferentStairs(BlockState state, IBlockReader worldIn, BlockPos pos, Direction face) {
-		BlockState blockstate = worldIn.getBlockState(pos.offset(face));
-		return !isBlockStairs(blockstate) || blockstate.get(StairsBlock.FACING) != state.get(StairsBlock.FACING) || blockstate.get(StairsBlock.HALF) != state.get(StairsBlock.HALF);
-	}
-
-	public static boolean isBlockStairs(BlockState state) {
-		return state.getBlock() instanceof StairsBlock || state.getBlock() instanceof ColorizerStairsBlock;
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(StairsBlock.FACING, rot.rotate(state.get(StairsBlock.FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		Direction direction = state.get(StairsBlock.FACING);
-		StairsShape stairsshape = state.get(StairsBlock.SHAPE);
-		switch (mirrorIn) {
-		case LEFT_RIGHT:
-			if (direction.getAxis() == Direction.Axis.Z) {
-				switch (stairsshape) {
-				case INNER_LEFT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.INNER_RIGHT);
-				case INNER_RIGHT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.INNER_LEFT);
-				case OUTER_LEFT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.OUTER_RIGHT);
-				case OUTER_RIGHT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.OUTER_LEFT);
-				default:
-					return state.rotate(Rotation.CLOCKWISE_180);
-				}
-			}
-			break;
-		case FRONT_BACK:
-			if (direction.getAxis() == Direction.Axis.X) {
-				switch (stairsshape) {
-				case INNER_LEFT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.INNER_LEFT);
-				case INNER_RIGHT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.INNER_RIGHT);
-				case OUTER_LEFT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.OUTER_RIGHT);
-				case OUTER_RIGHT:
-					return state.rotate(Rotation.CLOCKWISE_180).with(StairsBlock.SHAPE, StairsShape.OUTER_LEFT);
-				case STRAIGHT:
-					return state.rotate(Rotation.CLOCKWISE_180);
-				}
-			}
-		case NONE:
-		default:
-			break;
-		}
-
-		return super.mirror(state, mirrorIn);
-	}
-
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(StairsBlock.FACING, StairsBlock.HALF, StairsBlock.SHAPE, StairsBlock.WATERLOGGED);
-	}
-
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		return state.get(StairsBlock.WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
-	}
-
-	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
-		return false;
+		return true;
 	}
 }

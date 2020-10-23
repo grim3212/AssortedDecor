@@ -1,7 +1,5 @@
 package com.grim3212.assorted.decor.client.data;
 
-import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerModel.ColorizerLoader;
@@ -16,22 +14,10 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.DoorBlock;
-import net.minecraft.block.FenceGateBlock;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
-import net.minecraft.block.TrapDoorBlock;
-import net.minecraft.block.WallBlock;
-import net.minecraft.block.WallHeight;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.state.Property;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoorHingeSide;
-import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.state.properties.Half;
-import net.minecraft.state.properties.SlabType;
-import net.minecraft.state.properties.StairsShape;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
@@ -346,16 +332,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall")));
 		ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall_open")));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_FENCE_GATE.get()).forAllStatesExcept(state -> {
-			ModelFile model = colorizerFenceGateModel.model;
-			if (state.get(FenceGateBlock.IN_WALL)) {
-				model = colorizerFenceGateWallModel.model;
-			}
-			if (state.get(FenceGateBlock.OPEN)) {
-				model = model == colorizerFenceGateWallModel.model ? colorizerFenceGateWallOpenModel.model : colorizerFenceGateOpenModel.model;
-			}
-			return ConfiguredModel.builder().modelFile(model).rotationY((int) state.get(FenceGateBlock.HORIZONTAL_FACING).getHorizontalAngle()).uvLock(true).build();
-		}, FenceGateBlock.POWERED);
+		fenceGateBlock(DecorBlocks.COLORIZER_FENCE_GATE.get(), colorizerFenceGateModel.model, colorizerFenceGateOpenModel.model, colorizerFenceGateWallModel.model, colorizerFenceGateWallOpenModel.model);
 
 		itemModels().getBuilder(prefix("item/colorizer_fence_gate")).parent(colorizerFenceGateModel.model);
 	}
@@ -377,17 +354,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_side_tall")));
 		ConfiguredModel colorizerWallInventoryModel = getModel("colorizer_wall_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_inventory")));
 
-		MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_WALL.get()).part().modelFile(colorizerWallPostModel.model).addModel().condition(WallBlock.UP, true).end();
-		WALL_PROPS.entrySet().stream().filter(e -> e.getKey().getAxis().isHorizontal()).forEach(e -> {
-			wallSidePart(builder, colorizerWallSideModel.model, e, WallHeight.LOW);
-			wallSidePart(builder, colorizerWallSideTallModel.model, e, WallHeight.TALL);
-		});
-
+		wallBlock(DecorBlocks.COLORIZER_WALL.get(), colorizerWallPostModel.model, colorizerWallSideModel.model, colorizerWallSideTallModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_wall")).parent(colorizerWallInventoryModel.model);
-	}
-
-	private void wallSidePart(MultiPartBlockStateBuilder builder, ModelFile model, Map.Entry<Direction, Property<WallHeight>> entry, WallHeight height) {
-		builder.part().modelFile(model).rotationY((((int) entry.getKey().getHorizontalAngle()) + 180) % 360).uvLock(true).addModel().condition(entry.getValue(), height);
 	}
 
 	private void colorizerTrapDoor() {
@@ -395,18 +363,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_open")));
 		ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_top")));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_TRAP_DOOR.get()).forAllStatesExcept(state -> {
-			int xRot = 0;
-			int yRot = ((int) state.get(TrapDoorBlock.HORIZONTAL_FACING).getHorizontalAngle()) + 180;
-			boolean isOpen = state.get(TrapDoorBlock.OPEN);
-			if (isOpen && state.get(TrapDoorBlock.HALF) == Half.TOP) {
-				xRot += 180;
-				yRot += 180;
-			}
-			yRot %= 360;
-			return ConfiguredModel.builder().modelFile(isOpen ? colorizerTrapdoorOpenModel.model : state.get(TrapDoorBlock.HALF) == Half.TOP ? colorizerTrapdoorTopModel.model : colorizerTrapdoorBottomModel.model).rotationX(xRot).rotationY(yRot).build();
-		}, TrapDoorBlock.POWERED, TrapDoorBlock.WATERLOGGED);
-
+		trapdoorBlock(DecorBlocks.COLORIZER_TRAP_DOOR.get(), colorizerTrapdoorBottomModel.model, colorizerTrapdoorTopModel.model, colorizerTrapdoorOpenModel.model, true);
 		itemModels().getBuilder(prefix("item/colorizer_trap_door")).parent(colorizerTrapdoorBottomModel.model);
 	}
 
@@ -417,21 +374,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerDoorTopRHModel = getModel("colorizer_door_top_rh", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_top_rh")));
 		ConfiguredModel colorizerDoorItemModel = getModel("colorizer_door", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/door")));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_DOOR.get()).forAllStatesExcept(state -> {
-			int yRot = ((int) state.get(DoorBlock.FACING).getHorizontalAngle()) + 90;
-			boolean rh = state.get(DoorBlock.HINGE) == DoorHingeSide.RIGHT;
-			boolean open = state.get(DoorBlock.OPEN);
-			boolean right = rh ^ open;
-			if (open) {
-				yRot += 90;
-			}
-			if (rh && open) {
-				yRot += 180;
-			}
-			yRot %= 360;
-			return ConfiguredModel.builder().modelFile(state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? (right ? colorizerDoorBottomRHModel.model : colorizerDoorBottomModel.model) : (right ? colorizerDoorTopRHModel.model : colorizerDoorTopModel.model)).rotationY(yRot).build();
-		}, DoorBlock.POWERED);
-
+		doorBlock(DecorBlocks.COLORIZER_DOOR.get(), colorizerDoorBottomModel.model, colorizerDoorBottomRHModel.model, colorizerDoorTopModel.model, colorizerDoorTopRHModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_door")).parent(colorizerDoorItemModel.model);
 	}
 
@@ -440,22 +383,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/inner_stairs")));
 		ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/outer_stairs")));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_STAIRS.get()).forAllStatesExcept(state -> {
-			Direction facing = state.get(StairsBlock.FACING);
-			Half half = state.get(StairsBlock.HALF);
-			StairsShape shape = state.get(StairsBlock.SHAPE);
-			int yRot = (int) facing.rotateY().getHorizontalAngle(); // Stairs model is rotated 90 degrees clockwise for some reason
-			if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
-				yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
-			}
-			if (shape != StairsShape.STRAIGHT && half == Half.TOP) {
-				yRot += 90; // Top stairs are rotated 90 degrees clockwise
-			}
-			yRot %= 360;
-			boolean uvlock = yRot != 0 || half == Half.TOP; // Don't set uvlock for states that have no rotation
-			return ConfiguredModel.builder().modelFile(shape == StairsShape.STRAIGHT ? colorizerStairsModel.model : shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? colorizerInnerStairsModel.model : colorizerOuterStairsModel.model).rotationX(half == Half.BOTTOM ? 0 : 180).rotationY(yRot).uvLock(uvlock).build();
-		}, StairsBlock.WATERLOGGED);
-
+		stairsBlock(DecorBlocks.COLORIZER_STAIRS.get(), colorizerStairsModel.model, colorizerInnerStairsModel.model, colorizerOuterStairsModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_stairs")).parent(colorizerStairsModel.model);
 	}
 
@@ -464,8 +392,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/slab_top")));
 		ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_SLAB.get()).partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(colorizerSlabModel).partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(colorizerSlabTopModel).partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
-
+		slabBlock(DecorBlocks.COLORIZER_SLAB.get(), colorizerSlabModel.model, colorizerSlabTopModel.model, colorizerModel);
 		itemModels().getBuilder(prefix("item/colorizer_slab")).parent(colorizerSlabModel.model);
 	}
 
@@ -476,7 +403,6 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerLampPostInventoryModel = getModel("colorizer_lamp_post_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory")));
 
 		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(colorizerLampPostTopModel);
-
 		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel.model);
 	}
 }
