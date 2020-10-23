@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XRX",
+    "GDB",
+    "XDX"
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:stone"
+    },
+    "R": {
+      "tag": "forge:dyes/red"
+    },
+    "G": {
+      "tag": "forge:dyes/green"
+    },
+    "B": {
+      "tag": "forge:dyes/blue"
+    },
+    "D": {
+      "tag": "forge:dyes"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:colorizer",
+    "count": 4
+  }
+}

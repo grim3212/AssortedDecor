@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX ",
+    "X X"
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:colorizer_sloped_intersection",
+    "count": 4
+  }
+}

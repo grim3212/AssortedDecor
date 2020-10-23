@@ -11,6 +11,7 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
 import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorItemTagProvider;
+import com.grim3212.assorted.decor.common.data.DecorLootProvider;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
@@ -83,6 +84,7 @@ public class AssortedDecor {
 			DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(datagenerator, fileHelper);
 			datagenerator.addProvider(blockTagProvider);
 			datagenerator.addProvider(new DecorItemTagProvider(datagenerator, blockTagProvider, fileHelper));
+			datagenerator.addProvider(new DecorLootProvider(datagenerator));
 		}
 
 		if (event.includeClient()) {

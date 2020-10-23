@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "S S"
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:colorizer"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:colorizer_stool",
+    "count": 4
+  }
+}

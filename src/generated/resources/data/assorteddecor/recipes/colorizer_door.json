@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:colorizer_door",
+    "count": 3
+  }
+}

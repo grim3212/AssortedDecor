@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:colorizer_lamp_post"
+    ]
+  },
+  "criteria": {
+    "has_colorizer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assorteddecor:colorizer"
+          }
+        ]
+      }
+    },
+    "has_glowstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:glowstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:colorizer_lamp_post"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_colorizer",
+      "has_glowstone",
+      "has_the_recipe"
+    ]
+  ]
+}

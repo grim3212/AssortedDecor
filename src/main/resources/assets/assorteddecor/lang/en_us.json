@@ -6,6 +6,30 @@
 	
 	"item.assorteddecor.wallpaper": "Wallpaper",
 	"item.assorteddecor.wood_frame": "Wood Frame",
-	"item.assorteddecor.iron_frame": "Iron Frame"
+	"item.assorteddecor.iron_frame": "Iron Frame",
+	"item.assorteddecor.colorizer_brush": "Colorizer Brush",
 	
+	"block.assorteddecor.planter_pot": "Planter Pot",
+	"block.assorteddecor.colorizer": "Colorizer",
+	"block.assorteddecor.colorizer_chair": "Colorizer Chair",
+	"block.assorteddecor.colorizer_table": "Colorizer Table",
+	"block.assorteddecor.colorizer_stool": "Colorizer Stool",
+	"block.assorteddecor.colorizer_counter": "Colorizer Counter",
+	"block.assorteddecor.colorizer_fence": "Colorizer Fence",
+	"block.assorteddecor.colorizer_fence_gate": "Colorizer Fence Gate",
+	"block.assorteddecor.colorizer_wall": "Colorizer Wall",
+	"block.assorteddecor.colorizer_stairs": "Colorizer Stairs",
+	"block.assorteddecor.colorizer_slab": "Colorizer Slab",
+	"block.assorteddecor.colorizer_door": "Colorizer Door",
+	"block.assorteddecor.colorizer_trap_door": "Colorizer Trapdoor",
+	"block.assorteddecor.colorizer_lamp_post": "Colorizer Lamp Post",
+	"block.assorteddecor.colorizer_slope": "Colorizer Slope",
+	"block.assorteddecor.colorizer_sloped_angle": "Colorizer Sloped Angle",
+	"block.assorteddecor.colorizer_sloped_intersection": "Colorizer Sloped Intersection",
+	"block.assorteddecor.colorizer_sloped_post": "Colorizer Sloped Post",
+	"block.assorteddecor.colorizer_oblique_slope": "Colorizer Oblique Slope",
+	"block.assorteddecor.colorizer_corner": "Colorizer Corner",
+	"block.assorteddecor.colorizer_slanted_corner": "Colorizer Slanted Corner",
+	"block.assorteddecor.colorizer_pyramid": "Colorizer Pyramid",
+	"block.assorteddecor.colorizer_full_pyramid": "Colorizer Full Pyramid"
 }
