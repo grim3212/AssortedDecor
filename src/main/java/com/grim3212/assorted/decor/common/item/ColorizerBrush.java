@@ -39,7 +39,6 @@ public class ColorizerBrush extends Item {
 		} else {
 			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.stored", state.getBlock().getTranslatedName()));
 		}
-
 	}
 
 	@Override

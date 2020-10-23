@@ -24,4 +24,9 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 		this.getOrCreateBuilder(BlockTags.STAIRS).addItemEntry(DecorBlocks.COLORIZER_STAIRS.get());
 		this.getOrCreateBuilder(BlockTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get());
 	}
+
+	@Override
+	public String getName() {
+		return "Assorted Decor block tags";
+	}
 }

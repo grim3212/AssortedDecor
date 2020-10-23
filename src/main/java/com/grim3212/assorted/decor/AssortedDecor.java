@@ -10,6 +10,7 @@ import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
 import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
+import com.grim3212.assorted.decor.common.data.DecorItemTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
@@ -79,7 +80,9 @@ public class AssortedDecor {
 
 		if (event.includeServer()) {
 			datagenerator.addProvider(new DecorRecipes(datagenerator));
-			datagenerator.addProvider(new DecorBlockTagProvider(datagenerator, fileHelper));
+			DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(datagenerator, fileHelper);
+			datagenerator.addProvider(blockTagProvider);
+			datagenerator.addProvider(new DecorItemTagProvider(datagenerator, blockTagProvider, fileHelper));
 		}
 
 		if (event.includeClient()) {
