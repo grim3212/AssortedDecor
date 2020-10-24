@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:planter_pot"
+    ]
+  },
+  "criteria": {
+    "has_unfired_planter_pot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assorteddecor:unfired_planter_pot"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:planter_pot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_unfired_planter_pot",
+      "has_the_recipe"
+    ]
+  ]
+}

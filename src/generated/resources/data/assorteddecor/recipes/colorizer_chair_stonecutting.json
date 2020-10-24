@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "assorteddecor:colorizer"
+  },
+  "result": "assorteddecor:colorizer_chair",
+  "count": 1
+}
