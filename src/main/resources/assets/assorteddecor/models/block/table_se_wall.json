@@ -1,8 +1,8 @@
 {
 	"__comment": "Designed by Grim3212 with Cubik Studio - https://cubik.studio",
 	"textures": {
-		"particle": "block/colorizer",
-		"stored": "block/colorizer"
+		"particle": "assorteddecor:block/colorizer",
+		"stored": "assorteddecor:block/colorizer"
 	},
 	"elements": [ 	 
 		{

@@ -74,7 +74,5 @@
     }
   },
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/counter"
-  ]
+  "model": "assorteddecor:block/counter"
 }

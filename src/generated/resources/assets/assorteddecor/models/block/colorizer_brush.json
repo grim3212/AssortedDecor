@@ -1,8 +1,6 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:item/brush"
-  ],
+  "model": "assorteddecor:item/brush",
   "extraTextures": [
     "assorteddecor:item/brush_handle"
   ]

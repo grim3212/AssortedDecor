@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/trapdoor_open"
-  ]
+  "model": "assorteddecor:block/trapdoor_open"
 }

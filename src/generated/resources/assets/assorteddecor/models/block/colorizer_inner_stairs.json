@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/inner_stairs"
-  ]
+  "model": "assorteddecor:block/inner_stairs"
 }

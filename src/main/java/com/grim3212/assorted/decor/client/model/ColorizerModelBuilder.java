@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
 	private ResourceLocation loader;
-	private ImmutableList<ResourceLocation> parts;
+	private ResourceLocation model;
 	private ImmutableList<ResourceLocation> extraTextures;
 
 	protected ColorizerModelBuilder(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper) {
@@ -23,11 +23,11 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 		return this;
 	}
 
-	public ColorizerModelBuilder parts(ImmutableList<ResourceLocation> parts) {
-		this.parts = parts;
+	public ColorizerModelBuilder model(ResourceLocation model) {
+		this.model = model;
 		return this;
 	}
-	
+
 	public ColorizerModelBuilder extraTextures(ImmutableList<ResourceLocation> extraTextures) {
 		this.extraTextures = extraTextures;
 		return this;
@@ -40,15 +40,10 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 			ret.addProperty("loader", loader.toString());
 		}
 
-		if (parts != null) {
-
-			JsonArray arr = new JsonArray();
-			for (ResourceLocation loc : parts)
-				arr.add(loc.toString());
-
-			ret.add("parts", arr);
+		if (model != null) {
+			ret.addProperty("model", model.toString());
 		}
-		
+
 		if (extraTextures != null) {
 			JsonArray arr = new JsonArray();
 			for (ResourceLocation loc : extraTextures)

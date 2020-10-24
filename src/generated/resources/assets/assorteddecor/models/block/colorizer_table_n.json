@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/table_n"
-  ]
+  "model": "assorteddecor:block/table_n"
 }

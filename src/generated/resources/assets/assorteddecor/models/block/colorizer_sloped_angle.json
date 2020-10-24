@@ -74,7 +74,5 @@
     }
   },
   "loader": "assorteddecor:models/colorizer_obj",
-  "parts": [
-    "assorteddecor:models/block/sloped_angle.obj"
-  ]
+  "model": "assorteddecor:models/block/sloped_angle.obj"
 }

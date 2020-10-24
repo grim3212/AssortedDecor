@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/wall_side_tall"
-  ]
+  "model": "assorteddecor:block/wall_side_tall"
 }

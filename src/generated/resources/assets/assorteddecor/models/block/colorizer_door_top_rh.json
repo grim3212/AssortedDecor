@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/door_top_rh"
-  ]
+  "model": "assorteddecor:block/door_top_rh"
 }

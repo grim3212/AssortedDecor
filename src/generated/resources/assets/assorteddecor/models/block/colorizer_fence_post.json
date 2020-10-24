@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/fence_post"
-  ]
+  "model": "assorteddecor:block/fence_post"
 }

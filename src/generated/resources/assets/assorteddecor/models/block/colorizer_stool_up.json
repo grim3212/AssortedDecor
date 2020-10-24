@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/stool_up"
-  ]
+  "model": "assorteddecor:block/stool_up"
 }

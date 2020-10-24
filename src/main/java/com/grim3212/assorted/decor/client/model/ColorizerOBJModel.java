@@ -11,8 +11,9 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
@@ -42,7 +43,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.IModelLoader;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.data.EmptyModelData;
@@ -62,9 +62,8 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 
 	protected final ResourceLocation textureLocation;
 	protected final OBJModelCopy baseModel;
-	protected final ImmutableList<OBJModelCopy> modelParts;
 
-	public ColorizerOBJModel(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation, ResourceLocation texture, ImmutableList<ResourceLocation> parts) {
+	public ColorizerOBJModel(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation, ResourceLocation texture) {
 		this.owner = owner;
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
@@ -73,13 +72,7 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 		this.modelLocation = modelLocation;
 		this.textureLocation = texture;
 
-		this.baseModel = OBJModelCopy.loadModel(defaultSettings(parts.get(0)));
-
-		ImmutableList.Builder<OBJModelCopy> builder = ImmutableList.builder();
-		for (int i = 1; i < parts.size(); i++) {
-			builder.add(OBJModelCopy.loadModel(defaultSettings(parts.get(i))));
-		}
-		this.modelParts = builder.build();
+		this.baseModel = OBJModelCopy.loadModel(defaultSettings(modelLocation));
 	}
 
 	private OBJModel.ModelSettings defaultSettings(ResourceLocation loc) {
@@ -136,30 +129,7 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 	 * @return
 	 */
 	protected IBakedModel generateModel(TextureAtlasSprite sprite) {
-		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
-		builder.add(this.baseModel.setTexture(sprite).bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
-		for (OBJModelCopy model : this.modelParts)
-			builder.add(model.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
-
-		return new DecorCompositeModel(builder.build());
-	}
-
-	/**
-	 * Generates the model defined in the json and then also merges extra models to
-	 * it
-	 * 
-	 * @param state
-	 * @param texture
-	 * @param models
-	 * @return
-	 */
-	protected IBakedModel generateModel(ImmutableMap<String, String> texture, OBJModelCopy... models) {
-		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
-		builder.add(this.generateModel(texture));
-		for (OBJModelCopy model : models)
-			builder.add(model.bake(owner, bakery, spriteGetter, transform, overrides, modelLocation));
-
-		return new DecorCompositeModel(builder.build());
+		return this.baseModel.setTexture(sprite).bake(owner, bakery, spriteGetter, transform, overrides, modelLocation);
 	}
 
 	@Override
@@ -215,25 +185,38 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 	public static class RawColorizerModel implements IModelGeometry<RawColorizerModel> {
 
 		private final ResourceLocation texture;
-		private final ImmutableList<ResourceLocation> parts;
+		private final ResourceLocation model;
+		private final ImmutableList<ResourceLocation> extraTextures;
 
-		RawColorizerModel(ResourceLocation texture, ImmutableList<ResourceLocation> parts) {
+		RawColorizerModel(ResourceLocation texture, ResourceLocation model) {
+			this(texture, model, ImmutableList.of());
+		}
+
+		RawColorizerModel(ResourceLocation texture, ResourceLocation model, ImmutableList<ResourceLocation> extraTextures) {
 			this.texture = texture;
-			this.parts = parts;
+			this.model = model;
+			this.extraTextures = extraTextures;
 		}
 
 		public RawColorizerModel withTexture(ResourceLocation newTexture) {
-			return new RawColorizerModel(newTexture, this.parts);
+			return new RawColorizerModel(newTexture, this.model);
 		}
 
 		@Override
 		public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
-			return new ColorizerOBJModel(owner, bakery, spriteGetter, modelTransform, overrides, modelLocation, this.texture, this.parts);
+			return new ColorizerOBJModel(owner, bakery, spriteGetter, modelTransform, overrides, this.model, this.texture);
 		}
 
 		@Override
 		public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-			return ImmutableList.of(ModelLoaderRegistry.blockMaterial(texture));
+			ImmutableList.Builder<RenderMaterial> builder = ImmutableList.builder();
+			builder.add(ModelLoaderRegistry.blockMaterial(texture));
+
+			for (ResourceLocation tex : extraTextures) {
+				builder.add(ModelLoaderRegistry.blockMaterial(tex));
+			}
+
+			return builder.build();
 		}
 	}
 
@@ -246,30 +229,29 @@ public class ColorizerOBJModel implements IDynamicBakedModel {
 
 		@Override
 		public RawColorizerModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
-			ImmutableList.Builder<ResourceLocation> modelLocations = ImmutableList.builder();
+			ResourceLocation model = null;
+			ImmutableList.Builder<ResourceLocation> extraTextures = ImmutableList.builder();
 
 			ResourceLocation base = new ResourceLocation(AssortedDecor.MODID, "block/colorizer");
 
 			if (modelContents.has("texture"))
 				base = new ResourceLocation(modelContents.get("texture").getAsString());
 
-			if (!modelContents.has("parts"))
+			if (!modelContents.has("model"))
 				throw new UnsupportedOperationException("Model location not found for a ColorizerOBJModel");
+			model = new ResourceLocation(modelContents.get("model").getAsString());
 
-			String[] models = modelContents.get("parts").getAsString().replaceAll("\\[|\\]|\"", "").split(",");
+			if (modelContents.has("extraTextures")) {
+				JsonArray textures = modelContents.get("extraTextures").getAsJsonArray();
 
-			for (String model : models) {
-				AssortedDecor.LOGGER.info("Adding model : " + model);
-				modelLocations.add(new ResourceLocation(model));
+				for (JsonElement tex : textures) {
+					String texLoc = tex.getAsString();
+					AssortedDecor.LOGGER.info("Adding extra texture : " + texLoc);
+					extraTextures.add(new ResourceLocation(texLoc));
+				}
 			}
 
-			ImmutableList<ResourceLocation> immutableModels = modelLocations.build();
-			for (int i = 1; i < immutableModels.size(); i++) {
-				// Load the extra models and this should load the sub-model textures
-				ModelLoader.instance().getModelOrLogError(immutableModels.get(i), "Model couldn't be found " + immutableModels.get(i));
-			}
-
-			return new RawColorizerModel(base, immutableModels);
+			return new RawColorizerModel(base, model, extraTextures.build());
 		}
 	}
 

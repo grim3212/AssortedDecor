@@ -74,7 +74,5 @@
     }
   },
   "loader": "assorteddecor:models/colorizer_obj",
-  "parts": [
-    "assorteddecor:models/block/full_pyramid.obj"
-  ]
+  "model": "assorteddecor:models/block/full_pyramid.obj"
 }

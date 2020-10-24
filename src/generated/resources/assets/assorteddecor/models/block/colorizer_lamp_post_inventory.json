@@ -1,6 +1,4 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "parts": [
-    "assorteddecor:block/lamp_post_inventory"
-  ]
+  "model": "assorteddecor:block/lamp_post_inventory"
 }

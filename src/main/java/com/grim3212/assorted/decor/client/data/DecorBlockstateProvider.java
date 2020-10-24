@@ -50,9 +50,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		extraModels();
 
-		colorizer(DecorBlocks.COLORIZER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube")));
-		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/chair")));
-		colorizerSide(DecorBlocks.COLORIZER_COUNTER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/counter")));
+		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
+		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ResourceLocation(AssortedDecor.MODID, "block/chair"));
+		colorizerSide(DecorBlocks.COLORIZER_COUNTER.get(), new ResourceLocation(AssortedDecor.MODID, "block/counter"));
 		colorizerTable();
 		colorizerStool();
 		colorizerFence();
@@ -64,18 +64,18 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerSlab();
 		colorizerLampPost();
 
-		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerLoader.LOCATION).parts(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush"))).extraTextures(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush_handle")));
+		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerLoader.LOCATION).model(new ResourceLocation(AssortedDecor.MODID, "item/brush")).extraTextures(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush_handle")));
 		itemModels().getBuilder(prefix("item/colorizer_brush")).parent(colorizerBrushModel);
 
-		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj")));
-		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj")));
-		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_intersection.obj")));
-		colorizerOBJ(DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/oblique_slope.obj")));
-		colorizerOBJ(DecorBlocks.COLORIZER_CORNER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/corner.obj")));
-		colorizerOBJ(DecorBlocks.COLORIZER_SLANTED_CORNER.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/slanted_corner.obj")));
-		colorizerOBJSide(DecorBlocks.COLORIZER_PYRAMID.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/pyramid.obj")));
-		colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/full_pyramid.obj")));
-		colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_post.obj")));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj"));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj"));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_intersection.obj"));
+		colorizerOBJ(DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/oblique_slope.obj"));
+		colorizerOBJ(DecorBlocks.COLORIZER_CORNER.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/corner.obj"));
+		colorizerOBJ(DecorBlocks.COLORIZER_SLANTED_CORNER.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/slanted_corner.obj"));
+		colorizerOBJSide(DecorBlocks.COLORIZER_PYRAMID.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/pyramid.obj"));
+		colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/full_pyramid.obj"));
+		colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_post.obj"));
 
 		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
 		genericBlock(DecorBlocks.HARDENED_WOOD.get());
@@ -108,29 +108,29 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		return itemModels().withExistingParent(name, prefix("block/" + name));
 	}
 
-	private void colorizer(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, false, false);
+	private void colorizer(Block b, ResourceLocation model) {
+		colorizer(ColorizerLoader.LOCATION, b, model, false, false, false, false);
 	}
 
-	private void colorizerSide(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerLoader.LOCATION, b, parts, true, false, true, true);
+	private void colorizerSide(Block b, ResourceLocation model) {
+		colorizer(ColorizerLoader.LOCATION, b, model, true, false, true, true);
 	}
 
-	private void colorizerRotate(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerLoader.LOCATION, b, parts, false, false, true, false);
+	private void colorizerRotate(Block b, ResourceLocation model) {
+		colorizer(ColorizerLoader.LOCATION, b, model, false, false, true, false);
 	}
 
-	private void colorizerOBJ(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true, false);
+	private void colorizerOBJ(Block b, ResourceLocation model) {
+		colorizer(ColorizerOBJLoader.LOCATION, b, model, true, true, true, false);
 	}
 
-	private void colorizerOBJSide(Block b, ImmutableList<ResourceLocation> parts) {
-		colorizer(ColorizerOBJLoader.LOCATION, b, parts, true, true, true, true);
+	private void colorizerOBJSide(Block b, ResourceLocation model) {
+		colorizer(ColorizerOBJLoader.LOCATION, b, model, true, true, true, true);
 	}
 
-	private void colorizer(ResourceLocation loader, Block b, ImmutableList<ResourceLocation> parts, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
+	private void colorizer(ResourceLocation loader, Block b, ResourceLocation model, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
 		String name = name(b);
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).parts(parts);
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).model(model);
 		if (defaultPerspective) {
 			if (defaultPerspectiveFlipped) {
 				defaultPerspectiveFlipped(colorizerParent);
@@ -160,8 +160,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		return numTrue;
 	}
 
-	private ConfiguredModel getModel(String builderName, ImmutableList<ResourceLocation> parts) {
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).parts(parts);
+	private ConfiguredModel getModel(String builderName, ResourceLocation model) {
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).model(model);
 		return new ConfiguredModel(colorizerParent);
 	}
 
@@ -199,8 +199,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	private void colorizerStool() {
 		String name = name(DecorBlocks.COLORIZER_STOOL.get());
-		ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/stool")));
-		ConfiguredModel colorizerStoolUpModel = getModel("colorizer_stool_up", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/stool_up")));
+		ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", new ResourceLocation(AssortedDecor.MODID, "block/stool"));
+		ConfiguredModel colorizerStoolUpModel = getModel("colorizer_stool_up", new ResourceLocation(AssortedDecor.MODID, "block/stool_up"));
 		getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.get(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
 				BlockStateProperties.WATERLOGGED);
 		itemModels().getBuilder(name).parent(colorizerStoolModel.model);
@@ -249,12 +249,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void colorizerTable() {
 		String name = name(DecorBlocks.COLORIZER_TABLE.get());
 
-		ConfiguredModel colorizerCounterModel = getModel("colorizer_counter", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/counter")));
-		ConfiguredModel colorizerTableNModel = getModel("colorizer_table_n", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_n")));
-		ConfiguredModel colorizerTableSEModel = getModel("colorizer_table_se", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_se")));
-		ConfiguredModel colorizerTableNWallModel = getModel("colorizer_table_n_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_n_wall")));
-		ConfiguredModel colorizerTableSEWallModel = getModel("colorizer_table_se_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table_se_wall")));
-		ConfiguredModel colorizerTableModel = getModel("colorizer_table", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/table")));
+		ConfiguredModel colorizerCounterModel = getModel("colorizer_counter", new ResourceLocation(AssortedDecor.MODID, "block/counter"));
+		ConfiguredModel colorizerTableNModel = getModel("colorizer_table_n", new ResourceLocation(AssortedDecor.MODID, "block/table_n"));
+		ConfiguredModel colorizerTableSEModel = getModel("colorizer_table_se", new ResourceLocation(AssortedDecor.MODID, "block/table_se"));
+		ConfiguredModel colorizerTableNWallModel = getModel("colorizer_table_n_wall", new ResourceLocation(AssortedDecor.MODID, "block/table_n_wall"));
+		ConfiguredModel colorizerTableSEWallModel = getModel("colorizer_table_se_wall", new ResourceLocation(AssortedDecor.MODID, "block/table_se_wall"));
+		ConfiguredModel colorizerTableModel = getModel("colorizer_table", new ResourceLocation(AssortedDecor.MODID, "block/table"));
 
 		getVariantBuilder(DecorBlocks.COLORIZER_TABLE.get()).forAllStatesExcept(state -> {
 			boolean east = state.get(ColorizerTableBlock.EAST);
@@ -327,10 +327,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizerFenceGate() {
-		ConfiguredModel colorizerFenceGateModel = getModel("colorizer_fence_gate", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate")));
-		ConfiguredModel colorizerFenceGateOpenModel = getModel("colorizer_fence_gate_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_open")));
-		ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall")));
-		ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall_open")));
+		ConfiguredModel colorizerFenceGateModel = getModel("colorizer_fence_gate", new ResourceLocation(AssortedDecor.MODID, "block/fence_gate"));
+		ConfiguredModel colorizerFenceGateOpenModel = getModel("colorizer_fence_gate_open", new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_open"));
+		ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall"));
+		ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", new ResourceLocation(AssortedDecor.MODID, "block/fence_gate_wall_open"));
 
 		fenceGateBlock(DecorBlocks.COLORIZER_FENCE_GATE.get(), colorizerFenceGateModel.model, colorizerFenceGateOpenModel.model, colorizerFenceGateWallModel.model, colorizerFenceGateWallOpenModel.model);
 
@@ -338,9 +338,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizerFence() {
-		ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_post")));
-		ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_side")));
-		ConfiguredModel colorizerFenceInventoryModel = getModel("colorizer_fence_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/fence_inventory")));
+		ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", new ResourceLocation(AssortedDecor.MODID, "block/fence_post"));
+		ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", new ResourceLocation(AssortedDecor.MODID, "block/fence_side"));
+		ConfiguredModel colorizerFenceInventoryModel = getModel("colorizer_fence_inventory", new ResourceLocation(AssortedDecor.MODID, "block/fence_inventory"));
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_FENCE.get()).part().modelFile(colorizerFencePostModel.model).addModel().end();
 		fourWayMultipart(builder, colorizerFenceSideModel.model);
@@ -349,47 +349,47 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizerWall() {
-		ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_post")));
-		ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_side")));
-		ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_side_tall")));
-		ConfiguredModel colorizerWallInventoryModel = getModel("colorizer_wall_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/wall_inventory")));
+		ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", new ResourceLocation(AssortedDecor.MODID, "block/wall_post"));
+		ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", new ResourceLocation(AssortedDecor.MODID, "block/wall_side"));
+		ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", new ResourceLocation(AssortedDecor.MODID, "block/wall_side_tall"));
+		ConfiguredModel colorizerWallInventoryModel = getModel("colorizer_wall_inventory", new ResourceLocation(AssortedDecor.MODID, "block/wall_inventory"));
 
 		wallBlock(DecorBlocks.COLORIZER_WALL.get(), colorizerWallPostModel.model, colorizerWallSideModel.model, colorizerWallSideTallModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_wall")).parent(colorizerWallInventoryModel.model);
 	}
 
 	private void colorizerTrapDoor() {
-		ConfiguredModel colorizerTrapdoorBottomModel = getModel("colorizer_trapdoor_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_bottom")));
-		ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_open")));
-		ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_top")));
+		ConfiguredModel colorizerTrapdoorBottomModel = getModel("colorizer_trapdoor_bottom", new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_bottom"));
+		ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_open"));
+		ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", new ResourceLocation(AssortedDecor.MODID, "block/trapdoor_top"));
 
 		trapdoorBlock(DecorBlocks.COLORIZER_TRAP_DOOR.get(), colorizerTrapdoorBottomModel.model, colorizerTrapdoorTopModel.model, colorizerTrapdoorOpenModel.model, true);
 		itemModels().getBuilder(prefix("item/colorizer_trap_door")).parent(colorizerTrapdoorBottomModel.model);
 	}
 
 	private void colorizerDoor() {
-		ConfiguredModel colorizerDoorBottomModel = getModel("colorizer_door_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_bottom")));
-		ConfiguredModel colorizerDoorBottomRHModel = getModel("colorizer_door_bottom_rh", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_bottom_rh")));
-		ConfiguredModel colorizerDoorTopModel = getModel("colorizer_door_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_top")));
-		ConfiguredModel colorizerDoorTopRHModel = getModel("colorizer_door_top_rh", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/door_top_rh")));
-		ConfiguredModel colorizerDoorItemModel = getModel("colorizer_door", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/door")));
+		ConfiguredModel colorizerDoorBottomModel = getModel("colorizer_door_bottom", new ResourceLocation(AssortedDecor.MODID, "block/door_bottom"));
+		ConfiguredModel colorizerDoorBottomRHModel = getModel("colorizer_door_bottom_rh", new ResourceLocation(AssortedDecor.MODID, "block/door_bottom_rh"));
+		ConfiguredModel colorizerDoorTopModel = getModel("colorizer_door_top", new ResourceLocation(AssortedDecor.MODID, "block/door_top"));
+		ConfiguredModel colorizerDoorTopRHModel = getModel("colorizer_door_top_rh", new ResourceLocation(AssortedDecor.MODID, "block/door_top_rh"));
+		ConfiguredModel colorizerDoorItemModel = getModel("colorizer_door", new ResourceLocation(AssortedDecor.MODID, "item/door"));
 
 		doorBlock(DecorBlocks.COLORIZER_DOOR.get(), colorizerDoorBottomModel.model, colorizerDoorBottomRHModel.model, colorizerDoorTopModel.model, colorizerDoorTopRHModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_door")).parent(colorizerDoorItemModel.model);
 	}
 
 	private void colorizerStairs() {
-		ConfiguredModel colorizerStairsModel = getModel("colorizer_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/stairs")));
-		ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/inner_stairs")));
-		ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/outer_stairs")));
+		ConfiguredModel colorizerStairsModel = getModel("colorizer_stairs", new ResourceLocation(AssortedDecor.MODID, "block/stairs"));
+		ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", new ResourceLocation(AssortedDecor.MODID, "block/inner_stairs"));
+		ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", new ResourceLocation(AssortedDecor.MODID, "block/outer_stairs"));
 
 		stairsBlock(DecorBlocks.COLORIZER_STAIRS.get(), colorizerStairsModel.model, colorizerInnerStairsModel.model, colorizerOuterStairsModel.model);
 		itemModels().getBuilder(prefix("item/colorizer_stairs")).parent(colorizerStairsModel.model);
 	}
 
 	private void colorizerSlab() {
-		ConfiguredModel colorizerSlabModel = getModel("colorizer_slab", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/slab")));
-		ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/slab_top")));
+		ConfiguredModel colorizerSlabModel = getModel("colorizer_slab", new ResourceLocation(AssortedDecor.MODID, "block/slab"));
+		ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", new ResourceLocation(AssortedDecor.MODID, "block/slab_top"));
 		ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 
 		slabBlock(DecorBlocks.COLORIZER_SLAB.get(), colorizerSlabModel.model, colorizerSlabTopModel.model, colorizerModel);
@@ -397,10 +397,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizerLampPost() {
-		ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_bottom")));
-		ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_middle")));
-		ConfiguredModel colorizerLampPostTopModel = getModel("colorizer_lamp_post_top", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top")));
-		ConfiguredModel colorizerLampPostInventoryModel = getModel("colorizer_lamp_post_inventory", ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory")));
+		ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_bottom"));
+		ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_middle"));
+		ConfiguredModel colorizerLampPostTopModel = getModel("colorizer_lamp_post_top", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top"));
+		ConfiguredModel colorizerLampPostInventoryModel = getModel("colorizer_lamp_post_inventory", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory"));
 
 		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(colorizerLampPostTopModel);
 		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel.model);

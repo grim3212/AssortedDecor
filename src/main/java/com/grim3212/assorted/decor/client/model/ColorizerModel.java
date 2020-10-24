@@ -59,27 +59,20 @@ import net.minecraftforge.client.model.geometry.IModelGeometry;
 public class ColorizerModel implements IDynamicBakedModel {
 
 	protected final Function<RenderMaterial, TextureAtlasSprite> spriteGetter;
-	protected final ImmutableList<ResourceLocation> modelLocation;
+	protected final ResourceLocation modelLocation;
 	protected final ResourceLocation textureLocation;
 	protected final IModelTransform transform;
 	protected final IUnbakedModel baseModel;
-	protected final ImmutableList<IUnbakedModel> modelParts;
 	protected final ModelBakery bakery;
 
-	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, ImmutableList<ResourceLocation> modelLocation, ResourceLocation textureLocation, IModelTransform transform) {
+	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, ResourceLocation model, ResourceLocation textureLocation, IModelTransform transform) {
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
-		this.modelLocation = modelLocation;
+		this.modelLocation = model;
 		this.textureLocation = textureLocation;
 		this.transform = transform;
 
-		this.baseModel = ModelLoader.instance().getModelOrLogError(this.modelLocation.get(0), "Base model not found " + this.modelLocation.get(0));
-
-		ImmutableList.Builder<IUnbakedModel> builder = ImmutableList.builder();
-		for (int i = 1; i < modelLocation.size(); i++) {
-			builder.add(ModelLoader.instance().getModelOrLogError(this.modelLocation.get(i), "Model part not found " + this.modelLocation.get(i)));
-		}
-		this.modelParts = builder.build();
+		this.baseModel = ModelLoader.instance().getModelOrLogError(model, "Base model not found " + model);
 	}
 
 	@Override
@@ -131,30 +124,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 	 * @return
 	 */
 	protected IBakedModel generateModel(ImmutableMap<String, String> texture) {
-		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
-		builder.add(UnbakedColorizerPart.from((BlockModel) this.baseModel).retexture(texture).bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
-		for (IUnbakedModel model : this.modelParts)
-			builder.add(model.bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
-
-		return new DecorCompositeModel(builder.build());
-	}
-
-	/**
-	 * Generates the model defined in the json and then also merges extra models to
-	 * it
-	 * 
-	 * @param state
-	 * @param texture
-	 * @param models
-	 * @return
-	 */
-	protected IBakedModel generateModel(ImmutableMap<String, String> texture, IUnbakedModel... models) {
-		ImmutableList.Builder<IBakedModel> builder = ImmutableList.builder();
-		builder.add(this.generateModel(texture));
-		for (IUnbakedModel model : models)
-			builder.add(model.bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation.get(0)));
-
-		return new DecorCompositeModel(builder.build());
+		return UnbakedColorizerPart.from((BlockModel) this.baseModel).retexture(texture).bakeModel(this.bakery, this.spriteGetter, this.transform, this.modelLocation);
 	}
 
 	@Override
@@ -251,26 +221,26 @@ public class ColorizerModel implements IDynamicBakedModel {
 	public static class RawColorizerModel implements IModelGeometry<RawColorizerModel> {
 
 		private final ResourceLocation texture;
-		private final ImmutableList<ResourceLocation> parts;
+		private final ResourceLocation model;
 		private final ImmutableList<ResourceLocation> extraTextures;
 
-		RawColorizerModel(ResourceLocation texture, ImmutableList<ResourceLocation> parts) {
-			this(texture, parts, ImmutableList.of());
+		RawColorizerModel(ResourceLocation texture, ResourceLocation model) {
+			this(texture, model, ImmutableList.of());
 		}
 
-		RawColorizerModel(ResourceLocation texture, ImmutableList<ResourceLocation> parts, ImmutableList<ResourceLocation> extraTextures) {
+		RawColorizerModel(ResourceLocation texture, ResourceLocation model, ImmutableList<ResourceLocation> extraTextures) {
 			this.texture = texture;
-			this.parts = parts;
+			this.model = model;
 			this.extraTextures = extraTextures;
 		}
 
 		public RawColorizerModel withTexture(ResourceLocation newTexture) {
-			return new RawColorizerModel(newTexture, this.parts);
+			return new RawColorizerModel(newTexture, this.model);
 		}
 
 		@Override
 		public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
-			return new ColorizerModel(bakery, spriteGetter, this.parts, this.texture, modelTransform);
+			return new ColorizerModel(bakery, spriteGetter, this.model, this.texture, modelTransform);
 		}
 
 		@Override
@@ -295,7 +265,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		@Override
 		public RawColorizerModel read(JsonDeserializationContext deserializationContext, JsonObject modelContents) {
-			ImmutableList.Builder<ResourceLocation> modelLocations = ImmutableList.builder();
+			ResourceLocation model = null;
 			ImmutableList.Builder<ResourceLocation> extraTextures = ImmutableList.builder();
 
 			ResourceLocation base = new ResourceLocation(AssortedDecor.MODID, "block/colorizer");
@@ -303,16 +273,9 @@ public class ColorizerModel implements IDynamicBakedModel {
 			if (modelContents.has("texture"))
 				base = new ResourceLocation(modelContents.get("texture").getAsString());
 
-			if (!modelContents.has("parts"))
+			if (!modelContents.has("model"))
 				throw new UnsupportedOperationException("Model location not found for a ColorizerModel");
-
-			JsonArray models = modelContents.get("parts").getAsJsonArray();
-
-			for (JsonElement model : models) {
-				String modelLoc = model.getAsString();
-				AssortedDecor.LOGGER.info("Adding model : " + modelLoc);
-				modelLocations.add(new ResourceLocation(modelLoc));
-			}
+			model = new ResourceLocation(modelContents.get("model").getAsString());
 
 			if (modelContents.has("extraTextures")) {
 				JsonArray textures = modelContents.get("extraTextures").getAsJsonArray();
@@ -324,7 +287,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 				}
 			}
 
-			return new RawColorizerModel(base, modelLocations.build(), extraTextures.build());
+			return new RawColorizerModel(base, model, extraTextures.build());
 		}
 	}
 
