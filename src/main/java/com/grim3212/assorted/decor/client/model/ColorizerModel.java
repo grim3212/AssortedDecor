@@ -65,14 +65,13 @@ public class ColorizerModel implements IDynamicBakedModel {
 	protected final IUnbakedModel baseModel;
 	protected final ModelBakery bakery;
 
-	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, ResourceLocation model, ResourceLocation textureLocation, IModelTransform transform) {
+	public ColorizerModel(ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IUnbakedModel unbakedModel, ResourceLocation modelLocation, ResourceLocation textureLocation, IModelTransform transform) {
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
-		this.modelLocation = model;
+		this.modelLocation = modelLocation;
 		this.textureLocation = textureLocation;
 		this.transform = transform;
-
-		this.baseModel = ModelLoader.instance().getModelOrLogError(model, "Base model not found " + model);
+		this.baseModel = unbakedModel;
 	}
 
 	@Override
@@ -221,7 +220,7 @@ public class ColorizerModel implements IDynamicBakedModel {
 	public static class RawColorizerModel implements IModelGeometry<RawColorizerModel> {
 
 		private final ResourceLocation texture;
-		private final ResourceLocation model;
+		private ResourceLocation model;
 		private final ImmutableList<ResourceLocation> extraTextures;
 
 		RawColorizerModel(ResourceLocation texture, ResourceLocation model) {
@@ -240,7 +239,8 @@ public class ColorizerModel implements IDynamicBakedModel {
 
 		@Override
 		public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform modelTransform, ItemOverrideList overrides, ResourceLocation modelLocation) {
-			return new ColorizerModel(bakery, spriteGetter, this.model, this.texture, modelTransform);
+			IUnbakedModel unbakedModel = ModelLoader.instance().getModelOrLogError(this.model, "Base model not found " + this.model);
+			return new ColorizerModel(bakery, spriteGetter, unbakedModel, this.model, this.texture, modelTransform);
 		}
 
 		@Override
