@@ -19,7 +19,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.grim3212.assorted.decor.AssortedDecor;
 
 import joptsimple.internal.Strings;
 import net.minecraft.client.Minecraft;
@@ -30,7 +29,6 @@ import net.minecraft.client.renderer.model.ModelBakery;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
-import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.Direction;
@@ -282,7 +280,7 @@ public class OBJModelCopy implements IMultipartModelGeometry<OBJModelCopy> {
 		if (this.texture != null) {
 			return this.texture;
 		}
-		return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+		return null;
 	}
 
 	@Override
@@ -443,8 +441,11 @@ public class OBJModelCopy implements IMultipartModelGeometry<OBJModelCopy> {
 				MaterialLibrary.Material mat = mesh.mat;
 				if (mat == null)
 					continue;
-				TextureAtlasSprite texture = getTexture();// spriteGetter.apply(ModelLoaderRegistry.resolveTexture(mat.diffuseColorMap,
-															// owner));
+
+				TextureAtlasSprite texture = getTexture();
+				if (texture == null)
+					texture = spriteGetter.apply(ModelLoaderRegistry.resolveTexture(mat.diffuseColorMap, owner));
+
 				int tintIndex = mat.diffuseTintIndex;
 				Vector4f colorTint = mat.diffuseColor;
 

@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.mojang.datafixers.util.Pair;
 
+import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.IModelTransform;
 import net.minecraft.client.renderer.model.IUnbakedModel;
@@ -25,39 +26,33 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.IModelLoader;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
-import net.minecraftforge.client.model.obj.OBJModel;
 
-public class ColorizerOBJModel implements IModelGeometry<ColorizerOBJModel> {
+public class ColorizerBlockModel implements IModelGeometry<ColorizerBlockModel> {
+	private BlockModel unbakedColorizer;
 
-	private final OBJModelCopy objModel;
-
-	private ColorizerOBJModel(ResourceLocation objModelLocation) {
-		this.objModel = OBJModelCopy.loadModel(defaultSettings(objModelLocation));
-	}
-
-	private OBJModel.ModelSettings defaultSettings(ResourceLocation loc) {
-		return new OBJModel.ModelSettings(loc, true, true, true, true, null);
+	private ColorizerBlockModel(BlockModel unbakedColorizer) {
+		this.unbakedColorizer = unbakedColorizer;
 	}
 
 	@Nonnull
 	@Override
 	public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
 		Set<RenderMaterial> ret = new HashSet<>();
-		ret.addAll(this.objModel.getTextures(owner, modelGetter, missingTextureErrors));
+		ret.addAll(this.unbakedColorizer.getTextures(modelGetter, missingTextureErrors));
 		return ret;
 	}
 
 	@Nullable
 	@Override
 	public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform transform, ItemOverrideList overrides, ResourceLocation name) {
-		IBakedModel bakedColorizer = this.objModel.bake(owner, bakery, spriteGetter, transform, overrides, name);
-		return new ColorizerOBJBakedModel(bakedColorizer, objModel, owner, spriteGetter.apply(owner.resolveTexture("particle")), bakery, spriteGetter, transform, overrides, name);
+		IBakedModel bakedColorizer = unbakedColorizer.bakeModel(bakery, spriteGetter, transform, name);
+		return new ColorizerBlockBakedModel(bakedColorizer, unbakedColorizer, owner, spriteGetter.apply(owner.resolveTexture("particle")), bakery, spriteGetter, transform, overrides, name);
 	}
 
-	public enum Loader implements IModelLoader<ColorizerOBJModel> {
+	public enum Loader implements IModelLoader<ColorizerBlockModel> {
 		INSTANCE;
 
-		public static final ResourceLocation LOCATION = new ResourceLocation(AssortedDecor.MODID, "models/colorizer_obj");
+		public static final ResourceLocation LOCATION = new ResourceLocation(AssortedDecor.MODID, "models/colorizer");
 
 		@Override
 		public void onResourceManagerReload(@Nonnull IResourceManager resourceManager) {
@@ -65,11 +60,9 @@ public class ColorizerOBJModel implements IModelGeometry<ColorizerOBJModel> {
 
 		@Nonnull
 		@Override
-		public ColorizerOBJModel read(JsonDeserializationContext ctx, JsonObject modelContents) {
-			if (!modelContents.has("model"))
-				throw new UnsupportedOperationException("Model location not found for a ColorizerOBJModel");
-			ResourceLocation model = new ResourceLocation(modelContents.get("model").getAsString());
-			return new ColorizerOBJModel(model);
+		public ColorizerBlockModel read(JsonDeserializationContext ctx, JsonObject model) {
+			BlockModel colorizer = ctx.deserialize(model.getAsJsonObject("colorizer"), BlockModel.class);
+			return new ColorizerBlockModel(colorizer);
 		}
 	}
 }

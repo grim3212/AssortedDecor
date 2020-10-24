@@ -1,4 +1,9 @@
 {
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/lamp_post_inventory"
+  "colorizer": {
+    "parent": "assorteddecor:block/lamp_post_inventory",
+    "textures": {
+      "lamp": "minecraft:block/glowstone"
+    }
+  }
 }

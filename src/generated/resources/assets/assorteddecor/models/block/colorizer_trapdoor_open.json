@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/trapdoor_open"
+  "colorizer": {
+    "parent": "assorteddecor:block/trapdoor_open"
+  }
 }

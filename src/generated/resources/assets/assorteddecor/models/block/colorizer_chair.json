@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/chair"
+  "colorizer": {
+    "parent": "assorteddecor:block/chair"
+  }
 }

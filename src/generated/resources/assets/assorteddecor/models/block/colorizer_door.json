@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:item/door"
+  "colorizer": {
+    "parent": "assorteddecor:item/door"
+  }
 }

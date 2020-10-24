@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/fence_gate_wall_open"
+  "colorizer": {
+    "parent": "assorteddecor:block/fence_gate_wall_open"
+  }
 }

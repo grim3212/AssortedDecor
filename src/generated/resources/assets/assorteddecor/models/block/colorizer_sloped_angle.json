@@ -73,6 +73,9 @@
       ]
     }
   },
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer_obj",
   "model": "assorteddecor:models/block/sloped_angle.obj"
 }

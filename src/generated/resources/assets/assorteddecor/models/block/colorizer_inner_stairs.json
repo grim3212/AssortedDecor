@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/inner_stairs"
+  "colorizer": {
+    "parent": "assorteddecor:block/inner_stairs"
+  }
 }

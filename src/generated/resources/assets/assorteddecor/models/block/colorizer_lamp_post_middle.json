@@ -1,4 +1,9 @@
 {
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  },
   "loader": "assorteddecor:models/colorizer",
-  "model": "assorteddecor:block/lamp_post_middle"
+  "colorizer": {
+    "parent": "assorteddecor:block/lamp_post_middle"
+  }
 }

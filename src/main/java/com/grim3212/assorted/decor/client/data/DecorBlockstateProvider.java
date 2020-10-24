@@ -1,11 +1,8 @@
 package com.grim3212.assorted.decor.client.data;
 
-import com.google.common.collect.ImmutableList;
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.client.model.ColorizerModel.ColorizerLoader;
-import com.grim3212.assorted.decor.client.model.ColorizerModelBuilder;
-import com.grim3212.assorted.decor.client.model.ColorizerModelProvider;
-import com.grim3212.assorted.decor.client.model.ColorizerOBJModel.ColorizerOBJLoader;
+import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
+import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.common.block.ColorizerLampPost;
 import com.grim3212.assorted.decor.common.block.ColorizerLampPost.LampPart;
 import com.grim3212.assorted.decor.common.block.ColorizerStoolBlock;
@@ -64,7 +61,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerSlab();
 		colorizerLampPost();
 
-		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerLoader.LOCATION).model(new ResourceLocation(AssortedDecor.MODID, "item/brush")).extraTextures(ImmutableList.of(new ResourceLocation(AssortedDecor.MODID, "item/brush_handle")));
+		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerBlockModel.Loader.LOCATION).colorizer(new ResourceLocation(AssortedDecor.MODID, "item/brush")).addTexture("handle", new ResourceLocation(AssortedDecor.MODID, "item/brush_handle"));
 		itemModels().getBuilder(prefix("item/colorizer_brush")).parent(colorizerBrushModel);
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj"));
@@ -109,28 +106,35 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private void colorizer(Block b, ResourceLocation model) {
-		colorizer(ColorizerLoader.LOCATION, b, model, false, false, false, false);
+		colorizer(ColorizerBlockModel.Loader.LOCATION, b, model, false, false, false, false);
 	}
 
 	private void colorizerSide(Block b, ResourceLocation model) {
-		colorizer(ColorizerLoader.LOCATION, b, model, true, false, true, true);
+		colorizer(ColorizerBlockModel.Loader.LOCATION, b, model, true, false, true, true);
 	}
 
 	private void colorizerRotate(Block b, ResourceLocation model) {
-		colorizer(ColorizerLoader.LOCATION, b, model, false, false, true, false);
+		colorizer(ColorizerBlockModel.Loader.LOCATION, b, model, false, false, true, false);
 	}
 
 	private void colorizerOBJ(Block b, ResourceLocation model) {
-		colorizer(ColorizerOBJLoader.LOCATION, b, model, true, true, true, false);
+		colorizer(ColorizerOBJModel.Loader.LOCATION, b, model, true, true, true, false);
 	}
 
 	private void colorizerOBJSide(Block b, ResourceLocation model) {
-		colorizer(ColorizerOBJLoader.LOCATION, b, model, true, true, true, true);
+		colorizer(ColorizerOBJModel.Loader.LOCATION, b, model, true, true, true, true);
 	}
 
 	private void colorizer(ResourceLocation loader, Block b, ResourceLocation model, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
 		String name = name(b);
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).model(model);
+
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+		if (loader == ColorizerOBJModel.Loader.LOCATION) {
+			colorizerParent = colorizerParent.objModel(model);
+		} else {
+			colorizerParent = colorizerParent.colorizer(model);
+		}
+
 		if (defaultPerspective) {
 			if (defaultPerspectiveFlipped) {
 				defaultPerspectiveFlipped(colorizerParent);
@@ -161,7 +165,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private ConfiguredModel getModel(String builderName, ResourceLocation model) {
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerLoader.LOCATION).model(model);
+		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerBlockModel.Loader.LOCATION).colorizer(model).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 		return new ConfiguredModel(colorizerParent);
 	}
 
@@ -399,10 +403,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void colorizerLampPost() {
 		ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_bottom"));
 		ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_middle"));
-		ConfiguredModel colorizerLampPostTopModel = getModel("colorizer_lamp_post_top", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top"));
-		ConfiguredModel colorizerLampPostInventoryModel = getModel("colorizer_lamp_post_inventory", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory"));
+		ColorizerModelBuilder colorizerLampPostTopModel = this.loaderModels.getBuilder("colorizer_lamp_post_top").loader(ColorizerBlockModel.Loader.LOCATION).colorizer(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top")).addTexture("lamp", new ResourceLocation("block/glowstone")).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+		ColorizerModelBuilder colorizerLampPostInventoryModel = this.loaderModels.getBuilder("colorizer_lamp_post_inventory").loader(ColorizerBlockModel.Loader.LOCATION).colorizer(new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory")).addTexture("lamp", new ResourceLocation("block/glowstone"));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(colorizerLampPostTopModel);
-		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel.model);
+		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(new ConfiguredModel(colorizerLampPostTopModel));
+		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel);
 	}
 }

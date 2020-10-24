@@ -1,4 +1,4 @@
-package com.grim3212.assorted.decor.client.model;
+package com.grim3212.assorted.decor.client.data;
 
 import java.util.HashMap;
 import java.util.Map;
