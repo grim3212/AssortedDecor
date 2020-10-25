@@ -22,9 +22,11 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockDisplayReader;
+import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -43,6 +45,16 @@ public class ClientProxy implements IProxy {
 		if (Minecraft.getInstance() != null) {
 			ModelLoaderRegistry.registerLoader(ColorizerBlockModel.Loader.LOCATION, ColorizerBlockModel.Loader.INSTANCE);
 			ModelLoaderRegistry.registerLoader(ColorizerOBJModel.Loader.LOCATION, ColorizerOBJModel.Loader.INSTANCE);
+		}
+	}
+
+	@Override
+	public void produceSmoke(World world, BlockPos pos, double xMod, double yMod, double zMod, int amount, boolean makelarge) {
+		for (int i = 0; i < amount; i++) {
+			double xVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
+			double yVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
+			double zVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
+			world.addParticle(makelarge ? ParticleTypes.LARGE_SMOKE : ParticleTypes.SMOKE, pos.getX() + xMod + xVar, pos.getY() + yMod + yVar, pos.getZ() + zMod + zVar, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

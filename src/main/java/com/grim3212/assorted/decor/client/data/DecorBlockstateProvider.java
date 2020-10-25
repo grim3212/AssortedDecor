@@ -77,6 +77,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
 		genericBlock(DecorBlocks.HARDENED_WOOD.get());
 
+		ColorizerModelBuilder chimneyModel = getModelBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get()), new ResourceLocation(AssortedDecor.MODID, "block/chimney")).addTexture("top", new ResourceLocation(AssortedDecor.MODID, "block/chimney_top"));
+		getVariantBuilder(DecorBlocks.COLORIZER_CHIMNEY.get()).partialState().setModels(new ConfiguredModel(chimneyModel));
+		itemModels().getBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get())).parent(chimneyModel);
+
 		pot();
 
 		this.loaderModels.previousModels();
@@ -165,8 +169,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private ConfiguredModel getModel(String builderName, ResourceLocation model) {
-		ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(builderName).loader(ColorizerBlockModel.Loader.LOCATION).colorizer(model).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
-		return new ConfiguredModel(colorizerParent);
+		return new ConfiguredModel(getModelBuilder(builderName, model));
+	}
+
+	private ColorizerModelBuilder getModelBuilder(String builderName, ResourceLocation model) {
+		return this.loaderModels.getBuilder(builderName).loader(ColorizerBlockModel.Loader.LOCATION).colorizer(model).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 	}
 
 	private ResourceLocation loc(String name) {
