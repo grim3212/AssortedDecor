@@ -4,9 +4,9 @@
   },
   "loader": "assorteddecor:models/colorizer",
   "colorizer": {
-    "parent": "assorteddecor:block/lamp_post_inventory",
+    "parent": "assorteddecor:block/fireplace",
     "textures": {
-      "lamp": "minecraft:block/glowstone"
+      "wood": "minecraft:block/oak_planks"
     }
   }
 }

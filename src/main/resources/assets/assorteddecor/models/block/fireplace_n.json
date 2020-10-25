@@ -1,0 +1,83 @@
+{
+"parent": "minecraft:block/block",
+    "textures": {
+        "particle": "assorteddecor:block/colorizer",
+        "stored": "assorteddecor:block/colorizer",
+		"wood": "minecraft:block/oak_planks"
+    },
+"elements": [ 
+{
+    "__comment": "Base",
+    "from": [ 0, 0, 0 ],
+    "to": [ 16, 3, 16 ],
+    "faces": {
+        "down":  { "uv": [ 16, 16, 0, 0 ], "texture": "#stored", "tintindex": 0, "cullface": "down" },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#stored", "tintindex": 0 },
+        "north": { "uv": [ 0, 13, 16, 16 ], "texture": "#stored", "tintindex": 0, "cullface": "north" },
+        "south": { "uv": [ 0, 13, 16, 16 ], "texture": "#stored", "tintindex": 0, "cullface": "south" },
+        "west":  { "uv": [ 0, 13, 16, 16 ], "texture": "#stored", "tintindex": 0, "cullface": "west" },
+        "east":  { "uv": [ 0, 13, 16, 16 ], "texture": "#stored", "tintindex": 0, "cullface": "east" }
+    }
+},
+{
+    "__comment": "ColumnSE",
+    "from": [ 14, 3, 14 ],
+    "to": [ 16, 13, 16 ],
+    "faces": {
+        "north": { "uv": [ 0, 3, 2, 13 ], "texture": "#stored", "tintindex": 0 },
+        "south": { "uv": [ 14, 3, 16, 13 ], "texture": "#stored", "tintindex": 0, "cullface": "south" },
+        "west":  { "uv": [ 14, 3, 16, 13 ], "texture": "#stored", "tintindex": 0 },
+        "east":  { "uv": [ 0, 3, 2, 13 ], "texture": "#stored", "tintindex": 0, "cullface": "east" }
+    }
+},
+{
+    "__comment": "ColumnSW",
+    "from": [ 0, 3, 14 ],
+    "to": [ 2, 13, 16 ],
+    "faces": {
+        "north": { "uv": [ 14, 3, 16, 13 ], "texture": "#stored", "tintindex": 0 },
+        "south": { "uv": [ 0, 3, 2, 13 ], "texture": "#stored", "tintindex": 0, "cullface": "south" },
+        "west":  { "uv": [ 14, 3, 16, 13 ], "texture": "#stored", "tintindex": 0, "cullface": "west" },
+        "east":  { "uv": [ 0, 3, 2, 13 ], "texture": "#stored", "tintindex": 0 }
+    }
+},
+{
+    "__comment": "Top",
+    "from": [ 0, 13, 0 ],
+    "to": [ 16, 16, 16 ],
+    "faces": {
+        "down":  { "uv": [ 16, 16, 0, 0 ], "texture": "#stored", "tintindex": 0 },
+        "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#stored", "tintindex": 0, "cullface": "up" },
+        "north": { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "north" },
+        "south": { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "south" },
+        "west":  { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "west" },
+        "east":  { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "east" }
+    }
+},
+	{
+		"__comment": "Wood1",
+		"from": [ 3, 3, 6 ],
+		"to": [ 13, 4, 10 ],
+		"faces": {
+			"up":    { "uv": [ 3, 6, 13, 10 ], "texture": "#wood" },
+			"north": { "uv": [ 3, 12, 13, 13 ], "texture": "#wood" },
+			"south": { "uv": [ 3, 12, 13, 13 ], "texture": "#wood" },
+			"west":  { "uv": [ 6, 12, 10, 13 ], "texture": "#wood" },
+			"east":  { "uv": [ 6, 12, 10, 13 ], "texture": "#wood" }
+		}
+	},
+	{
+		"__comment": "Wood2",
+		"from": [ 6, 4, 3 ],
+		"to": [ 10, 5, 13 ],
+		"faces": {
+			"down":  { "uv": [ 10, 13, 6, 3 ], "texture": "#wood" },
+			"up":    { "uv": [ 6, 3, 10, 13 ], "texture": "#wood" },
+			"north": { "uv": [ 6, 11, 10, 12 ], "texture": "#wood" },
+			"south": { "uv": [ 6, 11, 10, 12 ], "texture": "#wood" },
+			"west":  { "uv": [ 3, 11, 13, 12 ], "texture": "#wood" },
+			"east":  { "uv": [ 3, 11, 13, 12 ], "texture": "#wood" }
+		}
+	}
+]
+}

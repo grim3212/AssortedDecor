@@ -1,0 +1,209 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace"
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "true",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_n",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_n",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_n",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_n",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "true",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ne",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "false",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ne",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "false",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ne",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "true",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ne",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "false",
+        "east": "true",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "false",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "false",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "true",
+        "west": "false"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "false",
+        "east": "true",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "false",
+        "south": "true",
+        "east": "true",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "south": "true",
+        "east": "true",
+        "west": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/colorizer_fireplace_ns",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "active": "true"
+      },
+      "apply": {
+        "model": "assorteddecor:block/fire"
+      }
+    }
+  ]
+}

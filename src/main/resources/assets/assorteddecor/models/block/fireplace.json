@@ -2,7 +2,8 @@
     "parent": "minecraft:block/block",
     "textures": {
         "particle": "assorteddecor:block/colorizer",
-        "stored": "assorteddecor:block/colorizer"
+        "stored": "assorteddecor:block/colorizer",
+		"wood": "minecraft:block/oak_planks"
     },
     "elements": [ 
     {
@@ -74,6 +75,31 @@
             "west":  { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "west" },
             "east":  { "uv": [ 0, 0, 16, 3 ], "texture": "#stored", "tintindex": 0, "cullface": "east" }
         }
-    }
+    },
+	{
+		"__comment": "Wood1",
+		"from": [ 3, 3, 6 ],
+		"to": [ 13, 4, 10 ],
+		"faces": {
+			"up":    { "uv": [ 3, 6, 13, 10 ], "texture": "#wood" },
+			"north": { "uv": [ 3, 12, 13, 13 ], "texture": "#wood" },
+			"south": { "uv": [ 3, 12, 13, 13 ], "texture": "#wood" },
+			"west":  { "uv": [ 6, 12, 10, 13 ], "texture": "#wood" },
+			"east":  { "uv": [ 6, 12, 10, 13 ], "texture": "#wood" }
+		}
+	},
+	{
+		"__comment": "Wood2",
+		"from": [ 6, 4, 3 ],
+		"to": [ 10, 5, 13 ],
+		"faces": {
+			"down":  { "uv": [ 10, 13, 6, 3 ], "texture": "#wood" },
+			"up":    { "uv": [ 6, 3, 10, 13 ], "texture": "#wood" },
+			"north": { "uv": [ 6, 11, 10, 12 ], "texture": "#wood" },
+			"south": { "uv": [ 6, 11, 10, 12 ], "texture": "#wood" },
+			"west":  { "uv": [ 3, 11, 13, 12 ], "texture": "#wood" },
+			"east":  { "uv": [ 3, 11, 13, 12 ], "texture": "#wood" }
+		}
+	}
     ]
     }
