@@ -44,9 +44,9 @@ public class ColorizerFireplaceBaseBlock extends ColorizerBlock {
 	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
 		if (worldIn.getBlockState(pos).get(ACTIVE)) {
 			if (!worldIn.isRemote) {
-				AssortedDecor.proxy.produceSmoke(worldIn, pos, 0.5D, 0.5D, 0.5D, 3, true);
 				worldIn.setBlockState(pos, worldIn.getBlockState(pos).with(ACTIVE, false));
 			}
+			AssortedDecor.proxy.produceSmoke(worldIn, pos, 0.5D, 0.5D, 0.5D, 3, true);
 			worldIn.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.4F + 0.8F);
 		}
 	}
@@ -54,9 +54,6 @@ public class ColorizerFireplaceBaseBlock extends ColorizerBlock {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		ItemStack heldItem = player.getHeldItem(hand);
-
-		if (worldIn.isRemote)
-			return ActionResultType.PASS;
 
 		if (!heldItem.isEmpty() && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
 			if (!worldIn.getBlockState(pos).get(ACTIVE)) {

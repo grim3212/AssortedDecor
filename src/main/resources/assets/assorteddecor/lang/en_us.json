@@ -32,5 +32,11 @@
 	"block.assorteddecor.colorizer_corner": "Colorizer Corner",
 	"block.assorteddecor.colorizer_slanted_corner": "Colorizer Slanted Corner",
 	"block.assorteddecor.colorizer_pyramid": "Colorizer Pyramid",
-	"block.assorteddecor.colorizer_full_pyramid": "Colorizer Full Pyramid"
+	"block.assorteddecor.colorizer_full_pyramid": "Colorizer Full Pyramid",
+	"block.assorteddecor.colorizer_chimney": "Colorizer Chimney",
+	"block.assorteddecor.colorizer_fireplace": "Colorizer Fireplace",
+	"block.assorteddecor.colorizer_firepit": "Colorizer Firepit",
+	"block.assorteddecor.colorizer_firepit_covered": "Colorizer Covered Firepit",
+	"block.assorteddecor.colorizer_firering": "Colorizer Firering",
+	"block.assorteddecor.colorizer_stove": "Colorizer Stove"
 }

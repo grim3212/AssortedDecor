@@ -23,7 +23,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -76,14 +75,13 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/full_pyramid.obj"));
 		colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_post.obj"));
 
-		simpleBlock(DecorBlocks.HARDENED_WOOD.get());
-		genericBlock(DecorBlocks.HARDENED_WOOD.get());
-
 		ColorizerModelBuilder chimneyModel = getModelBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get()), new ResourceLocation(AssortedDecor.MODID, "block/chimney")).addTexture("top", new ResourceLocation(AssortedDecor.MODID, "block/chimney_top"));
 		getVariantBuilder(DecorBlocks.COLORIZER_CHIMNEY.get()).partialState().setModels(new ConfiguredModel(chimneyModel));
 		itemModels().getBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get())).parent(chimneyModel);
 
 		colorizerFireplace();
+		colorizerFirepit();
+		colorizerFireringStove();
 
 		pot();
 
@@ -106,11 +104,6 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	private static String name(Block i) {
 		return Registry.BLOCK.getKey(i).getPath();
-	}
-
-	private ItemModelBuilder genericBlock(Block b) {
-		String name = name(b);
-		return itemModels().withExistingParent(name, prefix("block/" + name));
 	}
 
 	private void colorizer(Block b, ResourceLocation model) {
@@ -439,7 +432,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		builder.part().modelFile(colorizerFireplaceNEModel).uvLock(true).rotationY(180).addModel().condition(ColorizerFireplaceBlock.EAST, false).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, false).end();
 		builder.part().modelFile(colorizerFireplaceNEModel).uvLock(true).rotationY(270).addModel().condition(ColorizerFireplaceBlock.EAST, false).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, false).condition(ColorizerFireplaceBlock.NORTH, true).end();
 		builder.part().modelFile(colorizerFireplaceNEModel).uvLock(true).rotationY(90).addModel().condition(ColorizerFireplaceBlock.EAST, true).condition(ColorizerFireplaceBlock.WEST, false).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, false).end();
-		
+
 		builder.part().modelFile(colorizerFireplaceNSModel).uvLock(true).addModel().condition(ColorizerFireplaceBlock.EAST, true).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, false).condition(ColorizerFireplaceBlock.NORTH, false).end();
 		builder.part().modelFile(colorizerFireplaceNSModel).uvLock(true).addModel().condition(ColorizerFireplaceBlock.EAST, false).condition(ColorizerFireplaceBlock.WEST, false).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, true).end();
 		builder.part().modelFile(colorizerFireplaceNSModel).uvLock(true).addModel().condition(ColorizerFireplaceBlock.EAST, false).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, true).end();
@@ -448,7 +441,32 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		builder.part().modelFile(colorizerFireplaceNSModel).uvLock(true).addModel().condition(ColorizerFireplaceBlock.EAST, true).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, false).end();
 		builder.part().modelFile(colorizerFireplaceNSModel).uvLock(true).addModel().condition(ColorizerFireplaceBlock.EAST, true).condition(ColorizerFireplaceBlock.WEST, true).condition(ColorizerFireplaceBlock.SOUTH, true).condition(ColorizerFireplaceBlock.NORTH, true).end();
 		builder.part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
-	
+
 		itemModels().getBuilder(prefix("item/colorizer_fireplace")).parent(colorizerFireplaceModel);
+	}
+
+	private void colorizerFirepit() {
+		ColorizerModelBuilder colorizerFirepitModel = getModelBuilder("colorizer_firepit", new ResourceLocation(AssortedDecor.MODID, "block/firepit")).addTexture("wood", new ResourceLocation("block/oak_planks"));
+		ColorizerModelBuilder colorizerFirepitCoveredModel = getModelBuilder("colorizer_firepit_covered", new ResourceLocation(AssortedDecor.MODID, "block/firepit_covered")).addTexture("wood", new ResourceLocation("block/oak_planks")).addTexture("net", new ResourceLocation(AssortedDecor.MODID, "block/net"));
+		ModelFile fireModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/fire_high"));
+
+		getMultipartBuilder(DecorBlocks.COLORIZER_FIREPIT.get()).part().modelFile(colorizerFirepitModel).addModel().end().part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
+		itemModels().getBuilder(prefix("item/colorizer_firepit")).parent(colorizerFirepitModel);
+
+		getMultipartBuilder(DecorBlocks.COLORIZER_FIREPIT_COVERED.get()).part().modelFile(colorizerFirepitCoveredModel).addModel().end().part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
+		itemModels().getBuilder(prefix("item/colorizer_firepit_covered")).parent(colorizerFirepitCoveredModel);
+	}
+
+	private void colorizerFireringStove() {
+		ColorizerModelBuilder colorizerFireringModel = getModelBuilder("colorizer_firering", new ResourceLocation(AssortedDecor.MODID, "block/firering")).addTexture("wood", new ResourceLocation("block/oak_planks"));
+		ColorizerModelBuilder colorizerStoveModel = getModelBuilder("colorizer_stove", new ResourceLocation(AssortedDecor.MODID, "block/stove")).addTexture("wood", new ResourceLocation("block/oak_planks")).addTexture("net", new ResourceLocation(AssortedDecor.MODID, "block/net"));
+		ModelFile fireModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/fire"));
+		ModelFile fireHighModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/fire_high"));
+
+		getMultipartBuilder(DecorBlocks.COLORIZER_FIRERING.get()).part().modelFile(colorizerFireringModel).addModel().end().part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
+		itemModels().getBuilder(prefix("item/colorizer_firering")).parent(colorizerFireringModel);
+
+		getMultipartBuilder(DecorBlocks.COLORIZER_STOVE.get()).part().modelFile(colorizerStoveModel).addModel().end().part().modelFile(fireHighModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
+		itemModels().getBuilder(prefix("item/colorizer_stove")).parent(colorizerStoveModel);
 	}
 }
