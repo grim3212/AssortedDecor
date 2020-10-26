@@ -1,8 +1,8 @@
 package com.grim3212.assorted.decor.common.util;
 
-import com.grim3212.assorted.decor.common.block.ColorizerSlopeBlock;
-import com.grim3212.assorted.decor.common.block.ColorizerSlopeSideBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeSideBlock;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 
 import net.minecraft.block.Block;

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "IPI",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:colorizer"
+    },
+    "I": {
+      "item": "minecraft:iron_bars"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:colorizer_stove",
+    "count": 4
+  }
+}

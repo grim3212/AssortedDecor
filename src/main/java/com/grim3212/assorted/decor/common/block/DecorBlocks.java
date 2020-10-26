@@ -4,6 +4,26 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.AssortedDecor;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerChairBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerChimneyBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerCounterBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerDoorBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFenceBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFenceGateBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFirepitBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireringBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlabBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeSideBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStairsBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoveBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTrapDoorBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerWallBlock;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
 

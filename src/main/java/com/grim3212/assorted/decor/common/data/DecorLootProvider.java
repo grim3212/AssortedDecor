@@ -67,6 +67,10 @@ public class DecorLootProvider implements IDataProvider {
 		
 		blocks.add(DecorBlocks.COLORIZER_CHIMNEY.get());
 		blocks.add(DecorBlocks.COLORIZER_FIREPLACE.get());
+		blocks.add(DecorBlocks.COLORIZER_FIREPIT.get());
+		blocks.add(DecorBlocks.COLORIZER_FIREPIT_COVERED.get());
+		blocks.add(DecorBlocks.COLORIZER_FIRERING.get());
+		blocks.add(DecorBlocks.COLORIZER_STOVE.get());
 	}
 
 	@Override
