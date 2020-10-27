@@ -60,7 +60,7 @@ public class ClientProxy implements IProxy {
 
 	private void setupClient(final FMLClientSetupEvent event) {
 		for (Block b : DecorBlocks.colorizerBlocks()) {
-			RenderTypeLookup.setRenderLayer(b, RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(b, RenderType.getTranslucent());
 		}
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);

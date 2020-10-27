@@ -6,6 +6,7 @@ import com.grim3212.assorted.decor.common.block.IColorizer;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
@@ -16,11 +17,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public class ColorizerBrush extends Item {
@@ -51,10 +55,8 @@ public class ColorizerBrush extends Item {
 		BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 		BlockState hit = world.getBlockState(context.getPos());
 
-		if (stored.getBlock() == Blocks.AIR) {
-			// TODO: Check to make sure it is an allowed block
-
-			if (hit.getBlock() != null && hit.getBlock() != Blocks.AIR && !(hit.getBlock() instanceof IColorizer)) {
+		if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {
+			if (colorizerAccepted(world, pos, hit)) {
 				NBTHelper.putTag(stack, "stored_state", NBTUtil.writeBlockState(hit));
 				// Reset damage after grabbing a new block
 				stack.setDamage(0);
@@ -76,11 +78,13 @@ public class ColorizerBrush extends Item {
 				world.playSound(player, pos, placeSound.getPlaceSound(), SoundCategory.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
 				player.swingArm(hand);
 
-				int dmg = stack.getDamage() + 1;
-				if (stack.getMaxDamage() - dmg <= 0) {
-					player.setHeldItem(hand, new ItemStack(DecorItems.COLORIZER_BRUSH.get()));
-				} else {
-					stack.setDamage(dmg);
+				if (!player.isCreative()) {
+					int dmg = stack.getDamage() + 1;
+					if (stack.getMaxDamage() - dmg <= 0) {
+						player.setHeldItem(hand, new ItemStack(DecorItems.COLORIZER_BRUSH.get()));
+					} else {
+						stack.setDamage(dmg);
+					}
 				}
 
 				return ActionResultType.SUCCESS;
@@ -88,5 +92,18 @@ public class ColorizerBrush extends Item {
 		}
 
 		return ActionResultType.PASS;
+	}
+
+	protected boolean colorizerAccepted(IBlockReader world, BlockPos pos, BlockState state) {
+		Block block = state.getBlock();
+
+		if (block != null && block != Blocks.AIR && !(block instanceof IColorizer)) {
+			return isShapeFullCube(state.getShape(world, pos), state);
+		}
+		return false;
+	}
+
+	public boolean isShapeFullCube(VoxelShape shape, BlockState state) {
+		return Block.doesSideFillSquare(shape, Direction.UP) && Block.doesSideFillSquare(shape, Direction.DOWN) && Block.doesSideFillSquare(shape, Direction.EAST) && Block.doesSideFillSquare(shape, Direction.WEST) && Block.doesSideFillSquare(shape, Direction.NORTH) && Block.doesSideFillSquare(shape, Direction.SOUTH);
 	}
 }

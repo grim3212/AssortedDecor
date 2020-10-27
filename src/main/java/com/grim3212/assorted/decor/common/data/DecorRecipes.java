@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
+import com.grim3212.assorted.decor.common.lib.DecorTags;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.data.CookingRecipeBuilder;
@@ -12,6 +13,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
+import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.data.SingleItemRecipeBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
@@ -31,6 +33,7 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.WOOD_FRAME.get()).key('X', ItemTags.PLANKS).patternLine("  X").patternLine(" X ").patternLine("X  ").addCriterion("has_planks", hasItem(ItemTags.PLANKS)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.IRON_FRAME.get()).key('X', Tags.Items.INGOTS_IRON).patternLine("  X").patternLine(" X ").patternLine("X  ").addCriterion("has_iron", hasItem(Tags.Items.INGOTS_IRON)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.COLORIZER_BRUSH.get()).key('X', DecorBlocks.COLORIZER.get()).key('R', Tags.Items.RODS_WOODEN).key('S', Tags.Items.STRING).patternLine("R  ").patternLine(" RS").patternLine(" SX").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);
+		ShapelessRecipeBuilder.shapelessRecipe(DecorItems.COLORIZER_BRUSH.get()).addIngredient(DecorTags.Items.BUCKETS_WATER).addIngredient(DecorItems.COLORIZER_BRUSH.get()).addCriterion("has_brush", hasItem(DecorItems.COLORIZER_BRUSH.get())).build(consumer, prefix("clean_colorizer_brush"));
 
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER.get(), 4).key('X', Tags.Items.STONE).key('R', Tags.Items.DYES_RED).key('G', Tags.Items.DYES_GREEN).key('B', Tags.Items.DYES_BLUE).key('D', Tags.Items.DYES).patternLine("XRX").patternLine("GDB").patternLine("XDX").addCriterion("has_stone", hasItem(Tags.Items.STONE)).addCriterion("has_dye", hasItem(Tags.Items.DYES)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_CHAIR.get(), 4).key('X', DecorBlocks.COLORIZER.get()).patternLine("X  ").patternLine("XXX").patternLine("X X").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);

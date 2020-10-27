@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:clean_colorizer_brush"
+    ]
+  },
+  "criteria": {
+    "has_brush": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assorteddecor:colorizer_brush"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:clean_colorizer_brush"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_brush",
+      "has_the_recipe"
+    ]
+  ]
+}
