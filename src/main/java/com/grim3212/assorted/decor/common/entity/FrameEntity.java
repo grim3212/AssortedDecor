@@ -1,10 +1,10 @@
 package com.grim3212.assorted.decor.common.entity;
 
+import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.item.FrameItem.FrameMaterial;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.HangingEntity;
@@ -27,6 +27,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -232,6 +234,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
+	@OnlyIn(Dist.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 		BlockPos blockpos = this.hangingPosition.add(x - this.getPosX(), y - this.getPosY(), z - this.getPosZ());
 		this.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
@@ -263,7 +266,9 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	@Override
 	public boolean canBeCollidedWith() {
-		PlayerEntity player = Minecraft.getInstance().player;
+		PlayerEntity player = AssortedDecor.proxy.getClientPlayer();
+		if (player == null)
+			return false;
 
 		for (Hand hand : Hand.values()) {
 			ItemStack handStack = player.getHeldItem(hand);

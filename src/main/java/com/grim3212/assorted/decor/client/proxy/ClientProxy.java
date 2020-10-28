@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.color.BlockColors;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.particles.ParticleTypes;
@@ -117,5 +118,10 @@ public class ClientProxy implements IProxy {
 				}
 			}, DecorItems.COLORIZER_BRUSH.get());
 		});
+	}
+
+	@Override
+	public PlayerEntity getClientPlayer() {
+		return Minecraft.getInstance().player;
 	}
 }
