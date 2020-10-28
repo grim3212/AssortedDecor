@@ -1,5 +1,6 @@
 package com.grim3212.assorted.decor.client.model;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -77,16 +78,10 @@ public class OBJModelCopy implements IMultipartModelGeometry<OBJModelCopy> {
 	private static IResourceManager manager = Minecraft.getInstance().getResourceManager();
 
 	public static OBJModelCopy loadModel(OBJModel.ModelSettings settings) {
-
-		IResource resource;
-		try {
-			resource = manager.getResource(settings.modelLocation);
-		} catch (IOException e) {
-			throw new RuntimeException("Could not find OBJ model", e);
-		}
-
-		try (LineReader rdr = new LineReader(resource)) {
+		try (IResource resource = manager.getResource(settings.modelLocation); LineReader rdr = new LineReader(resource)) {
 			return new OBJModelCopy(rdr, settings);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException("Could not find OBJ model", e);
 		} catch (Exception e) {
 			throw new RuntimeException("Could not read OBJ model", e);
 		}

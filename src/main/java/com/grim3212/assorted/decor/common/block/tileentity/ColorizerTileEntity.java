@@ -16,6 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ColorizerTileEntity extends TileEntity {
 
+	//TODO: Color overrides
 	public static final ModelProperty<BlockState> BLOCK_STATE = new ModelProperty<BlockState>();
 	protected BlockState blockState = Blocks.AIR.getDefaultState();
 
