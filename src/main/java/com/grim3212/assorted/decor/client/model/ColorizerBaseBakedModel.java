@@ -133,7 +133,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 	public static final class ColorizerItemOverrideList extends ItemOverrideList {
 
 		@Override
-		public IBakedModel func_239290_a_(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public IBakedModel getOverrideModel(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			ColorizerBaseBakedModel colorizerModel = (ColorizerBaseBakedModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {

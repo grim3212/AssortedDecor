@@ -19,7 +19,7 @@ public class RetexturableBlockModel extends BlockModel {
 	private final Map<String, RenderMaterial> replacements = new HashMap<>();
 
 	public static RetexturableBlockModel from(BlockModel parent) {
-		RetexturableBlockModel model = new RetexturableBlockModel(parent.getParentLocation(), parent.getElements(), parent.textures, parent.ambientOcclusion, parent.func_230176_c_(), parent.getAllTransforms(), parent.getOverrides());
+		RetexturableBlockModel model = new RetexturableBlockModel(parent.getParentLocation(), parent.getElements(), parent.textures, parent.ambientOcclusion, parent.getGuiLight(), parent.getAllTransforms(), parent.getOverrides());
 		model.customData.copyFrom(parent.customData);
 		return model;
 	}

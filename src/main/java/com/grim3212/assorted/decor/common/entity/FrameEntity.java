@@ -255,7 +255,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public boolean func_241849_j(Entity ent) {
+	public boolean canCollide(Entity ent) {
 		return ent instanceof PlayerEntity && this.func_241845_aY();
 	}
 

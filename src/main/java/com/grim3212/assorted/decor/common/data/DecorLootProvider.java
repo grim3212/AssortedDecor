@@ -118,7 +118,7 @@ public class DecorLootProvider implements IDataProvider {
 
 	@Override
 	public String getName() {
-		return "Assorted Storage loot tables";
+		return "Assorted Decor loot tables";
 	}
 
 }
