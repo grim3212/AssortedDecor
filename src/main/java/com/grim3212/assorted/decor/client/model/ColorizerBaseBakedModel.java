@@ -71,6 +71,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 		if (extraData.getData(ColorizerTileEntity.BLOCK_STATE) != null) {
 			blockState = extraData.getData(ColorizerTileEntity.BLOCK_STATE);
 		}
+
 		return this.getCachedModel(blockState).getQuads(state, side, rand, extraData);
 	}
 
@@ -108,14 +109,13 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 
 	@Override
 	public TextureAtlasSprite getParticleTexture(IModelData data) {
-		if (data.getData(ColorizerTileEntity.BLOCK_STATE) == null) {
+		BlockState state = data.getData(ColorizerTileEntity.BLOCK_STATE);
+		if (state == null) {
 			return this.baseSprite;
-		} else if (data.getData(ColorizerTileEntity.BLOCK_STATE) == Blocks.AIR.getDefaultState()) {
+		} else if (state == Blocks.AIR.getDefaultState()) {
 			return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 		}
-
-		BlockModelShapes blockModel = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes();
-		return blockModel.getTexture(data.getData(ColorizerTileEntity.BLOCK_STATE));
+		return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
 	}
 
 	@Override
