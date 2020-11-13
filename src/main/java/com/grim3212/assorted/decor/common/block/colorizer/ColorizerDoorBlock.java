@@ -2,7 +2,6 @@ package com.grim3212.assorted.decor.common.block.colorizer;
 
 import com.grim3212.assorted.decor.common.block.IColorizer;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
-import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.block.Block;
@@ -78,19 +77,6 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer {
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
 		return this.getStoredState(world, pos) != Blocks.AIR.getDefaultState() ? this.getStoredState(world, pos).getLightValue(world, pos) : super.getLightValue(state, world, pos);
-	}
-
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
-		if (DecorConfig.COMMON.consumeBlock.get()) {
-			if (!player.abilities.isCreativeMode) {
-				if (this.getStoredState(worldIn, pos) != Blocks.AIR.getDefaultState()) {
-					BlockState blockState = this.getStoredState(worldIn, pos);
-					spawnAsEntity(worldIn, pos, new ItemStack(blockState.getBlock(), 1));
-				}
-			}
-		}
 	}
 
 	@Override

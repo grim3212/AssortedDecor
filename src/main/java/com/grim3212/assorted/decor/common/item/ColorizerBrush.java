@@ -60,7 +60,9 @@ public class ColorizerBrush extends Item {
 				NBTHelper.putTag(stack, "stored_state", NBTUtil.writeBlockState(hit));
 				// Reset damage after grabbing a new block
 				stack.setDamage(0);
-				world.setBlockState(pos, Blocks.AIR.getDefaultState());
+				
+				if (DecorConfig.COMMON.consumeBlock.get())
+					world.setBlockState(pos, Blocks.AIR.getDefaultState());
 
 				player.swingArm(hand);
 			}
