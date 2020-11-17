@@ -66,6 +66,12 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		BlockState tableState = super.getStateForPlacement(context);
+		
+		if(tableState == null) {
+			return this.getDefaultState();
+		}
+		
 		BlockPos blockpos = context.getPos();
 		BlockPos northPos = blockpos.north();
 		BlockPos eastPos = blockpos.east();
@@ -73,7 +79,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 		BlockPos westPos = blockpos.west();
 		BlockPos upPos = blockpos.up();
 		BlockPos downPos = blockpos.down();
-		return super.getStateForPlacement(context).with(NORTH, this.canConnectTo(context.getWorld(), blockpos, northPos)).with(EAST, this.canConnectTo(context.getWorld(), blockpos, eastPos)).with(SOUTH, this.canConnectTo(context.getWorld(), blockpos, southPos)).with(WEST, this.canConnectTo(context.getWorld(), blockpos, westPos)).with(UP, this.canConnectTo(context.getWorld(), blockpos, upPos)).with(DOWN, this.canConnectTo(context.getWorld(), blockpos, downPos));
+		return tableState.with(NORTH, this.canConnectTo(context.getWorld(), blockpos, northPos)).with(EAST, this.canConnectTo(context.getWorld(), blockpos, eastPos)).with(SOUTH, this.canConnectTo(context.getWorld(), blockpos, southPos)).with(WEST, this.canConnectTo(context.getWorld(), blockpos, westPos)).with(UP, this.canConnectTo(context.getWorld(), blockpos, upPos)).with(DOWN, this.canConnectTo(context.getWorld(), blockpos, downPos));
 	}
 
 	@Override
