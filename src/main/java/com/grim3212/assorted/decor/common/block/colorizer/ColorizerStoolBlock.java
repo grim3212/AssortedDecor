@@ -41,6 +41,10 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockState stoolState = super.getStateForPlacement(context);
+		
+		if(stoolState == null) {
+			return this.getDefaultState();
+		}
 		return stoolState.with(UP, isPotUp(stoolState, context.getWorld(), context.getPos()));
 	}
 
