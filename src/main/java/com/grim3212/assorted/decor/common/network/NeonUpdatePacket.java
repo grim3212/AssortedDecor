@@ -10,8 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -20,11 +19,11 @@ public class NeonUpdatePacket {
 	private BlockPos pos;
 	private String[] lines;
 
-	public NeonUpdatePacket(BlockPos pos, ITextComponent[] linesIn) {
+	public NeonUpdatePacket(BlockPos pos, IFormattableTextComponent[] linesIn) {
 		this.pos = pos;
 
 		// We want to save formatting codes
-		this.lines = new String[] { linesIn[0].getUnformattedComponentText(), linesIn[1].getUnformattedComponentText(), linesIn[2].getUnformattedComponentText(), linesIn[3].getUnformattedComponentText() };
+		this.lines = new String[] { IFormattableTextComponent.Serializer.toJson(linesIn[0]), IFormattableTextComponent.Serializer.toJson(linesIn[1]), IFormattableTextComponent.Serializer.toJson(linesIn[2]), IFormattableTextComponent.Serializer.toJson(linesIn[3]) };
 	}
 
 	public NeonUpdatePacket(BlockPos pos, String[] linesIn) {
@@ -66,8 +65,9 @@ public class NeonUpdatePacket {
 					}
 
 					for (int i = 0; i < this.lines.length; ++i) {
+						AssortedDecor.LOGGER.info(this.lines[i]);
 						// Again do not strip away formatting codes
-						neonSign.signText[i] = new StringTextComponent(this.lines[i]);
+						neonSign.signText[i] = IFormattableTextComponent.Serializer.getComponentFromJson(this.lines[i]);
 					}
 
 					neonSign.markDirty();

@@ -80,7 +80,7 @@ public class NeonSignScreen extends Screen {
 
 		this.minecraft.keyboardListener.enableRepeatEvents(true);
 		this.addButton(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, new TranslationTextComponent("gui.done"), btn -> {
-			this.onClose();
+			this.close();
 		}));
 
 		for (int l = 0; l < 11; l++) {
@@ -245,7 +245,6 @@ public class NeonSignScreen extends Screen {
 		float f2 = 0.010416667F;
 		matrixStack.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
 		matrixStack.scale(f2, -f2, f2);
-		int i = this.tileSign.getTextColor().getTextColor();
 		int j = this.textInputUtil.getEndIndex();
 		int k = this.textInputUtil.getStartIndex();
 		int l = this.editLine * 10 - this.lines.length * 5;
@@ -259,12 +258,12 @@ public class NeonSignScreen extends Screen {
 				}
 
 				float f3 = (float) (-this.minecraft.fontRenderer.getStringWidth(s) / 2);
-				this.minecraft.fontRenderer.func_238411_a_(s, f3, (float) (i1 * 10 - this.lines.length * 5), i, false, matrix4f, irendertypebuffer$impl, false, 0, 15728880, false);
+				this.minecraft.fontRenderer.func_243248_b(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 0x000000);
 				if (i1 == this.editLine && j >= 0 && flag1) {
 					int j1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
 					int k1 = j1 - this.minecraft.fontRenderer.getStringWidth(s) / 2;
 					if (j >= s.length()) {
-						this.minecraft.fontRenderer.func_238411_a_("_", (float) k1, (float) l, i, false, matrix4f, irendertypebuffer$impl, false, 0, 15728880, false);
+						this.minecraft.fontRenderer.drawString(matrixStack, "_", (float) k1, (float) l, 0x000000);
 					}
 				}
 			}
@@ -278,7 +277,7 @@ public class NeonSignScreen extends Screen {
 				int j3 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
 				int k3 = j3 - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
 				if (flag1 && j < s1.length()) {
-					fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | i);
+					fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | 0x000000);
 				}
 
 				if (k != j) {

@@ -1,7 +1,6 @@
 package com.grim3212.assorted.decor.common.block.tileentity;
 
 import java.util.UUID;
-import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -14,7 +13,6 @@ import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
@@ -22,6 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
@@ -31,11 +30,12 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class NeonSignTileEntity extends TileEntity implements ICommandSource {
+public class NeonSignTileEntity extends TileEntity {
 
-	public ITextComponent[] signText = new ITextComponent[] { StringTextComponent.EMPTY, StringTextComponent.EMPTY, StringTextComponent.EMPTY, StringTextComponent.EMPTY };
+	public static final StringTextComponent EMPTY = new StringTextComponent("");
+
+	public IFormattableTextComponent[] signText = new IFormattableTextComponent[] { EMPTY, EMPTY, EMPTY, EMPTY };
 	private final IReorderingProcessor[] renderText = new IReorderingProcessor[4];
-	private DyeColor textColor = DyeColor.BLACK;
 	private UUID owner;
 	public int mode = 0;
 
@@ -44,11 +44,11 @@ public class NeonSignTileEntity extends TileEntity implements ICommandSource {
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public ITextComponent getText(int line) {
+	public IFormattableTextComponent getText(int line) {
 		return this.signText[line];
 	}
 
-	public void setText(int line, ITextComponent signText) {
+	public void setText(int line, IFormattableTextComponent signText) {
 		this.signText[line] = signText;
 		this.renderText[line] = null;
 	}
@@ -64,16 +64,6 @@ public class NeonSignTileEntity extends TileEntity implements ICommandSource {
 
 	public Entity getOwner() {
 		return this.owner != null && this.world instanceof ServerWorld ? ((ServerWorld) this.world).getEntityByUuid(this.owner) : null;
-	}
-
-	@Nullable
-	@OnlyIn(Dist.CLIENT)
-	public IReorderingProcessor func_242686_a(int p_242686_1_, Function<ITextComponent, IReorderingProcessor> p_242686_2_) {
-		if (this.renderText[p_242686_1_] == null && this.signText[p_242686_1_] != null) {
-			this.renderText[p_242686_1_] = p_242686_2_.apply(this.signText[p_242686_1_]);
-		}
-
-		return this.renderText[p_242686_1_];
 	}
 
 	public boolean executeCommand(PlayerEntity playerIn) {
@@ -96,21 +86,6 @@ public class NeonSignTileEntity extends TileEntity implements ICommandSource {
 		return new CommandSource(ICommandSource.DUMMY, Vector3d.copyCentered(this.pos), Vector2f.ZERO, (ServerWorld) this.world, 2, s, itextcomponent, this.world.getServer(), playerIn);
 	}
 
-	public DyeColor getTextColor() {
-		return this.textColor;
-	}
-
-	public boolean setTextColor(DyeColor newColor) {
-		if (newColor != this.getTextColor()) {
-			this.textColor = newColor;
-			this.markDirty();
-			this.world.notifyBlockUpdate(this.getPos(), this.getBlockState(), this.getBlockState(), 3);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	@Override
 	public CompoundNBT write(CompoundNBT compound) {
 		super.write(compound);
@@ -126,23 +101,21 @@ public class NeonSignTileEntity extends TileEntity implements ICommandSource {
 
 	public void writePacketNBT(CompoundNBT cmp) {
 		cmp.putInt("Mode", mode);
-		cmp.putString("Color", this.textColor.getTranslationKey());
 		cmp.putUniqueId("Owner", owner);
 
 		for (int i = 0; i < 4; ++i) {
-			String s = ITextComponent.Serializer.toJson(this.signText[i]);
+			String s = IFormattableTextComponent.Serializer.toJson(this.signText[i]);
 			cmp.putString("Text" + (i + 1), s);
 		}
 	}
 
 	public void readPacketNBT(CompoundNBT cmp) {
 		this.mode = cmp.getInt("Mode");
-		this.textColor = DyeColor.byTranslationKey(cmp.getString("Color"), DyeColor.BLACK);
 		this.owner = cmp.getUniqueId("Owner");
 
 		for (int i = 0; i < 4; ++i) {
 			String s = cmp.getString("Text" + (i + 1));
-			ITextComponent itextcomponent = ITextComponent.Serializer.getComponentFromJson(s.isEmpty() ? "\"\"" : s);
+			IFormattableTextComponent itextcomponent = IFormattableTextComponent.Serializer.getComponentFromJson(s.isEmpty() ? "\"\"" : s);
 			if (this.world instanceof ServerWorld) {
 				try {
 					this.signText[i] = TextComponentUtils.func_240645_a_(this.getCommandSource((ServerPlayerEntity) null), itextcomponent, (Entity) null, 0);
@@ -176,24 +149,5 @@ public class NeonSignTileEntity extends TileEntity implements ICommandSource {
 		if (world instanceof ClientWorld) {
 			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
 		}
-	}
-
-	@Override
-	public void sendMessage(ITextComponent component, UUID senderUUID) {
-	}
-
-	@Override
-	public boolean shouldReceiveFeedback() {
-		return false;
-	}
-
-	@Override
-	public boolean shouldReceiveErrors() {
-		return false;
-	}
-
-	@Override
-	public boolean allowLogging() {
-		return false;
 	}
 }
