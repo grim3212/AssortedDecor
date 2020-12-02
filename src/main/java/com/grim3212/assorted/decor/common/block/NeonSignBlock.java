@@ -69,7 +69,7 @@ public class NeonSignBlock extends Block implements IWaterLoggable {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (worldIn.isRemote) {
-			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getTileEntity(pos), player);
+			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getTileEntity(pos));
 			return ActionResultType.SUCCESS;
 		} else {
 			TileEntity tileentity = worldIn.getTileEntity(pos);

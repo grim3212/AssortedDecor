@@ -1,7 +1,5 @@
 package com.grim3212.assorted.decor.common.proxy;
 
-import javax.annotation.Nullable;
-
 import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,6 +17,9 @@ public interface IProxy {
 		return null;
 	}
 
-	default void openNeonSign(NeonSignTileEntity tile, @Nullable PlayerEntity player) {
+	default void openNeonSign(NeonSignTileEntity tile) {
+	}
+
+	default void handleOpenNeonSign(BlockPos pos) {
 	}
 }

@@ -1,7 +1,5 @@
 package com.grim3212.assorted.decor.client.proxy;
 
-import javax.annotation.Nullable;
-
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
@@ -135,7 +133,20 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void openNeonSign(NeonSignTileEntity tile, @Nullable PlayerEntity player) {
+	public void openNeonSign(NeonSignTileEntity tile) {
 		Minecraft.getInstance().displayGuiScreen(new NeonSignScreen(tile));
+	}
+
+	@Override
+	public void handleOpenNeonSign(BlockPos pos) {
+		TileEntity tileentity = Minecraft.getInstance().player.getEntityWorld().getTileEntity(pos);
+
+		// Make sure TileEntity exists
+		if (!(tileentity instanceof NeonSignTileEntity)) {
+			tileentity = new NeonSignTileEntity();
+			tileentity.setWorldAndPos(Minecraft.getInstance().player.getEntityWorld(), pos);
+		}
+
+		openNeonSign((NeonSignTileEntity) tileentity);
 	}
 }
