@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XCX",
+    " G "
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:obsidian"
+    },
+    "G": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:neon_sign",
+    "count": 3
+  }
+}

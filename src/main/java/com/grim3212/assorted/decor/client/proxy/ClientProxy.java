@@ -4,8 +4,10 @@ import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
+import com.grim3212.assorted.decor.client.tileentity.NeonSignTileEntityRenderer;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
@@ -30,6 +32,7 @@ import net.minecraft.world.IBlockDisplayReader;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -66,6 +69,8 @@ public class ClientProxy implements IProxy {
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
+
+		ClientRegistry.bindTileEntityRenderer(DecorTileEntityTypes.NEON_SIGN.get(), NeonSignTileEntityRenderer::new);
 	}
 
 	public void loadComplete(final FMLLoadCompleteEvent event) {

@@ -72,6 +72,9 @@ public class DecorBlocks {
 
 	public static final RegistryObject<PlanterPotBlock> PLANTER_POT = register("planter_pot", () -> new PlanterPotBlock());
 
+	public static final RegistryObject<NeonSignBlock> NEON_SIGN = registerNoItem("neon_sign", () -> new NeonSignStandingBlock());
+	public static final RegistryObject<NeonSignBlock> NEON_SIGN_WALL = registerNoItem("neon_sign_wall", () -> new NeonSignWallBlock());
+
 	private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
 		return register(name, sup, block -> item(block));
 	}

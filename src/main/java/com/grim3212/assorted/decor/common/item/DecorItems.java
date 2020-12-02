@@ -21,6 +21,8 @@ public class DecorItems {
 	public static final RegistryObject<ColorizerBrush> COLORIZER_BRUSH = register("colorizer_brush", () -> new ColorizerBrush(new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 	public static final RegistryObject<Item> UNFIRED_PLANTER_POT = register("unfired_planter_pot", () -> new Item(new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 
+	public static final RegistryObject<NeonSignItem> NEON_SIGN = register("neon_sign", () -> new NeonSignItem(new Item.Properties().maxStackSize(16).group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
+
 	private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
 		return ITEMS.register(name, sup);
 	}

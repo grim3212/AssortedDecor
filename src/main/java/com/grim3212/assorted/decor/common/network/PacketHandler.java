@@ -20,6 +20,9 @@ public final class PacketHandler {
 
 	public static void init() {
 		int id = 0;
+		HANDLER.registerMessage(id++, NeonChangeModePacket.class, NeonChangeModePacket::encode, NeonChangeModePacket::decode, NeonChangeModePacket::handle);
+		HANDLER.registerMessage(id++, NeonOpenPacket.class, NeonOpenPacket::encode, NeonOpenPacket::decode, NeonOpenPacket::handle);
+		HANDLER.registerMessage(id++, NeonUpdatePacket.class, NeonUpdatePacket::encode, NeonUpdatePacket::decode, NeonUpdatePacket::handle);
 	}
 
 	/**

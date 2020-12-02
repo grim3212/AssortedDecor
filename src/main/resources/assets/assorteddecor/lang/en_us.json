@@ -4,12 +4,15 @@
 	"tooltip.colorizer_brush.empty": "Empty",
 	"tooltip.colorizer_brush.stored": "Stored: %s",
 	
+	"item.assorteddecor.neon_sign": "Neon Sign",
 	"item.assorteddecor.wallpaper": "Wallpaper",
 	"item.assorteddecor.wood_frame": "Wood Frame",
 	"item.assorteddecor.iron_frame": "Iron Frame",
 	"item.assorteddecor.colorizer_brush": "Colorizer Brush",
 	"item.assorteddecor.unfired_planter_pot": "Unfired Planter Pot",
 	
+	"block.assorteddecor.neon_sign": "Neon Sign",
+	"block.assorteddecor.neon_sign_wall": "Neon Sign",
 	"block.assorteddecor.planter_pot": "Planter Pot",
 	"block.assorteddecor.colorizer": "Colorizer",
 	"block.assorteddecor.colorizer_chair": "Colorizer Chair",
@@ -38,5 +41,12 @@
 	"block.assorteddecor.colorizer_firepit": "Colorizer Firepit",
 	"block.assorteddecor.colorizer_firepit_covered": "Colorizer Covered Firepit",
 	"block.assorteddecor.colorizer_firering": "Colorizer Firering",
-	"block.assorteddecor.colorizer_stove": "Colorizer Stove"
+	"block.assorteddecor.colorizer_stove": "Colorizer Stove",
+	
+	"screen.assorteddecor.neon_sign.bold": "Bold",
+	"screen.assorteddecor.neon_sign.italic": "Italic",
+	"screen.assorteddecor.neon_sign.underline": "Underline",
+	"screen.assorteddecor.neon_sign.strikethrough": "Strikethrough",
+	"screen.assorteddecor.neon_sign.random": "Obfuscated",
+	"screen.assorteddecor.neon_sign.reset": "Reset"
 }

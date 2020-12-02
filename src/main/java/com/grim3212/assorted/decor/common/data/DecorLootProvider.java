@@ -64,13 +64,15 @@ public class DecorLootProvider implements IDataProvider {
 		blocks.add(DecorBlocks.COLORIZER_SLANTED_CORNER.get());
 		blocks.add(DecorBlocks.COLORIZER_PYRAMID.get());
 		blocks.add(DecorBlocks.COLORIZER_FULL_PYRAMID.get());
-		
+
 		blocks.add(DecorBlocks.COLORIZER_CHIMNEY.get());
 		blocks.add(DecorBlocks.COLORIZER_FIREPLACE.get());
 		blocks.add(DecorBlocks.COLORIZER_FIREPIT.get());
 		blocks.add(DecorBlocks.COLORIZER_FIREPIT_COVERED.get());
 		blocks.add(DecorBlocks.COLORIZER_FIRERING.get());
 		blocks.add(DecorBlocks.COLORIZER_STOVE.get());
+
+		blocks.add(DecorBlocks.NEON_SIGN.get());
 	}
 
 	@Override
@@ -88,7 +90,7 @@ public class DecorLootProvider implements IDataProvider {
 
 		Path doorPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_DOOR.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genDoor(DecorBlocks.COLORIZER_DOOR.get()).setParameterSet(LootParameterSets.BLOCK).build()), doorPath);
-		
+
 		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), slabPath);
 	}
@@ -109,7 +111,7 @@ public class DecorLootProvider implements IDataProvider {
 		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry).acceptCondition(SurvivesExplosion.builder());
 		return LootTable.builder().addLootPool(pool);
 	}
-	
+
 	private static LootTable.Builder genSlab(Block b) {
 		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE))));
 		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);

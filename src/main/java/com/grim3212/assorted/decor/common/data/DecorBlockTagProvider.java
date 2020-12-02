@@ -23,6 +23,9 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 		this.getOrCreateBuilder(BlockTags.DOORS).addItemEntry(DecorBlocks.COLORIZER_DOOR.get());
 		this.getOrCreateBuilder(BlockTags.STAIRS).addItemEntry(DecorBlocks.COLORIZER_STAIRS.get());
 		this.getOrCreateBuilder(BlockTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get());
+
+		this.getOrCreateBuilder(BlockTags.STANDING_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN.get());
+		this.getOrCreateBuilder(BlockTags.WALL_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN_WALL.get());
 	}
 
 	@Override

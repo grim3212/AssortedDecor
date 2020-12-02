@@ -8,9 +8,9 @@ import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBaseBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost.LampPart;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
-import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost.LampPart;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -46,6 +46,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
+		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
+
 		extraModels();
 
 		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
@@ -96,6 +99,15 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		});
 
 		defaultPerspective(model);
+	}
+
+	private void particleOnly(Block b, ResourceLocation particle) {
+		particleOnly(b, particle, name(b));
+	}
+	
+	private void particleOnly(Block b, ResourceLocation particle, String modelOverride) {
+		ModelFile f = models().getBuilder(modelOverride).texture("particle", particle);
+		simpleBlock(b, f);
 	}
 
 	private String prefix(String name) {

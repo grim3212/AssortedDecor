@@ -28,6 +28,7 @@ public class DecorItemModelProvider extends ItemModelProvider {
 		generatedItem(DecorItems.WOOD_FRAME.get());
 		generatedItem(DecorItems.IRON_FRAME.get());
 		generatedItem(DecorItems.UNFIRED_PLANTER_POT.get());
+		generatedItem(DecorItems.NEON_SIGN.get());
 	}
 
 	private ItemModelBuilder generatedItem(String name) {

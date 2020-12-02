@@ -2,6 +2,7 @@ package com.grim3212.assorted.decor.common.data;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.lib.DecorTags;
 
 import net.minecraft.data.BlockTagsProvider;
@@ -28,6 +29,8 @@ public class DecorItemTagProvider extends ItemTagsProvider {
 		this.getOrCreateBuilder(ItemTags.DOORS).addItemEntry(DecorBlocks.COLORIZER_DOOR.get().asItem());
 		this.getOrCreateBuilder(ItemTags.STAIRS).addItemEntry(DecorBlocks.COLORIZER_STAIRS.get().asItem());
 		this.getOrCreateBuilder(ItemTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get().asItem());
+
+		this.getOrCreateBuilder(ItemTags.SIGNS).addItemEntry(DecorItems.NEON_SIGN.get());
 	}
 
 	@Override
