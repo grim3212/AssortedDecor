@@ -29,7 +29,7 @@ public class NeonOpenPacket {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
+		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.CLIENT) {
 			ctx.get().enqueueWork(() -> {
 				TileEntity tileentity = Minecraft.getInstance().player.getEntityWorld().getTileEntity(this.pos);
 

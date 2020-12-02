@@ -1,6 +1,5 @@
 package com.grim3212.assorted.decor.client.tileentity;
 
-import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.handler.NeonSignStitchHandler;
 import com.grim3212.assorted.decor.common.block.NeonSignStandingBlock;
 import com.grim3212.assorted.decor.common.block.NeonSignWallBlock;

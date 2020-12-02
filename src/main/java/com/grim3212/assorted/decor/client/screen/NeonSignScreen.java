@@ -32,6 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -130,9 +131,7 @@ public class NeonSignScreen extends Screen {
 	}
 
 	private void addSignText(int id) {
-		String s = this.tileSign.signText[this.editLine].getString();
-		s = s + "§" + getColorCode(id);
-		this.tileSign.signText[this.editLine] = new StringTextComponent(s);
+		this.textInputUtil.putText(getFormatting(id).toString());
 		this.textInputUtil.moveCursorToEnd();
 	}
 
@@ -162,34 +161,34 @@ public class NeonSignScreen extends Screen {
 		}
 	}
 
-	private String getColorCode(int nbr) {
-		switch (nbr) {
+	private TextFormatting getFormatting(int buttonId) {
+		switch (buttonId) {
 		case 11:
-			return "A";
+			return TextFormatting.GREEN;
 		case 12:
-			return "B";
+			return TextFormatting.AQUA;
 		case 13:
-			return "C";
+			return TextFormatting.RED;
 		case 14:
-			return "D";
+			return TextFormatting.LIGHT_PURPLE;
 		case 15:
-			return "E";
+			return TextFormatting.YELLOW;
 		case 16:
-			return "F";
+			return TextFormatting.WHITE;
 		case 17:
-			return "l";
+			return TextFormatting.BOLD;
 		case 18:
-			return "o";
+			return TextFormatting.ITALIC;
 		case 19:
-			return "n";
+			return TextFormatting.UNDERLINE;
 		case 20:
-			return "m";
+			return TextFormatting.STRIKETHROUGH;
 		case 21:
-			return "k";
+			return TextFormatting.OBFUSCATED;
 		case 22:
-			return "r";
+			return TextFormatting.RESET;
 		}
-		return Integer.valueOf(nbr - 1).toString();
+		return TextFormatting.fromColorIndex(buttonId - 1);
 	}
 
 	@Override
@@ -258,12 +257,12 @@ public class NeonSignScreen extends Screen {
 				}
 
 				float f3 = (float) (-this.minecraft.fontRenderer.getStringWidth(s) / 2);
-				this.minecraft.fontRenderer.func_243248_b(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 0x000000);
+				this.minecraft.fontRenderer.func_243248_b(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
 				if (i1 == this.editLine && j >= 0 && flag1) {
 					int j1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
 					int k1 = j1 - this.minecraft.fontRenderer.getStringWidth(s) / 2;
 					if (j >= s.length()) {
-						this.minecraft.fontRenderer.drawString(matrixStack, "_", (float) k1, (float) l, 0x000000);
+						this.minecraft.fontRenderer.drawString(matrixStack, "_", (float) k1, (float) l, 16777215);
 					}
 				}
 			}
@@ -277,7 +276,7 @@ public class NeonSignScreen extends Screen {
 				int j3 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
 				int k3 = j3 - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
 				if (flag1 && j < s1.length()) {
-					fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | 0x000000);
+					fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | 16777215);
 				}
 
 				if (k != j) {

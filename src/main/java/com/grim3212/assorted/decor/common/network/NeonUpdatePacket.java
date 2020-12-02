@@ -17,26 +17,21 @@ import net.minecraftforge.fml.network.NetworkEvent;
 public class NeonUpdatePacket {
 
 	private BlockPos pos;
-	private String[] lines;
+	private IFormattableTextComponent[] lines;
 
 	public NeonUpdatePacket(BlockPos pos, IFormattableTextComponent[] linesIn) {
 		this.pos = pos;
 
 		// We want to save formatting codes
-		this.lines = new String[] { IFormattableTextComponent.Serializer.toJson(linesIn[0]), IFormattableTextComponent.Serializer.toJson(linesIn[1]), IFormattableTextComponent.Serializer.toJson(linesIn[2]), IFormattableTextComponent.Serializer.toJson(linesIn[3]) };
-	}
-
-	public NeonUpdatePacket(BlockPos pos, String[] linesIn) {
-		this.pos = pos;
-		this.lines = linesIn;
+		this.lines = new IFormattableTextComponent[] { linesIn[0], linesIn[1], linesIn[2], linesIn[3] };
 	}
 
 	public static NeonUpdatePacket decode(PacketBuffer buf) {
 		BlockPos pos = buf.readBlockPos();
 
-		String[] lines = new String[4];
+		IFormattableTextComponent[] lines = new IFormattableTextComponent[4];
 		for (int i = 0; i < 4; i++) {
-			lines[i] = buf.readString();
+			lines[i] = (IFormattableTextComponent) buf.readTextComponent();
 		}
 
 		return new NeonUpdatePacket(pos, lines);
@@ -46,7 +41,7 @@ public class NeonUpdatePacket {
 		buf.writeBlockPos(this.pos);
 
 		for (int i = 0; i < 4; i++) {
-			buf.writeString(this.lines[i]);
+			buf.writeTextComponent(this.lines[i]);
 		}
 	}
 
@@ -65,9 +60,8 @@ public class NeonUpdatePacket {
 					}
 
 					for (int i = 0; i < this.lines.length; ++i) {
-						AssortedDecor.LOGGER.info(this.lines[i]);
 						// Again do not strip away formatting codes
-						neonSign.signText[i] = IFormattableTextComponent.Serializer.getComponentFromJson(this.lines[i]);
+						neonSign.signText[i] = this.lines[i];
 					}
 
 					neonSign.markDirty();

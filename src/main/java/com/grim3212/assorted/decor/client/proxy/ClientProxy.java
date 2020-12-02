@@ -1,13 +1,17 @@
 package com.grim3212.assorted.decor.client.proxy;
 
+import javax.annotation.Nullable;
+
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
+import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
 import com.grim3212.assorted.decor.client.tileentity.NeonSignTileEntityRenderer;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
 import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
+import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
@@ -128,5 +132,10 @@ public class ClientProxy implements IProxy {
 	@Override
 	public PlayerEntity getClientPlayer() {
 		return Minecraft.getInstance().player;
+	}
+
+	@Override
+	public void openNeonSign(NeonSignTileEntity tile, @Nullable PlayerEntity player) {
+		Minecraft.getInstance().displayGuiScreen(new NeonSignScreen(tile));
 	}
 }

@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.block;
 
-import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
+import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
@@ -8,7 +8,6 @@ import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
@@ -70,7 +69,7 @@ public class NeonSignBlock extends Block implements IWaterLoggable {
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
 		if (worldIn.isRemote) {
-			Minecraft.getInstance().displayGuiScreen(new NeonSignScreen((NeonSignTileEntity) worldIn.getTileEntity(pos)));
+			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getTileEntity(pos), player);
 			return ActionResultType.SUCCESS;
 		} else {
 			TileEntity tileentity = worldIn.getTileEntity(pos);

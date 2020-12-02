@@ -17,7 +17,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -35,7 +34,6 @@ public class NeonSignTileEntity extends TileEntity {
 	public static final StringTextComponent EMPTY = new StringTextComponent("");
 
 	public IFormattableTextComponent[] signText = new IFormattableTextComponent[] { EMPTY, EMPTY, EMPTY, EMPTY };
-	private final IReorderingProcessor[] renderText = new IReorderingProcessor[4];
 	private UUID owner;
 	public int mode = 0;
 
@@ -50,7 +48,6 @@ public class NeonSignTileEntity extends TileEntity {
 
 	public void setText(int line, IFormattableTextComponent signText) {
 		this.signText[line] = signText;
-		this.renderText[line] = null;
 	}
 
 	@Override
@@ -125,8 +122,6 @@ public class NeonSignTileEntity extends TileEntity {
 			} else {
 				this.signText[i] = itextcomponent;
 			}
-
-			this.renderText[i] = null;
 		}
 	}
 
