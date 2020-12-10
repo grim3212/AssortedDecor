@@ -66,6 +66,8 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_FIRERING.get(), 4).key('X', DecorBlocks.COLORIZER.get()).key('P', ItemTags.PLANKS).patternLine(" X ").patternLine("XPX").patternLine(" X ").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_STOVE.get(), 4).key('X', DecorBlocks.COLORIZER.get()).key('I', Items.IRON_BARS).key('P', ItemTags.PLANKS).patternLine("XXX").patternLine("IPI").patternLine("XXX").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).addCriterion("has_iron_bars", hasItem(Items.IRON_BARS)).build(consumer);
 
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.ILLUMINATION_TUBE.get(), 4).key('G', Tags.Items.GLASS).key('L', Tags.Items.DUSTS_GLOWSTONE).key('A', DecorTags.Items.INGOTS_ALUMINUM).patternLine(" A ").patternLine("GLG").patternLine(" A ").addCriterion("has_aluminum", hasItem(DecorTags.Items.INGOTS_ALUMINUM)).addCriterion("has_glowstone", hasItem(Tags.Items.DUSTS_GLOWSTONE)).build(consumer);
+		
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.UNFIRED_PLANTER_POT.get()).key('X', Items.CLAY_BALL).patternLine("X X").patternLine("XXX").addCriterion("has_clay", hasItem(Items.CLAY_BALL)).build(consumer);
 
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(DecorItems.UNFIRED_PLANTER_POT.get()), DecorBlocks.PLANTER_POT.get(), 0.35f, 200).addCriterion("has_unfired_planter_pot", hasItem(DecorItems.UNFIRED_PLANTER_POT.get())).build(consumer);

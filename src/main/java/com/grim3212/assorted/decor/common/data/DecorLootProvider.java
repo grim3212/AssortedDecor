@@ -75,6 +75,8 @@ public class DecorLootProvider implements IDataProvider {
 		blocks.add(DecorBlocks.COLORIZER_STOVE.get());
 
 		blocks.add(DecorBlocks.NEON_SIGN.get());
+		
+		blocks.add(DecorBlocks.ILLUMINATION_TUBE.get());
 	}
 
 	@Override

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "assorteddecor:block/illuminuation_tube",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "assorteddecor:block/illuminuation_tube"
+    },
+    "facing=north": {
+      "model": "assorteddecor:block/illuminuation_tube_wall",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "assorteddecor:block/illuminuation_tube_wall",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "assorteddecor:block/illuminuation_tube_wall",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "assorteddecor:block/illuminuation_tube_wall",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

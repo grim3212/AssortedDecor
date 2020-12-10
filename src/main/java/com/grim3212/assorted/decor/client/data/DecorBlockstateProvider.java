@@ -4,6 +4,7 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.IlluminationTubeBlock;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBaseBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBlock;
@@ -50,6 +51,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
 		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
+		
+		directionalBlock(DecorBlocks.ILLUMINATION_TUBE.get(), (state) -> {
+			return state.get(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
+		});
+		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
 
 		extraModels();
 
