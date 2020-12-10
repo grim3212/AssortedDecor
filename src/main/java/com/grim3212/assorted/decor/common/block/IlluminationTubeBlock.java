@@ -43,12 +43,12 @@ public class IlluminationTubeBlock extends Block {
 		case SOUTH:
 			return TORCH_SOUTH;
 		case UP:
-			return STANDING_FLIPPED;
+			return STANDING;
 		case WEST:
 			return TORCH_WEST;
 		case DOWN:
 		default:
-			return STANDING;
+			return STANDING_FLIPPED;
 		}
 	}
 

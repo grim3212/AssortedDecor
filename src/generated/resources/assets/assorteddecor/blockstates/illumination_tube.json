@@ -9,22 +9,18 @@
     },
     "facing=north": {
       "model": "assorteddecor:block/illuminuation_tube_wall",
-      "x": 90
+      "y": 270
     },
     "facing=south": {
       "model": "assorteddecor:block/illuminuation_tube_wall",
-      "x": 90,
-      "y": 180
+      "y": 90
     },
     "facing=west": {
       "model": "assorteddecor:block/illuminuation_tube_wall",
-      "x": 90,
-      "y": 270
+      "y": 180
     },
     "facing=east": {
-      "model": "assorteddecor:block/illuminuation_tube_wall",
-      "x": 90,
-      "y": 90
+      "model": "assorteddecor:block/illuminuation_tube_wall"
     }
   }
 }

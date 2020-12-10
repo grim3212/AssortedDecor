@@ -1,5 +1,7 @@
 package com.grim3212.assorted.decor.client.data;
 
+import java.util.function.Function;
+
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
@@ -16,6 +18,7 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabB
 import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.state.properties.AttachFace;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -52,9 +55,20 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
 		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
 		
-		directionalBlock(DecorBlocks.ILLUMINATION_TUBE.get(), (state) -> {
+		Function<BlockState, ModelFile> modelFunc = (state) -> {
 			return state.get(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
-		});
+		};
+		
+		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get())
+        .forAllStates(state -> {
+            Direction dir = state.get(BlockStateProperties.FACING);
+            return ConfiguredModel.builder()
+                .modelFile(modelFunc.apply(state))
+                .rotationX(dir == Direction.DOWN ? 180 : 0)
+                .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.getHorizontalAngle()) + 90) % 360)
+                .build();
+        });
+		
 		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
 
 		extraModels();
