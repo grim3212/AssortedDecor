@@ -23,6 +23,7 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoveBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTrapDoorBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerWallBlock;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
@@ -50,6 +51,7 @@ public class DecorBlocks {
 	public static final RegistryObject<ColorizerTrapDoorBlock> COLORIZER_TRAP_DOOR = register("colorizer_trap_door", () -> new ColorizerTrapDoorBlock());
 	public static final RegistryObject<ColorizerDoorBlock> COLORIZER_DOOR = register("colorizer_door", () -> new ColorizerDoorBlock());
 	public static final RegistryObject<ColorizerSlabBlock> COLORIZER_SLAB = register("colorizer_slab", () -> new ColorizerSlabBlock());
+	public static final RegistryObject<ColorizerVerticalSlabBlock> COLORIZER_VERTICAL_SLAB = register("colorizer_vertical_slab", () -> new ColorizerVerticalSlabBlock());
 	public static final RegistryObject<ColorizerStairsBlock> COLORIZER_STAIRS = register("colorizer_stairs", () -> new ColorizerStairsBlock());
 	public static final RegistryObject<ColorizerBlock> COLORIZER_LAMP_POST = register("colorizer_lamp_post", () -> new ColorizerLampPost());
 
@@ -94,7 +96,7 @@ public class DecorBlocks {
 	}
 
 	public static Block[] colorizerBlocks() {
-		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get(), COLORIZER_TABLE.get(), COLORIZER_COUNTER.get(), COLORIZER_STOOL.get(), COLORIZER_FENCE.get(), COLORIZER_FENCE_GATE.get(), COLORIZER_WALL.get(), COLORIZER_TRAP_DOOR.get(), COLORIZER_DOOR.get(), COLORIZER_SLAB.get(), COLORIZER_STAIRS.get(), COLORIZER_LAMP_POST.get(), COLORIZER_SLOPE.get(), COLORIZER_SLOPED_ANGLE.get(), COLORIZER_SLOPED_INTERSECTION.get(), COLORIZER_SLOPED_POST.get(), COLORIZER_OBLIQUE_SLOPE.get(),
+		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get(), COLORIZER_TABLE.get(), COLORIZER_COUNTER.get(), COLORIZER_STOOL.get(), COLORIZER_FENCE.get(), COLORIZER_FENCE_GATE.get(), COLORIZER_WALL.get(), COLORIZER_TRAP_DOOR.get(), COLORIZER_DOOR.get(), COLORIZER_SLAB.get(), COLORIZER_VERTICAL_SLAB.get(), COLORIZER_STAIRS.get(), COLORIZER_LAMP_POST.get(), COLORIZER_SLOPE.get(), COLORIZER_SLOPED_ANGLE.get(), COLORIZER_SLOPED_INTERSECTION.get(), COLORIZER_SLOPED_POST.get(), COLORIZER_OBLIQUE_SLOPE.get(),
 				COLORIZER_CORNER.get(), COLORIZER_SLANTED_CORNER.get(), COLORIZER_PYRAMID.get(), COLORIZER_FULL_PYRAMID.get(), COLORIZER_FIREPLACE.get(), COLORIZER_CHIMNEY.get(), COLORIZER_FIRERING.get(), COLORIZER_FIREPIT.get(), COLORIZER_FIREPIT_COVERED.get(), COLORIZER_STOVE.get() };
 	}
 }

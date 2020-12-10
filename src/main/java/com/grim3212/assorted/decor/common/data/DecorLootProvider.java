@@ -10,6 +10,8 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
+import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
@@ -93,6 +95,9 @@ public class DecorLootProvider implements IDataProvider {
 
 		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), slabPath);
+		
+		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.get().getRegistryName());
+		IDataProvider.save(GSON, cache, LootTableManager.toJson(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), verticalSlabPath);
 	}
 
 	private static Path getPath(Path root, ResourceLocation id) {
@@ -114,6 +119,12 @@ public class DecorLootProvider implements IDataProvider {
 
 	private static LootTable.Builder genSlab(Block b) {
 		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE))));
+		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);
+		return LootTable.builder().addLootPool(pool);
+	}
+	
+	private static LootTable.Builder genVerticalSlab(Block b) {
+		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE))));
 		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);
 		return LootTable.builder().addLootPool(pool);
 	}

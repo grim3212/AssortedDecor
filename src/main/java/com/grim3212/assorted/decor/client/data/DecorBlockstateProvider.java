@@ -11,6 +11,8 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost.LampPart;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
+import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
+import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
@@ -63,6 +65,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerDoor();
 		colorizerStairs();
 		colorizerSlab();
+		colorizerVerticalSlab();
 		colorizerLampPost();
 
 		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(ColorizerBlockModel.Loader.LOCATION).colorizer(new ResourceLocation(AssortedDecor.MODID, "item/brush")).addTexture("handle", new ResourceLocation(AssortedDecor.MODID, "item/brush_handle"));
@@ -104,7 +107,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void particleOnly(Block b, ResourceLocation particle) {
 		particleOnly(b, particle, name(b));
 	}
-	
+
 	private void particleOnly(Block b, ResourceLocation particle, String modelOverride) {
 		ModelFile f = models().getBuilder(modelOverride).texture("particle", particle);
 		simpleBlock(b, f);
@@ -414,6 +417,19 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		slabBlock(DecorBlocks.COLORIZER_SLAB.get(), colorizerSlabModel.model, colorizerSlabTopModel.model, colorizerModel);
 		itemModels().getBuilder(prefix("item/colorizer_slab")).parent(colorizerSlabModel.model);
+	}
+
+	private void colorizerVerticalSlab() {
+		ConfiguredModel slabNorthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_north", new ResourceLocation(AssortedDecor.MODID, "block/vertical_slab")));
+		ConfiguredModel slabSouthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_south", new ResourceLocation(AssortedDecor.MODID, "block/vertical_slab")), 0, 180, false);
+		ConfiguredModel slabWestModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_west", new ResourceLocation(AssortedDecor.MODID, "block/vertical_slab")), 0, 270, false);
+		ConfiguredModel slabEastModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_east", new ResourceLocation(AssortedDecor.MODID, "block/vertical_slab")), 0, 90, false);
+		ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+
+		getVariantBuilder(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.NORTH).addModels(slabNorthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.SOUTH).addModels(slabSouthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.WEST).addModels(slabWestModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.EAST).addModels(slabEastModel)
+				.partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
+
+		itemModels().getBuilder(prefix("item/colorizer_vertical_slab")).parent(slabNorthModel.model);
 	}
 
 	private void colorizerLampPost() {

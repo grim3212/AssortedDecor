@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "type=north": {
+      "model": "assorteddecor:block/colorizer_vertical_slab_north"
+    },
+    "type=south": {
+      "model": "assorteddecor:block/colorizer_vertical_slab_south",
+      "y": 180
+    },
+    "type=east": {
+      "model": "assorteddecor:block/colorizer_vertical_slab_east",
+      "y": 90
+    },
+    "type=west": {
+      "model": "assorteddecor:block/colorizer_vertical_slab_west",
+      "y": 270
+    },
+    "type=double": {
+      "model": "assorteddecor:block/colorizer"
+    }
+  }
+}
