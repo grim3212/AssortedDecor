@@ -54,21 +54,16 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
 		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
-		
+
 		Function<BlockState, ModelFile> modelFunc = (state) -> {
 			return state.get(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
 		};
-		
-		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get())
-        .forAllStates(state -> {
-            Direction dir = state.get(BlockStateProperties.FACING);
-            return ConfiguredModel.builder()
-                .modelFile(modelFunc.apply(state))
-                .rotationX(dir == Direction.DOWN ? 180 : 0)
-                .rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.getHorizontalAngle()) + 90) % 360)
-                .build();
-        });
-		
+
+		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get()).forAllStates(state -> {
+			Direction dir = state.get(BlockStateProperties.FACING);
+			return ConfiguredModel.builder().modelFile(modelFunc.apply(state)).rotationX(dir == Direction.DOWN ? 180 : 0).rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.getHorizontalAngle()) + 90) % 360).build();
+		});
+
 		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
 
 		extraModels();
@@ -110,18 +105,34 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerFireringStove();
 
 		pot();
+		
+		BlockModelBuilder fluro = this.models().getBuilder(prefix("block/fluro")).parent(this.models().getExistingFile(loc("block/color_cube_all")));
+		fluro.texture("all", loc("block/fluro"));
+		
+		for(Block b : DecorBlocks.fluroBlocks()) {
+			ModelFile fluroModel = models().withExistingParent(name(b), prefix("block/fluro"));
+			
+			getVariantBuilder(b).partialState().addModels(new ConfiguredModel(fluroModel));
+			itemModels().getBuilder(name(b)).parent(fluroModel);
+		}
 
 		this.loaderModels.previousModels();
 	}
 
 	private void extraModels() {
 		BlockModelBuilder model = this.models().getBuilder(prefix("block/tinted_cube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer")).texture("stored", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
-
 		model.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, face) -> {
 			face.texture("#stored").cullface(dir).tintindex(0);
 		});
-
 		defaultPerspective(model);
+
+		BlockModelBuilder color_cube = this.models().getBuilder(prefix("block/color_cube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block")));
+		color_cube.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, face) -> {
+			face.texture("#" + dir.toString()).cullface(dir).tintindex(0);
+		});
+
+		BlockModelBuilder color_cube_all = this.models().getBuilder(prefix("block/color_cube_all")).parent(this.models().getExistingFile(loc("block/color_cube")));
+		color_cube_all.texture("particle", "#all").texture("down", "#all").texture("up", "#all").texture("north", "#all").texture("south", "#all").texture("west", "#all").texture("east", "#all");
 	}
 
 	private void particleOnly(Block b, ResourceLocation particle) {
@@ -446,8 +457,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel slabEastModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_east", new ResourceLocation(AssortedDecor.MODID, "block/vertical_slab")), 0, 90, false);
 		ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 
-		getVariantBuilder(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.NORTH).addModels(slabNorthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.SOUTH).addModels(slabSouthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.WEST).addModels(slabWestModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.EAST).addModels(slabEastModel)
-				.partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
+		getVariantBuilder(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.NORTH).addModels(slabNorthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.SOUTH).addModels(slabSouthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.WEST).addModels(slabWestModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.EAST).addModels(slabEastModel).partialState()
+				.with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
 
 		itemModels().getBuilder(prefix("item/colorizer_vertical_slab")).parent(slabNorthModel.model);
 	}

@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:fluro_blue"
+    ]
+  },
+  "criteria": {
+    "has_dye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:dyes"
+          }
+        ]
+      }
+    },
+    "has_tube": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "assorteddecor:illumination_tube"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:fluro_blue"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_dye",
+      "has_tube",
+      "has_the_recipe"
+    ]
+  ]
+}

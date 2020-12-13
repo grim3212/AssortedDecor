@@ -75,8 +75,11 @@ public class DecorLootProvider implements IDataProvider {
 		blocks.add(DecorBlocks.COLORIZER_STOVE.get());
 
 		blocks.add(DecorBlocks.NEON_SIGN.get());
-		
+
 		blocks.add(DecorBlocks.ILLUMINATION_TUBE.get());
+
+		for (Block b : DecorBlocks.fluroBlocks())
+			blocks.add(b);
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class DecorLootProvider implements IDataProvider {
 
 		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), slabPath);
-		
+
 		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), verticalSlabPath);
 	}
@@ -124,7 +127,7 @@ public class DecorLootProvider implements IDataProvider {
 		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);
 		return LootTable.builder().addLootPool(pool);
 	}
-	
+
 	private static LootTable.Builder genVerticalSlab(Block b) {
 		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE))));
 		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);

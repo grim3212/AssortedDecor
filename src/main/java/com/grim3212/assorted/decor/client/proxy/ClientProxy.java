@@ -17,6 +17,7 @@ import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -68,7 +69,7 @@ public class ClientProxy implements IProxy {
 		for (Block b : DecorBlocks.colorizerBlocks()) {
 			RenderTypeLookup.setRenderLayer(b, RenderType.getCutout());
 		}
-		
+
 		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.getCutout());
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
@@ -126,6 +127,24 @@ public class ClientProxy implements IProxy {
 					return 16777215;
 				}
 			}, DecorItems.COLORIZER_BRUSH.get());
+
+			blocks.register(new IBlockColor() {
+				@Override
+				public int getColor(BlockState state, IBlockDisplayReader worldIn, BlockPos pos, int tint) {
+					return state.getBlock().getMaterialColor().colorValue;
+				}
+			}, DecorBlocks.fluroBlocks());
+
+			items.register(new IItemColor() {
+				@Override
+				public int getColor(ItemStack stack, int tint) {
+					Block b = Block.getBlockFromItem(stack.getItem());
+					if (b != Blocks.AIR) {
+						return b.getMaterialColor().colorValue;
+					}
+					return 16777215;
+				}
+			}, DecorBlocks.fluroBlocks());
 		});
 	}
 

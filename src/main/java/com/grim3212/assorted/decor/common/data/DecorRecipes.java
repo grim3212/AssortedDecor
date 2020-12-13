@@ -7,7 +7,9 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.lib.DecorTags;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.data.CookingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.IFinishedRecipe;
@@ -15,6 +17,7 @@ import net.minecraft.data.RecipeProvider;
 import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.data.SingleItemRecipeBuilder;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.tags.ItemTags;
@@ -35,7 +38,7 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.COLORIZER_BRUSH.get()).key('X', DecorBlocks.COLORIZER.get()).key('R', Tags.Items.RODS_WOODEN).key('S', Tags.Items.STRING).patternLine(" SX").patternLine(" RS").patternLine("R  ").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(DecorItems.COLORIZER_BRUSH.get()).addIngredient(DecorTags.Items.BUCKETS_WATER).addIngredient(DecorItems.COLORIZER_BRUSH.get()).addCriterion("has_brush", hasItem(DecorItems.COLORIZER_BRUSH.get())).build(consumer, prefix("clean_colorizer_brush"));
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.NEON_SIGN.get(), 3).key('X', Tags.Items.OBSIDIAN).key('G', ItemTags.PLANKS).key('C', Tags.Items.DUSTS_REDSTONE).patternLine("XXX").patternLine("XCX").patternLine(" G ").addCriterion("has_obsidian", hasItem(Tags.Items.OBSIDIAN)).build(consumer);
-		
+
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER.get(), 4).key('X', Tags.Items.STONE).key('R', Tags.Items.DYES_RED).key('G', Tags.Items.DYES_GREEN).key('B', Tags.Items.DYES_BLUE).key('D', Tags.Items.DYES).patternLine("XRX").patternLine("GDB").patternLine("XDX").addCriterion("has_stone", hasItem(Tags.Items.STONE)).addCriterion("has_dye", hasItem(Tags.Items.DYES)).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_CHAIR.get(), 4).key('X', DecorBlocks.COLORIZER.get()).patternLine("X  ").patternLine("XXX").patternLine("X X").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_TABLE.get(), 4).key('X', DecorBlocks.COLORIZER.get()).patternLine("XXX").patternLine("X X").patternLine("X X").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer);
@@ -67,7 +70,8 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.COLORIZER_STOVE.get(), 4).key('X', DecorBlocks.COLORIZER.get()).key('I', Items.IRON_BARS).key('P', ItemTags.PLANKS).patternLine("XXX").patternLine("IPI").patternLine("XXX").addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).addCriterion("has_iron_bars", hasItem(Items.IRON_BARS)).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.ILLUMINATION_TUBE.get(), 4).key('G', Tags.Items.GLASS).key('L', Tags.Items.DUSTS_GLOWSTONE).key('A', DecorTags.Items.INGOTS_ALUMINUM).patternLine(" A ").patternLine("GLG").patternLine(" A ").addCriterion("has_aluminum", hasItem(DecorTags.Items.INGOTS_ALUMINUM)).addCriterion("has_glowstone", hasItem(Tags.Items.DUSTS_GLOWSTONE)).build(consumer);
-		
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.ILLUMINATION_TUBE.get(), 4).key('G', Tags.Items.GLASS).key('L', Tags.Items.DUSTS_GLOWSTONE).key('A', Tags.Items.INGOTS_IRON).patternLine(" A ").patternLine("GLG").patternLine(" A ").addCriterion("has_aluminum", hasItem(Tags.Items.INGOTS_IRON)).addCriterion("has_glowstone", hasItem(Tags.Items.DUSTS_GLOWSTONE)).build(consumer, prefix("illumination_tube_iron"));
+
 		ShapedRecipeBuilder.shapedRecipe(DecorItems.UNFIRED_PLANTER_POT.get()).key('X', Items.CLAY_BALL).patternLine("X X").patternLine("XXX").addCriterion("has_clay", hasItem(Items.CLAY_BALL)).build(consumer);
 
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(DecorItems.UNFIRED_PLANTER_POT.get()), DecorBlocks.PLANTER_POT.get(), 0.35f, 200).addCriterion("has_unfired_planter_pot", hasItem(DecorItems.UNFIRED_PLANTER_POT.get())).build(consumer);
@@ -87,10 +91,54 @@ public class DecorRecipes extends RecipeProvider {
 		SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_SLANTED_CORNER.get()).addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer, prefix("colorizer_slanted_corner_stonecutting"));
 		SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_PYRAMID.get()).addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer, prefix("colorizer_pyramid_stonecutting"));
 		SingleItemRecipeBuilder.stonecuttingRecipe(Ingredient.fromItems(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_FULL_PYRAMID.get()).addCriterion("has_colorizer", hasItem(DecorBlocks.COLORIZER.get())).build(consumer, prefix("colorizer_full_pyramid_stonecutting"));
+
+		for (Block b : DecorBlocks.fluroBlocks()) {
+			ShapedRecipeBuilder.shapedRecipe(b, 4).key('G', Tags.Items.GLASS).key('L', DecorBlocks.ILLUMINATION_TUBE.get()).key('A', fromMaterialColor(b.getMaterialColor()).getTag()).patternLine("GAG").patternLine("ALA").patternLine("GAG").addCriterion("has_dye", hasItem(Tags.Items.DYES)).addCriterion("has_tube", hasItem(DecorBlocks.ILLUMINATION_TUBE.get())).build(consumer);
+		}
 	}
 
 	private ResourceLocation prefix(String name) {
 		return new ResourceLocation(AssortedDecor.MODID, name);
+	}
+
+	/*
+	 * Not spending time right now to figure this out so just making it super easy
+	 */
+	private DyeColor fromMaterialColor(MaterialColor color) {
+		switch (color.colorIndex) {
+			case 15:
+				return DyeColor.ORANGE;
+			case 16:
+				return DyeColor.MAGENTA;
+			case 17:
+				return DyeColor.LIGHT_BLUE;
+			case 18:
+				return DyeColor.YELLOW;
+			case 19:
+				return DyeColor.LIME;
+			case 20:
+				return DyeColor.PINK;
+			case 21:
+				return DyeColor.GRAY;
+			case 22:
+				return DyeColor.LIGHT_GRAY;
+			case 23:
+				return DyeColor.CYAN;
+			case 24:
+				return DyeColor.PURPLE;
+			case 25:
+				return DyeColor.BLUE;
+			case 26:
+				return DyeColor.BROWN;
+			case 27:
+				return DyeColor.GREEN;
+			case 28:
+				return DyeColor.RED;
+			case 29:
+				return DyeColor.BLACK;
+			default:
+				return DyeColor.WHITE;
+		}
 	}
 
 	@Override

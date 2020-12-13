@@ -1,0 +1,6 @@
+{
+  "parent": "assorteddecor:block/color_cube_all",
+  "textures": {
+    "all": "assorteddecor:block/fluro"
+  }
+}
