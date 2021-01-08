@@ -26,6 +26,8 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 
 		this.getOrCreateBuilder(BlockTags.STANDING_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN.get());
 		this.getOrCreateBuilder(BlockTags.WALL_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN_WALL.get());
+
+		this.getOrCreateBuilder(BlockTags.DOORS).addItemEntry(DecorBlocks.QUARTZ_DOOR.get());
 	}
 
 	@Override

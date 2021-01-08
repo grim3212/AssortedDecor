@@ -95,6 +95,8 @@ public class DecorRecipes extends RecipeProvider {
 		for (Block b : DecorBlocks.fluroBlocks()) {
 			ShapedRecipeBuilder.shapedRecipe(b, 4).key('G', Tags.Items.GLASS).key('L', DecorBlocks.ILLUMINATION_TUBE.get()).key('A', fromMaterialColor(b.getMaterialColor()).getTag()).patternLine("GAG").patternLine("ALA").patternLine("GAG").addCriterion("has_dye", hasItem(Tags.Items.DYES)).addCriterion("has_tube", hasItem(DecorBlocks.ILLUMINATION_TUBE.get())).build(consumer);
 		}
+
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.QUARTZ_DOOR.get(), 3).key('X', Items.QUARTZ).patternLine("XX").patternLine("XX").patternLine("XX").addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
 	}
 
 	private ResourceLocation prefix(String name) {

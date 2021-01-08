@@ -31,6 +31,8 @@ public class DecorItemTagProvider extends ItemTagsProvider {
 		this.getOrCreateBuilder(ItemTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get().asItem());
 
 		this.getOrCreateBuilder(ItemTags.SIGNS).addItemEntry(DecorItems.NEON_SIGN.get());
+
+		this.getOrCreateBuilder(ItemTags.DOORS).addItemEntry(DecorBlocks.QUARTZ_DOOR.get().asItem());
 	}
 
 	@Override

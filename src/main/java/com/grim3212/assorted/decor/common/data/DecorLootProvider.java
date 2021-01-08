@@ -103,6 +103,9 @@ public class DecorLootProvider implements IDataProvider {
 
 		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.get().getRegistryName());
 		IDataProvider.save(GSON, cache, LootTableManager.toJson(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), verticalSlabPath);
+
+		Path quartzDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.QUARTZ_DOOR.get().getRegistryName());
+		IDataProvider.save(GSON, cache, LootTableManager.toJson(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParameterSet(LootParameterSets.BLOCK).build()), quartzDoorPath);
 	}
 
 	private static Path getPath(Path root, ResourceLocation id) {

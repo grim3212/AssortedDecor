@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.client.data;
 
 import com.grim3212.assorted.decor.AssortedDecor;
+import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
 import net.minecraft.data.DataGenerator;
@@ -29,6 +30,7 @@ public class DecorItemModelProvider extends ItemModelProvider {
 		generatedItem(DecorItems.IRON_FRAME.get());
 		generatedItem(DecorItems.UNFIRED_PLANTER_POT.get());
 		generatedItem(DecorItems.NEON_SIGN.get());
+		generatedItem(DecorBlocks.QUARTZ_DOOR.get().asItem());
 	}
 
 	private ItemModelBuilder generatedItem(String name) {

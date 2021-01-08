@@ -29,6 +29,7 @@ import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.DoorBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -98,6 +99,8 @@ public class DecorBlocks {
 	public static final RegistryObject<FluroBlock> FLURO_GREEN = register("fluro_green", () -> new FluroBlock(MaterialColor.GREEN));
 	public static final RegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(MaterialColor.RED));
 	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(MaterialColor.BLACK));
+	
+	public static final RegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.create(Material.IRON, MaterialColor.QUARTZ).setRequiresTool().hardnessAndResistance(5.0F).sound(SoundType.METAL).notSolid()));
 
 	public static Block[] fluroBlocks() {
 		return new Block[] { FLURO_WHITE.get(), FLURO_ORANGE.get(), FLURO_MAGENTA.get(), FLURO_LIGHT_BLUE.get(), FLURO_YELLOW.get(), FLURO_LIME.get(), FLURO_PINK.get(), FLURO_GRAY.get(), FLURO_LIGHT_GRAY.get(), FLURO_CYAN.get(), FLURO_PURPLE.get(), FLURO_BLUE.get(), FLURO_BROWN.get(), FLURO_GREEN.get(), FLURO_RED.get(), FLURO_BLACK.get() };

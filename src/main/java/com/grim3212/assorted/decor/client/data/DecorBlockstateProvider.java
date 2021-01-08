@@ -66,6 +66,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
 
+		doorBlock(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"));
+
 		extraModels();
 
 		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
@@ -105,13 +107,13 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerFireringStove();
 
 		pot();
-		
-		BlockModelBuilder fluro = this.models().getBuilder(prefix("block/fluro")).parent(this.models().getExistingFile(loc("block/color_cube_all")));
-		fluro.texture("all", loc("block/fluro"));
-		
-		for(Block b : DecorBlocks.fluroBlocks()) {
+
+		BlockModelBuilder fluro = this.models().getBuilder(prefix("block/fluro")).parent(this.models().getExistingFile(resource("block/color_cube_all")));
+		fluro.texture("all", resource("block/fluro"));
+
+		for (Block b : DecorBlocks.fluroBlocks()) {
 			ModelFile fluroModel = models().withExistingParent(name(b), prefix("block/fluro"));
-			
+
 			getVariantBuilder(b).partialState().addModels(new ConfiguredModel(fluroModel));
 			itemModels().getBuilder(name(b)).parent(fluroModel);
 		}
@@ -131,7 +133,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 			face.texture("#" + dir.toString()).cullface(dir).tintindex(0);
 		});
 
-		BlockModelBuilder color_cube_all = this.models().getBuilder(prefix("block/color_cube_all")).parent(this.models().getExistingFile(loc("block/color_cube")));
+		BlockModelBuilder color_cube_all = this.models().getBuilder(prefix("block/color_cube_all")).parent(this.models().getExistingFile(resource("block/color_cube")));
 		color_cube_all.texture("particle", "#all").texture("down", "#all").texture("up", "#all").texture("north", "#all").texture("south", "#all").texture("west", "#all").texture("east", "#all");
 	}
 
@@ -145,7 +147,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private String prefix(String name) {
-		return loc(name).toString();
+		return resource(name).toString();
 	}
 
 	private static String name(Block i) {
@@ -219,7 +221,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		return this.loaderModels.getBuilder(builderName).loader(ColorizerBlockModel.Loader.LOCATION).colorizer(model).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 	}
 
-	private ResourceLocation loc(String name) {
+	private ResourceLocation resource(String name) {
 		return new ResourceLocation(AssortedDecor.MODID, name);
 	}
 
@@ -265,19 +267,19 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-			case NORTH:
-			case SOUTH:
-			case WEST:
-				face.texture("#side").uvs(3, 0, 13, 16);
-				break;
-			case DOWN:
-				face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
-				break;
-			case UP:
-			default:
-				face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
-				break;
+				case EAST:
+				case NORTH:
+				case SOUTH:
+				case WEST:
+					face.texture("#side").uvs(3, 0, 13, 16);
+					break;
+				case DOWN:
+					face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
+					break;
+				case UP:
+				default:
+					face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
+					break;
 			}
 		});
 

@@ -71,6 +71,7 @@ public class ClientProxy implements IProxy {
 		}
 
 		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.getCutout());
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
