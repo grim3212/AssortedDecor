@@ -57,13 +57,17 @@ public class ColorizerBrush extends Item {
 
 		if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {
 			if (colorizerAccepted(world, pos, hit)) {
+				
+				if (DecorConfig.COMMON.consumeBlock.get()) {
+					if ((hit.getPlayerRelativeBlockHardness(player, world, pos) != 0.0F || player.isCreative()) && !DecorConfig.COMMON.brushDisallowedBlockStates.getLoadedStates().contains(hit))
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					else
+						return ActionResultType.PASS;
+				}
+				
 				NBTHelper.putTag(stack, "stored_state", NBTUtil.writeBlockState(hit));
 				// Reset damage after grabbing a new block
 				stack.setDamage(0);
-				
-				if (DecorConfig.COMMON.consumeBlock.get())
-					world.setBlockState(pos, Blocks.AIR.getDefaultState());
-
 				player.swingArm(hand);
 			}
 		} else {

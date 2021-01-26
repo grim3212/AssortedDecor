@@ -1,6 +1,11 @@
 package com.grim3212.assorted.decor.common.handler;
 
+import java.util.List;
+
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.collect.Lists;
+import com.grim3212.assorted.decor.common.util.ConfigurableBlockStates;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -27,6 +32,9 @@ public final class DecorConfig {
 		public final ForgeConfigSpec.IntValue smoothness;
 		public final ForgeConfigSpec.IntValue brushChargeCount;
 
+		public final ForgeConfigSpec.ConfigValue<List<String>> brushDisallowedBlocks;
+		public ConfigurableBlockStates brushDisallowedBlockStates;
+
 		public Common(ForgeConfigSpec.Builder builder) {
 			builder.push("Wallpaper");
 			dyeWallpaper = builder.comment("Set this to true if you want to be able to dye wallpaper.").define("dyeWallpaper", true);
@@ -44,7 +52,13 @@ public final class DecorConfig {
 			brushChargeCount = builder.comment("Set this to the amount of blocks that a brush will be able to colorize after grabbing a block.").defineInRange("brushChargeCount", 16, 1, 400);
 			consumeBlock = builder.comment("Set this to true if the colorizer brush should consume a block when using them").define("consumeBlock", true);
 			smoothness = builder.comment("Set this to determine how smooth all of the different slopes collision boxes should be.").defineInRange("smoothness", 2, 1, 10);
+
+			brushDisallowedBlocks = builder.comment("A list of blocks that the brush is unable to break / use the texture of.").define("brushDisallowedBlocks", Lists.newArrayList("block|minecraft:spawner"));
 			builder.pop();
+		}
+
+		public void init() {
+			brushDisallowedBlockStates = new ConfigurableBlockStates.Builder().processString(brushDisallowedBlocks.get()).build();
 		}
 	}
 

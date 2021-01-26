@@ -15,6 +15,7 @@ import com.grim3212.assorted.decor.common.data.DecorLootProvider;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
+import com.grim3212.assorted.decor.common.handler.TagLoadListener;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
@@ -24,6 +25,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -60,6 +62,8 @@ public class AssortedDecor {
 
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
+
+		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 
 		DecorBlocks.BLOCKS.register(modBus);
 		DecorItems.ITEMS.register(modBus);
