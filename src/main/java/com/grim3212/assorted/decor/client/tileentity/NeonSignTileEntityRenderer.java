@@ -60,7 +60,7 @@ public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileE
 
 		for (int k1 = 0; k1 < 4; ++k1) {
 			String s = tileEntityIn.getText(k1).getString();
-			fontrenderer.func_243248_b(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.getStringWidth(s) / 2, (float) (k1 * 10 - j1), 16777215);
+			fontrenderer.drawText(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.getStringWidth(s) / 2, (float) (k1 * 10 - j1), 16777215);
 		}
 
 		// Clear sign render text on both sides
@@ -70,7 +70,7 @@ public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileE
 
 			for (int k1 = 0; k1 < 4; ++k1) {
 				String s = tileEntityIn.getText(k1).getString();
-				fontrenderer.func_243248_b(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.getStringWidth(s) / 2, (float) (k1 * 10 - j1), 16777215);
+				fontrenderer.drawText(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.getStringWidth(s) / 2, (float) (k1 * 10 - j1), 16777215);
 			}
 		}
 

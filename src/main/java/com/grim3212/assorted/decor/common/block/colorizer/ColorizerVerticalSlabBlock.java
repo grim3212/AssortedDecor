@@ -74,7 +74,7 @@ public class ColorizerVerticalSlabBlock extends ColorizerBlock implements IWater
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockPos blockpos = context.getPos();
 		BlockState blockstate = context.getWorld().getBlockState(blockpos);
-		if (blockstate.isIn(this)) {
+		if (blockstate.matchesBlock(this)) {
 			return blockstate.with(TYPE, VerticalSlabType.DOUBLE).with(WATERLOGGED, false);
 		} else {
 			FluidState fluidstate = context.getWorld().getFluidState(blockpos);

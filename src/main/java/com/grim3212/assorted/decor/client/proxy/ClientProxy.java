@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AirItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.particles.ParticleTypes;
@@ -120,7 +121,7 @@ public class ClientProxy implements IProxy {
 						if (stack.getTag().contains("stored_state")) {
 							BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 							ItemStack colorStack = new ItemStack(stored.getBlock());
-							if (colorStack.getItem() != null) {
+							if (colorStack.getItem() != null && !(colorStack.getItem() instanceof AirItem)) {
 								return Minecraft.getInstance().getItemColors().getColor(colorStack, tint);
 							}
 						}

@@ -244,8 +244,8 @@ public class NeonSignScreen extends Screen {
 		float f2 = 0.010416667F;
 		matrixStack.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
 		matrixStack.scale(f2, -f2, f2);
-		int j = this.textInputUtil.getEndIndex();
-		int k = this.textInputUtil.getStartIndex();
+		int j = this.textInputUtil.getSelectionEnd();
+		int k = this.textInputUtil.getSelectionStart();
 		int l = this.editLine * 10 - this.lines.length * 5;
 		Matrix4f matrix4f = matrixStack.getLast().getMatrix();
 
@@ -257,7 +257,7 @@ public class NeonSignScreen extends Screen {
 				}
 
 				float f3 = (float) (-this.minecraft.fontRenderer.getStringWidth(s) / 2);
-				this.minecraft.fontRenderer.func_243248_b(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
+				this.minecraft.fontRenderer.drawText(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
 				if (i1 == this.editLine && j >= 0 && flag1) {
 					int j1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
 					int k1 = j1 - this.minecraft.fontRenderer.getStringWidth(s) / 2;

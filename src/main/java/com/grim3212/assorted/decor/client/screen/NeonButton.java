@@ -37,9 +37,9 @@ public class NeonButton extends Button {
 		if (width != -1)
 			this.width = width;
 	}
-
+	
 	@Override
-	public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void renderWidget(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			Minecraft mc = Minecraft.getInstance();
 			mc.getTextureManager().bindTexture(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
