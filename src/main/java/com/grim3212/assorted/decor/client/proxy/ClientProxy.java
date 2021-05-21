@@ -5,6 +5,7 @@ import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
+import com.grim3212.assorted.decor.client.tileentity.CalendarTileEntityRenderer;
 import com.grim3212.assorted.decor.client.tileentity.NeonSignTileEntityRenderer;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
@@ -73,11 +74,13 @@ public class ClientProxy implements IProxy {
 
 		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.getCutout());
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
 
 		ClientRegistry.bindTileEntityRenderer(DecorTileEntityTypes.NEON_SIGN.get(), NeonSignTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(DecorTileEntityTypes.CALENDAR.get(), CalendarTileEntityRenderer::new);
 	}
 
 	public void loadComplete(final FMLLoadCompleteEvent event) {

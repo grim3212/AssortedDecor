@@ -30,6 +30,8 @@ public class DecorItemModelProvider extends ItemModelProvider {
 		generatedItem(DecorItems.IRON_FRAME.get());
 		generatedItem(DecorItems.UNFIRED_PLANTER_POT.get());
 		generatedItem(DecorItems.NEON_SIGN.get());
+		generatedItem(DecorBlocks.CALENDAR.get().asItem());
+		generatedItem(DecorBlocks.WALL_CLOCK.get().asItem());
 		generatedItem(DecorBlocks.QUARTZ_DOOR.get().asItem());
 	}
 

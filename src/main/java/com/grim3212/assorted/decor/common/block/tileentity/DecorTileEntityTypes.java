@@ -18,6 +18,8 @@ public class DecorTileEntityTypes {
 
 	public static final RegistryObject<TileEntityType<ColorizerTileEntity>> COLORIZER = TILE_ENTITIES.register("colorizer", () -> new TileEntityType<>(ColorizerTileEntity::new, getColorizerBlocks(), null));
 	public static final RegistryObject<TileEntityType<NeonSignTileEntity>> NEON_SIGN = TILE_ENTITIES.register("neon_sign", () -> new TileEntityType<>(NeonSignTileEntity::new, Sets.newHashSet(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get()), null));
+	public static final RegistryObject<TileEntityType<CalendarTileEntity>> CALENDAR = TILE_ENTITIES.register("calendar", () -> new TileEntityType<>(CalendarTileEntity::new, Sets.newHashSet(DecorBlocks.CALENDAR.get()), null));
+	public static final RegistryObject<TileEntityType<WallClockTileEntity>> WALL_CLOCK = TILE_ENTITIES.register("wall_clock", () -> new TileEntityType<>(WallClockTileEntity::new, Sets.newHashSet(DecorBlocks.WALL_CLOCK.get()), null));
 
 	private static Set<Block> getColorizerBlocks() {
 		return Sets.newHashSet(DecorBlocks.COLORIZER.get());

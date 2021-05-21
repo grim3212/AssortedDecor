@@ -1,0 +1,964 @@
+{
+  "variants": {
+    "facing=north,time=0": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_1",
+      "y": 270
+    },
+    "facing=south,time=0": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_1",
+      "y": 90
+    },
+    "facing=west,time=0": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_1",
+      "y": 180
+    },
+    "facing=east,time=0": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_1"
+    },
+    "facing=north,time=1": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_2",
+      "y": 270
+    },
+    "facing=south,time=1": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_2",
+      "y": 90
+    },
+    "facing=west,time=1": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_2",
+      "y": 180
+    },
+    "facing=east,time=1": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_2"
+    },
+    "facing=north,time=2": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_3",
+      "y": 270
+    },
+    "facing=south,time=2": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_3",
+      "y": 90
+    },
+    "facing=west,time=2": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_3",
+      "y": 180
+    },
+    "facing=east,time=2": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_3"
+    },
+    "facing=north,time=3": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_4",
+      "y": 270
+    },
+    "facing=south,time=3": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_4",
+      "y": 90
+    },
+    "facing=west,time=3": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_4",
+      "y": 180
+    },
+    "facing=east,time=3": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_4"
+    },
+    "facing=north,time=4": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_5",
+      "y": 270
+    },
+    "facing=south,time=4": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_5",
+      "y": 90
+    },
+    "facing=west,time=4": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_5",
+      "y": 180
+    },
+    "facing=east,time=4": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_5"
+    },
+    "facing=north,time=5": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_6",
+      "y": 270
+    },
+    "facing=south,time=5": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_6",
+      "y": 90
+    },
+    "facing=west,time=5": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_6",
+      "y": 180
+    },
+    "facing=east,time=5": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_6"
+    },
+    "facing=north,time=6": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_7",
+      "y": 270
+    },
+    "facing=south,time=6": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_7",
+      "y": 90
+    },
+    "facing=west,time=6": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_7",
+      "y": 180
+    },
+    "facing=east,time=6": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_7"
+    },
+    "facing=north,time=7": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_8",
+      "y": 270
+    },
+    "facing=south,time=7": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_8",
+      "y": 90
+    },
+    "facing=west,time=7": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_8",
+      "y": 180
+    },
+    "facing=east,time=7": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_8"
+    },
+    "facing=north,time=8": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_9",
+      "y": 270
+    },
+    "facing=south,time=8": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_9",
+      "y": 90
+    },
+    "facing=west,time=8": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_9",
+      "y": 180
+    },
+    "facing=east,time=8": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_9"
+    },
+    "facing=north,time=9": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_10",
+      "y": 270
+    },
+    "facing=south,time=9": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_10",
+      "y": 90
+    },
+    "facing=west,time=9": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_10",
+      "y": 180
+    },
+    "facing=east,time=9": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_10"
+    },
+    "facing=north,time=10": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_11",
+      "y": 270
+    },
+    "facing=south,time=10": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_11",
+      "y": 90
+    },
+    "facing=west,time=10": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_11",
+      "y": 180
+    },
+    "facing=east,time=10": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_11"
+    },
+    "facing=north,time=11": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_12",
+      "y": 270
+    },
+    "facing=south,time=11": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_12",
+      "y": 90
+    },
+    "facing=west,time=11": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_12",
+      "y": 180
+    },
+    "facing=east,time=11": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_12"
+    },
+    "facing=north,time=12": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_13",
+      "y": 270
+    },
+    "facing=south,time=12": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_13",
+      "y": 90
+    },
+    "facing=west,time=12": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_13",
+      "y": 180
+    },
+    "facing=east,time=12": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_13"
+    },
+    "facing=north,time=13": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_14",
+      "y": 270
+    },
+    "facing=south,time=13": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_14",
+      "y": 90
+    },
+    "facing=west,time=13": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_14",
+      "y": 180
+    },
+    "facing=east,time=13": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_14"
+    },
+    "facing=north,time=14": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_15",
+      "y": 270
+    },
+    "facing=south,time=14": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_15",
+      "y": 90
+    },
+    "facing=west,time=14": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_15",
+      "y": 180
+    },
+    "facing=east,time=14": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_15"
+    },
+    "facing=north,time=15": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_16",
+      "y": 270
+    },
+    "facing=south,time=15": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_16",
+      "y": 90
+    },
+    "facing=west,time=15": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_16",
+      "y": 180
+    },
+    "facing=east,time=15": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_16"
+    },
+    "facing=north,time=16": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_17",
+      "y": 270
+    },
+    "facing=south,time=16": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_17",
+      "y": 90
+    },
+    "facing=west,time=16": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_17",
+      "y": 180
+    },
+    "facing=east,time=16": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_17"
+    },
+    "facing=north,time=17": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_18",
+      "y": 270
+    },
+    "facing=south,time=17": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_18",
+      "y": 90
+    },
+    "facing=west,time=17": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_18",
+      "y": 180
+    },
+    "facing=east,time=17": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_18"
+    },
+    "facing=north,time=18": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_19",
+      "y": 270
+    },
+    "facing=south,time=18": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_19",
+      "y": 90
+    },
+    "facing=west,time=18": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_19",
+      "y": 180
+    },
+    "facing=east,time=18": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_19"
+    },
+    "facing=north,time=19": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_20",
+      "y": 270
+    },
+    "facing=south,time=19": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_20",
+      "y": 90
+    },
+    "facing=west,time=19": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_20",
+      "y": 180
+    },
+    "facing=east,time=19": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_20"
+    },
+    "facing=north,time=20": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_21",
+      "y": 270
+    },
+    "facing=south,time=20": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_21",
+      "y": 90
+    },
+    "facing=west,time=20": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_21",
+      "y": 180
+    },
+    "facing=east,time=20": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_21"
+    },
+    "facing=north,time=21": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_22",
+      "y": 270
+    },
+    "facing=south,time=21": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_22",
+      "y": 90
+    },
+    "facing=west,time=21": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_22",
+      "y": 180
+    },
+    "facing=east,time=21": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_22"
+    },
+    "facing=north,time=22": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_23",
+      "y": 270
+    },
+    "facing=south,time=22": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_23",
+      "y": 90
+    },
+    "facing=west,time=22": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_23",
+      "y": 180
+    },
+    "facing=east,time=22": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_23"
+    },
+    "facing=north,time=23": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_24",
+      "y": 270
+    },
+    "facing=south,time=23": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_24",
+      "y": 90
+    },
+    "facing=west,time=23": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_24",
+      "y": 180
+    },
+    "facing=east,time=23": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_24"
+    },
+    "facing=north,time=24": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_25",
+      "y": 270
+    },
+    "facing=south,time=24": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_25",
+      "y": 90
+    },
+    "facing=west,time=24": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_25",
+      "y": 180
+    },
+    "facing=east,time=24": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_25"
+    },
+    "facing=north,time=25": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_26",
+      "y": 270
+    },
+    "facing=south,time=25": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_26",
+      "y": 90
+    },
+    "facing=west,time=25": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_26",
+      "y": 180
+    },
+    "facing=east,time=25": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_26"
+    },
+    "facing=north,time=26": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_27",
+      "y": 270
+    },
+    "facing=south,time=26": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_27",
+      "y": 90
+    },
+    "facing=west,time=26": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_27",
+      "y": 180
+    },
+    "facing=east,time=26": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_27"
+    },
+    "facing=north,time=27": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_28",
+      "y": 270
+    },
+    "facing=south,time=27": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_28",
+      "y": 90
+    },
+    "facing=west,time=27": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_28",
+      "y": 180
+    },
+    "facing=east,time=27": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_28"
+    },
+    "facing=north,time=28": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_29",
+      "y": 270
+    },
+    "facing=south,time=28": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_29",
+      "y": 90
+    },
+    "facing=west,time=28": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_29",
+      "y": 180
+    },
+    "facing=east,time=28": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_29"
+    },
+    "facing=north,time=29": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_30",
+      "y": 270
+    },
+    "facing=south,time=29": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_30",
+      "y": 90
+    },
+    "facing=west,time=29": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_30",
+      "y": 180
+    },
+    "facing=east,time=29": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_30"
+    },
+    "facing=north,time=30": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_31",
+      "y": 270
+    },
+    "facing=south,time=30": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_31",
+      "y": 90
+    },
+    "facing=west,time=30": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_31",
+      "y": 180
+    },
+    "facing=east,time=30": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_31"
+    },
+    "facing=north,time=31": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_32",
+      "y": 270
+    },
+    "facing=south,time=31": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_32",
+      "y": 90
+    },
+    "facing=west,time=31": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_32",
+      "y": 180
+    },
+    "facing=east,time=31": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_32"
+    },
+    "facing=north,time=32": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_33",
+      "y": 270
+    },
+    "facing=south,time=32": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_33",
+      "y": 90
+    },
+    "facing=west,time=32": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_33",
+      "y": 180
+    },
+    "facing=east,time=32": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_33"
+    },
+    "facing=north,time=33": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_34",
+      "y": 270
+    },
+    "facing=south,time=33": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_34",
+      "y": 90
+    },
+    "facing=west,time=33": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_34",
+      "y": 180
+    },
+    "facing=east,time=33": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_34"
+    },
+    "facing=north,time=34": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_35",
+      "y": 270
+    },
+    "facing=south,time=34": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_35",
+      "y": 90
+    },
+    "facing=west,time=34": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_35",
+      "y": 180
+    },
+    "facing=east,time=34": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_35"
+    },
+    "facing=north,time=35": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_36",
+      "y": 270
+    },
+    "facing=south,time=35": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_36",
+      "y": 90
+    },
+    "facing=west,time=35": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_36",
+      "y": 180
+    },
+    "facing=east,time=35": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_36"
+    },
+    "facing=north,time=36": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_37",
+      "y": 270
+    },
+    "facing=south,time=36": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_37",
+      "y": 90
+    },
+    "facing=west,time=36": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_37",
+      "y": 180
+    },
+    "facing=east,time=36": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_37"
+    },
+    "facing=north,time=37": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_38",
+      "y": 270
+    },
+    "facing=south,time=37": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_38",
+      "y": 90
+    },
+    "facing=west,time=37": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_38",
+      "y": 180
+    },
+    "facing=east,time=37": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_38"
+    },
+    "facing=north,time=38": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_39",
+      "y": 270
+    },
+    "facing=south,time=38": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_39",
+      "y": 90
+    },
+    "facing=west,time=38": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_39",
+      "y": 180
+    },
+    "facing=east,time=38": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_39"
+    },
+    "facing=north,time=39": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_40",
+      "y": 270
+    },
+    "facing=south,time=39": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_40",
+      "y": 90
+    },
+    "facing=west,time=39": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_40",
+      "y": 180
+    },
+    "facing=east,time=39": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_40"
+    },
+    "facing=north,time=40": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_41",
+      "y": 270
+    },
+    "facing=south,time=40": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_41",
+      "y": 90
+    },
+    "facing=west,time=40": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_41",
+      "y": 180
+    },
+    "facing=east,time=40": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_41"
+    },
+    "facing=north,time=41": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_42",
+      "y": 270
+    },
+    "facing=south,time=41": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_42",
+      "y": 90
+    },
+    "facing=west,time=41": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_42",
+      "y": 180
+    },
+    "facing=east,time=41": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_42"
+    },
+    "facing=north,time=42": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_43",
+      "y": 270
+    },
+    "facing=south,time=42": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_43",
+      "y": 90
+    },
+    "facing=west,time=42": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_43",
+      "y": 180
+    },
+    "facing=east,time=42": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_43"
+    },
+    "facing=north,time=43": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_44",
+      "y": 270
+    },
+    "facing=south,time=43": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_44",
+      "y": 90
+    },
+    "facing=west,time=43": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_44",
+      "y": 180
+    },
+    "facing=east,time=43": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_44"
+    },
+    "facing=north,time=44": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_45",
+      "y": 270
+    },
+    "facing=south,time=44": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_45",
+      "y": 90
+    },
+    "facing=west,time=44": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_45",
+      "y": 180
+    },
+    "facing=east,time=44": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_45"
+    },
+    "facing=north,time=45": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_46",
+      "y": 270
+    },
+    "facing=south,time=45": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_46",
+      "y": 90
+    },
+    "facing=west,time=45": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_46",
+      "y": 180
+    },
+    "facing=east,time=45": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_46"
+    },
+    "facing=north,time=46": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_47",
+      "y": 270
+    },
+    "facing=south,time=46": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_47",
+      "y": 90
+    },
+    "facing=west,time=46": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_47",
+      "y": 180
+    },
+    "facing=east,time=46": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_47"
+    },
+    "facing=north,time=47": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_48",
+      "y": 270
+    },
+    "facing=south,time=47": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_48",
+      "y": 90
+    },
+    "facing=west,time=47": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_48",
+      "y": 180
+    },
+    "facing=east,time=47": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_48"
+    },
+    "facing=north,time=48": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_49",
+      "y": 270
+    },
+    "facing=south,time=48": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_49",
+      "y": 90
+    },
+    "facing=west,time=48": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_49",
+      "y": 180
+    },
+    "facing=east,time=48": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_49"
+    },
+    "facing=north,time=49": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_50",
+      "y": 270
+    },
+    "facing=south,time=49": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_50",
+      "y": 90
+    },
+    "facing=west,time=49": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_50",
+      "y": 180
+    },
+    "facing=east,time=49": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_50"
+    },
+    "facing=north,time=50": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_51",
+      "y": 270
+    },
+    "facing=south,time=50": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_51",
+      "y": 90
+    },
+    "facing=west,time=50": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_51",
+      "y": 180
+    },
+    "facing=east,time=50": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_51"
+    },
+    "facing=north,time=51": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_52",
+      "y": 270
+    },
+    "facing=south,time=51": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_52",
+      "y": 90
+    },
+    "facing=west,time=51": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_52",
+      "y": 180
+    },
+    "facing=east,time=51": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_52"
+    },
+    "facing=north,time=52": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_53",
+      "y": 270
+    },
+    "facing=south,time=52": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_53",
+      "y": 90
+    },
+    "facing=west,time=52": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_53",
+      "y": 180
+    },
+    "facing=east,time=52": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_53"
+    },
+    "facing=north,time=53": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_54",
+      "y": 270
+    },
+    "facing=south,time=53": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_54",
+      "y": 90
+    },
+    "facing=west,time=53": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_54",
+      "y": 180
+    },
+    "facing=east,time=53": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_54"
+    },
+    "facing=north,time=54": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_55",
+      "y": 270
+    },
+    "facing=south,time=54": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_55",
+      "y": 90
+    },
+    "facing=west,time=54": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_55",
+      "y": 180
+    },
+    "facing=east,time=54": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_55"
+    },
+    "facing=north,time=55": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_56",
+      "y": 270
+    },
+    "facing=south,time=55": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_56",
+      "y": 90
+    },
+    "facing=west,time=55": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_56",
+      "y": 180
+    },
+    "facing=east,time=55": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_56"
+    },
+    "facing=north,time=56": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_57",
+      "y": 270
+    },
+    "facing=south,time=56": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_57",
+      "y": 90
+    },
+    "facing=west,time=56": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_57",
+      "y": 180
+    },
+    "facing=east,time=56": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_57"
+    },
+    "facing=north,time=57": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_58",
+      "y": 270
+    },
+    "facing=south,time=57": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_58",
+      "y": 90
+    },
+    "facing=west,time=57": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_58",
+      "y": 180
+    },
+    "facing=east,time=57": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_58"
+    },
+    "facing=north,time=58": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_59",
+      "y": 270
+    },
+    "facing=south,time=58": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_59",
+      "y": 90
+    },
+    "facing=west,time=58": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_59",
+      "y": 180
+    },
+    "facing=east,time=58": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_59"
+    },
+    "facing=north,time=59": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_60",
+      "y": 270
+    },
+    "facing=south,time=59": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_60",
+      "y": 90
+    },
+    "facing=west,time=59": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_60",
+      "y": 180
+    },
+    "facing=east,time=59": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_60"
+    },
+    "facing=north,time=60": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_61",
+      "y": 270
+    },
+    "facing=south,time=60": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_61",
+      "y": 90
+    },
+    "facing=west,time=60": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_61",
+      "y": 180
+    },
+    "facing=east,time=60": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_61"
+    },
+    "facing=north,time=61": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_62",
+      "y": 270
+    },
+    "facing=south,time=61": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_62",
+      "y": 90
+    },
+    "facing=west,time=61": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_62",
+      "y": 180
+    },
+    "facing=east,time=61": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_62"
+    },
+    "facing=north,time=62": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_63",
+      "y": 270
+    },
+    "facing=south,time=62": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_63",
+      "y": 90
+    },
+    "facing=west,time=62": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_63",
+      "y": 180
+    },
+    "facing=east,time=62": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_63"
+    },
+    "facing=north,time=63": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_64",
+      "y": 270
+    },
+    "facing=south,time=63": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_64",
+      "y": 90
+    },
+    "facing=west,time=63": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_64",
+      "y": 180
+    },
+    "facing=east,time=63": {
+      "model": "assorteddecor:block/wall_clock/wall_clock_64"
+    }
+  }
+}

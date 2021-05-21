@@ -77,6 +77,8 @@ public class DecorLootProvider implements IDataProvider {
 		blocks.add(DecorBlocks.NEON_SIGN.get());
 
 		blocks.add(DecorBlocks.ILLUMINATION_TUBE.get());
+		blocks.add(DecorBlocks.CALENDAR.get());
+		blocks.add(DecorBlocks.WALL_CLOCK.get());
 
 		for (Block b : DecorBlocks.fluroBlocks())
 			blocks.add(b);

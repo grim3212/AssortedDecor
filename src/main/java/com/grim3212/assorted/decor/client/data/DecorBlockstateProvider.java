@@ -1,13 +1,16 @@
 package com.grim3212.assorted.decor.client.data;
 
+import java.util.List;
 import java.util.function.Function;
 
+import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.IlluminationTubeBlock;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
+import com.grim3212.assorted.decor.common.block.WallClockBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBaseBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerLampPost;
@@ -117,6 +120,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 			getVariantBuilder(b).partialState().addModels(new ConfiguredModel(fluroModel));
 			itemModels().getBuilder(name(b)).parent(fluroModel);
 		}
+
+		calendar();
+		wallClock();
 
 		this.loaderModels.previousModels();
 	}
@@ -260,6 +266,72 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.get(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
 				BlockStateProperties.WATERLOGGED);
 		itemModels().getBuilder(name).parent(colorizerStoolModel.model);
+	}
+
+	private void calendar() {
+		BlockModelBuilder calendarModel = this.models().getBuilder(prefix("block/calendar")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(AssortedDecor.MODID, "block/calendar")).texture("all", new ResourceLocation(AssortedDecor.MODID, "block/calendar"));
+
+		calendarModel.element().from(4, 2, 0).to(12, 15, 1).allFaces((dir, face) -> {
+			switch (dir) {
+				case EAST:
+					face.texture("#all").uvs(14, 1, 16, 15);
+					break;
+				case NORTH:
+					face.texture("#all").uvs(0, 0, 4, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#all").uvs(2.5F, 0F, 13.5F, 16F);
+					break;
+				case WEST:
+					face.texture("#all").uvs(0, 1, 2, 15);
+					break;
+				case DOWN:
+					face.texture("#all").uvs(12, 2, 4, 0);
+					break;
+				case UP:
+				default:
+					face.texture("#all").uvs(4, 0, 12, 2);
+					break;
+			}
+		});
+
+		getVariantBuilder(DecorBlocks.CALENDAR.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(calendarModel).rotationY((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()).build()));
+	}
+
+	private void wallClock() {
+		BlockModelBuilder defaultWallClockModel = this.models().getBuilder(prefix("block/wall_clock")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation("block/oak_planks")).texture("back", new ResourceLocation("block/oak_planks")).texture("side", new ResourceLocation("block/oak_planks"));
+
+		defaultWallClockModel.element().from(0, 0, 0).to(2, 16, 16).allFaces((dir, face) -> {
+			switch (dir) {
+				case EAST:
+					face.texture("#front").uvs(0, 0, 16, 16);
+					break;
+				case NORTH:
+					face.texture("#side").uvs(14, 0, 16, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.SOUTH);
+					break;
+				case WEST:
+					face.texture("#back").uvs(0, 0, 16, 16).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#side").uvs(16, 16, 14, 0).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.UP);
+					break;
+			}
+		});
+
+		List<BlockModelBuilder> clocks = Lists.newArrayList();
+		for (int i = 0; i < 64; i++) {
+			String name = prefix("block/wall_clock/wall_clock_" + (i + 1));
+			clocks.add(this.models().getBuilder(name).parent(defaultWallClockModel).texture("front", name));
+		}
+
+		getVariantBuilder(DecorBlocks.WALL_CLOCK.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(clocks.get(state.get(WallClockBlock.TIME))).rotationY(((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 90) % 360).build()));
 	}
 
 	private void pot() {

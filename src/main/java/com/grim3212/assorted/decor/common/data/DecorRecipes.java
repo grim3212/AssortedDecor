@@ -97,6 +97,10 @@ public class DecorRecipes extends RecipeProvider {
 		}
 
 		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.QUARTZ_DOOR.get(), 3).key('X', Items.QUARTZ).patternLine("XX").patternLine("XX").patternLine("XX").addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
+		
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.CALENDAR.get()).key('#', Items.PAPER).patternLine("##").patternLine("##").patternLine("##").addCriterion("has_paper", hasItem(Items.PAPER)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.WALL_CLOCK.get()).key('#', ItemTags.PLANKS).key('C', Items.CLOCK).patternLine("###").patternLine("#C#").patternLine("###").addCriterion("has_clock", hasItem(Items.CLOCK)).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(DecorBlocks.WALL_CLOCK.get()).key('#', ItemTags.PLANKS).key('R', Tags.Items.DUSTS_REDSTONE).key('G', Tags.Items.INGOTS_GOLD).patternLine("#G#").patternLine("GRG").patternLine("#G#").addCriterion("has_redstone", hasItem(Tags.Items.DUSTS_REDSTONE)).addCriterion("has_gold", hasItem(Tags.Items.INGOTS_GOLD)).build(consumer, prefix("wall_clock_alt"));
 	}
 
 	private ResourceLocation prefix(String name) {
