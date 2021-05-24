@@ -69,7 +69,7 @@ public class ClientProxy implements IProxy {
 
 	private void setupClient(final FMLClientSetupEvent event) {
 		for (Block b : DecorBlocks.colorizerBlocks()) {
-			RenderTypeLookup.setRenderLayer(b, RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(b, RenderType.getTranslucent());
 		}
 
 		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.getCutout());
