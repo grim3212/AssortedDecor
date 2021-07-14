@@ -30,11 +30,11 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 	public void tick() {
 		double d0 = 0.0D;
 
-		if (getWorld() != null) {
-			float f = getWorld().func_242415_f(1.0F);
+		if (getLevel() != null) {
+			float f = getLevel().getTimeOfDay(1.0F);
 			d0 = (double) f;
 
-			if (getWorld().getDimensionType().doesFixedTimeExist()) {
+			if (getLevel().dimensionType().hasFixedTime()) {
 				d0 = Math.random();
 			}
 		}
@@ -62,19 +62,19 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 		if (i != time) {
 			time = i;
 			BlockState state = this.getBlockState();
-			this.getWorld().setBlockState(getPos(), state.with(WallClockBlock.TIME, getTime()));
+			this.getLevel().setBlockAndUpdate(getBlockPos(), state.setValue(WallClockBlock.TIME, getTime()));
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.readPacketNBT(nbt);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundNBT save(CompoundNBT compound) {
+		super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}
@@ -87,23 +87,23 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbtTagCompound = new CompoundNBT();
 		writePacketNBT(nbtTagCompound);
-		return new SUpdateTileEntityPacket(this.pos, 1, nbtTagCompound);
+		return new SUpdateTileEntityPacket(this.worldPosition, 1, nbtTagCompound);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
 		super.onDataPacket(net, pkt);
-		this.readPacketNBT(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getTag());
 		requestModelDataUpdate();
-		if (world instanceof ClientWorld) {
-			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
+		if (level instanceof ClientWorld) {
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}
 	}
 }

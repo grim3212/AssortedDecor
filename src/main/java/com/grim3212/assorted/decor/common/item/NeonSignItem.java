@@ -23,10 +23,10 @@ public class NeonSignItem extends WallOrFloorItem {
 	}
 
 	@Override
-	protected boolean onBlockPlaced(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
-		boolean flag = super.onBlockPlaced(pos, worldIn, player, stack, state);
-		if (!worldIn.isRemote && !flag && player != null) {
-			((NeonSignTileEntity) worldIn.getTileEntity(pos)).setOwner(player);
+	protected boolean updateCustomBlockEntityTag(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+		boolean flag = super.updateCustomBlockEntityTag(pos, worldIn, player, stack, state);
+		if (!worldIn.isClientSide && !flag && player != null) {
+			((NeonSignTileEntity) worldIn.getBlockEntity(pos)).setOwner(player);
 			PacketHandler.sendTo((ServerPlayerEntity) player, new NeonOpenPacket(pos));
 		}
 

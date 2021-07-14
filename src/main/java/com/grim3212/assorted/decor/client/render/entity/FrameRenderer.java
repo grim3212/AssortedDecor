@@ -31,21 +31,21 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 
 	@Override
 	public void render(FrameEntity entityIn, float entityInYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F - entityInYaw));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityInYaw));
 		renderBeams(entityIn, entityInYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 	}
 
 	private void renderBeams(FrameEntity entityIn, float entityInYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
 		FrameType frame = entityIn.getCurrentFrame();
 
-		IVertexBuilder builder = bufferIn.getBuffer(RenderType.getEntitySolid(framesTexture));
-		MatrixStack.Entry matrixstack$entry = matrixStackIn.getLast();
-		Matrix4f matrix4f = matrixstack$entry.getMatrix();
-		Matrix3f matrix3f = matrixstack$entry.getNormal();
+		IVertexBuilder builder = bufferIn.getBuffer(RenderType.entitySolid(framesTexture));
+		MatrixStack.Entry matrixstack$entry = matrixStackIn.last();
+		Matrix4f matrix4f = matrixstack$entry.pose();
+		Matrix3f matrix3f = matrixstack$entry.normal();
 
 		matrixStackIn.scale(frame.sizeX / 256.0F + 0.001F, frame.sizeY / 256.0F + 0.001F, 0.0625F);
 
@@ -83,43 +83,43 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 			float green = entityIn.getFrameColor()[1] / 255.0f;
 			float blue = entityIn.getFrameColor()[2] / 255.0f;
 
-			int light = WorldRenderer.getCombinedLight(entityIn.world, entityIn.getHangingPosition());
+			int light = WorldRenderer.getLightColor(entityIn.level, entityIn.getPos());
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).tex(u1, v2).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).tex(u1, v3).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).tex(u2, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).tex(u2, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u2, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u2, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).tex(u2, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).tex(u2, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).tex(u1, v3).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).tex(u1, v2).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u2, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u2, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).tex(u3, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).tex(u3, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).tex(u1, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).tex(u1, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u3, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).tex(u3, v1 / 3.0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).tex(u3, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).tex(u1, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).tex(u1, v1 / 3.0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u3, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u1, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).tex(u3, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).tex(u3, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).tex(u1, v1).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).tex(u1, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u3, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
 
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).tex(u3, v1 / 3.0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).tex(u3, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).tex(u1, 0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-			builder.pos(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).tex(u1, v1 / 3.0F).overlay(OverlayTexture.NO_OVERLAY).lightmap(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u3, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
+			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
 
 		}
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(FrameEntity entity) {
+	public ResourceLocation getTextureLocation(FrameEntity entity) {
 		return framesTexture;
 	}
 

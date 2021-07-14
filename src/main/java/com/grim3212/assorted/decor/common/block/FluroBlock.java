@@ -8,7 +8,7 @@ import net.minecraft.block.material.MaterialColor;
 public class FluroBlock extends Block {
 	
 	public FluroBlock(MaterialColor color) {
-		super(Block.Properties.create(Material.GLASS, color).sound(SoundType.GLASS).hardnessAndResistance(0.2F, 1.0F).setLightLevel(state -> 15).sound(SoundType.GLASS));
+		super(Block.Properties.of(Material.GLASS, color).sound(SoundType.GLASS).strength(0.2F, 1.0F).lightLevel(state -> 15).sound(SoundType.GLASS));
 	}
 
 }

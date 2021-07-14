@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockReader;
 
 public class ColorizerFireringBlock extends ColorizerFireplaceBaseBlock {
 
-	protected static final VoxelShape FIRERING = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 16.0F, 6.4F, 16.0F);
+	protected static final VoxelShape FIRERING = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 6.4F, 16.0F);
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {

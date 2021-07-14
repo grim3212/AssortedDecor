@@ -37,26 +37,26 @@ public class PlanterPotBlock extends Block {
 	public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
 	public PlanterPotBlock() {
-		super(Properties.create(Material.CLAY).sound(SoundType.GROUND).tickRandomly().hardnessAndResistance(0.5f, 10f).variableOpacity().notSolid());
-		this.setDefaultState(this.stateContainer.getBaseState().with(TOP, 0).with(DOWN, false));
+		super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).randomTicks().strength(0.5f, 10f).dynamicShape().noOcclusion());
+		this.registerDefaultState(this.stateDefinition.any().setValue(TOP, 0).setValue(DOWN, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(TOP, DOWN);
 	}
 
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-		BlockState plant = plantable.getPlant(world, pos.offset(facing));
-		PlantType plantType = plantable.getPlantType(world, pos.offset(facing));
+		BlockState plant = plantable.getPlant(world, pos.relative(facing));
+		PlantType plantType = plantable.getPlantType(world, pos.relative(facing));
 
 		if (plantType == PlantType.CAVE) {
 			return true;
 		}
 
 		if (world.getBlockState(pos).getBlock() == DecorBlocks.PLANTER_POT.get()) {
-			int top = world.getBlockState(pos).get(TOP);
+			int top = world.getBlockState(pos).getValue(TOP);
 			switch (top) {
 			case 0:
 				if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
@@ -98,34 +98,34 @@ public class PlanterPotBlock extends Block {
 
 	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-		worldIn.notifyNeighborsOfStateChange(pos, this);
+		worldIn.updateNeighborsAt(pos, this);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, 10);
+		worldIn.getBlockTicks().scheduleTick(pos, this, 10);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
 		if (isStool(worldIn, pos))
 			return ColorizerStoolBlock.POT_STOOL;
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (worldIn.isRemote)
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide)
 			return ActionResultType.SUCCESS;
 
-		if (player.getHeldItem(hand).isEmpty() || player.getHeldItem(hand).getCount() == 0) {
-			int top = worldIn.getBlockState(pos).get(TOP);
+		if (player.getItemInHand(hand).isEmpty() || player.getItemInHand(hand).getCount() == 0) {
+			int top = worldIn.getBlockState(pos).getValue(TOP);
 			if (top == 6) {
 				top = 0;
 			} else {
 				top++;
 			}
-			worldIn.setBlockState(pos, state.with(TOP, top), 2);
+			worldIn.setBlock(pos, state.setValue(TOP, top), 2);
 			return ActionResultType.SUCCESS;
 		} else {
 			return ActionResultType.PASS;
@@ -133,16 +133,16 @@ public class PlanterPotBlock extends Block {
 	}
 
 	private boolean isStool(IBlockReader worldIn, BlockPos pos) {
-		BlockState stoolState = worldIn.getBlockState(pos.down());
+		BlockState stoolState = worldIn.getBlockState(pos.below());
 		if (stoolState.getBlock() == DecorBlocks.COLORIZER_STOOL.get()) {
-			return stoolState.get(BlockStateProperties.FACE) == AttachFace.FLOOR;
+			return stoolState.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.FLOOR;
 		}
 
 		return false;
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return stateIn.with(DOWN, this.isStool(worldIn, currentPos));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return stateIn.setValue(DOWN, this.isStool(worldIn, currentPos));
 	}
 }

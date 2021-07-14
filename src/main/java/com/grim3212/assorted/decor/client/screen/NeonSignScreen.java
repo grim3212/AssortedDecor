@@ -75,11 +75,11 @@ public class NeonSignScreen extends Screen {
 		}, (s) -> {
 			this.lines[this.editLine] = s;
 			this.tileSign.setText(this.editLine, new StringTextComponent(s));
-		}, TextInputUtil.getClipboardTextSupplier(this.minecraft), TextInputUtil.getClipboardTextSetter(this.minecraft), (s) -> {
-			return this.minecraft.fontRenderer.getStringWidth(s) <= 90;
+		}, TextInputUtil.createClipboardGetter(this.minecraft), TextInputUtil.createClipboardSetter(this.minecraft), (s) -> {
+			return this.minecraft.font.width(s) <= 90;
 		});
 
-		this.minecraft.keyboardListener.enableRepeatEvents(true);
+		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		this.addButton(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, new TranslationTextComponent("gui.done"), btn -> {
 			this.close();
 		}));
@@ -118,45 +118,45 @@ public class NeonSignScreen extends Screen {
 		}));
 		this.addButton(new NeonButton(x + 11, y + 164, new StringTextComponent(""), 0, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 0;
-			PacketHandler.sendToServer(new NeonChangeModePacket(0, NeonSignScreen.this.tileSign.getPos()));
+			PacketHandler.sendToServer(new NeonChangeModePacket(0, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
 		this.addButton(new NeonButton(x + 11 + 51, y + 164, new StringTextComponent(""), 51, 208, 52, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 1;
-			PacketHandler.sendToServer(new NeonChangeModePacket(1, NeonSignScreen.this.tileSign.getPos()));
+			PacketHandler.sendToServer(new NeonChangeModePacket(1, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
 		this.addButton(new NeonButton(x + 11 + 103, y + 164, new StringTextComponent(""), 103, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 2;
-			PacketHandler.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getPos()));
+			PacketHandler.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
 	}
 
 	private void addSignText(int id) {
-		this.textInputUtil.putText(getFormatting(id).toString());
-		this.textInputUtil.moveCursorToEnd();
+		this.textInputUtil.insertText(getFormatting(id).toString());
+		this.textInputUtil.setCursorToEnd();
 	}
 
 	private void close() {
-		this.tileSign.markDirty();
-		this.minecraft.displayGuiScreen((Screen) null);
-	}
-
-	@Override
-	public void closeScreen() {
-		this.close();
+		this.tileSign.setChanged();
+		this.minecraft.setScreen((Screen) null);
 	}
 
 	@Override
 	public void onClose() {
-		this.minecraft.keyboardListener.enableRepeatEvents(false);
+		this.close();
+	}
+
+	@Override
+	public void removed() {
+		this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
 
 		// Update lines on server side
-		PacketHandler.sendToServer(new NeonUpdatePacket(this.tileSign.getPos(), this.tileSign.signText));
+		PacketHandler.sendToServer(new NeonUpdatePacket(this.tileSign.getBlockPos(), this.tileSign.signText));
 	}
 
 	@Override
 	public void tick() {
 		++this.updateCounter;
-		if (!this.tileSign.getType().isValidBlock(this.tileSign.getBlockState().getBlock())) {
+		if (!this.tileSign.getType().isValid(this.tileSign.getBlockState().getBlock())) {
 			this.close();
 		}
 	}
@@ -188,12 +188,12 @@ public class NeonSignScreen extends Screen {
 		case 22:
 			return TextFormatting.RESET;
 		}
-		return TextFormatting.fromColorIndex(buttonId - 1);
+		return TextFormatting.getById(buttonId - 1);
 	}
 
 	@Override
 	public boolean charTyped(char codePoint, int modifiers) {
-		this.textInputUtil.putChar(codePoint);
+		this.textInputUtil.charTyped(codePoint);
 		return true;
 	}
 
@@ -201,23 +201,23 @@ public class NeonSignScreen extends Screen {
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (keyCode == 265) {
 			this.editLine = this.editLine - 1 & 3;
-			this.textInputUtil.moveCursorToEnd();
+			this.textInputUtil.setCursorToEnd();
 			return true;
 		} else if (keyCode != 264 && keyCode != 257 && keyCode != 335) {
-			return this.textInputUtil.specialKeyPressed(keyCode) ? true : super.keyPressed(keyCode, scanCode, modifiers);
+			return this.textInputUtil.keyPressed(keyCode) ? true : super.keyPressed(keyCode, scanCode, modifiers);
 		} else {
 			this.editLine = this.editLine + 1 & 3;
-			this.textInputUtil.moveCursorToEnd();
+			this.textInputUtil.setCursorToEnd();
 			return true;
 		}
 	}
 
 	@Override
 	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		RenderHelper.setupGuiFlatDiffuseLighting();
+		RenderHelper.setupForFlatItems();
 		this.renderBackground(matrixStack);
 		drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 40, 16777215);
-		matrixStack.push();
+		matrixStack.pushPose();
 		matrixStack.translate((double) (this.width / 2), 0.0D, 50.0D);
 		float f = 93.75F;
 		matrixStack.scale(f, -f, f);
@@ -230,51 +230,51 @@ public class NeonSignScreen extends Screen {
 
 		boolean flag1 = this.updateCounter / 6 % 2 == 0;
 		float f1 = 0.6666667F;
-		matrixStack.push();
+		matrixStack.pushPose();
 		matrixStack.scale(f1, -f1, -f1);
-		IRenderTypeBuffer.Impl irendertypebuffer$impl = this.minecraft.getRenderTypeBuffers().getBufferSource();
-		RenderMaterial rendermaterial = new RenderMaterial(Atlases.SIGN_ATLAS, NeonSignStitchHandler.getSignTexture(tileSign.mode));
-		IVertexBuilder ivertexbuilder = rendermaterial.getBuffer(irendertypebuffer$impl, this.signModel::getRenderType);
-		this.signModel.signBoard.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
+		IRenderTypeBuffer.Impl irendertypebuffer$impl = this.minecraft.renderBuffers().bufferSource();
+		RenderMaterial rendermaterial = new RenderMaterial(Atlases.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileSign.mode));
+		IVertexBuilder ivertexbuilder = rendermaterial.buffer(irendertypebuffer$impl, this.signModel::renderType);
+		this.signModel.sign.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
 		if (flag) {
-			this.signModel.signStick.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
+			this.signModel.stick.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
 		}
 
-		matrixStack.pop();
+		matrixStack.popPose();
 		float f2 = 0.010416667F;
 		matrixStack.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
 		matrixStack.scale(f2, -f2, f2);
-		int j = this.textInputUtil.getSelectionEnd();
-		int k = this.textInputUtil.getSelectionStart();
+		int j = this.textInputUtil.getCursorPos();
+		int k = this.textInputUtil.getSelectionPos();
 		int l = this.editLine * 10 - this.lines.length * 5;
-		Matrix4f matrix4f = matrixStack.getLast().getMatrix();
+		Matrix4f matrix4f = matrixStack.last().pose();
 
 		for (int i1 = 0; i1 < this.lines.length; ++i1) {
 			String s = this.lines[i1];
 			if (s != null) {
-				if (this.font.getBidiFlag()) {
-					s = this.font.bidiReorder(s);
+				if (this.font.isBidirectional()) {
+					s = this.font.bidirectionalShaping(s);
 				}
 
-				float f3 = (float) (-this.minecraft.fontRenderer.getStringWidth(s) / 2);
-				this.minecraft.fontRenderer.drawText(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
+				float f3 = (float) (-this.minecraft.font.width(s) / 2);
+				this.minecraft.font.draw(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
 				if (i1 == this.editLine && j >= 0 && flag1) {
-					int j1 = this.minecraft.fontRenderer.getStringWidth(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
-					int k1 = j1 - this.minecraft.fontRenderer.getStringWidth(s) / 2;
+					int j1 = this.minecraft.font.width(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
+					int k1 = j1 - this.minecraft.font.width(s) / 2;
 					if (j >= s.length()) {
-						this.minecraft.fontRenderer.drawString(matrixStack, "_", (float) k1, (float) l, 16777215);
+						this.minecraft.font.draw(matrixStack, "_", (float) k1, (float) l, 16777215);
 					}
 				}
 			}
 		}
 
-		irendertypebuffer$impl.finish();
+		irendertypebuffer$impl.endBatch();
 
 		for (int i3 = 0; i3 < this.lines.length; ++i3) {
 			String s1 = this.lines[i3];
 			if (s1 != null && i3 == this.editLine && j >= 0) {
-				int j3 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
-				int k3 = j3 - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
+				int j3 = this.minecraft.font.width(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
+				int k3 = j3 - this.minecraft.font.width(s1) / 2;
 				if (flag1 && j < s1.length()) {
 					fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | 16777215);
 				}
@@ -282,33 +282,33 @@ public class NeonSignScreen extends Screen {
 				if (k != j) {
 					int l3 = Math.min(j, k);
 					int l1 = Math.max(j, k);
-					int i2 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, l3)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
-					int j2 = this.minecraft.fontRenderer.getStringWidth(s1.substring(0, l1)) - this.minecraft.fontRenderer.getStringWidth(s1) / 2;
+					int i2 = this.minecraft.font.width(s1.substring(0, l3)) - this.minecraft.font.width(s1) / 2;
+					int j2 = this.minecraft.font.width(s1.substring(0, l1)) - this.minecraft.font.width(s1) / 2;
 					int k2 = Math.min(i2, j2);
 					int l2 = Math.max(i2, j2);
 					Tessellator tessellator = Tessellator.getInstance();
-					BufferBuilder bufferbuilder = tessellator.getBuffer();
+					BufferBuilder bufferbuilder = tessellator.getBuilder();
 					RenderSystem.disableTexture();
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 					bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-					bufferbuilder.pos(matrix4f, (float) k2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
-					bufferbuilder.pos(matrix4f, (float) l2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
-					bufferbuilder.pos(matrix4f, (float) l2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
-					bufferbuilder.pos(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
-					bufferbuilder.finishDrawing();
-					WorldVertexBufferUploader.draw(bufferbuilder);
+					bufferbuilder.vertex(matrix4f, (float) k2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
+					bufferbuilder.vertex(matrix4f, (float) l2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
+					bufferbuilder.vertex(matrix4f, (float) l2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
+					bufferbuilder.vertex(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
+					bufferbuilder.end();
+					WorldVertexBufferUploader.end(bufferbuilder);
 					RenderSystem.disableColorLogicOp();
 					RenderSystem.enableTexture();
 				}
 			}
 		}
 
-		matrixStack.pop();
-		RenderHelper.setupGui3DDiffuseLighting();
-		matrixStack.push();
+		matrixStack.popPose();
+		RenderHelper.setupFor3DItems();
+		matrixStack.pushPose();
 		matrixStack.translate(0, 0, 100);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		matrixStack.pop();
+		matrixStack.popPose();
 	}
 }

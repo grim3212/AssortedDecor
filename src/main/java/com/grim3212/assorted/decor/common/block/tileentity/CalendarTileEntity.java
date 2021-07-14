@@ -14,14 +14,14 @@ public class CalendarTileEntity extends TileEntity {
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.readPacketNBT(nbt);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundNBT save(CompoundNBT compound) {
+		super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}
@@ -34,23 +34,23 @@ public class CalendarTileEntity extends TileEntity {
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbtTagCompound = new CompoundNBT();
 		writePacketNBT(nbtTagCompound);
-		return new SUpdateTileEntityPacket(this.pos, 1, nbtTagCompound);
+		return new SUpdateTileEntityPacket(this.worldPosition, 1, nbtTagCompound);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
 		super.onDataPacket(net, pkt);
-		this.readPacketNBT(pkt.getNbtCompound());
+		this.readPacketNBT(pkt.getTag());
 		requestModelDataUpdate();
-		if (world instanceof ClientWorld) {
-			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
+		if (level instanceof ClientWorld) {
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}
 	}
 }

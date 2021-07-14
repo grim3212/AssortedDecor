@@ -32,7 +32,7 @@ public class NeonChangeModePacket {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
-				TileEntity te = ctx.get().getSender().getEntityWorld().getTileEntity(this.pos);
+				TileEntity te = ctx.get().getSender().getCommandSenderWorld().getBlockEntity(this.pos);
 				if (te instanceof NeonSignTileEntity) {
 					((NeonSignTileEntity) te).mode = this.mode;
 				}

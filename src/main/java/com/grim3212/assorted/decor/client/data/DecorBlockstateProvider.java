@@ -59,12 +59,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
 
 		Function<BlockState, ModelFile> modelFunc = (state) -> {
-			return state.get(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
+			return state.getValue(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
 		};
 
 		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get()).forAllStates(state -> {
-			Direction dir = state.get(BlockStateProperties.FACING);
-			return ConfiguredModel.builder().modelFile(modelFunc.apply(state)).rotationX(dir == Direction.DOWN ? 180 : 0).rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.getHorizontalAngle()) + 90) % 360).build();
+			Direction dir = state.getValue(BlockStateProperties.FACING);
+			return ConfiguredModel.builder().modelFile(modelFunc.apply(state)).rotationX(dir == Direction.DOWN ? 180 : 0).rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 90) % 360).build();
 		});
 
 		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
@@ -237,16 +237,16 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	private void customLoaderStateRotate(Block block, ConfiguredModel model) {
 		getVariantBuilder(block).forAllStatesExcept(state -> {
-			Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
-			Half half = state.get(BlockStateProperties.HALF);
-			int yRot = ((int) facing.rotateY().getHorizontalAngle() + (half == Half.TOP ? 270 : 90)) % 360;
+			Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+			Half half = state.getValue(BlockStateProperties.HALF);
+			int yRot = ((int) facing.getClockWise().toYRot() + (half == Half.TOP ? 270 : 90)) % 360;
 			boolean uvlock = yRot != 0 || half == Half.TOP;
 			return ConfiguredModel.builder().modelFile(model.model).rotationY(yRot).rotationX(half == Half.TOP ? 180 : 0).uvLock(uvlock).build();
 		}, BlockStateProperties.WATERLOGGED);
 	}
 
 	private void customLoaderStateSide(Block block, ConfiguredModel model) {
-		getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(), BlockStateProperties.WATERLOGGED);
+		getVariantBuilder(block).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(model.model).rotationX(state.getValue(BlockStateProperties.ATTACH_FACE).ordinal() * 90).rotationY((((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) + (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(), BlockStateProperties.WATERLOGGED);
 	}
 
 	private void defaultPerspective(ModelBuilder<?> model) {
@@ -263,7 +263,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		String name = name(DecorBlocks.COLORIZER_STOOL.get());
 		ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", new ResourceLocation(AssortedDecor.MODID, "block/stool"));
 		ConfiguredModel colorizerStoolUpModel = getModel("colorizer_stool_up", new ResourceLocation(AssortedDecor.MODID, "block/stool_up"));
-		getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.get(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.get(BlockStateProperties.FACE).ordinal() * 90).rotationY((((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 180) + (state.get(BlockStateProperties.FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
+		getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.getValue(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.getValue(BlockStateProperties.ATTACH_FACE).ordinal() * 90).rotationY((((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) + (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
 				BlockStateProperties.WATERLOGGED);
 		itemModels().getBuilder(name).parent(colorizerStoolModel.model);
 	}
@@ -295,7 +295,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 			}
 		});
 
-		getVariantBuilder(DecorBlocks.CALENDAR.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(calendarModel).rotationY((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle()).build()));
+		getVariantBuilder(DecorBlocks.CALENDAR.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(calendarModel).rotationY((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot()).build()));
 	}
 
 	private void wallClock() {
@@ -331,7 +331,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 			clocks.add(this.models().getBuilder(name).parent(defaultWallClockModel).texture("front", name));
 		}
 
-		getVariantBuilder(DecorBlocks.WALL_CLOCK.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(clocks.get(state.get(WallClockBlock.TIME))).rotationY(((int) state.get(BlockStateProperties.HORIZONTAL_FACING).getHorizontalAngle() + 90) % 360).build()));
+		getVariantBuilder(DecorBlocks.WALL_CLOCK.get()).forAllStates((state -> ConfiguredModel.builder().modelFile(clocks.get(state.getValue(WallClockBlock.TIME))).rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 90) % 360).build()));
 	}
 
 	private void pot() {
@@ -357,8 +357,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		String[] textures = new String[] { "dirt", "sand", "gravel", "clay", "farmland", "netherrack", "soul_sand" };
 		getVariantBuilder(DecorBlocks.PLANTER_POT.get()).forAllStates(state -> {
-			boolean down = state.get(PlanterPotBlock.DOWN);
-			int top = state.get(PlanterPotBlock.TOP);
+			boolean down = state.getValue(PlanterPotBlock.DOWN);
+			int top = state.getValue(PlanterPotBlock.TOP);
 
 			BlockModelBuilder newModel;
 
@@ -385,25 +385,25 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerTableModel = getModel("colorizer_table", new ResourceLocation(AssortedDecor.MODID, "block/table"));
 
 		getVariantBuilder(DecorBlocks.COLORIZER_TABLE.get()).forAllStatesExcept(state -> {
-			boolean east = state.get(ColorizerTableBlock.EAST);
-			boolean north = state.get(ColorizerTableBlock.NORTH);
-			boolean south = state.get(ColorizerTableBlock.SOUTH);
-			boolean west = state.get(ColorizerTableBlock.WEST);
-			boolean up = state.get(ColorizerTableBlock.UP);
-			boolean down = state.get(ColorizerTableBlock.DOWN);
+			boolean east = state.getValue(ColorizerTableBlock.EAST);
+			boolean north = state.getValue(ColorizerTableBlock.NORTH);
+			boolean south = state.getValue(ColorizerTableBlock.SOUTH);
+			boolean west = state.getValue(ColorizerTableBlock.WEST);
+			boolean up = state.getValue(ColorizerTableBlock.UP);
+			boolean down = state.getValue(ColorizerTableBlock.DOWN);
 
-			AttachFace face = state.get(BlockStateProperties.FACE);
-			Direction facing = state.get(BlockStateProperties.HORIZONTAL_FACING);
+			AttachFace face = state.getValue(BlockStateProperties.ATTACH_FACE);
+			Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 
 			int numConnections = countConnections(east, north, south, west, up, down);
 
 			if (numConnections >= 3) {
-				return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+				return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.toYRot() + 180)) % 360).uvLock(true).build();
 			} else if (numConnections == 2) {
 				boolean oppositeEnds = (north && south) || (west && east) || (up && down);
 
 				if (oppositeEnds) {
-					return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+					return ConfiguredModel.builder().modelFile(colorizerCounterModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.toYRot() + 180)) % 360).uvLock(true).build();
 				} else {
 					int rotY = west && south ? 90 : north && west ? 180 : north && east ? 270 : 0;
 					int rotX = 0;
@@ -411,7 +411,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 					if (face == AttachFace.CEILING) {
 						rotY += 90;
 					} else if (face == AttachFace.WALL) {
-						rotY = ((((int) facing.getHorizontalAngle() + 180)) % 360) + 270;
+						rotY = ((((int) facing.toYRot() + 180)) % 360) + 270;
 
 						if (facing == Direction.NORTH)
 							rotX = down && east ? 0 : down && west ? 270 : up && west ? 180 : 90;
@@ -434,7 +434,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 				if (face == AttachFace.CEILING) {
 					rotY += 180;
 				} else if (face == AttachFace.WALL) {
-					rotY = (((int) facing.getHorizontalAngle() + 180)) % 360;
+					rotY = (((int) facing.toYRot() + 180)) % 360;
 					rotY += up ? 180 : down ? 0 : 270;
 					boolean flag = (south && facing == Direction.EAST) || (east && facing == Direction.NORTH) || (north && facing == Direction.WEST) || (west && facing == Direction.SOUTH);
 
@@ -448,7 +448,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 				return ConfiguredModel.builder().modelFile(colorizerTableNModel.model).rotationX((face.ordinal() * 90) + rotX).rotationY(rotY).uvLock(true).build();
 			}
 
-			return ConfiguredModel.builder().modelFile(colorizerTableModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.getHorizontalAngle() + 180)) % 360).uvLock(true).build();
+			return ConfiguredModel.builder().modelFile(colorizerTableModel.model).rotationX(face.ordinal() * 90).rotationY((((int) facing.toYRot() + 180)) % 360).uvLock(true).build();
 		}, BlockStateProperties.WATERLOGGED);
 
 		itemModels().getBuilder(name).parent(colorizerTableModel.model);

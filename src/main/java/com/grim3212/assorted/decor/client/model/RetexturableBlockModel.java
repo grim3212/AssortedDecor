@@ -19,7 +19,7 @@ public class RetexturableBlockModel extends BlockModel {
 	private final Map<String, RenderMaterial> replacements = new HashMap<>();
 
 	public static RetexturableBlockModel from(BlockModel parent) {
-		RetexturableBlockModel model = new RetexturableBlockModel(parent.getParentLocation(), parent.getElements(), parent.textures, parent.ambientOcclusion, parent.getGuiLight(), parent.getAllTransforms(), parent.getOverrides());
+		RetexturableBlockModel model = new RetexturableBlockModel(parent.getParentLocation(), parent.getElements(), parent.textureMap, parent.hasAmbientOcclusion, parent.getGuiLight(), parent.getTransforms(), parent.getOverrides());
 		model.customData.copyFrom(parent.customData);
 		return model;
 	}
@@ -29,12 +29,12 @@ public class RetexturableBlockModel extends BlockModel {
 	}
 
 	@Override
-	public RenderMaterial resolveTextureName(String nameIn) {
+	public RenderMaterial getMaterial(String nameIn) {
 		if (this.replacements.containsKey(nameIn)) {
 			return this.replacements.get(nameIn);
 		}
 
-		return super.resolveTextureName(nameIn);
+		return super.getMaterial(nameIn);
 	}
 
 	public void replaceTexture(String name, RenderMaterial texture) {
@@ -42,7 +42,7 @@ public class RetexturableBlockModel extends BlockModel {
 	}
 
 	public void replaceTexture(String name, ResourceLocation texture) {
-		this.replacements.put(name, new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, texture));
+		this.replacements.put(name, new RenderMaterial(PlayerContainer.BLOCK_ATLAS, texture));
 	}
 
 	public RetexturableBlockModel retexture(ImmutableMap<String, String> textures) {

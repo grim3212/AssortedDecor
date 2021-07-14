@@ -17,14 +17,14 @@ public class ColorizerChimneyBlock extends ColorizerBlock {
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		if (worldIn.getBlockState(pos.down()).getBlock() == Blocks.FIRE) {
-			if (worldIn.rand.nextInt(2) == 0) {
+		if (worldIn.getBlockState(pos.below()).getBlock() == Blocks.FIRE) {
+			if (worldIn.random.nextInt(2) == 0) {
 				int smokeheight = 1;
-				while (worldIn.getBlockState(pos.up(smokeheight)).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
+				while (worldIn.getBlockState(pos.above(smokeheight)).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
 					smokeheight++;
 				}
 
-				AssortedDecor.proxy.produceSmoke(worldIn, pos.up(smokeheight), 0.5D, 0.0D, 0.5D, 1, true);
+				AssortedDecor.proxy.produceSmoke(worldIn, pos.above(smokeheight), 0.5D, 0.0D, 0.5D, 1, true);
 			}
 		}
 	}

@@ -31,7 +31,7 @@ public class NeonUpdatePacket {
 
 		IFormattableTextComponent[] lines = new IFormattableTextComponent[4];
 		for (int i = 0; i < 4; i++) {
-			lines[i] = (IFormattableTextComponent) buf.readTextComponent();
+			lines[i] = (IFormattableTextComponent) buf.readComponent();
 		}
 
 		return new NeonUpdatePacket(pos, lines);
@@ -41,7 +41,7 @@ public class NeonUpdatePacket {
 		buf.writeBlockPos(this.pos);
 
 		for (int i = 0; i < 4; i++) {
-			buf.writeTextComponent(this.lines[i]);
+			buf.writeComponent(this.lines[i]);
 		}
 	}
 
@@ -49,12 +49,12 @@ public class NeonUpdatePacket {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
 				PlayerEntity player = ctx.get().getSender();
-				BlockState state = player.world.getBlockState(this.pos);
-				TileEntity te = player.world.getTileEntity(this.pos);
+				BlockState state = player.level.getBlockState(this.pos);
+				TileEntity te = player.level.getBlockEntity(this.pos);
 
 				if (te instanceof NeonSignTileEntity) {
 					NeonSignTileEntity neonSign = (NeonSignTileEntity) te;
-					if (!neonSign.getOwner().getUniqueID().equals(player.getUniqueID())) {
+					if (!neonSign.getOwner().getUUID().equals(player.getUUID())) {
 						AssortedDecor.LOGGER.warn(AssortedDecor.MODNAME, "Player " + player.getName().getString() + " just tried to change a neon sign they don't own");
 						return;
 					}
@@ -64,8 +64,8 @@ public class NeonUpdatePacket {
 						neonSign.signText[i] = this.lines[i];
 					}
 
-					neonSign.markDirty();
-					player.world.notifyBlockUpdate(this.pos, state, state, 3);
+					neonSign.setChanged();
+					player.level.sendBlockUpdated(this.pos, state, state, 3);
 				}
 			});
 			ctx.get().setPacketHandled(true);

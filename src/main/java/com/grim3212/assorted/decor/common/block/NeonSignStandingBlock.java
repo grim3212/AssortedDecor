@@ -21,38 +21,38 @@ import net.minecraft.world.IWorldReader;
 public class NeonSignStandingBlock extends NeonSignBlock {
 
 	public NeonSignStandingBlock() {
-		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).doesNotBlockMovement().hardnessAndResistance(1f));
-		this.setDefaultState(this.stateContainer.getBaseState().with(StandingSignBlock.ROTATION, 0).with(StandingSignBlock.WATERLOGGED, false));
+		super(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).noCollission().strength(1f));
+		this.registerDefaultState(this.stateDefinition.any().setValue(StandingSignBlock.ROTATION, 0).setValue(StandingSignBlock.WATERLOGGED, false));
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.below()).getMaterial().isSolid();
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		return this.getDefaultState().with(StandingSignBlock.ROTATION, MathHelper.floor((double) ((180.0F + context.getPlacementYaw()) * 16.0F / 360.0F) + 0.5D) & 15).with(StandingSignBlock.WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		return this.defaultBlockState().setValue(StandingSignBlock.ROTATION, MathHelper.floor((double) ((180.0F + context.getRotation()) * 16.0F / 360.0F) + 0.5D) & 15).setValue(StandingSignBlock.WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return facing == Direction.DOWN && !this.isValidPosition(stateIn, worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing == Direction.DOWN && !this.canSurvive(stateIn, worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(StandingSignBlock.ROTATION, rot.rotate(state.get(StandingSignBlock.ROTATION), 16));
+		return state.setValue(StandingSignBlock.ROTATION, rot.rotate(state.getValue(StandingSignBlock.ROTATION), 16));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.with(StandingSignBlock.ROTATION, mirrorIn.mirrorRotation(state.get(StandingSignBlock.ROTATION), 16));
+		return state.setValue(StandingSignBlock.ROTATION, mirrorIn.mirror(state.getValue(StandingSignBlock.ROTATION), 16));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(StandingSignBlock.ROTATION, StandingSignBlock.WATERLOGGED);
 	}
 

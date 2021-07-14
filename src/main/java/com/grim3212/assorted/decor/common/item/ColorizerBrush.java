@@ -30,45 +30,45 @@ import net.minecraft.world.World;
 public class ColorizerBrush extends Item {
 
 	public ColorizerBrush(Properties properties) {
-		super(properties.maxDamage(DecorConfig.COMMON.brushChargeCount.get()));
+		super(properties.durability(DecorConfig.COMMON.brushChargeCount.get()));
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		BlockState state = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 
 		if (state.getBlock() == Blocks.AIR) {
 			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.empty"));
 		} else {
-			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.stored", state.getBlock().getTranslatedName()));
+			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.stored", state.getBlock().getName()));
 		}
 	}
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-		World world = context.getWorld();
-		BlockPos pos = context.getPos();
+		World world = context.getLevel();
+		BlockPos pos = context.getClickedPos();
 		PlayerEntity player = context.getPlayer();
 		Hand hand = context.getHand();
 
 		BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
-		BlockState hit = world.getBlockState(context.getPos());
+		BlockState hit = world.getBlockState(context.getClickedPos());
 
 		if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {
 			if (colorizerAccepted(world, pos, hit)) {
 				
 				if (DecorConfig.COMMON.consumeBlock.get()) {
-					if ((hit.getPlayerRelativeBlockHardness(player, world, pos) != 0.0F || player.isCreative()) && !DecorConfig.COMMON.brushDisallowedBlockStates.getLoadedStates().contains(hit))
-						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					if ((hit.getDestroyProgress(player, world, pos) != 0.0F || player.isCreative()) && !DecorConfig.COMMON.brushDisallowedBlockStates.getLoadedStates().contains(hit))
+						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					else
 						return ActionResultType.PASS;
 				}
 				
 				NBTHelper.putTag(stack, "stored_state", NBTUtil.writeBlockState(hit));
 				// Reset damage after grabbing a new block
-				stack.setDamage(0);
-				player.swingArm(hand);
+				stack.setDamageValue(0);
+				player.swing(hand);
 			}
 		} else {
 			if (hit.getBlock() != null && hit.getBlock() != Blocks.AIR && hit.getBlock() instanceof IColorizer) {
@@ -82,14 +82,14 @@ public class ColorizerBrush extends Item {
 
 				SoundType placeSound = stored.getSoundType(world, pos, player);
 				world.playSound(player, pos, placeSound.getPlaceSound(), SoundCategory.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
-				player.swingArm(hand);
+				player.swing(hand);
 
 				if (!player.isCreative()) {
-					int dmg = stack.getDamage() + 1;
+					int dmg = stack.getDamageValue() + 1;
 					if (stack.getMaxDamage() - dmg <= 0) {
-						player.setHeldItem(hand, new ItemStack(DecorItems.COLORIZER_BRUSH.get()));
+						player.setItemInHand(hand, new ItemStack(DecorItems.COLORIZER_BRUSH.get()));
 					} else {
-						stack.setDamage(dmg);
+						stack.setDamageValue(dmg);
 					}
 				}
 
@@ -110,6 +110,6 @@ public class ColorizerBrush extends Item {
 	}
 
 	public boolean isShapeFullCube(VoxelShape shape, BlockState state) {
-		return Block.doesSideFillSquare(shape, Direction.UP) && Block.doesSideFillSquare(shape, Direction.DOWN) && Block.doesSideFillSquare(shape, Direction.EAST) && Block.doesSideFillSquare(shape, Direction.WEST) && Block.doesSideFillSquare(shape, Direction.NORTH) && Block.doesSideFillSquare(shape, Direction.SOUTH);
+		return Block.isFaceFull(shape, Direction.UP) && Block.isFaceFull(shape, Direction.DOWN) && Block.isFaceFull(shape, Direction.EAST) && Block.isFaceFull(shape, Direction.WEST) && Block.isFaceFull(shape, Direction.NORTH) && Block.isFaceFull(shape, Direction.SOUTH);
 	}
 }

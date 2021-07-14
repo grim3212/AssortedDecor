@@ -38,14 +38,14 @@ public class ColorizerBlockModel implements IModelGeometry<ColorizerBlockModel> 
 	@Override
 	public Collection<RenderMaterial> getTextures(IModelConfiguration owner, Function<ResourceLocation, IUnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
 		Set<RenderMaterial> ret = new HashSet<>();
-		ret.addAll(this.unbakedColorizer.getTextures(modelGetter, missingTextureErrors));
+		ret.addAll(this.unbakedColorizer.getMaterials(modelGetter, missingTextureErrors));
 		return ret;
 	}
 
 	@Nullable
 	@Override
 	public IBakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform transform, ItemOverrideList overrides, ResourceLocation name) {
-		IBakedModel bakedColorizer = unbakedColorizer.bakeModel(bakery, spriteGetter, transform, name);
+		IBakedModel bakedColorizer = unbakedColorizer.bake(bakery, spriteGetter, transform, name);
 		return new ColorizerBlockBakedModel(bakedColorizer, unbakedColorizer, owner, spriteGetter.apply(owner.resolveTexture("particle")), bakery, spriteGetter, transform, overrides, name);
 	}
 

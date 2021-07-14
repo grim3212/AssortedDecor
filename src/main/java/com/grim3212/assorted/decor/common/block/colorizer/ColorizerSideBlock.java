@@ -25,56 +25,56 @@ import net.minecraft.world.IWorldReader;
 public class ColorizerSideBlock extends ColorizerBlock implements IWaterLoggable {
 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.FACE;
+	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public ColorizerSideBlock() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(FACE, AttachFace.WALL).with(WATERLOGGED, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(HORIZONTAL_FACING, Direction.NORTH).setValue(FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACE, HORIZONTAL_FACING, WATERLOGGED);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
+		return state.setValue(HORIZONTAL_FACING, rot.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		return isSideSolidForDirection(worldIn, pos, getFacing(state).getOpposite());
 	}
 
 	public static boolean isSideSolidForDirection(IWorldReader reader, BlockPos pos, Direction direction) {
-		BlockPos blockpos = pos.offset(direction);
-		return reader.getBlockState(blockpos).isSolidSide(reader, blockpos, direction.getOpposite());
+		BlockPos blockpos = pos.relative(direction);
+		return reader.getBlockState(blockpos).isFaceSturdy(reader, blockpos, direction.getOpposite());
 	}
 
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
 		for (Direction direction : context.getNearestLookingDirections()) {
 			BlockState blockstate;
 			if (direction.getAxis() == Direction.Axis.Y) {
-				blockstate = this.getDefaultState().with(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR).with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing()).with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+				blockstate = this.defaultBlockState().setValue(FACE, direction == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR).setValue(HORIZONTAL_FACING, context.getHorizontalDirection()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 			} else {
-				blockstate = this.getDefaultState().with(FACE, AttachFace.WALL).with(HORIZONTAL_FACING, direction.getOpposite()).with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+				blockstate = this.defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(HORIZONTAL_FACING, direction.getOpposite()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 			}
 
-			if (blockstate.isValidPosition(context.getWorld(), context.getPos())) {
+			if (blockstate.canSurvive(context.getLevel(), context.getClickedPos())) {
 				return blockstate;
 			}
 		}
@@ -83,22 +83,22 @@ public class ColorizerSideBlock extends ColorizerBlock implements IWaterLoggable
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return getFacing(stateIn).getOpposite() == facing && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return getFacing(stateIn).getOpposite() == facing && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	protected static Direction getFacing(BlockState state) {
-		switch ((AttachFace) state.get(FACE)) {
+		switch ((AttachFace) state.getValue(FACE)) {
 		case CEILING:
 			return Direction.DOWN;
 		case FLOOR:
 			return Direction.UP;
 		default:
-			return state.get(HORIZONTAL_FACING);
+			return state.getValue(HORIZONTAL_FACING);
 		}
 	}
 

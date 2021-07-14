@@ -26,19 +26,19 @@ import net.minecraft.world.World;
 
 public class NeonSignBlock extends Block implements IWaterLoggable {
 
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
+	protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D);
 
 	protected NeonSignBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(AbstractSignBlock.WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(AbstractSignBlock.WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class NeonSignBlock extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public boolean canSpawnInBlock() {
+	public boolean isPossibleToRespawnInThis() {
 		return true;
 	}
 
@@ -62,17 +62,17 @@ public class NeonSignBlock extends Block implements IWaterLoggable {
 	}
 
 	@Override
-	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(IBlockReader worldIn, BlockPos pos, BlockState state) {
 		return new ItemStack(DecorItems.NEON_SIGN.get());
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (worldIn.isRemote) {
-			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getTileEntity(pos));
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide) {
+			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getBlockEntity(pos));
 			return ActionResultType.SUCCESS;
 		} else {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
+			TileEntity tileentity = worldIn.getBlockEntity(pos);
 			if (tileentity instanceof NeonSignTileEntity) {
 				NeonSignTileEntity sign = (NeonSignTileEntity) tileentity;
 				return sign.executeCommand(player) ? ActionResultType.SUCCESS : ActionResultType.FAIL;
@@ -83,6 +83,6 @@ public class NeonSignBlock extends Block implements IWaterLoggable {
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(AbstractSignBlock.WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(AbstractSignBlock.WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 }

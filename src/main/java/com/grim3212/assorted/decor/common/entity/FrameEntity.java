@@ -38,11 +38,11 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	protected float resistance = 0.0F;
 	private AxisAlignedBB fireboundingBox = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
-	private static final DataParameter<Boolean> BURNT = EntityDataManager.createKey(FrameEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> FRAME_ID = EntityDataManager.createKey(FrameEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> COLOR_RED = EntityDataManager.createKey(FrameEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> COLOR_GREEN = EntityDataManager.createKey(FrameEntity.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> COLOR_BLUE = EntityDataManager.createKey(FrameEntity.class, DataSerializers.VARINT);
+	private static final DataParameter<Boolean> BURNT = EntityDataManager.defineId(FrameEntity.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> FRAME_ID = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
+	private static final DataParameter<Integer> COLOR_RED = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
+	private static final DataParameter<Integer> COLOR_GREEN = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
+	private static final DataParameter<Integer> COLOR_BLUE = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
 
 	public FrameEntity(EntityType<? extends FrameEntity> type, World world) {
 		super(type, world);
@@ -54,14 +54,14 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	public FrameEntity(World world, BlockPos pos, Direction direction, FrameMaterial type) {
 		this(world);
-		this.hangingPosition = pos;
+		this.pos = pos;
 		this.material = type;
 
 		for (int i = 0; i < FrameType.VALUES.length; i++) {
 			FrameType tryFrame = FrameType.VALUES[i];
-			this.getDataManager().set(FRAME_ID, tryFrame.id);
-			updateFacingWithBoundingBox(direction);
-			if (onValidSurface()) {
+			this.getEntityData().set(FRAME_ID, tryFrame.id);
+			setDirection(direction);
+			if (survives()) {
 				// For the first valid direction update the frame and you don't
 				// need to search anymore
 				break;
@@ -72,25 +72,25 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	protected void registerData() {
-		this.getDataManager().register(FRAME_ID, 1);
-		this.getDataManager().register(COLOR_RED, 255);
-		this.getDataManager().register(COLOR_GREEN, 255);
-		this.getDataManager().register(COLOR_BLUE, 255);
-		this.getDataManager().register(BURNT, false);
+	protected void defineSynchedData() {
+		this.getEntityData().define(FRAME_ID, 1);
+		this.getEntityData().define(COLOR_RED, 255);
+		this.getEntityData().define(COLOR_GREEN, 255);
+		this.getEntityData().define(COLOR_BLUE, 255);
+		this.getEntityData().define(BURNT, false);
 	}
 
 	@Override
-	public ActionResultType applyPlayerInteraction(PlayerEntity player, Vector3d vec, Hand hand) {
-		ItemStack itemstack = player.getHeldItem(hand);
-		if (player.canPlayerEdit(hangingPosition, this.facingDirection, itemstack)) {
+	public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+		ItemStack itemstack = player.getItemInHand(hand);
+		if (player.mayUseItemAt(pos, this.direction, itemstack)) {
 			if (!itemstack.isEmpty()) {
 
 				if (DecorConfig.COMMON.dyeFrames.get()) {
 					DyeColor color = DyeColor.getColor(itemstack);
 					if (color != null) {
 						if (dyeFrame(color)) {
-							if (!player.abilities.isCreativeMode) {
+							if (!player.abilities.instabuild) {
 								itemstack.shrink(1);
 							}
 							return ActionResultType.SUCCESS;
@@ -116,9 +116,9 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 		while (looking) {
 			for (int i = 0; i < FrameType.VALUES.length; i++) {
 				FrameType tryFrame = FrameType.VALUES[i];
-				this.getDataManager().set(FRAME_ID, tryFrame.id);
-				updateFacingWithBoundingBox(this.facingDirection);
-				if (onValidSurface()) {
+				this.getEntityData().set(FRAME_ID, tryFrame.id);
+				setDirection(this.direction);
+				if (survives()) {
 					if (foundOld) {
 						// The next valid frame we stop looking for the next
 						// frame to use
@@ -138,8 +138,8 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 			}
 		}
 
-		if (!this.world.isRemote)
-			playPlaceSound();
+		if (!this.level.isClientSide)
+			playPlacementSound();
 
 		return true;
 	}
@@ -154,16 +154,16 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 			return false;
 		}
 
-		this.getDataManager().set(COLOR_RED, newred);
-		this.getDataManager().set(COLOR_GREEN, newgreen);
-		this.getDataManager().set(COLOR_BLUE, newblue);
-		this.getDataManager().set(BURNT, burn);
+		this.getEntityData().set(COLOR_RED, newred);
+		this.getEntityData().set(COLOR_GREEN, newgreen);
+		this.getEntityData().set(COLOR_BLUE, newblue);
+		this.getEntityData().set(BURNT, burn);
 
-		if (!this.world.isRemote) {
+		if (!this.level.isClientSide) {
 			if (burn) {
 				playBurnSound();
 			} else {
-				playPlaceSound();
+				playPlacementSound();
 			}
 		}
 
@@ -185,25 +185,25 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	protected void updateBoundingBox() {
-		if (this.facingDirection != null) {
-			double x = (double) this.hangingPosition.getX() + 0.5D;
-			double y = (double) this.hangingPosition.getY() + 0.5D;
-			double z = (double) this.hangingPosition.getZ() + 0.5D;
-			double widthOffset = this.offs(this.getWidthPixels());
-			double heightOffset = this.offs(this.getHeightPixels());
-			x = x - (double) this.facingDirection.getXOffset() * 0.46875D;
-			z = z - (double) this.facingDirection.getZOffset() * 0.46875D;
+	protected void recalculateBoundingBox() {
+		if (this.direction != null) {
+			double x = (double) this.pos.getX() + 0.5D;
+			double y = (double) this.pos.getY() + 0.5D;
+			double z = (double) this.pos.getZ() + 0.5D;
+			double widthOffset = this.offs(this.getWidth());
+			double heightOffset = this.offs(this.getHeight());
+			x = x - (double) this.direction.getStepX() * 0.46875D;
+			z = z - (double) this.direction.getStepZ() * 0.46875D;
 			y = y + heightOffset;
-			Direction enumfacing = this.facingDirection.rotateYCCW();
-			x = x + widthOffset * (double) enumfacing.getXOffset();
-			z = z + widthOffset * (double) enumfacing.getZOffset();
-			this.setRawPosition(x, y, z);
-			double width = (double) this.getWidthPixels();
-			double height = (double) this.getHeightPixels();
-			double depth = (double) this.getWidthPixels();
+			Direction enumfacing = this.direction.getCounterClockWise();
+			x = x + widthOffset * (double) enumfacing.getStepX();
+			z = z + widthOffset * (double) enumfacing.getStepZ();
+			this.setPosRaw(x, y, z);
+			double width = (double) this.getWidth();
+			double height = (double) this.getHeight();
+			double depth = (double) this.getWidth();
 
-			if (this.facingDirection.getAxis() == Direction.Axis.Z) {
+			if (this.direction.getAxis() == Direction.Axis.Z) {
 				depth = 1.0D;
 			} else {
 				width = 1.0D;
@@ -215,7 +215,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 			this.setBoundingBox(new AxisAlignedBB(x - width, y - height, z - depth, x + width, y + height, z + depth));
 
-			if (this.facingDirection.getAxis() == Direction.Axis.Z) {
+			if (this.direction.getAxis() == Direction.Axis.Z) {
 				width += 0.1F;
 				height += 0.1F;
 				depth = 1.0F;
@@ -235,43 +235,43 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-		BlockPos blockpos = this.hangingPosition.add(x - this.getPosX(), y - this.getPosY(), z - this.getPosZ());
-		this.setPosition(blockpos.getX(), blockpos.getY(), blockpos.getZ());
-		this.setRotation(yaw, pitch);
+	public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+		BlockPos blockpos = this.pos.offset(x - this.getX(), y - this.getY(), z - this.getZ());
+		this.setPos(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+		this.setRot(yaw, pitch);
 	}
 
 	@Override
 	public void tick() {
 		if (this.material == FrameMaterial.WOOD && DecorConfig.COMMON.burnFrames.get()) {
-			if (this.world.func_234853_a_(this.fireboundingBox.expand(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
+			if (this.level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
 				dyeFrame(DyeColor.BLACK, true);
 			}
 		}
 	}
 
 	public FrameType getCurrentFrame() {
-		return FrameType.getFrameById(this.getDataManager().get(FRAME_ID));
+		return FrameType.getFrameById(this.getEntityData().get(FRAME_ID));
 	}
 
 	@Override
-	public boolean canCollide(Entity ent) {
-		return ent instanceof PlayerEntity && this.func_241845_aY();
-	}
-
-	@Override
-	public boolean func_241845_aY() {
-		return getCurrentFrame().isCollidable;
+	public boolean canCollideWith(Entity ent) {
+		return ent instanceof PlayerEntity && this.canBeCollidedWith();
 	}
 
 	@Override
 	public boolean canBeCollidedWith() {
+		return getCurrentFrame().isCollidable;
+	}
+
+	@Override
+	public boolean isPickable() {
 		PlayerEntity player = AssortedDecor.proxy.getClientPlayer();
 		if (player == null)
 			return false;
 
 		for (Hand hand : Hand.values()) {
-			ItemStack handStack = player.getHeldItem(hand);
+			ItemStack handStack = player.getItemInHand(hand);
 
 			if (!handStack.isEmpty()) {
 				if (handStack.getItem() == this.material.getFrameItem() || this.material.effectiveTool().isInstance(handStack.getItem()) || DyeColor.getColor(handStack) != null) {
@@ -283,22 +283,22 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource damagesource, float damage) {
+	public boolean hurt(DamageSource damagesource, float damage) {
 		if (this.isInvulnerableTo(damagesource)) {
 			return false;
 		} else {
-			if (!this.removed && !this.world.isRemote) {
-				if (damagesource.getTrueSource() instanceof PlayerEntity) {
+			if (!this.removed && !this.level.isClientSide) {
+				if (damagesource.getEntity() instanceof PlayerEntity) {
 					this.remove();
-					this.markVelocityChanged();
-					this.onBroken(damagesource.getTrueSource());
+					this.markHurt();
+					this.dropItem(damagesource.getEntity());
 					return true;
 				}
 
 				if (damage > this.resistance) {
 					this.remove();
-					this.markVelocityChanged();
-					this.onBroken(damagesource.getTrueSource());
+					this.markHurt();
+					this.dropItem(damagesource.getEntity());
 					return true;
 				}
 			}
@@ -308,25 +308,25 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	public int getFrameID() {
-		return this.getDataManager().get(FRAME_ID);
+		return this.getEntityData().get(FRAME_ID);
 	}
 
 	public int[] getFrameColor() {
-		return new int[] { this.getDataManager().get(COLOR_RED), this.getDataManager().get(COLOR_GREEN), this.getDataManager().get(COLOR_BLUE) };
+		return new int[] { this.getEntityData().get(COLOR_RED), this.getEntityData().get(COLOR_GREEN), this.getEntityData().get(COLOR_BLUE) };
 	}
 
 	public boolean getBurned() {
-		return this.getDataManager().get(BURNT);
+		return this.getEntityData().get(BURNT);
 	}
 
 	public void playBurnSound() {
-		this.playSound(SoundEvents.BLOCK_FIRE_AMBIENT, 1.0F, 1.0F);
+		this.playSound(SoundEvents.FIRE_AMBIENT, 1.0F, 1.0F);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbttagcompound) {
-		super.writeAdditional(nbttagcompound);
-		nbttagcompound.putByte("Facing", (byte) this.facingDirection.getHorizontalIndex());
+	public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+		super.addAdditionalSaveData(nbttagcompound);
+		nbttagcompound.putByte("Facing", (byte) this.direction.get2DDataValue());
 		nbttagcompound.putInt("Motive", this.getFrameID());
 		int[] color = getFrameColor();
 		nbttagcompound.putInt("Red", color[0]);
@@ -337,24 +337,24 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT nbttagcompound) {
-		super.readAdditional(nbttagcompound);
-		this.facingDirection = Direction.byHorizontalIndex(nbttagcompound.getByte("Facing"));
-		this.getDataManager().set(COLOR_RED, nbttagcompound.getInt("Red"));
-		this.getDataManager().set(COLOR_GREEN, nbttagcompound.getInt("Green"));
-		this.getDataManager().set(COLOR_BLUE, nbttagcompound.getInt("Blue"));
+	public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+		super.readAdditionalSaveData(nbttagcompound);
+		this.direction = Direction.from2DDataValue(nbttagcompound.getByte("Facing"));
+		this.getEntityData().set(COLOR_RED, nbttagcompound.getInt("Red"));
+		this.getEntityData().set(COLOR_GREEN, nbttagcompound.getInt("Green"));
+		this.getEntityData().set(COLOR_BLUE, nbttagcompound.getInt("Blue"));
 		setResistance(this.material = FrameMaterial.values()[nbttagcompound.getInt("Material")]);
-		this.getDataManager().set(FRAME_ID, nbttagcompound.getInt("Motive"));
-		this.getDataManager().set(BURNT, nbttagcompound.getBoolean("Burnt"));
-		this.updateFacingWithBoundingBox(this.facingDirection);
+		this.getEntityData().set(FRAME_ID, nbttagcompound.getInt("Motive"));
+		this.getEntityData().set(BURNT, nbttagcompound.getBoolean("Burnt"));
+		this.setDirection(this.direction);
 	}
 
 	@Override
 	public void writeSpawnData(PacketBuffer data) {
 		data.writeInt(this.getFrameID());
-		data.writeBlockPos(this.hangingPosition);
-		data.writeEnumValue(this.material);
-		data.writeInt(this.facingDirection.getHorizontalIndex());
+		data.writeBlockPos(this.pos);
+		data.writeEnum(this.material);
+		data.writeInt(this.direction.get2DDataValue());
 
 		int[] color = getFrameColor();
 		data.writeInt(color[0]);
@@ -365,67 +365,67 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	@Override
 	public void readSpawnData(PacketBuffer data) {
-		this.getDataManager().set(FRAME_ID, data.readInt());
+		this.getEntityData().set(FRAME_ID, data.readInt());
 
-		this.hangingPosition = data.readBlockPos();
-		this.material = data.readEnumValue(FrameMaterial.class);
+		this.pos = data.readBlockPos();
+		this.material = data.readEnum(FrameMaterial.class);
 		setResistance(this.material);
-		updateFacingWithBoundingBox(Direction.byHorizontalIndex(data.readInt()));
+		setDirection(Direction.from2DDataValue(data.readInt()));
 
-		this.getDataManager().set(COLOR_RED, data.readInt());
-		this.getDataManager().set(COLOR_GREEN, data.readInt());
-		this.getDataManager().set(COLOR_BLUE, data.readInt());
-		this.getDataManager().set(BURNT, data.readBoolean());
+		this.getEntityData().set(COLOR_RED, data.readInt());
+		this.getEntityData().set(COLOR_GREEN, data.readInt());
+		this.getEntityData().set(COLOR_BLUE, data.readInt());
+		this.getEntityData().set(BURNT, data.readBoolean());
 	}
 
 	@Override
-	public int getWidthPixels() {
+	public int getWidth() {
 		return this.getCurrentFrame().sizeX;
 	}
 
 	@Override
-	public int getHeightPixels() {
+	public int getHeight() {
 		return this.getCurrentFrame().sizeY;
 	}
 
 	@Override
-	public void onBroken(Entity brokenEntity) {
-		if (this.world.getGameRules().getBoolean(GameRules.DO_ENTITY_DROPS)) {
+	public void dropItem(Entity brokenEntity) {
+		if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
 			this.playBreakSound();
 			if (brokenEntity instanceof PlayerEntity) {
 				PlayerEntity playerentity = (PlayerEntity) brokenEntity;
-				if (playerentity.abilities.isCreativeMode) {
+				if (playerentity.abilities.instabuild) {
 					return;
 				}
 			}
 
-			this.entityDropItem(this.material.getFrameItem());
+			this.spawnAtLocation(this.material.getFrameItem());
 		}
 	}
 
 	public void playBreakSound() {
 		switch (this.material) {
 		case WOOD:
-			this.playSound(SoundEvents.BLOCK_WOOD_BREAK, 1.0F, 1.0F);
+			this.playSound(SoundEvents.WOOD_BREAK, 1.0F, 1.0F);
 			break;
 		case IRON:
-			this.playSound(SoundEvents.BLOCK_METAL_BREAK, 1.0F, 1.0F);
+			this.playSound(SoundEvents.METAL_BREAK, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	public void playPlaceSound() {
+	public void playPlacementSound() {
 		switch (this.material) {
 		case WOOD:
-			this.playSound(SoundEvents.BLOCK_WOOD_PLACE, 1.0F, 1.0F);
+			this.playSound(SoundEvents.WOOD_PLACE, 1.0F, 1.0F);
 			break;
 		case IRON:
-			this.playSound(SoundEvents.BLOCK_METAL_PLACE, 1.0F, 1.0F);
+			this.playSound(SoundEvents.METAL_PLACE, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

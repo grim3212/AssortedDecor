@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockReader;
 
 public class ColorizerFirepitBlock extends ColorizerFireplaceBaseBlock {
 
-	protected static final VoxelShape FIREPIT = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 16.0F, 9.6F, 16.0F);
+	protected static final VoxelShape FIREPIT = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.6F, 16.0F);
 
 	private final boolean covered;
 
@@ -21,6 +21,6 @@ public class ColorizerFirepitBlock extends ColorizerFireplaceBaseBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return this.covered ? VoxelShapes.fullCube() : FIREPIT;
+		return this.covered ? VoxelShapes.block() : FIREPIT;
 	}
 }

@@ -15,19 +15,19 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
-		this.getOrCreateBuilder(BlockTags.FENCES).addItemEntry(DecorBlocks.COLORIZER_FENCE.get());
-		this.getOrCreateBuilder(BlockTags.FENCE_GATES).addItemEntry(DecorBlocks.COLORIZER_FENCE_GATE.get());
-		this.getOrCreateBuilder(BlockTags.WALLS).addItemEntry(DecorBlocks.COLORIZER_WALL.get());
-		this.getOrCreateBuilder(BlockTags.TRAPDOORS).addItemEntry(DecorBlocks.COLORIZER_TRAP_DOOR.get());
-		this.getOrCreateBuilder(BlockTags.DOORS).addItemEntry(DecorBlocks.COLORIZER_DOOR.get());
-		this.getOrCreateBuilder(BlockTags.STAIRS).addItemEntry(DecorBlocks.COLORIZER_STAIRS.get());
-		this.getOrCreateBuilder(BlockTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get());
+	protected void addTags() {
+		this.tag(BlockTags.FENCES).add(DecorBlocks.COLORIZER_FENCE.get());
+		this.tag(BlockTags.FENCE_GATES).add(DecorBlocks.COLORIZER_FENCE_GATE.get());
+		this.tag(BlockTags.WALLS).add(DecorBlocks.COLORIZER_WALL.get());
+		this.tag(BlockTags.TRAPDOORS).add(DecorBlocks.COLORIZER_TRAP_DOOR.get());
+		this.tag(BlockTags.DOORS).add(DecorBlocks.COLORIZER_DOOR.get());
+		this.tag(BlockTags.STAIRS).add(DecorBlocks.COLORIZER_STAIRS.get());
+		this.tag(BlockTags.SLABS).add(DecorBlocks.COLORIZER_SLAB.get());
 
-		this.getOrCreateBuilder(BlockTags.STANDING_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN.get());
-		this.getOrCreateBuilder(BlockTags.WALL_SIGNS).addItemEntry(DecorBlocks.NEON_SIGN_WALL.get());
+		this.tag(BlockTags.STANDING_SIGNS).add(DecorBlocks.NEON_SIGN.get());
+		this.tag(BlockTags.WALL_SIGNS).add(DecorBlocks.NEON_SIGN_WALL.get());
 
-		this.getOrCreateBuilder(BlockTags.DOORS).addItemEntry(DecorBlocks.QUARTZ_DOOR.get());
+		this.tag(BlockTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get());
 	}
 
 	@Override

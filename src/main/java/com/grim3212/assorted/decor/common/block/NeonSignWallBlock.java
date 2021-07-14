@@ -29,48 +29,48 @@ import net.minecraft.world.IWorldReader;
 
 public class NeonSignWallBlock extends NeonSignBlock {
 
-	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.makeCuboidShape(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), Direction.SOUTH, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), Direction.EAST, Block.makeCuboidShape(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), Direction.WEST, Block.makeCuboidShape(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
+	private static final Map<Direction, VoxelShape> SHAPES = Maps.newEnumMap(ImmutableMap.of(Direction.NORTH, Block.box(0.0D, 4.5D, 14.0D, 16.0D, 12.5D, 16.0D), Direction.SOUTH, Block.box(0.0D, 4.5D, 0.0D, 16.0D, 12.5D, 2.0D), Direction.EAST, Block.box(0.0D, 4.5D, 0.0D, 2.0D, 12.5D, 16.0D), Direction.WEST, Block.box(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)));
 
 	public NeonSignWallBlock() {
-		super(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1f).doesNotBlockMovement().lootFrom(DecorBlocks.NEON_SIGN.get()));
-		setDefaultState(this.stateContainer.getBaseState().with(WallSignBlock.FACING, Direction.NORTH).with(WallSignBlock.WATERLOGGED, false));
+		super(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1f).noCollission().dropsLike(DecorBlocks.NEON_SIGN.get()));
+		registerDefaultState(this.stateDefinition.any().setValue(WallSignBlock.FACING, Direction.NORTH).setValue(WallSignBlock.WATERLOGGED, false));
 	}
 
 	@Override
-	public String getTranslationKey() {
-		return this.asItem().getTranslationKey();
+	public String getDescriptionId() {
+		return this.asItem().getDescriptionId();
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(WallSignBlock.FACING, WallSignBlock.WATERLOGGED);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
-		return SHAPES.get(state.get(WallSignBlock.FACING));
+		return SHAPES.get(state.getValue(WallSignBlock.FACING));
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		return worldIn.getBlockState(pos.offset(state.get(WallSignBlock.FACING).getOpposite())).getMaterial().isSolid();
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos.relative(state.getValue(WallSignBlock.FACING).getOpposite())).getMaterial().isSolid();
 	}
 
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState iblockstate = this.getDefaultState();
-		FluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
-		IWorldReader iworldreaderbase = context.getWorld();
-		BlockPos blockpos = context.getPos();
+		BlockState iblockstate = this.defaultBlockState();
+		FluidState ifluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		IWorldReader iworldreaderbase = context.getLevel();
+		BlockPos blockpos = context.getClickedPos();
 		Direction[] aenumfacing = context.getNearestLookingDirections();
 
 		for (Direction enumfacing : aenumfacing) {
 			if (enumfacing.getAxis().isHorizontal()) {
 				Direction enumfacing1 = enumfacing.getOpposite();
-				iblockstate = iblockstate.with(WallSignBlock.FACING, enumfacing1);
-				if (iblockstate.isValidPosition(iworldreaderbase, blockpos)) {
-					return iblockstate.with(WallSignBlock.WATERLOGGED, ifluidstate.getFluid() == Fluids.WATER);
+				iblockstate = iblockstate.setValue(WallSignBlock.FACING, enumfacing1);
+				if (iblockstate.canSurvive(iworldreaderbase, blockpos)) {
+					return iblockstate.setValue(WallSignBlock.WATERLOGGED, ifluidstate.getType() == Fluids.WATER);
 				}
 			}
 		}
@@ -79,17 +79,17 @@ public class NeonSignWallBlock extends NeonSignBlock {
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return facing.getOpposite() == stateIn.get(WallSignBlock.FACING) && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing.getOpposite() == stateIn.getValue(WallSignBlock.FACING) && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(WallSignBlock.FACING, rot.rotate(state.get(WallSignBlock.FACING)));
+		return state.setValue(WallSignBlock.FACING, rot.rotate(state.getValue(WallSignBlock.FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(WallSignBlock.FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(WallSignBlock.FACING)));
 	}
 }

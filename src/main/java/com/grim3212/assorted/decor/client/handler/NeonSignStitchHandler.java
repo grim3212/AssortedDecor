@@ -32,7 +32,7 @@ public class NeonSignStitchHandler {
 
 	@SubscribeEvent
 	public static void onStitch(TextureStitchEvent.Pre event) {
-		if (!event.getMap().getTextureLocation().equals(Atlases.SIGN_ATLAS)) {
+		if (!event.getMap().location().equals(Atlases.SIGN_SHEET)) {
 			return;
 		}
 

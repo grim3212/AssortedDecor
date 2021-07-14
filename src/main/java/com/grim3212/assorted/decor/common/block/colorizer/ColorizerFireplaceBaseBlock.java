@@ -24,44 +24,44 @@ public class ColorizerFireplaceBaseBlock extends ColorizerBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
 	public ColorizerFireplaceBaseBlock() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(ACTIVE, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE);
 	}
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		if (world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).get(ACTIVE)) {
+		if (world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(ACTIVE)) {
 			return 15;
 		}
 		return super.getLightValue(state, world, pos);
 	}
 
 	@Override
-	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
-		if (worldIn.getBlockState(pos).get(ACTIVE)) {
-			if (!worldIn.isRemote) {
-				worldIn.setBlockState(pos, worldIn.getBlockState(pos).with(ACTIVE, false));
+	public void attack(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+		if (worldIn.getBlockState(pos).getValue(ACTIVE)) {
+			if (!worldIn.isClientSide) {
+				worldIn.setBlockAndUpdate(pos, worldIn.getBlockState(pos).setValue(ACTIVE, false));
 			}
 			AssortedDecor.proxy.produceSmoke(worldIn, pos, 0.5D, 0.5D, 0.5D, 3, true);
-			worldIn.playSound(player, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.4F + 0.8F);
+			worldIn.playSound(player, pos, SoundEvents.FIRE_EXTINGUISH, SoundCategory.BLOCKS, 1.0F, worldIn.random.nextFloat() * 0.4F + 0.8F);
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		ItemStack heldItem = player.getHeldItem(hand);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		ItemStack heldItem = player.getItemInHand(hand);
 
 		if (!heldItem.isEmpty() && (heldItem.getItem() == Items.FLINT_AND_STEEL || heldItem.getItem() == Items.FIRE_CHARGE)) {
-			if (!worldIn.getBlockState(pos).get(ACTIVE)) {
-				heldItem.damageItem(1, player, (ent) -> {
-					ent.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+			if (!worldIn.getBlockState(pos).getValue(ACTIVE)) {
+				heldItem.hurtAndBreak(1, player, (ent) -> {
+					ent.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 				});
-				worldIn.playSound((PlayerEntity) null, pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, worldIn.rand.nextFloat() * 0.4F + 0.8F);
-				worldIn.setBlockState(pos, state.with(ACTIVE, true));
+				worldIn.playSound((PlayerEntity) null, pos, SoundEvents.FLINTANDSTEEL_USE, SoundCategory.BLOCKS, 1.0F, worldIn.random.nextFloat() * 0.4F + 0.8F);
+				worldIn.setBlockAndUpdate(pos, state.setValue(ACTIVE, true));
 			}
 
 			return ActionResultType.SUCCESS;

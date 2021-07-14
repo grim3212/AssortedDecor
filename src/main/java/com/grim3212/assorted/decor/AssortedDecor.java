@@ -49,7 +49,7 @@ public class AssortedDecor {
 	public static final ItemGroup ASSORTED_DECOR_ITEM_GROUP = (new ItemGroup("assorteddecor") {
 		@Override
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(DecorItems.WALLPAPER.get());
 		}
 	});

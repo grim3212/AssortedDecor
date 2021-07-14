@@ -34,44 +34,44 @@ public class ColorizerFireplaceBlock extends ColorizerFireplaceBaseBlock {
 	});
 
 	public ColorizerFireplaceBlock() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(ACTIVE, false).with(EAST, false).with(WEST, false).with(SOUTH, false).with(NORTH, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false).setValue(NORTH, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(ACTIVE, EAST, WEST, NORTH, SOUTH);
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
-		if (worldIn.getBlockState(pos).get(ACTIVE) && worldIn.getBlockState(pos.up()).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
+		if (worldIn.getBlockState(pos).getValue(ACTIVE) && worldIn.getBlockState(pos.above()).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
 			int smokeheight = 1;
-			while (worldIn.getBlockState(pos.up(smokeheight)).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
+			while (worldIn.getBlockState(pos.above(smokeheight)).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {
 				smokeheight++;
 			}
 
-			AssortedDecor.proxy.produceSmoke(worldIn, pos.up(smokeheight), 0.5D, 0.0D, 0.5D, 1, true);
+			AssortedDecor.proxy.produceSmoke(worldIn, pos.above(smokeheight), 0.5D, 0.0D, 0.5D, 1, true);
 		}
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getPos();
+		BlockPos blockpos = context.getClickedPos();
 		BlockPos northPos = blockpos.north();
 		BlockPos eastPos = blockpos.east();
 		BlockPos southPos = blockpos.south();
 		BlockPos westPos = blockpos.west();
-		return super.getStateForPlacement(context).with(NORTH, this.canConnectTo(context.getWorld(), northPos)).with(EAST, this.canConnectTo(context.getWorld(), eastPos)).with(SOUTH, this.canConnectTo(context.getWorld(), southPos)).with(WEST, this.canConnectTo(context.getWorld(), westPos));
+		return super.getStateForPlacement(context).setValue(NORTH, this.canConnectTo(context.getLevel(), northPos)).setValue(EAST, this.canConnectTo(context.getLevel(), eastPos)).setValue(SOUTH, this.canConnectTo(context.getLevel(), southPos)).setValue(WEST, this.canConnectTo(context.getLevel(), westPos));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? stateIn.with(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, facingPos)) : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? stateIn.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, facingPos)) : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	public boolean canConnectTo(IBlockReader worldIn, BlockPos pos) {
-		BlockState blockState = worldIn.getBlockState(pos).getBlock().getDefaultState();
-		return blockState == this.getDefaultState();
+		BlockState blockState = worldIn.getBlockState(pos).getBlock().defaultBlockState();
+		return blockState == this.defaultBlockState();
 	}
 }

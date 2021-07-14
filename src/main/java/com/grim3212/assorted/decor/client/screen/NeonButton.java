@@ -39,10 +39,10 @@ public class NeonButton extends Button {
 	}
 	
 	@Override
-	public void renderWidget(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			Minecraft mc = Minecraft.getInstance();
-			mc.getTextureManager().bindTexture(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
+			mc.getTextureManager().bind(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
 			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			int i = this.getYImage(this.isHovered);
@@ -66,7 +66,7 @@ public class NeonButton extends Button {
 
 		if (this.hoverCount > 30 && !this.getMessage().getString().isEmpty()) {
 			Minecraft mc = Minecraft.getInstance();
-			GuiUtils.drawHoveringText(matrixStack, ImmutableList.of(this.getMessage()), x, y, mc.currentScreen.width, mc.currentScreen.height, 120, mc.fontRenderer);
+			GuiUtils.drawHoveringText(matrixStack, ImmutableList.of(this.getMessage()), x, y, mc.screen.width, mc.screen.height, 120, mc.font);
 		}
 	}
 

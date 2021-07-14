@@ -89,8 +89,8 @@ public class ColorizerUtil {
 
 		if (state.getBlock() instanceof ColorizerSlopeBlock) {
 			if (state.getBlock() == DecorBlocks.COLORIZER_SLOPE.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 					case NORTH:
@@ -103,7 +103,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 					case NORTH:
@@ -117,8 +117,8 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_ANGLE.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F - zeroOffset));
 					case WEST:
@@ -131,7 +131,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F - zeroOffset));
 					case NORTH:
@@ -145,8 +145,8 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLANTED_CORNER.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 0.0F, 0.0F, 1.0F, onePieceOffset, oneOffset * (1.0F - zeroPieceOffset)));
 					case NORTH:
@@ -159,7 +159,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 1.0F - onePieceOffset, 0.0F, 1.0F, 1.0F, oneOffset * (1.0F - zeroPieceOffset)));
 					case WEST:
@@ -173,8 +173,8 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						switch (piece) {
 						case 1:
@@ -215,7 +215,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						switch (piece) {
 						case 1:
@@ -258,8 +258,8 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						switch (piece) {
 						case 1:
@@ -292,7 +292,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						switch (piece) {
 						case 1:
@@ -326,8 +326,8 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_CORNER.get()) {
-				if (state.get(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 					case NORTH:
@@ -340,7 +340,7 @@ public class ColorizerUtil {
 						return VoxelShapes.empty();
 					}
 				} else {
-					switch (state.get(ColorizerSlopeBlock.FACING)) {
+					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 					case WEST:
@@ -356,12 +356,12 @@ public class ColorizerUtil {
 			}
 		} else if (state.getBlock() instanceof ColorizerSlopeSideBlock) {
 			if (state.getBlock() == DecorBlocks.COLORIZER_PYRAMID.get()) {
-				if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
+				if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
 					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
-				} else if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
+				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
 					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F));
-				} else if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
-					switch (state.get(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
+				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
+					switch (state.getValue(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					case NORTH:
@@ -375,12 +375,12 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_FULL_PYRAMID.get()) {
-				if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
+				if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
 					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 1.0F - oneOffset, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
-				} else if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
+				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
 					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F));
-				} else if (state.get(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
-					switch (state.get(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
+				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
+					switch (state.getValue(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
 					case EAST:
 						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					case NORTH:
@@ -394,7 +394,7 @@ public class ColorizerUtil {
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_POST.get()) {
-				return VoxelShapes.fullCube();
+				return VoxelShapes.block();
 			}
 
 		}

@@ -30,9 +30,9 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 	public static final BooleanProperty SOUTH = SixWayBlock.SOUTH;
 	public static final BooleanProperty WEST = SixWayBlock.WEST;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.FACING_TO_PROPERTY_MAP.entrySet().stream().filter((facingProperty) -> {
+	protected static final Map<Direction, BooleanProperty> FACING_TO_PROPERTY_MAP = SixWayBlock.PROPERTY_BY_DIRECTION.entrySet().stream().filter((facingProperty) -> {
 		return facingProperty.getKey().getAxis().isHorizontal();
-	}).collect(Util.toMapCollector());
+	}).collect(Util.toMap());
 	protected final VoxelShape[] collisionShapes;
 	protected final VoxelShape[] shapes;
 	private final Object2IntMap<BlockState> stateMap = new Object2IntOpenHashMap<>();
@@ -41,7 +41,7 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 		this.collisionShapes = this.makeShapes(nodeWidth, extensionWidth, collisionY, 0.0F, collisionY);
 		this.shapes = this.makeShapes(nodeWidth, extensionWidth, nodeHeight, 0.0F, extensionHeight);
 
-		for (BlockState blockstate : this.stateContainer.getValidStates()) {
+		for (BlockState blockstate : this.stateDefinition.getPossibleStates()) {
 			this.getIndex(blockstate);
 		}
 	}
@@ -51,11 +51,11 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 		float f1 = 8.0F + nodeWidth;
 		float f2 = 8.0F - extensionWidth;
 		float f3 = 8.0F + extensionWidth;
-		VoxelShape voxelshape = Block.makeCuboidShape((double) f, 0.0D, (double) f, (double) f1, (double) nodeHeight, (double) f1);
-		VoxelShape voxelshape1 = Block.makeCuboidShape((double) f2, (double) extensionBottom, 0.0D, (double) f3, (double) extensionHeight, (double) f3);
-		VoxelShape voxelshape2 = Block.makeCuboidShape((double) f2, (double) extensionBottom, (double) f2, (double) f3, (double) extensionHeight, 16.0D);
-		VoxelShape voxelshape3 = Block.makeCuboidShape(0.0D, (double) extensionBottom, (double) f2, (double) f3, (double) extensionHeight, (double) f3);
-		VoxelShape voxelshape4 = Block.makeCuboidShape((double) f2, (double) extensionBottom, (double) f2, 16.0D, (double) extensionHeight, (double) f3);
+		VoxelShape voxelshape = Block.box((double) f, 0.0D, (double) f, (double) f1, (double) nodeHeight, (double) f1);
+		VoxelShape voxelshape1 = Block.box((double) f2, (double) extensionBottom, 0.0D, (double) f3, (double) extensionHeight, (double) f3);
+		VoxelShape voxelshape2 = Block.box((double) f2, (double) extensionBottom, (double) f2, (double) f3, (double) extensionHeight, 16.0D);
+		VoxelShape voxelshape3 = Block.box(0.0D, (double) extensionBottom, (double) f2, (double) f3, (double) extensionHeight, (double) f3);
+		VoxelShape voxelshape4 = Block.box((double) f2, (double) extensionBottom, (double) f2, 16.0D, (double) extensionHeight, (double) f3);
 		VoxelShape voxelshape5 = VoxelShapes.or(voxelshape1, voxelshape4);
 		VoxelShape voxelshape6 = VoxelShapes.or(voxelshape2, voxelshape3);
 		VoxelShape[] avoxelshape = new VoxelShape[] { VoxelShapes.empty(), voxelshape2, voxelshape3, voxelshape6, voxelshape1, VoxelShapes.or(voxelshape2, voxelshape1), VoxelShapes.or(voxelshape3, voxelshape1), VoxelShapes.or(voxelshape6, voxelshape1), voxelshape4, VoxelShapes.or(voxelshape2, voxelshape4), VoxelShapes.or(voxelshape3, voxelshape4), VoxelShapes.or(voxelshape6, voxelshape4), voxelshape5, VoxelShapes.or(voxelshape2, voxelshape5), VoxelShapes.or(voxelshape3, voxelshape5),
@@ -70,7 +70,7 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-		return !state.get(WATERLOGGED);
+		return !state.getValue(WATERLOGGED);
 	}
 
 	@Override
@@ -84,25 +84,25 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 	}
 
 	private static int getMask(Direction facing) {
-		return 1 << facing.getHorizontalIndex();
+		return 1 << facing.get2DDataValue();
 	}
 
 	protected int getIndex(BlockState state) {
 		return this.stateMap.computeIntIfAbsent(state, (mapState) -> {
 			int i = 0;
-			if (mapState.get(NORTH)) {
+			if (mapState.getValue(NORTH)) {
 				i |= getMask(Direction.NORTH);
 			}
 
-			if (mapState.get(EAST)) {
+			if (mapState.getValue(EAST)) {
 				i |= getMask(Direction.EAST);
 			}
 
-			if (mapState.get(SOUTH)) {
+			if (mapState.getValue(SOUTH)) {
 				i |= getMask(Direction.SOUTH);
 			}
 
-			if (mapState.get(WEST)) {
+			if (mapState.getValue(WEST)) {
 				i |= getMask(Direction.WEST);
 			}
 
@@ -112,11 +112,11 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}
 
@@ -124,11 +124,11 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 	public BlockState rotate(BlockState state, Rotation rot) {
 		switch (rot) {
 		case CLOCKWISE_180:
-			return state.with(NORTH, state.get(SOUTH)).with(EAST, state.get(WEST)).with(SOUTH, state.get(NORTH)).with(WEST, state.get(EAST));
+			return state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
 		case COUNTERCLOCKWISE_90:
-			return state.with(NORTH, state.get(EAST)).with(EAST, state.get(SOUTH)).with(SOUTH, state.get(WEST)).with(WEST, state.get(NORTH));
+			return state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
 		case CLOCKWISE_90:
-			return state.with(NORTH, state.get(WEST)).with(EAST, state.get(NORTH)).with(SOUTH, state.get(EAST)).with(WEST, state.get(SOUTH));
+			return state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
 		default:
 			return state;
 		}
@@ -138,9 +138,9 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements IWaterLogga
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		switch (mirrorIn) {
 		case LEFT_RIGHT:
-			return state.with(NORTH, state.get(SOUTH)).with(SOUTH, state.get(NORTH));
+			return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));
 		case FRONT_BACK:
-			return state.with(EAST, state.get(WEST)).with(WEST, state.get(EAST));
+			return state.setValue(EAST, state.getValue(WEST)).setValue(WEST, state.getValue(EAST));
 		default:
 			return super.mirror(state, mirrorIn);
 		}

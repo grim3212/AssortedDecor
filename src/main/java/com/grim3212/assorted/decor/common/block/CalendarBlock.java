@@ -18,19 +18,19 @@ import net.minecraft.world.World;
 
 public class CalendarBlock extends HorizontalBlock {
 
-	protected static final VoxelShape CALENDAR_NORTH_AABB = Block.makeCuboidShape(4f, 2.08f, 14.96f, 12f, 14.96f, 16f);
-	protected static final VoxelShape CALENDAR_SOUTH_AABB = Block.makeCuboidShape(4f, 2.08f, 0f, 12f, 14.96f, 1.04f);
-	protected static final VoxelShape CALENDAR_WEST_AABB = Block.makeCuboidShape(14.96f, 2.08f, 4f, 16f, 14.96f, 12f);
-	protected static final VoxelShape CALENDAR_EAST_AABB = Block.makeCuboidShape(0f, 2.08f, 4f, 1.04f, 14.96f, 12f);
+	protected static final VoxelShape CALENDAR_NORTH_AABB = Block.box(4f, 2.08f, 14.96f, 12f, 14.96f, 16f);
+	protected static final VoxelShape CALENDAR_SOUTH_AABB = Block.box(4f, 2.08f, 0f, 12f, 14.96f, 1.04f);
+	protected static final VoxelShape CALENDAR_WEST_AABB = Block.box(14.96f, 2.08f, 4f, 16f, 14.96f, 12f);
+	protected static final VoxelShape CALENDAR_EAST_AABB = Block.box(0f, 2.08f, 4f, 1.04f, 14.96f, 12f);
 
 	protected CalendarBlock(Properties builder) {
 		super(builder);
-		this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(HORIZONTAL_FACING)) {
+		switch (state.getValue(FACING)) {
 			case EAST:
 				return CALENDAR_EAST_AABB;
 			case WEST:
@@ -45,8 +45,8 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
 	}
 
 	@Override
@@ -62,17 +62,17 @@ public class CalendarBlock extends HorizontalBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		for (Direction enumfacing : Direction.Plane.HORIZONTAL) {
-			if (this.canBlockStay(context.getWorld(), context.getPos(), enumfacing)) {
-				return this.getDefaultState().with(HORIZONTAL_FACING, enumfacing);
+			if (this.canBlockStay(context.getLevel(), context.getClickedPos(), enumfacing)) {
+				return this.defaultBlockState().setValue(FACING, enumfacing);
 			}
 		}
 
-		return this.getDefaultState();
+		return this.defaultBlockState();
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		for (Direction enumfacing : HORIZONTAL_FACING.getAllowedValues()) {
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		for (Direction enumfacing : FACING.getPossibleValues()) {
 			if (this.canBlockStay(worldIn, pos, enumfacing)) {
 				return true;
 			}
@@ -83,7 +83,7 @@ public class CalendarBlock extends HorizontalBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		Direction enumfacing = state.get(HORIZONTAL_FACING);
+		Direction enumfacing = state.getValue(FACING);
 
 		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
 			worldIn.destroyBlock(pos, true);
@@ -91,7 +91,7 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	protected boolean canBlockStay(IWorldReader worldIn, BlockPos pos, Direction facing) {
-		BlockPos blockpos = pos.offset(facing.getOpposite());
-		return Block.hasEnoughSolidSide(worldIn, blockpos, facing);
+		BlockPos blockpos = pos.relative(facing.getOpposite());
+		return Block.canSupportCenter(worldIn, blockpos, facing);
 	}
 }

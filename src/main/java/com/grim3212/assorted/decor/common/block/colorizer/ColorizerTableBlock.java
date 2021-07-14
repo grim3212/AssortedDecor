@@ -36,7 +36,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	});
 
 	public ColorizerTableBlock() {
-		this.setDefaultState(getDefaultState().with(NORTH, false).with(SOUTH, false).with(WEST, false).with(EAST, false).with(UP, false).with(DOWN, false));
+		this.registerDefaultState(defaultBlockState().setValue(NORTH, false).setValue(SOUTH, false).setValue(WEST, false).setValue(EAST, false).setValue(UP, false).setValue(DOWN, false));
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(NORTH, SOUTH, WEST, EAST, UP, DOWN);
 	}
 
@@ -69,23 +69,23 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 		BlockState tableState = super.getStateForPlacement(context);
 		
 		if(tableState == null) {
-			return this.getDefaultState();
+			return this.defaultBlockState();
 		}
 		
-		BlockPos blockpos = context.getPos();
+		BlockPos blockpos = context.getClickedPos();
 		BlockPos northPos = blockpos.north();
 		BlockPos eastPos = blockpos.east();
 		BlockPos southPos = blockpos.south();
 		BlockPos westPos = blockpos.west();
-		BlockPos upPos = blockpos.up();
-		BlockPos downPos = blockpos.down();
-		return tableState.with(NORTH, this.canConnectTo(context.getWorld(), blockpos, northPos)).with(EAST, this.canConnectTo(context.getWorld(), blockpos, eastPos)).with(SOUTH, this.canConnectTo(context.getWorld(), blockpos, southPos)).with(WEST, this.canConnectTo(context.getWorld(), blockpos, westPos)).with(UP, this.canConnectTo(context.getWorld(), blockpos, upPos)).with(DOWN, this.canConnectTo(context.getWorld(), blockpos, downPos));
+		BlockPos upPos = blockpos.above();
+		BlockPos downPos = blockpos.below();
+		return tableState.setValue(NORTH, this.canConnectTo(context.getLevel(), blockpos, northPos)).setValue(EAST, this.canConnectTo(context.getLevel(), blockpos, eastPos)).setValue(SOUTH, this.canConnectTo(context.getLevel(), blockpos, southPos)).setValue(WEST, this.canConnectTo(context.getLevel(), blockpos, westPos)).setValue(UP, this.canConnectTo(context.getLevel(), blockpos, upPos)).setValue(DOWN, this.canConnectTo(context.getLevel(), blockpos, downPos));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		BlockState superState = super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-		return superState.with(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		BlockState superState = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
 	}
 
 	public boolean canConnectTo(IBlockReader worldIn, BlockPos currentPos, BlockPos placePos) {
@@ -93,8 +93,8 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 		BlockState placeState = worldIn.getBlockState(placePos);
 
 		if (currentState.getBlock() instanceof ColorizerTableBlock && placeState.getBlock() instanceof ColorizerTableBlock) {
-			if (currentState.getBlock() == currentState.getBlock() && currentState.get(FACE) == placeState.get(FACE)) {
-				return currentState.get(FACE) == AttachFace.WALL ? currentState.get(HORIZONTAL_FACING) == placeState.get(HORIZONTAL_FACING) : true;
+			if (currentState.getBlock() == currentState.getBlock() && currentState.getValue(FACE) == placeState.getValue(FACE)) {
+				return currentState.getValue(FACE) == AttachFace.WALL ? currentState.getValue(HORIZONTAL_FACING) == placeState.getValue(HORIZONTAL_FACING) : true;
 			}
 		}
 		return false;

@@ -27,7 +27,7 @@ public class ColorizerBlockBakedModel extends ColorizerBaseBakedModel {
 	@Override
 	protected IBakedModel generateModel(ImmutableMap<String, String> texture) {
 		RetexturableBlockModel toBake = RetexturableBlockModel.from((BlockModel) this.unbakedModel);
-		return toBake.retexture(texture).bakeModel(this.bakery, toBake, this.spriteGetter, this.transform, this.name, true);
+		return toBake.retexture(texture).bake(this.bakery, toBake, this.spriteGetter, this.transform, this.name, true);
 	}
 
 }

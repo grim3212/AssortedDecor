@@ -81,29 +81,29 @@ public class DecorBlocks {
 	public static final RegistryObject<NeonSignBlock> NEON_SIGN = registerNoItem("neon_sign", () -> new NeonSignStandingBlock());
 	public static final RegistryObject<NeonSignBlock> NEON_SIGN_WALL = registerNoItem("neon_sign_wall", () -> new NeonSignWallBlock());
 
-	public static final RegistryObject<IlluminationTubeBlock> ILLUMINATION_TUBE = register("illumination_tube", () -> new IlluminationTubeBlock(Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().zeroHardnessAndResistance().setLightLevel(state -> 15).sound(SoundType.GLASS)));
+	public static final RegistryObject<IlluminationTubeBlock> ILLUMINATION_TUBE = register("illumination_tube", () -> new IlluminationTubeBlock(Block.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel(state -> 15).sound(SoundType.GLASS)));
 
 	public static final RegistryObject<FluroBlock> FLURO_WHITE = register("fluro_white", () -> new FluroBlock(MaterialColor.SNOW));
-	public static final RegistryObject<FluroBlock> FLURO_ORANGE = register("fluro_orange", () -> new FluroBlock(MaterialColor.ADOBE));
-	public static final RegistryObject<FluroBlock> FLURO_MAGENTA = register("fluro_magenta", () -> new FluroBlock(MaterialColor.MAGENTA));
-	public static final RegistryObject<FluroBlock> FLURO_LIGHT_BLUE = register("fluro_light_blue", () -> new FluroBlock(MaterialColor.LIGHT_BLUE));
-	public static final RegistryObject<FluroBlock> FLURO_YELLOW = register("fluro_yellow", () -> new FluroBlock(MaterialColor.YELLOW));
-	public static final RegistryObject<FluroBlock> FLURO_LIME = register("fluro_lime", () -> new FluroBlock(MaterialColor.LIME));
-	public static final RegistryObject<FluroBlock> FLURO_PINK = register("fluro_pink", () -> new FluroBlock(MaterialColor.PINK));
-	public static final RegistryObject<FluroBlock> FLURO_GRAY = register("fluro_gray", () -> new FluroBlock(MaterialColor.GRAY));
-	public static final RegistryObject<FluroBlock> FLURO_LIGHT_GRAY = register("fluro_light_gray", () -> new FluroBlock(MaterialColor.LIGHT_GRAY));
-	public static final RegistryObject<FluroBlock> FLURO_CYAN = register("fluro_cyan", () -> new FluroBlock(MaterialColor.CYAN));
-	public static final RegistryObject<FluroBlock> FLURO_PURPLE = register("fluro_purple", () -> new FluroBlock(MaterialColor.PURPLE));
-	public static final RegistryObject<FluroBlock> FLURO_BLUE = register("fluro_blue", () -> new FluroBlock(MaterialColor.BLUE));
-	public static final RegistryObject<FluroBlock> FLURO_BROWN = register("fluro_brown", () -> new FluroBlock(MaterialColor.BROWN));
-	public static final RegistryObject<FluroBlock> FLURO_GREEN = register("fluro_green", () -> new FluroBlock(MaterialColor.GREEN));
-	public static final RegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(MaterialColor.RED));
-	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(MaterialColor.BLACK));
+	public static final RegistryObject<FluroBlock> FLURO_ORANGE = register("fluro_orange", () -> new FluroBlock(MaterialColor.COLOR_ORANGE));
+	public static final RegistryObject<FluroBlock> FLURO_MAGENTA = register("fluro_magenta", () -> new FluroBlock(MaterialColor.COLOR_MAGENTA));
+	public static final RegistryObject<FluroBlock> FLURO_LIGHT_BLUE = register("fluro_light_blue", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_BLUE));
+	public static final RegistryObject<FluroBlock> FLURO_YELLOW = register("fluro_yellow", () -> new FluroBlock(MaterialColor.COLOR_YELLOW));
+	public static final RegistryObject<FluroBlock> FLURO_LIME = register("fluro_lime", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_GREEN));
+	public static final RegistryObject<FluroBlock> FLURO_PINK = register("fluro_pink", () -> new FluroBlock(MaterialColor.COLOR_PINK));
+	public static final RegistryObject<FluroBlock> FLURO_GRAY = register("fluro_gray", () -> new FluroBlock(MaterialColor.COLOR_GRAY));
+	public static final RegistryObject<FluroBlock> FLURO_LIGHT_GRAY = register("fluro_light_gray", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_GRAY));
+	public static final RegistryObject<FluroBlock> FLURO_CYAN = register("fluro_cyan", () -> new FluroBlock(MaterialColor.COLOR_CYAN));
+	public static final RegistryObject<FluroBlock> FLURO_PURPLE = register("fluro_purple", () -> new FluroBlock(MaterialColor.COLOR_PURPLE));
+	public static final RegistryObject<FluroBlock> FLURO_BLUE = register("fluro_blue", () -> new FluroBlock(MaterialColor.COLOR_BLUE));
+	public static final RegistryObject<FluroBlock> FLURO_BROWN = register("fluro_brown", () -> new FluroBlock(MaterialColor.COLOR_BROWN));
+	public static final RegistryObject<FluroBlock> FLURO_GREEN = register("fluro_green", () -> new FluroBlock(MaterialColor.COLOR_GREEN));
+	public static final RegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(MaterialColor.COLOR_RED));
+	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(MaterialColor.COLOR_BLACK));
 
-	public static final RegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.create(Material.IRON, MaterialColor.QUARTZ).setRequiresTool().hardnessAndResistance(5.0F).sound(SoundType.METAL).notSolid()));
+	public static final RegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion()));
 
-	public static final RegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).doesNotBlockMovement().hardnessAndResistance(1f)));
-	public static final RegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.create(Material.WOOD).sound(SoundType.WOOD).hardnessAndResistance(1f)));
+	public static final RegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).noCollission().strength(1f)));
+	public static final RegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1f)));
 
 	public static Block[] fluroBlocks() {
 		return new Block[] { FLURO_WHITE.get(), FLURO_ORANGE.get(), FLURO_MAGENTA.get(), FLURO_LIGHT_BLUE.get(), FLURO_YELLOW.get(), FLURO_LIME.get(), FLURO_PINK.get(), FLURO_GRAY.get(), FLURO_LIGHT_GRAY.get(), FLURO_CYAN.get(), FLURO_PURPLE.get(), FLURO_BLUE.get(), FLURO_BROWN.get(), FLURO_GREEN.get(), FLURO_RED.get(), FLURO_BLACK.get() };
@@ -124,7 +124,7 @@ public class DecorBlocks {
 	}
 
 	private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block) {
-		return () -> new BlockItem(block.get(), new Item.Properties().group(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP));
+		return () -> new BlockItem(block.get(), new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP));
 	}
 
 	public static Block[] colorizerBlocks() {

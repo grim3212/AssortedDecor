@@ -20,19 +20,19 @@ public class DecorItemTagProvider extends ItemTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
-		this.getOrCreateBuilder(DecorTags.Items.BUCKETS_WATER).add(Items.WATER_BUCKET);
-		this.getOrCreateBuilder(Tags.Items.FENCES).addItemEntry(DecorBlocks.COLORIZER_FENCE.get().asItem());
-		this.getOrCreateBuilder(Tags.Items.FENCE_GATES).addItemEntry(DecorBlocks.COLORIZER_FENCE_GATE.get().asItem());
-		this.getOrCreateBuilder(ItemTags.WALLS).addItemEntry(DecorBlocks.COLORIZER_WALL.get().asItem());
-		this.getOrCreateBuilder(ItemTags.TRAPDOORS).addItemEntry(DecorBlocks.COLORIZER_TRAP_DOOR.get().asItem());
-		this.getOrCreateBuilder(ItemTags.DOORS).addItemEntry(DecorBlocks.COLORIZER_DOOR.get().asItem());
-		this.getOrCreateBuilder(ItemTags.STAIRS).addItemEntry(DecorBlocks.COLORIZER_STAIRS.get().asItem());
-		this.getOrCreateBuilder(ItemTags.SLABS).addItemEntry(DecorBlocks.COLORIZER_SLAB.get().asItem());
+	protected void addTags() {
+		this.tag(DecorTags.Items.BUCKETS_WATER).add(Items.WATER_BUCKET);
+		this.tag(Tags.Items.FENCES).add(DecorBlocks.COLORIZER_FENCE.get().asItem());
+		this.tag(Tags.Items.FENCE_GATES).add(DecorBlocks.COLORIZER_FENCE_GATE.get().asItem());
+		this.tag(ItemTags.WALLS).add(DecorBlocks.COLORIZER_WALL.get().asItem());
+		this.tag(ItemTags.TRAPDOORS).add(DecorBlocks.COLORIZER_TRAP_DOOR.get().asItem());
+		this.tag(ItemTags.DOORS).add(DecorBlocks.COLORIZER_DOOR.get().asItem());
+		this.tag(ItemTags.STAIRS).add(DecorBlocks.COLORIZER_STAIRS.get().asItem());
+		this.tag(ItemTags.SLABS).add(DecorBlocks.COLORIZER_SLAB.get().asItem());
 
-		this.getOrCreateBuilder(ItemTags.SIGNS).addItemEntry(DecorItems.NEON_SIGN.get());
+		this.tag(ItemTags.SIGNS).add(DecorItems.NEON_SIGN.get());
 
-		this.getOrCreateBuilder(ItemTags.DOORS).addItemEntry(DecorBlocks.QUARTZ_DOOR.get().asItem());
+		this.tag(ItemTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get().asItem());
 	}
 
 	@Override

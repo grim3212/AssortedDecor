@@ -12,12 +12,12 @@ public abstract class ColorizerHorizontalBlock extends ColorizerBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
+		return state.setValue(HORIZONTAL_FACING, rot.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}
 
 }

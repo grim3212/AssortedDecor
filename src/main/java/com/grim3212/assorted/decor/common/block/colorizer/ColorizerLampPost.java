@@ -28,19 +28,19 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	public static final EnumProperty<LampPart> PART = EnumProperty.create("part", LampPart.class);
 
-	private static final VoxelShape TOP = Block.makeCuboidShape(2F, 0.0F, 2F, 14F, 10.96F, 14F);
-	private static final VoxelShape MIDDLE = Block.makeCuboidShape(6F, 0.0F, 6F, 10F, 16F, 10F);
-	private static final VoxelShape BOTTOM = Block.makeCuboidShape(6F, 0.0F, 6F, 10F, 16F, 10F);
+	private static final VoxelShape TOP = Block.box(2F, 0.0F, 2F, 14F, 10.96F, 14F);
+	private static final VoxelShape MIDDLE = Block.box(6F, 0.0F, 6F, 10F, 16F, 10F);
+	private static final VoxelShape BOTTOM = Block.box(6F, 0.0F, 6F, 10F, 16F, 10F);
 
 	public ColorizerLampPost() {
-		this.setDefaultState(this.stateContainer.getBaseState().with(PART, LampPart.BOTTOM).with(WATERLOGGED, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(PART, LampPart.BOTTOM).setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if (state.get(PART) == LampPart.TOP) {
+		if (state.getValue(PART) == LampPart.TOP) {
 			return TOP;
-		} else if (state.get(PART) == LampPart.MIDDLE) {
+		} else if (state.getValue(PART) == LampPart.MIDDLE) {
 			return MIDDLE;
 		} else {
 			return BOTTOM;
@@ -49,70 +49,70 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader world, BlockPos pos) {
-		return state.get(PART) == LampPart.TOP ? 15 : super.getLightValue(state, world, pos);
+		return state.getValue(PART) == LampPart.TOP ? 15 : super.getLightValue(state, world, pos);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockPos blockpos = context.getPos();
-		FluidState fluidstate = context.getWorld().getFluidState(blockpos);
-		return this.getDefaultState().with(PART, LampPart.BOTTOM).with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+		BlockPos blockpos = context.getClickedPos();
+		FluidState fluidstate = context.getLevel().getFluidState(blockpos);
+		return this.defaultBlockState().setValue(PART, LampPart.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(PART, WATERLOGGED);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-		worldIn.setBlockState(pos.up(), state.with(PART, LampPart.MIDDLE), 3);
-		worldIn.setBlockState(pos.up(2), state.with(PART, LampPart.TOP), 3);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		worldIn.setBlock(pos.above(), state.setValue(PART, LampPart.MIDDLE), 3);
+		worldIn.setBlock(pos.above(2), state.setValue(PART, LampPart.TOP), 3);
 	}
 
 	@Override
-	public void onPlayerDestroy(IWorld worldIn, BlockPos pos, BlockState state) {
-		if (state.get(PART) == LampPart.BOTTOM) {
-			worldIn.removeBlock(pos.up(), false);
-			worldIn.removeBlock(pos.up(2), false);
-		} else if (state.get(PART) == LampPart.MIDDLE) {
-			worldIn.removeBlock(pos.up(), false);
-			worldIn.removeBlock(pos.down(), false);
-		} else if (state.get(PART) == LampPart.TOP) {
-			worldIn.removeBlock(pos.down(), false);
-			worldIn.removeBlock(pos.down(2), false);
+	public void destroy(IWorld worldIn, BlockPos pos, BlockState state) {
+		if (state.getValue(PART) == LampPart.BOTTOM) {
+			worldIn.removeBlock(pos.above(), false);
+			worldIn.removeBlock(pos.above(2), false);
+		} else if (state.getValue(PART) == LampPart.MIDDLE) {
+			worldIn.removeBlock(pos.above(), false);
+			worldIn.removeBlock(pos.below(), false);
+		} else if (state.getValue(PART) == LampPart.TOP) {
+			worldIn.removeBlock(pos.below(), false);
+			worldIn.removeBlock(pos.below(2), false);
 		}
 
-		super.onPlayerDestroy(worldIn, pos, state);
+		super.destroy(worldIn, pos, state);
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		super.onBlockHarvested(worldIn, pos, state, player);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		super.playerWillDestroy(worldIn, pos, state, player);
 
-		if (state.get(PART) == LampPart.BOTTOM) {
-			worldIn.removeBlock(pos.up(), false);
-			worldIn.removeBlock(pos.up(2), false);
-		} else if (state.get(PART) == LampPart.MIDDLE) {
-			worldIn.removeBlock(pos.up(), false);
-			worldIn.removeBlock(pos.down(), false);
-		} else if (state.get(PART) == LampPart.TOP) {
-			worldIn.removeBlock(pos.down(), false);
-			worldIn.removeBlock(pos.down(2), false);
+		if (state.getValue(PART) == LampPart.BOTTOM) {
+			worldIn.removeBlock(pos.above(), false);
+			worldIn.removeBlock(pos.above(2), false);
+		} else if (state.getValue(PART) == LampPart.MIDDLE) {
+			worldIn.removeBlock(pos.above(), false);
+			worldIn.removeBlock(pos.below(), false);
+		} else if (state.getValue(PART) == LampPart.TOP) {
+			worldIn.removeBlock(pos.below(), false);
+			worldIn.removeBlock(pos.below(2), false);
 		}
 	}
 
@@ -121,12 +121,12 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 		if (super.clearColorizer(worldIn, pos, player, hand)) {
 			BlockState state = worldIn.getBlockState(pos);
 
-			if (state.get(PART) == LampPart.BOTTOM) {
-				return super.clearColorizer(worldIn, pos.up(), player, hand) && super.clearColorizer(worldIn, pos.up(2), player, hand);
-			} else if (state.get(PART) == LampPart.MIDDLE) {
-				return super.clearColorizer(worldIn, pos.down(), player, hand) && super.clearColorizer(worldIn, pos.up(), player, hand);
-			} else if (state.get(PART) == LampPart.TOP) {
-				return super.clearColorizer(worldIn, pos.down(), player, hand) && super.clearColorizer(worldIn, pos.down(2), player, hand);
+			if (state.getValue(PART) == LampPart.BOTTOM) {
+				return super.clearColorizer(worldIn, pos.above(), player, hand) && super.clearColorizer(worldIn, pos.above(2), player, hand);
+			} else if (state.getValue(PART) == LampPart.MIDDLE) {
+				return super.clearColorizer(worldIn, pos.below(), player, hand) && super.clearColorizer(worldIn, pos.above(), player, hand);
+			} else if (state.getValue(PART) == LampPart.TOP) {
+				return super.clearColorizer(worldIn, pos.below(), player, hand) && super.clearColorizer(worldIn, pos.below(2), player, hand);
 			}
 		}
 
@@ -138,12 +138,12 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 		if (super.setColorizer(worldIn, pos, toSetState, player, hand, consumeItem)) {
 			BlockState state = worldIn.getBlockState(pos);
 
-			if (state.get(PART) == LampPart.BOTTOM) {
-				return super.setColorizer(worldIn, pos.up(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.up(2), toSetState, player, hand, consumeItem);
-			} else if (state.get(PART) == LampPart.MIDDLE) {
-				return super.setColorizer(worldIn, pos.down(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.up(), toSetState, player, hand, consumeItem);
-			} else if (state.get(PART) == LampPart.TOP) {
-				return super.setColorizer(worldIn, pos.down(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.down(2), toSetState, player, hand, consumeItem);
+			if (state.getValue(PART) == LampPart.BOTTOM) {
+				return super.setColorizer(worldIn, pos.above(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.above(2), toSetState, player, hand, consumeItem);
+			} else if (state.getValue(PART) == LampPart.MIDDLE) {
+				return super.setColorizer(worldIn, pos.below(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.above(), toSetState, player, hand, consumeItem);
+			} else if (state.getValue(PART) == LampPart.TOP) {
+				return super.setColorizer(worldIn, pos.below(), toSetState, player, hand, consumeItem) && super.setColorizer(worldIn, pos.below(2), toSetState, player, hand, consumeItem);
 			}
 		}
 
@@ -165,7 +165,7 @@ public class ColorizerLampPost extends ColorizerBlock implements IWaterLoggable 
 			return this.name;
 		}
 
-		public String getString() {
+		public String getSerializedName() {
 			return this.name;
 		}
 	}

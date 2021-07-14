@@ -60,21 +60,21 @@ public class ClientProxy implements IProxy {
 	@Override
 	public void produceSmoke(World world, BlockPos pos, double xMod, double yMod, double zMod, int amount, boolean makelarge) {
 		for (int i = 0; i < amount; i++) {
-			double xVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
-			double yVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
-			double zVar = (world.rand.nextDouble() - 0.5D) / 5.0D;
+			double xVar = (world.random.nextDouble() - 0.5D) / 5.0D;
+			double yVar = (world.random.nextDouble() - 0.5D) / 5.0D;
+			double zVar = (world.random.nextDouble() - 0.5D) / 5.0D;
 			world.addParticle(makelarge ? ParticleTypes.LARGE_SMOKE : ParticleTypes.SMOKE, pos.getX() + xMod + xVar, pos.getY() + yMod + yVar, pos.getZ() + zMod + zVar, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
 	private void setupClient(final FMLClientSetupEvent event) {
 		for (Block b : DecorBlocks.colorizerBlocks()) {
-			RenderTypeLookup.setRenderLayer(b, RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(b, RenderType.translucent());
 		}
 
-		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.cutout());
+		RenderTypeLookup.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.cutout());
 
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
@@ -92,7 +92,7 @@ public class ClientProxy implements IProxy {
 				@Override
 				public int getColor(BlockState state, IBlockDisplayReader worldIn, BlockPos pos, int tint) {
 					if (pos != null) {
-						TileEntity te = worldIn.getTileEntity(pos);
+						TileEntity te = worldIn.getBlockEntity(pos);
 						if (te != null && te instanceof ColorizerTileEntity) {
 							return Minecraft.getInstance().getBlockColors().getColor(((ColorizerTileEntity) te).getStoredBlockState(), worldIn, pos, tint);
 						}
@@ -136,16 +136,16 @@ public class ClientProxy implements IProxy {
 			blocks.register(new IBlockColor() {
 				@Override
 				public int getColor(BlockState state, IBlockDisplayReader worldIn, BlockPos pos, int tint) {
-					return state.getBlock().getMaterialColor().colorValue;
+					return state.getBlock().defaultMaterialColor().col;
 				}
 			}, DecorBlocks.fluroBlocks());
 
 			items.register(new IItemColor() {
 				@Override
 				public int getColor(ItemStack stack, int tint) {
-					Block b = Block.getBlockFromItem(stack.getItem());
+					Block b = Block.byItem(stack.getItem());
 					if (b != Blocks.AIR) {
-						return b.getMaterialColor().colorValue;
+						return b.defaultMaterialColor().col;
 					}
 					return 16777215;
 				}
@@ -160,17 +160,17 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void openNeonSign(NeonSignTileEntity tile) {
-		Minecraft.getInstance().displayGuiScreen(new NeonSignScreen(tile));
+		Minecraft.getInstance().setScreen(new NeonSignScreen(tile));
 	}
 
 	@Override
 	public void handleOpenNeonSign(BlockPos pos) {
-		TileEntity tileentity = Minecraft.getInstance().player.getEntityWorld().getTileEntity(pos);
+		TileEntity tileentity = Minecraft.getInstance().player.getCommandSenderWorld().getBlockEntity(pos);
 
 		// Make sure TileEntity exists
 		if (!(tileentity instanceof NeonSignTileEntity)) {
 			tileentity = new NeonSignTileEntity();
-			tileentity.setWorldAndPos(Minecraft.getInstance().player.getEntityWorld(), pos);
+			tileentity.setLevelAndPosition(Minecraft.getInstance().player.getCommandSenderWorld(), pos);
 		}
 
 		openNeonSign((NeonSignTileEntity) tileentity);

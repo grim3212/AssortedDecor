@@ -51,16 +51,16 @@ public class NeonSignTileEntity extends TileEntity {
 	}
 
 	@Override
-	public boolean onlyOpsCanSetNbt() {
+	public boolean onlyOpCanSetNbt() {
 		return true;
 	}
 
 	public void setOwner(Entity newOwner) {
-		this.owner = newOwner.getUniqueID();
+		this.owner = newOwner.getUUID();
 	}
 
 	public Entity getOwner() {
-		return this.owner != null && this.world instanceof ServerWorld ? ((ServerWorld) this.world).getEntityByUuid(this.owner) : null;
+		return this.owner != null && this.level instanceof ServerWorld ? ((ServerWorld) this.level).getEntity(this.owner) : null;
 	}
 
 	public boolean executeCommand(PlayerEntity playerIn) {
@@ -69,7 +69,7 @@ public class NeonSignTileEntity extends TileEntity {
 			if (style != null && style.getClickEvent() != null) {
 				ClickEvent clickevent = style.getClickEvent();
 				if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
-					playerIn.getServer().getCommandManager().handleCommand(this.getCommandSource((ServerPlayerEntity) playerIn), clickevent.getValue());
+					playerIn.getServer().getCommands().performCommand(this.getCommandSource((ServerPlayerEntity) playerIn), clickevent.getValue());
 				}
 			}
 		}
@@ -80,25 +80,25 @@ public class NeonSignTileEntity extends TileEntity {
 	public CommandSource getCommandSource(@Nullable ServerPlayerEntity playerIn) {
 		String s = playerIn == null ? "Sign" : playerIn.getName().getString();
 		ITextComponent itextcomponent = (ITextComponent) (playerIn == null ? new StringTextComponent("Sign") : playerIn.getDisplayName());
-		return new CommandSource(ICommandSource.DUMMY, Vector3d.copyCentered(this.pos), Vector2f.ZERO, (ServerWorld) this.world, 2, s, itextcomponent, this.world.getServer(), playerIn);
+		return new CommandSource(ICommandSource.NULL, Vector3d.atCenterOf(this.worldPosition), Vector2f.ZERO, (ServerWorld) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
-		super.write(compound);
+	public CompoundNBT save(CompoundNBT compound) {
+		super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		this.readPacketNBT(nbt);
 	}
 
 	public void writePacketNBT(CompoundNBT cmp) {
 		cmp.putInt("Mode", mode);
-		cmp.putUniqueId("Owner", owner);
+		cmp.putUUID("Owner", owner);
 
 		for (int i = 0; i < 4; ++i) {
 			String s = IFormattableTextComponent.Serializer.toJson(this.signText[i]);
@@ -108,14 +108,14 @@ public class NeonSignTileEntity extends TileEntity {
 
 	public void readPacketNBT(CompoundNBT cmp) {
 		this.mode = cmp.getInt("Mode");
-		this.owner = cmp.getUniqueId("Owner");
+		this.owner = cmp.getUUID("Owner");
 
 		for (int i = 0; i < 4; ++i) {
 			String s = cmp.getString("Text" + (i + 1));
-			IFormattableTextComponent itextcomponent = IFormattableTextComponent.Serializer.getComponentFromJson(s.isEmpty() ? "\"\"" : s);
-			if (this.world instanceof ServerWorld) {
+			IFormattableTextComponent itextcomponent = IFormattableTextComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
+			if (this.level instanceof ServerWorld) {
 				try {
-					this.signText[i] = TextComponentUtils.func_240645_a_(this.getCommandSource((ServerPlayerEntity) null), itextcomponent, (Entity) null, 0);
+					this.signText[i] = TextComponentUtils.updateForEntity(this.getCommandSource((ServerPlayerEntity) null), itextcomponent, (Entity) null, 0);
 				} catch (CommandSyntaxException commandsyntaxexception) {
 					this.signText[i] = itextcomponent;
 				}
@@ -127,22 +127,22 @@ public class NeonSignTileEntity extends TileEntity {
 
 	@Override
 	public CompoundNBT getUpdateTag() {
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbtTagCompound = new CompoundNBT();
 		writePacketNBT(nbtTagCompound);
-		return new SUpdateTileEntityPacket(this.pos, 1, nbtTagCompound);
+		return new SUpdateTileEntityPacket(this.worldPosition, 1, nbtTagCompound);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
 		super.onDataPacket(net, pkt);
-		this.readPacketNBT(pkt.getNbtCompound());
-		if (world instanceof ClientWorld) {
-			world.notifyBlockUpdate(getPos(), getBlockState(), getBlockState(), 0);
+		this.readPacketNBT(pkt.getTag());
+		if (level instanceof ClientWorld) {
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}
 	}
 }

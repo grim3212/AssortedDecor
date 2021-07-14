@@ -23,20 +23,20 @@ public interface IColorizer {
 
 	public default boolean clearColorizer(World worldIn, BlockPos pos, PlayerEntity player, Hand hand) {
 		BlockState state = worldIn.getBlockState(pos);
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if (te instanceof ColorizerTileEntity) {
 			ColorizerTileEntity tileColorizer = (ColorizerTileEntity) te;
 			BlockState storedState = tileColorizer.getStoredBlockState();
 
 			// Can only clear a filled colorizer
-			if (storedState != Blocks.AIR.getDefaultState()) {
+			if (storedState != Blocks.AIR.defaultBlockState()) {
 
-				if (DecorConfig.COMMON.consumeBlock.get() && !player.abilities.isCreativeMode) {
+				if (DecorConfig.COMMON.consumeBlock.get() && !player.abilities.instabuild) {
 					ItemEntity blockDropped = new ItemEntity(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), new ItemStack(tileColorizer.getStoredBlockState().getBlock(), 1));
-					if (!worldIn.isRemote) {
-						worldIn.addEntity(blockDropped);
+					if (!worldIn.isClientSide) {
+						worldIn.addFreshEntity(blockDropped);
 						if (!(player instanceof FakePlayer)) {
-							blockDropped.onCollideWithPlayer(player);
+							blockDropped.playerTouch(player);
 						}
 					}
 				}
@@ -54,16 +54,16 @@ public interface IColorizer {
 	}
 
 	public default boolean setColorizer(World worldIn, BlockPos pos, @Nullable BlockState toSetState, PlayerEntity player, Hand hand, boolean consumeItem) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+		TileEntity tileentity = worldIn.getBlockEntity(pos);
 		if (tileentity instanceof ColorizerTileEntity) {
 			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
-			te.setStoredBlockState(toSetState != null ? toSetState : Blocks.AIR.getDefaultState());
+			te.setStoredBlockState(toSetState != null ? toSetState : Blocks.AIR.defaultBlockState());
 
 			// Remove an item if config allows and we are not resetting
 			// colorizer
 			if (DecorConfig.COMMON.consumeBlock.get() && toSetState != null && consumeItem) {
-				if (!player.abilities.isCreativeMode)
-					player.getHeldItem(hand).shrink(1);
+				if (!player.abilities.instabuild)
+					player.getItemInHand(hand).shrink(1);
 			}
 
 			return true;
@@ -72,10 +72,10 @@ public interface IColorizer {
 	}
 
 	public default BlockState getStoredState(IBlockReader worldIn, BlockPos pos) {
-		TileEntity te = worldIn.getTileEntity(pos);
+		TileEntity te = worldIn.getBlockEntity(pos);
 		if (te instanceof ColorizerTileEntity) {
 			return ((ColorizerTileEntity) te).getStoredBlockState();
 		}
-		return Blocks.AIR.getDefaultState();
+		return Blocks.AIR.defaultBlockState();
 	}
 }

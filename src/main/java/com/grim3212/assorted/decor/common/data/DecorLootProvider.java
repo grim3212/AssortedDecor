@@ -85,7 +85,7 @@ public class DecorLootProvider implements IDataProvider {
 	}
 
 	@Override
-	public void act(DirectoryCache cache) throws IOException {
+	public void run(DirectoryCache cache) throws IOException {
 		Map<ResourceLocation, LootTable.Builder> tables = new HashMap<>();
 
 		for (Block b : blocks) {
@@ -94,20 +94,20 @@ public class DecorLootProvider implements IDataProvider {
 
 		for (Map.Entry<ResourceLocation, LootTable.Builder> e : tables.entrySet()) {
 			Path path = getPath(generator.getOutputFolder(), e.getKey());
-			IDataProvider.save(GSON, cache, LootTableManager.toJson(e.getValue().setParameterSet(LootParameterSets.BLOCK).build()), path);
+			IDataProvider.save(GSON, cache, LootTableManager.serialize(e.getValue().setParamSet(LootParameterSets.BLOCK).build()), path);
 		}
 
 		Path doorPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_DOOR.get().getRegistryName());
-		IDataProvider.save(GSON, cache, LootTableManager.toJson(genDoor(DecorBlocks.COLORIZER_DOOR.get()).setParameterSet(LootParameterSets.BLOCK).build()), doorPath);
+		IDataProvider.save(GSON, cache, LootTableManager.serialize(genDoor(DecorBlocks.COLORIZER_DOOR.get()).setParamSet(LootParameterSets.BLOCK).build()), doorPath);
 
 		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.get().getRegistryName());
-		IDataProvider.save(GSON, cache, LootTableManager.toJson(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), slabPath);
+		IDataProvider.save(GSON, cache, LootTableManager.serialize(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParamSet(LootParameterSets.BLOCK).build()), slabPath);
 
 		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.get().getRegistryName());
-		IDataProvider.save(GSON, cache, LootTableManager.toJson(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParameterSet(LootParameterSets.BLOCK).build()), verticalSlabPath);
+		IDataProvider.save(GSON, cache, LootTableManager.serialize(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParamSet(LootParameterSets.BLOCK).build()), verticalSlabPath);
 
 		Path quartzDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.QUARTZ_DOOR.get().getRegistryName());
-		IDataProvider.save(GSON, cache, LootTableManager.toJson(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParameterSet(LootParameterSets.BLOCK).build()), quartzDoorPath);
+		IDataProvider.save(GSON, cache, LootTableManager.serialize(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParamSet(LootParameterSets.BLOCK).build()), quartzDoorPath);
 	}
 
 	private static Path getPath(Path root, ResourceLocation id) {
@@ -115,28 +115,28 @@ public class DecorLootProvider implements IDataProvider {
 	}
 
 	private static LootTable.Builder genRegular(Block b) {
-		LootEntry.Builder<?> entry = ItemLootEntry.builder(b);
-		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry).acceptCondition(SurvivesExplosion.builder());
-		return LootTable.builder().addLootPool(pool);
+		LootEntry.Builder<?> entry = ItemLootEntry.lootTableItem(b);
+		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantRange.exactly(1)).add(entry).when(SurvivesExplosion.survivesExplosion());
+		return LootTable.lootTable().withPool(pool);
 	}
 
 	private static LootTable.Builder genDoor(Block b) {
-		BlockStateProperty.Builder halfCondition = BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(DoorBlock.HALF, DoubleBlockHalf.LOWER));
-		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptCondition(halfCondition);
-		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry).acceptCondition(SurvivesExplosion.builder());
-		return LootTable.builder().addLootPool(pool);
+		BlockStateProperty.Builder halfCondition = BlockStateProperty.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+		LootEntry.Builder<?> entry = ItemLootEntry.lootTableItem(b).when(halfCondition);
+		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantRange.exactly(1)).add(entry).when(SurvivesExplosion.survivesExplosion());
+		return LootTable.lootTable().withPool(pool);
 	}
 
 	private static LootTable.Builder genSlab(Block b) {
-		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(SlabBlock.TYPE, SlabType.DOUBLE))));
-		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);
-		return LootTable.builder().addLootPool(pool);
+		LootEntry.Builder<?> entry = ItemLootEntry.lootTableItem(b).apply(ExplosionDecay.explosionDecay()).apply(SetCount.setCount(ConstantRange.exactly(2)).when(BlockStateProperty.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SlabBlock.TYPE, SlabType.DOUBLE))));
+		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantRange.exactly(1)).add(entry);
+		return LootTable.lootTable().withPool(pool);
 	}
 
 	private static LootTable.Builder genVerticalSlab(Block b) {
-		LootEntry.Builder<?> entry = ItemLootEntry.builder(b).acceptFunction(ExplosionDecay.builder()).acceptFunction(SetCount.builder(ConstantRange.of(2)).acceptCondition(BlockStateProperty.builder(b).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE))));
-		LootPool.Builder pool = LootPool.builder().name("main").rolls(ConstantRange.of(1)).addEntry(entry);
-		return LootTable.builder().addLootPool(pool);
+		LootEntry.Builder<?> entry = ItemLootEntry.lootTableItem(b).apply(ExplosionDecay.explosionDecay()).apply(SetCount.setCount(ConstantRange.exactly(2)).when(BlockStateProperty.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE))));
+		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantRange.exactly(1)).add(entry);
+		return LootTable.lootTable().withPool(pool);
 	}
 
 	@Override

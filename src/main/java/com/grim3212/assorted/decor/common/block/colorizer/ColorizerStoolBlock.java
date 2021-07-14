@@ -19,22 +19,22 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	public static final BooleanProperty UP = BooleanProperty.create("up");
 
-	public static final VoxelShape POT_STOOL = Block.makeCuboidShape(2.88F, 0.0F, 2.88F, 13.12F, 16F, 13.12F);
-	private static final VoxelShape STOOL_FLOOR = Block.makeCuboidShape(2.88F, 0.0F, 2.88F, 13.12F, 10.08F, 13.12F);
-	private static final VoxelShape STOOL_CEILING = Block.makeCuboidShape(2.88F, 16F, 2.88F, 13.12F, 5.92F, 13.12F);
-	private static final VoxelShape STOOL_NORTH = Block.makeCuboidShape(2.88F, 2.88F, 5.92F, 13.12F, 12.96F, 16F);
-	private static final VoxelShape STOOL_SOUTH = Block.makeCuboidShape(2.88F, 2.88F, 0.0F, 13.12F, 12.96F, 10.08F);
-	private static final VoxelShape STOOL_WEST = Block.makeCuboidShape(5.92F, 2.88F, 2.88F, 16F, 12.96F, 13.12F);
-	private static final VoxelShape STOOL_EAST = Block.makeCuboidShape(0.0F, 2.88F, 2.88F, 10.08F, 12.96F, 13.12F);
-	private static final VoxelShape COLLISION_STOOL_FLOOR = Block.makeCuboidShape(2.88F, 0.0F, 2.88F, 13.12F, 9.6F, 13.12F);
+	public static final VoxelShape POT_STOOL = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 16F, 13.12F);
+	private static final VoxelShape STOOL_FLOOR = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 10.08F, 13.12F);
+	private static final VoxelShape STOOL_CEILING = Block.box(2.88F, 16F, 2.88F, 13.12F, 5.92F, 13.12F);
+	private static final VoxelShape STOOL_NORTH = Block.box(2.88F, 2.88F, 5.92F, 13.12F, 12.96F, 16F);
+	private static final VoxelShape STOOL_SOUTH = Block.box(2.88F, 2.88F, 0.0F, 13.12F, 12.96F, 10.08F);
+	private static final VoxelShape STOOL_WEST = Block.box(5.92F, 2.88F, 2.88F, 16F, 12.96F, 13.12F);
+	private static final VoxelShape STOOL_EAST = Block.box(0.0F, 2.88F, 2.88F, 10.08F, 12.96F, 13.12F);
+	private static final VoxelShape COLLISION_STOOL_FLOOR = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 9.6F, 13.12F);
 
 	public ColorizerStoolBlock() {
-		this.setDefaultState(getDefaultState().with(UP, false));
+		this.registerDefaultState(defaultBlockState().setValue(UP, false));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(UP);
 	}
 
@@ -43,23 +43,23 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 		BlockState stoolState = super.getStateForPlacement(context);
 		
 		if(stoolState == null) {
-			return this.getDefaultState();
+			return this.defaultBlockState();
 		}
-		return stoolState.with(UP, isPotUp(stoolState, context.getWorld(), context.getPos()));
+		return stoolState.setValue(UP, isPotUp(stoolState, context.getLevel(), context.getClickedPos()));
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos).with(UP, isPotUp(stateIn, worldIn, currentPos));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos).setValue(UP, isPotUp(stateIn, worldIn, currentPos));
 	}
 
 	private boolean isPotUp(BlockState stoolState, IBlockReader world, BlockPos pos) {
-		return world.getBlockState(pos.up()).getBlock() == DecorBlocks.PLANTER_POT.get() && stoolState.get(FACE) == AttachFace.FLOOR;
+		return world.getBlockState(pos.above()).getBlock() == DecorBlocks.PLANTER_POT.get() && stoolState.getValue(FACE) == AttachFace.FLOOR;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if (state.get(UP)) {
+		if (state.getValue(UP)) {
 			return POT_STOOL;
 		}
 
@@ -82,7 +82,7 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if (state.get(UP)) {
+		if (state.getValue(UP)) {
 			return POT_STOOL;
 		}
 

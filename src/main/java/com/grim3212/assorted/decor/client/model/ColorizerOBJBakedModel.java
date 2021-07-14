@@ -26,7 +26,7 @@ public class ColorizerOBJBakedModel extends ColorizerBaseBakedModel {
 
 	@Override
 	protected IBakedModel generateModel(ImmutableMap<String, String> textures) {
-		TextureAtlasSprite texture = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(textures.get("#stored")));
+		TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(new ResourceLocation(textures.get("#stored")));
 		return this.objModel.setTexture(texture).bake(this.owner, this.bakery, this.spriteGetter, this.transform, this.overrides, this.name);
 	}
 }

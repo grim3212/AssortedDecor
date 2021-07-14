@@ -19,25 +19,25 @@ import net.minecraft.world.World;
 
 public class WallClockBlock extends HorizontalBlock {
 
-	protected static final VoxelShape CLOCK_NORTH_AABB = Block.makeCuboidShape(0f, 0f, 14f, 16f, 16f, 16f);
-	protected static final VoxelShape CLOCK_SOUTH_AABB = Block.makeCuboidShape(0f, 0f, 0f, 16f, 16f, 2f);
-	protected static final VoxelShape CLOCK_WEST_AABB = Block.makeCuboidShape(14f, 0f, 0f, 16f, 16f, 16f);
-	protected static final VoxelShape CLOCK_EAST_AABB = Block.makeCuboidShape(0f, 0f, 0f, 2f, 16f, 16f);
+	protected static final VoxelShape CLOCK_NORTH_AABB = Block.box(0f, 0f, 14f, 16f, 16f, 16f);
+	protected static final VoxelShape CLOCK_SOUTH_AABB = Block.box(0f, 0f, 0f, 16f, 16f, 2f);
+	protected static final VoxelShape CLOCK_WEST_AABB = Block.box(14f, 0f, 0f, 16f, 16f, 16f);
+	protected static final VoxelShape CLOCK_EAST_AABB = Block.box(0f, 0f, 0f, 2f, 16f, 16f);
 	public static final IntegerProperty TIME = IntegerProperty.create("time", 0, 63);
 
 	protected WallClockBlock(Properties builder) {
 		super(builder);
-		this.setDefaultState(this.stateContainer.getBaseState().with(HORIZONTAL_FACING, Direction.NORTH).with(TIME, 0));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TIME, 0));
 	}
 
 	@Override
-	protected void fillStateContainer(Builder<Block, BlockState> builder) {
-		builder.add(HORIZONTAL_FACING, TIME);
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(FACING, TIME);
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
-		switch (state.get(HORIZONTAL_FACING)) {
+		switch (state.getValue(FACING)) {
 			case EAST:
 				return CLOCK_EAST_AABB;
 			case WEST:
@@ -52,38 +52,38 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		if (worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
+	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+		if (worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
 			return true;
 		}
-		if (worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
+		if (worldIn.getBlockState(pos.east()).isSolidRender(worldIn, pos)) {
 			return true;
 		}
-		if (worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
+		if (worldIn.getBlockState(pos.north()).isSolidRender(worldIn, pos)) {
 			return true;
 		} else {
-			return worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos);
+			return worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos);
 		}
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		BlockState state = this.getDefaultState();
-		Direction facing = context.getFace();
-		World world = context.getWorld();
-		BlockPos pos = context.getPos();
+		BlockState state = this.defaultBlockState();
+		Direction facing = context.getClickedFace();
+		World world = context.getLevel();
+		BlockPos pos = context.getClickedPos();
 
-		if (facing == Direction.NORTH && world.getBlockState(pos.south()).isOpaqueCube(world, pos)) {
-			state = state.with(HORIZONTAL_FACING, Direction.NORTH);
+		if (facing == Direction.NORTH && world.getBlockState(pos.south()).isSolidRender(world, pos)) {
+			state = state.setValue(FACING, Direction.NORTH);
 		}
-		if (facing == Direction.SOUTH && world.getBlockState(pos.north()).isOpaqueCube(world, pos)) {
-			state = state.with(HORIZONTAL_FACING, Direction.SOUTH);
+		if (facing == Direction.SOUTH && world.getBlockState(pos.north()).isSolidRender(world, pos)) {
+			state = state.setValue(FACING, Direction.SOUTH);
 		}
-		if (facing == Direction.WEST && world.getBlockState(pos.east()).isOpaqueCube(world, pos)) {
-			state = state.with(HORIZONTAL_FACING, Direction.WEST);
+		if (facing == Direction.WEST && world.getBlockState(pos.east()).isSolidRender(world, pos)) {
+			state = state.setValue(FACING, Direction.WEST);
 		}
-		if (facing == Direction.EAST && world.getBlockState(pos.west()).isOpaqueCube(world, pos)) {
-			state = state.with(HORIZONTAL_FACING, Direction.EAST);
+		if (facing == Direction.EAST && world.getBlockState(pos.west()).isSolidRender(world, pos)) {
+			state = state.setValue(FACING, Direction.EAST);
 		}
 
 		return state;
@@ -91,18 +91,18 @@ public class WallClockBlock extends HorizontalBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flg) {
-		Direction facing = state.get(HORIZONTAL_FACING);
+		Direction facing = state.getValue(FACING);
 		boolean flag = false;
-		if (facing == Direction.NORTH && worldIn.getBlockState(pos.south()).isOpaqueCube(worldIn, pos)) {
+		if (facing == Direction.NORTH && worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos)) {
 			flag = true;
 		}
-		if (facing == Direction.SOUTH && worldIn.getBlockState(pos.north()).isOpaqueCube(worldIn, pos)) {
+		if (facing == Direction.SOUTH && worldIn.getBlockState(pos.north()).isSolidRender(worldIn, pos)) {
 			flag = true;
 		}
-		if (facing == Direction.WEST && worldIn.getBlockState(pos.east()).isOpaqueCube(worldIn, pos)) {
+		if (facing == Direction.WEST && worldIn.getBlockState(pos.east()).isSolidRender(worldIn, pos)) {
 			flag = true;
 		}
-		if (facing == Direction.EAST && worldIn.getBlockState(pos.west()).isOpaqueCube(worldIn, pos)) {
+		if (facing == Direction.EAST && worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
 			flag = true;
 		}
 		if (!flag) {

@@ -67,7 +67,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 	@Nonnull
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-		BlockState blockState = Blocks.AIR.getDefaultState();
+		BlockState blockState = Blocks.AIR.defaultBlockState();
 		if (extraData.getData(ColorizerTileEntity.BLOCK_STATE) != null) {
 			blockState = extraData.getData(ColorizerTileEntity.BLOCK_STATE);
 		}
@@ -82,7 +82,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 			ImmutableMap.Builder<String, String> newTexture = ImmutableMap.builder();
 
 			String texture = "";
-			if (blockState == Blocks.AIR.getDefaultState()) {
+			if (blockState == Blocks.AIR.defaultBlockState()) {
 				texture = "assorteddecor:block/colorizer";
 			} else if (blockState.getBlock() == Blocks.GRASS_BLOCK) {
 				texture = "minecraft:block/grass_block_top";
@@ -91,8 +91,8 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 			} else if (blockState.getBlock() == Blocks.MYCELIUM) {
 				texture = "minecraft:block/mycelium_top";
 			} else {
-				BlockModelShapes blockModel = Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes();
-				TextureAtlasSprite blockTexture = blockModel.getTexture(blockState);
+				BlockModelShapes blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
+				TextureAtlasSprite blockTexture = blockModel.getParticleIcon(blockState);
 
 				texture = blockTexture.getName().toString();
 			}
@@ -112,14 +112,14 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 		BlockState state = data.getData(ColorizerTileEntity.BLOCK_STATE);
 		if (state == null) {
 			return this.baseSprite;
-		} else if (state == Blocks.AIR.getDefaultState()) {
-			return Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+		} else if (state == Blocks.AIR.defaultBlockState()) {
+			return Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 		}
-		return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(state);
+		return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(state);
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
+	public TextureAtlasSprite getParticleIcon() {
 		return this.getParticleTexture(EmptyModelData.INSTANCE);
 	}
 
@@ -133,14 +133,14 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 	public static final class ColorizerItemOverrideList extends ItemOverrideList {
 
 		@Override
-		public IBakedModel getOverrideModel(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public IBakedModel resolve(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
 			ColorizerBaseBakedModel colorizerModel = (ColorizerBaseBakedModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {
-				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getItemCameraTransforms()));
+				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getTransforms()));
 			}
 
-			return new PerspectiveMapWrapper(colorizerModel.getCachedModel(Blocks.AIR.getDefaultState()), PerspectiveMapWrapper.getTransforms(colorizerModel.getItemCameraTransforms()));
+			return new PerspectiveMapWrapper(colorizerModel.getCachedModel(Blocks.AIR.defaultBlockState()), PerspectiveMapWrapper.getTransforms(colorizerModel.getTransforms()));
 		}
 	}
 }

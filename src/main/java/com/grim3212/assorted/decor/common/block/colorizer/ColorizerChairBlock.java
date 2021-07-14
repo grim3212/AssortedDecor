@@ -10,15 +10,15 @@ import net.minecraft.world.IBlockReader;
 
 public class ColorizerChairBlock extends ColorizerRotateBlock {
 
-	private static final VoxelShape BASE = Block.makeCuboidShape(0, 0, 0, 16, 8, 16);
-	private static final VoxelShape EAST = Block.makeCuboidShape(12.96F, 0.0F, 0.0F, 16F, 16F, 16F);
-	private static final VoxelShape NORTH = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 16F, 16F, 3.04F);
-	private static final VoxelShape WEST = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 3.04F, 16F, 16F);
-	private static final VoxelShape SOUTH = Block.makeCuboidShape(0.0F, 0.0F, 12.96F, 16F, 16F, 16F);
+	private static final VoxelShape BASE = Block.box(0, 0, 0, 16, 8, 16);
+	private static final VoxelShape EAST = Block.box(12.96F, 0.0F, 0.0F, 16F, 16F, 16F);
+	private static final VoxelShape NORTH = Block.box(0.0F, 0.0F, 0.0F, 16F, 16F, 3.04F);
+	private static final VoxelShape WEST = Block.box(0.0F, 0.0F, 0.0F, 3.04F, 16F, 16F);
+	private static final VoxelShape SOUTH = Block.box(0.0F, 0.0F, 12.96F, 16F, 16F, 16F);
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(FACING)) {
+		switch (state.getValue(FACING)) {
 		case EAST:
 			return VoxelShapes.or(BASE, EAST);
 		case NORTH:
@@ -31,7 +31,7 @@ public class ColorizerChairBlock extends ColorizerRotateBlock {
 			break;
 		}
 
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 }

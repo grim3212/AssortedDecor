@@ -17,22 +17,22 @@ public class WallpaperItem extends Item {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		Direction facing = context.getFace();
+	public ActionResultType useOn(ItemUseContext context) {
+		Direction facing = context.getClickedFace();
 		PlayerEntity playerIn = context.getPlayer();
-		World worldIn = context.getWorld();
-		BlockPos pos = context.getPos();
+		World worldIn = context.getLevel();
+		BlockPos pos = context.getClickedPos();
 
-		if (facing != Direction.DOWN && facing != Direction.UP && playerIn.canPlayerEdit(pos.offset(facing), facing, context.getItem())) {
-			WallpaperEntity wallpaper = new WallpaperEntity(worldIn, pos.offset(facing), facing);
+		if (facing != Direction.DOWN && facing != Direction.UP && playerIn.mayUseItemAt(pos.relative(facing), facing, context.getItemInHand())) {
+			WallpaperEntity wallpaper = new WallpaperEntity(worldIn, pos.relative(facing), facing);
 
-			if (wallpaper != null && wallpaper.onValidSurface()) {
-				if (!worldIn.isRemote) {
-					wallpaper.playPlaceSound();
-					worldIn.addEntity(wallpaper);
+			if (wallpaper != null && wallpaper.survives()) {
+				if (!worldIn.isClientSide) {
+					wallpaper.playPlacementSound();
+					worldIn.addFreshEntity(wallpaper);
 				}
 
-				context.getItem().shrink(1);
+				context.getItemInHand().shrink(1);
 			}
 
 			return ActionResultType.SUCCESS;
