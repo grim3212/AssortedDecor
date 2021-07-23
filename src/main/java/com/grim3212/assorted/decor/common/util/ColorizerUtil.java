@@ -5,19 +5,19 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerSlopeSideBlock;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.Half;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 
 public class ColorizerUtil {
 
@@ -34,7 +34,7 @@ public class ColorizerUtil {
 
 	public static ItemStack createFurnitureWithState(Block block, BlockState toPlace) {
 		ItemStack furniture = new ItemStack(block);
-		NBTHelper.putTag(furniture, "stored_state", NBTUtil.writeBlockState(toPlace));
+		NBTHelper.putTag(furniture, "stored_state", NbtUtils.writeBlockState(toPlace));
 		return furniture;
 	}
 
@@ -48,15 +48,15 @@ public class ColorizerUtil {
 	 * @param state          The blockstate we are going to be evaluating
 	 * @param numPieces      The number of pieces that this Slope has
 	 */
-	public static VoxelShape addAxisAlignedBoxes(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context, int numPieces) {
-		VoxelShape endShape = VoxelShapes.empty();
+	public static VoxelShape addAxisAlignedBoxes(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context, int numPieces) {
+		VoxelShape endShape = Shapes.empty();
 
 		for (int piece = 0; piece < DecorConfig.COMMON.smoothness.get(); piece++) {
 			for (int smoothness = 0; smoothness < DecorConfig.COMMON.smoothness.get(); smoothness++) {
 				VoxelShape collision = getCollision(state, piece, smoothness, numPieces);
 
-				if (collision != VoxelShapes.empty()) {
-					endShape = VoxelShapes.or(endShape, collision);
+				if (collision != Shapes.empty()) {
+					endShape = Shapes.or(endShape, collision);
 				}
 			}
 		}
@@ -92,84 +92,84 @@ public class ColorizerUtil {
 				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+						return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_ANGLE.get()) {
 				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F - zeroOffset));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F - zeroOffset, oneOffset, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F - zeroOffset, oneOffset, 1.0F - zeroOffset));
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F - zeroOffset, oneOffset, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F - zeroOffset, oneOffset, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F - zeroOffset));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, 0.0F, 1.0F - zeroOffset, 1.0F, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, 0.0F, 1.0F - zeroOffset, 1.0F, 1.0F - zeroOffset));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F - zeroOffset, 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F - zeroOffset, 1.0F, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLANTED_CORNER.get()) {
 				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 0.0F, 0.0F, 1.0F, onePieceOffset, oneOffset * (1.0F - zeroPieceOffset)));
+						return Shapes.create(new AABB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 0.0F, 0.0F, 1.0F, onePieceOffset, oneOffset * (1.0F - zeroPieceOffset)));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset * (1.0F - zeroPieceOffset), onePieceOffset, 1.0F - zeroPieceOffset - zeroOffset * (1.0F - zeroPieceOffset)));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset * (1.0F - zeroPieceOffset), onePieceOffset, 1.0F - zeroPieceOffset - zeroOffset * (1.0F - zeroPieceOffset)));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 0.0F, 1.0F - oneOffset * (1.0F - zeroPieceOffset), 1.0F, onePieceOffset, 1.0F));
+						return Shapes.create(new AABB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 0.0F, 1.0F - oneOffset * (1.0F - zeroPieceOffset), 1.0F, onePieceOffset, 1.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), oneOffset * (1.0F - zeroPieceOffset), onePieceOffset, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), oneOffset * (1.0F - zeroPieceOffset), onePieceOffset, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 1.0F - onePieceOffset, 0.0F, 1.0F, 1.0F, oneOffset * (1.0F - zeroPieceOffset)));
+						return Shapes.create(new AABB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 1.0F - onePieceOffset, 0.0F, 1.0F, 1.0F, oneOffset * (1.0F - zeroPieceOffset)));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - onePieceOffset, 0.0F, oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F - zeroPieceOffset - zeroOffset * (1.0F - zeroPieceOffset)));
+						return Shapes.create(new AABB(0.0F, 1.0F - onePieceOffset, 0.0F, oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F - zeroPieceOffset - zeroOffset * (1.0F - zeroPieceOffset)));
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 1.0F - onePieceOffset, 1.0F - oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), 1.0F - onePieceOffset, 1.0F - oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F, 1.0F));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - onePieceOffset, zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, 1.0F - onePieceOffset, zeroPieceOffset + zeroOffset * (1.0F - zeroPieceOffset), oneOffset * (1.0F - zeroPieceOffset), 1.0F, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get()) {
@@ -178,83 +178,83 @@ public class ColorizerUtil {
 					case EAST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
 						}
 					case NORTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
 						}
 					case SOUTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 						}
 					case WEST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 						}
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 						}
 					case WEST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 						}
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+						return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 					case EAST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 						}
 					case SOUTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
 						case 3:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 						}
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get()) {
@@ -263,143 +263,143 @@ public class ColorizerUtil {
 					case EAST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
 						}
 					case NORTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F - zeroOffset, oneOffset));
 						}
 					case SOUTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, oneOffset, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 						}
 					case WEST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F - zeroOffset, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
+							return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, 1.0F, oneOffset, 1.0F));
 						}
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 						}
 					case WEST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, 1.0F, 1.0F, oneOffset));
 						}
 					case EAST:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(zeroOffset, 1.0F - oneOffset, 0.0F, 1.0F, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 						}
 					case SOUTH:
 						switch (piece) {
 						case 1:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, zeroOffset, 0.0F, oneOffset, 1.0F, 1.0F));
 						case 2:
-							return VoxelShapes.create(new AxisAlignedBB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
+							return Shapes.create(new AABB(0.0F, 1.0F - oneOffset, zeroOffset, 1.0F, 1.0F, 1.0F));
 						}
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_CORNER.get()) {
 				if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				} else {
 					switch (state.getValue(ColorizerSlopeBlock.FACING)) {
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 0.0F, 1.0F, 1.0F, oneOffset));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
+						return Shapes.create(new AABB(0.0F, 0.0F, 0.0F, oneOffset, 1.0F, 1.0F - zeroOffset));
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
+						return Shapes.create(new AABB(zeroOffset, 0.0F, 1.0F - oneOffset, 1.0F, 1.0F, 1.0F));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
+						return Shapes.create(new AABB(0.0F, 0.0F, zeroOffset, oneOffset, 1.0F, 1.0F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			}
 		} else if (state.getBlock() instanceof ColorizerSlopeSideBlock) {
 			if (state.getBlock() == DecorBlocks.COLORIZER_PYRAMID.get()) {
 				if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
-					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
+					return Shapes.create(new AABB(zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
 				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
-					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F));
+					return Shapes.create(new AABB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F));
 				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
 					switch (state.getValue(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
+						return Shapes.create(new AABB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F));
+						return Shapes.create(new AABB(zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 0.0F));
+						return Shapes.create(new AABB(zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 0.0F));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(1.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
+						return Shapes.create(new AABB(1.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_FULL_PYRAMID.get()) {
 				if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
-					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 1.0F - oneOffset, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
+					return Shapes.create(new AABB(zeroOffset * 0.5F, 1.0F - oneOffset, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
 				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
-					return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F));
+					return Shapes.create(new AABB(zeroOffset * 0.5F, 0.0F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F));
 				} else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.WALL) {
 					switch (state.getValue(ColorizerSlopeSideBlock.HORIZONTAL_FACING)) {
 					case EAST:
-						return VoxelShapes.create(new AxisAlignedBB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
+						return Shapes.create(new AABB(0.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, oneOffset, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					case NORTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F - oneOffset));
+						return Shapes.create(new AABB(zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F - oneOffset));
 					case SOUTH:
-						return VoxelShapes.create(new AxisAlignedBB(zeroOffset * 0.5F, zeroOffset * 0.5F, 0.0F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset));
+						return Shapes.create(new AABB(zeroOffset * 0.5F, zeroOffset * 0.5F, 0.0F, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, oneOffset));
 					case WEST:
-						return VoxelShapes.create(new AxisAlignedBB(1.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
+						return Shapes.create(new AABB(1.0F, zeroOffset * 0.5F, zeroOffset * 0.5F, 1.0F - oneOffset, 1.0F - zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F));
 					default:
-						return VoxelShapes.empty();
+						return Shapes.empty();
 					}
 				}
 			} else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_POST.get()) {
-				return VoxelShapes.block();
+				return Shapes.block();
 			}
 
 		}
 
-		return VoxelShapes.empty();
+		return Shapes.empty();
 	}
 
 	public enum SlopeType {

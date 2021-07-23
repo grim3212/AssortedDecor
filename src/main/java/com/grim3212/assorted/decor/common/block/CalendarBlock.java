@@ -2,21 +2,22 @@ package com.grim3212.assorted.decor.common.block;
 
 import com.grim3212.assorted.decor.common.block.tileentity.CalendarTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CalendarBlock extends HorizontalBlock {
+public class CalendarBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
 	protected static final VoxelShape CALENDAR_NORTH_AABB = Block.box(4f, 2.08f, 14.96f, 12f, 14.96f, 16f);
 	protected static final VoxelShape CALENDAR_SOUTH_AABB = Block.box(4f, 2.08f, 0f, 12f, 14.96f, 1.04f);
@@ -29,7 +30,7 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch (state.getValue(FACING)) {
 			case EAST:
 				return CALENDAR_EAST_AABB;
@@ -45,22 +46,17 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new CalendarTileEntity(pos, state);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new CalendarTileEntity();
-	}
-
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		for (Direction enumfacing : Direction.Plane.HORIZONTAL) {
 			if (this.canBlockStay(context.getLevel(), context.getClickedPos(), enumfacing)) {
 				return this.defaultBlockState().setValue(FACING, enumfacing);
@@ -71,7 +67,7 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		for (Direction enumfacing : FACING.getPossibleValues()) {
 			if (this.canBlockStay(worldIn, pos, enumfacing)) {
 				return true;
@@ -82,7 +78,7 @@ public class CalendarBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		Direction enumfacing = state.getValue(FACING);
 
 		if (!this.canBlockStay(worldIn, pos, enumfacing)) {
@@ -90,7 +86,7 @@ public class CalendarBlock extends HorizontalBlock {
 		}
 	}
 
-	protected boolean canBlockStay(IWorldReader worldIn, BlockPos pos, Direction facing) {
+	protected boolean canBlockStay(LevelReader worldIn, BlockPos pos, Direction facing) {
 		BlockPos blockpos = pos.relative(facing.getOpposite());
 		return Block.canSupportCenter(worldIn, blockpos, facing);
 	}

@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class NeonChangeModePacket {
 
@@ -20,11 +20,11 @@ public class NeonChangeModePacket {
 		this.pos = pos;
 	}
 
-	public static NeonChangeModePacket decode(PacketBuffer buf) {
+	public static NeonChangeModePacket decode(FriendlyByteBuf buf) {
 		return new NeonChangeModePacket(buf.readInt(), buf.readBlockPos());
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeInt(this.mode);
 		buf.writeBlockPos(this.pos);
 	}
@@ -32,7 +32,7 @@ public class NeonChangeModePacket {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
-				TileEntity te = ctx.get().getSender().getCommandSenderWorld().getBlockEntity(this.pos);
+				BlockEntity te = ctx.get().getSender().getCommandSenderWorld().getBlockEntity(this.pos);
 				if (te instanceof NeonSignTileEntity) {
 					((NeonSignTileEntity) te).mode = this.mode;
 				}

@@ -4,19 +4,19 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.entity.FrameEntity;
 import com.grim3212.assorted.decor.common.entity.FrameEntity.FrameType;
 import com.grim3212.assorted.decor.common.item.FrameItem.FrameMaterial;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix3f;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -25,12 +25,12 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 
 	private static final ResourceLocation framesTexture = new ResourceLocation(AssortedDecor.MODID, "textures/entity/frames.png");
 
-	public FrameRenderer(EntityRendererManager renderManager) {
-		super(renderManager);
+	public FrameRenderer(EntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public void render(FrameEntity entityIn, float entityInYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+	public void render(FrameEntity entityIn, float entityInYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
 
 		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityInYaw));
@@ -39,11 +39,11 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 		matrixStackIn.popPose();
 	}
 
-	private void renderBeams(FrameEntity entityIn, float entityInYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+	private void renderBeams(FrameEntity entityIn, float entityInYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		FrameType frame = entityIn.getCurrentFrame();
 
-		IVertexBuilder builder = bufferIn.getBuffer(RenderType.entitySolid(framesTexture));
-		MatrixStack.Entry matrixstack$entry = matrixStackIn.last();
+		VertexConsumer builder = bufferIn.getBuffer(RenderType.entitySolid(framesTexture));
+		PoseStack.Pose matrixstack$entry = matrixStackIn.last();
 		Matrix4f matrix4f = matrixstack$entry.pose();
 		Matrix3f matrix3f = matrixstack$entry.normal();
 
@@ -83,7 +83,7 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 			float green = entityIn.getFrameColor()[1] / 255.0f;
 			float blue = entityIn.getFrameColor()[2] / 255.0f;
 
-			int light = WorldRenderer.getLightColor(entityIn.level, entityIn.getPos());
+			int light = LevelRenderer.getLightColor(entityIn.level, entityIn.getPos());
 
 			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
 			builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();

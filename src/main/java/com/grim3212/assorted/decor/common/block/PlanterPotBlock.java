@@ -4,30 +4,30 @@ import java.util.Random;
 
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -47,7 +47,7 @@ public class PlanterPotBlock extends Block {
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
+	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
 		BlockState plant = plantable.getPlant(world, pos.relative(facing));
 		PlantType plantType = plantable.getPlantType(world, pos.relative(facing));
 
@@ -58,65 +58,65 @@ public class PlanterPotBlock extends Block {
 		if (world.getBlockState(pos).getBlock() == DecorBlocks.PLANTER_POT.get()) {
 			int top = world.getBlockState(pos).getValue(TOP);
 			switch (top) {
-			case 0:
-				if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
-					return true;
-				}
+				case 0:
+					if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
+						return true;
+					}
 
-				if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
-					boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-					return hasWater;
-				}
-				break;
-			case 1:
-				if ((plantType == PlantType.DESERT && !this.isStool(world, pos)) || (plantType == PlantType.DESERT && plant.getBlock() == Blocks.DEAD_BUSH)) {
-					return true;
-				}
-				if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
-					boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-					return hasWater;
-				}
-				break;
-			case 2:
-				return false;
-			case 3:
-				return false;
-			case 4:
-				if (plantType == PlantType.CROP && !this.isStool(world, pos))
-					return true;
-				break;
-			case 5:
-				return false;
-			case 6:
-				if (plantType == PlantType.NETHER && !this.isStool(world, pos))
-					return true;
-				break;
+					if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
+						boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+						return hasWater;
+					}
+					break;
+				case 1:
+					if ((plantType == PlantType.DESERT && !this.isStool(world, pos)) || (plantType == PlantType.DESERT && plant.getBlock() == Blocks.DEAD_BUSH)) {
+						return true;
+					}
+					if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
+						boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+						return hasWater;
+					}
+					break;
+				case 2:
+					return false;
+				case 3:
+					return false;
+				case 4:
+					if (plantType == PlantType.CROP && !this.isStool(world, pos))
+						return true;
+					break;
+				case 5:
+					return false;
+				case 6:
+					if (plantType == PlantType.NETHER && !this.isStool(world, pos))
+						return true;
+					break;
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		worldIn.updateNeighborsAt(pos, this);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
 		worldIn.getBlockTicks().scheduleTick(pos, this, 10);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
 		if (isStool(worldIn, pos))
 			return ColorizerStoolBlock.POT_STOOL;
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (worldIn.isClientSide)
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 
 		if (player.getItemInHand(hand).isEmpty() || player.getItemInHand(hand).getCount() == 0) {
 			int top = worldIn.getBlockState(pos).getValue(TOP);
@@ -126,13 +126,13 @@ public class PlanterPotBlock extends Block {
 				top++;
 			}
 			worldIn.setBlock(pos, state.setValue(TOP, top), 2);
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResultType.PASS;
+			return InteractionResult.PASS;
 		}
 	}
 
-	private boolean isStool(IBlockReader worldIn, BlockPos pos) {
+	private boolean isStool(BlockGetter worldIn, BlockPos pos) {
 		BlockState stoolState = worldIn.getBlockState(pos.below());
 		if (stoolState.getBlock() == DecorBlocks.COLORIZER_STOOL.get()) {
 			return stoolState.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.FLOOR;
@@ -142,7 +142,7 @@ public class PlanterPotBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		return stateIn.setValue(DOWN, this.isStool(worldIn, currentPos));
 	}
 }

@@ -1,14 +1,14 @@
 package com.grim3212.assorted.decor.client.screen;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.fml.client.gui.GuiUtils;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 public class NeonButton extends Button {
 
@@ -17,19 +17,19 @@ public class NeonButton extends Button {
 	private int hoverCount;
 	private boolean changeHoverDir = false;
 
-	public NeonButton(int x, int y, ITextComponent buttonText, int texX, int texY, Button.IPressable onPress) {
+	public NeonButton(int x, int y, Component buttonText, int texX, int texY, Button.OnPress onPress) {
 		this(x, y, buttonText, texX, texY, -1, false, onPress);
 	}
 
-	public NeonButton(int x, int y, ITextComponent buttonText, int texX, int texY, boolean changeHoverDir, Button.IPressable onPress) {
+	public NeonButton(int x, int y, Component buttonText, int texX, int texY, boolean changeHoverDir, Button.OnPress onPress) {
 		this(x, y, buttonText, texX, texY, -1, changeHoverDir, onPress);
 	}
 
-	public NeonButton(int x, int y, ITextComponent buttonText, int texX, int texY, int width, Button.IPressable onPress) {
+	public NeonButton(int x, int y, Component buttonText, int texX, int texY, int width, Button.OnPress onPress) {
 		this(x, y, buttonText, texX, texY, width, false, onPress);
 	}
 
-	public NeonButton(int x, int y, ITextComponent buttonText, int texX, int texY, int width, boolean changeHoverDir, Button.IPressable onPress) {
+	public NeonButton(int x, int y, Component buttonText, int texX, int texY, int width, boolean changeHoverDir, Button.OnPress onPress) {
 		super(x, y, 14, 14, buttonText, onPress);
 		this.texX = texX;
 		this.texY = texY;
@@ -37,13 +37,13 @@ public class NeonButton extends Button {
 		if (width != -1)
 			this.width = width;
 	}
-	
+
 	@Override
-	public void renderButton(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			Minecraft mc = Minecraft.getInstance();
-			mc.getTextureManager().bind(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
-			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			mc.getTextureManager().bindForSetup(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
+			RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
 			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			int i = this.getYImage(this.isHovered);
 			RenderSystem.enableBlend();
@@ -55,7 +55,7 @@ public class NeonButton extends Button {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
 
 		if (this.isMouseOver(mouseX, mouseY)) {

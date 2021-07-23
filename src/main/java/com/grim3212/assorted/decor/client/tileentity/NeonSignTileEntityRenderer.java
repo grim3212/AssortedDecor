@@ -1,34 +1,40 @@
 package com.grim3212.assorted.decor.client.tileentity;
 
+import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.handler.NeonSignStitchHandler;
 import com.grim3212.assorted.decor.common.block.NeonSignStandingBlock;
 import com.grim3212.assorted.decor.common.block.NeonSignWallBlock;
 import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector3f;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.StandingSignBlock;
-import net.minecraft.block.WallSignBlock;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.model.RenderMaterial;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileEntity> {
+public class NeonSignTileEntityRenderer implements BlockEntityRenderer<NeonSignTileEntity> {
 
-	private final SignTileEntityRenderer.SignModel model = new SignTileEntityRenderer.SignModel();
+	private final SignRenderer.SignModel model;
+	private final Font font;
 
-	public NeonSignTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
-		super(rendererDispatcherIn);
+	public NeonSignTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.model = new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(AssortedDecor.MODID, "sign/neon_sign"), "main")));
+		this.font = context.getFont();
 	}
 
 	@Override
-	public void render(NeonSignTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(NeonSignTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BlockState blockstate = tileEntityIn.getBlockState();
 		matrixStackIn.pushPose();
 		float f = 0.6666667F;
@@ -47,12 +53,11 @@ public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileE
 
 		matrixStackIn.pushPose();
 		matrixStackIn.scale(f, -f, -f);
-		RenderMaterial rendermaterial = new RenderMaterial(Atlases.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileEntityIn.mode));
-		IVertexBuilder ivertexbuilder = rendermaterial.buffer(bufferIn, this.model::renderType);
-		this.model.sign.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
+		Material rendermaterial = new Material(Sheets.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileEntityIn.mode));
+		VertexConsumer ivertexbuilder = rendermaterial.buffer(bufferIn, this.model::renderType);
+		this.model.root.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
 		this.model.stick.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
-		FontRenderer fontrenderer = this.renderer.getFont();
 		float f2 = 0.010416667F;
 		matrixStackIn.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
 		matrixStackIn.scale(f2, -f2, f2);
@@ -60,7 +65,7 @@ public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileE
 
 		for (int k1 = 0; k1 < 4; ++k1) {
 			String s = tileEntityIn.getText(k1).getString();
-			fontrenderer.draw(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
+			this.font.draw(matrixStackIn, tileEntityIn.getText(k1), -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
 		}
 
 		// Clear sign render text on both sides
@@ -70,7 +75,7 @@ public class NeonSignTileEntityRenderer extends TileEntityRenderer<NeonSignTileE
 
 			for (int k1 = 0; k1 < 4; ++k1) {
 				String s = tileEntityIn.getText(k1).getString();
-				fontrenderer.draw(matrixStackIn, tileEntityIn.getText(k1), -fontrenderer.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
+				this.font.draw(matrixStackIn, tileEntityIn.getText(k1), -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
 			}
 		}
 

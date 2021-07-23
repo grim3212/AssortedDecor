@@ -2,22 +2,25 @@ package com.grim3212.assorted.decor.common.block;
 
 import com.grim3212.assorted.decor.common.block.tileentity.WallClockTileEntity;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class WallClockBlock extends HorizontalBlock {
+public class WallClockBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
 	protected static final VoxelShape CLOCK_NORTH_AABB = Block.box(0f, 0f, 14f, 16f, 16f, 16f);
 	protected static final VoxelShape CLOCK_SOUTH_AABB = Block.box(0f, 0f, 0f, 16f, 16f, 2f);
@@ -36,7 +39,7 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext ctx) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case EAST:
 				return CLOCK_EAST_AABB;
@@ -52,7 +55,7 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		if (worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
 			return true;
 		}
@@ -67,10 +70,10 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState state = this.defaultBlockState();
 		Direction facing = context.getClickedFace();
-		World world = context.getLevel();
+		Level world = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 
 		if (facing == Direction.NORTH && world.getBlockState(pos.south()).isSolidRender(world, pos)) {
@@ -90,7 +93,7 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flg) {
+	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flg) {
 		Direction facing = state.getValue(FACING);
 		boolean flag = false;
 		if (facing == Direction.NORTH && worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos)) {
@@ -111,12 +114,16 @@ public class WallClockBlock extends HorizontalBlock {
 	}
 
 	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new WallClockTileEntity(pos, state);
 	}
 
 	@Override
-	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new WallClockTileEntity();
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return (level1, blockPos, blockState, t) -> {
+			if (t instanceof WallClockTileEntity wallclock) {
+				wallclock.tick();
+			}
+		};
 	}
 }

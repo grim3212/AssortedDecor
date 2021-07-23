@@ -14,40 +14,40 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.model.BakedQuad;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.ModelBakery;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.IModelConfiguration;
 import net.minecraftforge.client.model.PerspectiveMapWrapper;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
-public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedModel> {
+public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedModel> {
 	protected final ModelBakery bakery;
-	protected final Function<RenderMaterial, TextureAtlasSprite> spriteGetter;
-	protected final IModelTransform transform;
+	protected final Function<Material, TextureAtlasSprite> spriteGetter;
+	protected final ModelState transform;
 	protected final ResourceLocation name;
 	protected final IModelConfiguration owner;
-	protected final ItemOverrideList overrides;
+	protected final ItemOverrides overrides;
 	protected final TextureAtlasSprite baseSprite;
 
-	public ColorizerBaseBakedModel(IBakedModel bakedColorizer, IModelConfiguration owner, TextureAtlasSprite baseSprite, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform transform, ItemOverrideList overrides, ResourceLocation name) {
+	public ColorizerBaseBakedModel(BakedModel bakedColorizer, IModelConfiguration owner, TextureAtlasSprite baseSprite, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
 		super(bakedColorizer);
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
@@ -75,9 +75,9 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 		return this.getCachedModel(blockState).getQuads(state, side, rand, extraData);
 	}
 
-	protected final Map<BlockState, IBakedModel> cache = new HashMap<BlockState, IBakedModel>();
+	protected final Map<BlockState, BakedModel> cache = new HashMap<BlockState, BakedModel>();
 
-	public IBakedModel getCachedModel(BlockState blockState) {
+	public BakedModel getCachedModel(BlockState blockState) {
 		if (!this.cache.containsKey(blockState)) {
 			ImmutableMap.Builder<String, String> newTexture = ImmutableMap.builder();
 
@@ -91,7 +91,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 			} else if (blockState.getBlock() == Blocks.MYCELIUM) {
 				texture = "minecraft:block/mycelium_top";
 			} else {
-				BlockModelShapes blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
+				BlockModelShaper blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
 				TextureAtlasSprite blockTexture = blockModel.getParticleIcon(blockState);
 
 				texture = blockTexture.getName().toString();
@@ -105,39 +105,39 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<IBakedMo
 		return this.cache.get(blockState);
 	}
 
-	protected abstract IBakedModel generateModel(ImmutableMap<String, String> texture);
+	protected abstract BakedModel generateModel(ImmutableMap<String, String> texture);
 
 	@Override
-	public TextureAtlasSprite getParticleTexture(IModelData data) {
+	public TextureAtlasSprite getParticleIcon(IModelData data) {
 		BlockState state = data.getData(ColorizerTileEntity.BLOCK_STATE);
 		if (state == null) {
 			return this.baseSprite;
 		} else if (state == Blocks.AIR.defaultBlockState()) {
-			return Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
+			return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(AssortedDecor.MODID, "block/colorizer"));
 		}
 		return Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(state);
 	}
 
 	@Override
 	public TextureAtlasSprite getParticleIcon() {
-		return this.getParticleTexture(EmptyModelData.INSTANCE);
+		return this.getParticleIcon(EmptyModelData.INSTANCE);
 	}
 
 	public final ColorizerItemOverrideList INSTANCE = new ColorizerItemOverrideList();
 
 	@Override
-	public ItemOverrideList getOverrides() {
+	public ItemOverrides getOverrides() {
 		return INSTANCE;
 	}
 
-	public static final class ColorizerItemOverrideList extends ItemOverrideList {
+	public static final class ColorizerItemOverrideList extends ItemOverrides {
 
 		@Override
-		public IBakedModel resolve(IBakedModel originalModel, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity entity) {
+		public BakedModel resolve(BakedModel originalModel, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity entity, int field) {
 			ColorizerBaseBakedModel colorizerModel = (ColorizerBaseBakedModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {
-				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getTransforms()));
+				return new PerspectiveMapWrapper(colorizerModel.getCachedModel(NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"))), PerspectiveMapWrapper.getTransforms(colorizerModel.getTransforms()));
 			}
 
 			return new PerspectiveMapWrapper(colorizerModel.getCachedModel(Blocks.AIR.defaultBlockState()), PerspectiveMapWrapper.getTransforms(colorizerModel.getTransforms()));

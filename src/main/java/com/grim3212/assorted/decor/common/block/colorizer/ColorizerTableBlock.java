@@ -4,19 +4,19 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.core.Direction;
+import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 
 public class ColorizerTableBlock extends ColorizerSideBlock {
 
@@ -40,7 +40,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch (getFacing(state)) {
 		case DOWN:
 			return ColorizerCounterBlock.COUNTER_CEILING;
@@ -65,7 +65,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState tableState = super.getStateForPlacement(context);
 		
 		if(tableState == null) {
@@ -83,12 +83,12 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		BlockState superState = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 		return superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
 	}
 
-	public boolean canConnectTo(IBlockReader worldIn, BlockPos currentPos, BlockPos placePos) {
+	public boolean canConnectTo(BlockGetter worldIn, BlockPos currentPos, BlockPos placePos) {
 		BlockState currentState = worldIn.getBlockState(currentPos);
 		BlockState placeState = worldIn.getBlockState(placePos);
 

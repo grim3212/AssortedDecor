@@ -2,19 +2,19 @@ package com.grim3212.assorted.decor.common.block.tileentity;
 
 import com.grim3212.assorted.decor.common.block.WallClockBlock;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class WallClockTileEntity extends TileEntity implements ITickableTileEntity {
+public class WallClockTileEntity extends BlockEntity {
 
-	public WallClockTileEntity() {
-		super(DecorTileEntityTypes.WALL_CLOCK.get());
+	public WallClockTileEntity(BlockPos pos, BlockState state) {
+		super(DecorTileEntityTypes.WALL_CLOCK.get(), pos, state);
 	}
 
 	private int time = 0;
@@ -26,7 +26,6 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 	private double field_94239_h;
 	private double field_94240_i;
 
-	@Override
 	public void tick() {
 		double d0 = 0.0D;
 
@@ -49,7 +48,7 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 			--d1;
 		}
 
-		d1 = MathHelper.clamp(d1, -1.0D, 1.0D);
+		d1 = Mth.clamp(d1, -1.0D, 1.0D);
 		field_94240_i += d1 * 0.1D;
 		field_94240_i *= 0.8D;
 		field_94239_h += field_94240_i;
@@ -67,42 +66,42 @@ public class WallClockTileEntity extends TileEntity implements ITickableTileEnti
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		this.readPacketNBT(nbt);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT compound) {
+	public CompoundTag save(CompoundTag compound) {
 		super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}
 
-	public void writePacketNBT(CompoundNBT cmp) {
+	public void writePacketNBT(CompoundTag cmp) {
 	}
 
-	public void readPacketNBT(CompoundNBT cmp) {
-	}
-
-	@Override
-	public CompoundNBT getUpdateTag() {
-		return save(new CompoundNBT());
+	public void readPacketNBT(CompoundTag cmp) {
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT nbtTagCompound = new CompoundNBT();
+	public CompoundTag getUpdateTag() {
+		return save(new CompoundTag());
+	}
+
+	@Override
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag nbtTagCompound = new CompoundTag();
 		writePacketNBT(nbtTagCompound);
-		return new SUpdateTileEntityPacket(this.worldPosition, 1, nbtTagCompound);
+		return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, nbtTagCompound);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		super.onDataPacket(net, pkt);
 		this.readPacketNBT(pkt.getTag());
 		requestModelDataUpdate();
-		if (level instanceof ClientWorld) {
+		if (level instanceof ClientLevel) {
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}
 	}

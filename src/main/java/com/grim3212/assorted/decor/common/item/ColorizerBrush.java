@@ -6,26 +6,26 @@ import com.grim3212.assorted.decor.common.block.IColorizer;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ColorizerBrush extends Item {
 
@@ -34,38 +34,38 @@ public class ColorizerBrush extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		BlockState state = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+		BlockState state = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 
 		if (state.getBlock() == Blocks.AIR) {
-			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.empty"));
+			tooltip.add(new TranslatableComponent("tooltip.colorizer_brush.empty"));
 		} else {
-			tooltip.add(new TranslationTextComponent("tooltip.colorizer_brush.stored", state.getBlock().getName()));
+			tooltip.add(new TranslatableComponent("tooltip.colorizer_brush.stored", state.getBlock().getName()));
 		}
 	}
 
 	@Override
-	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-		World world = context.getLevel();
+	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
+		Level world = context.getLevel();
 		BlockPos pos = context.getClickedPos();
-		PlayerEntity player = context.getPlayer();
-		Hand hand = context.getHand();
+		Player player = context.getPlayer();
+		InteractionHand hand = context.getHand();
 
-		BlockState stored = NBTUtil.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+		BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 		BlockState hit = world.getBlockState(context.getClickedPos());
 
 		if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {
 			if (colorizerAccepted(world, pos, hit)) {
-				
+
 				if (DecorConfig.COMMON.consumeBlock.get()) {
 					if ((hit.getDestroyProgress(player, world, pos) != 0.0F || player.isCreative()) && !DecorConfig.COMMON.brushDisallowedBlockStates.getLoadedStates().contains(hit))
 						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					else
-						return ActionResultType.PASS;
+						return InteractionResult.PASS;
 				}
-				
-				NBTHelper.putTag(stack, "stored_state", NBTUtil.writeBlockState(hit));
+
+				NBTHelper.putTag(stack, "stored_state", NbtUtils.writeBlockState(hit));
 				// Reset damage after grabbing a new block
 				stack.setDamageValue(0);
 				player.swing(hand);
@@ -75,13 +75,13 @@ public class ColorizerBrush extends Item {
 				IColorizer colorizerBlock = (IColorizer) hit.getBlock();
 
 				if (colorizerBlock.getStoredState(world, pos) == stored) {
-					return ActionResultType.PASS;
+					return InteractionResult.PASS;
 				}
 
 				colorizerBlock.setColorizer(world, pos, stored, player, hand, false);
 
 				SoundType placeSound = stored.getSoundType(world, pos, player);
-				world.playSound(player, pos, placeSound.getPlaceSound(), SoundCategory.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
+				world.playSound(player, pos, placeSound.getPlaceSound(), SoundSource.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
 				player.swing(hand);
 
 				if (!player.isCreative()) {
@@ -93,14 +93,14 @@ public class ColorizerBrush extends Item {
 					}
 				}
 
-				return ActionResultType.SUCCESS;
+				return InteractionResult.SUCCESS;
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
-	protected boolean colorizerAccepted(IBlockReader world, BlockPos pos, BlockState state) {
+	protected boolean colorizerAccepted(BlockGetter world, BlockPos pos, BlockState state) {
 		Block block = state.getBlock();
 
 		if (block != null && block != Blocks.AIR && !(block instanceof IColorizer)) {

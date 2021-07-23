@@ -5,28 +5,28 @@ import java.util.function.Function;
 import com.google.common.collect.ImmutableMap;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.IModelTransform;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.ModelBakery;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.inventory.container.PlayerContainer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.IModelConfiguration;
 
 public class ColorizerOBJBakedModel extends ColorizerBaseBakedModel {
 
 	private final OBJModelCopy objModel;
 
-	public ColorizerOBJBakedModel(IBakedModel bakedColorizer, OBJModelCopy objModel, IModelConfiguration owner, TextureAtlasSprite baseSprite, ModelBakery bakery, Function<RenderMaterial, TextureAtlasSprite> spriteGetter, IModelTransform transform, ItemOverrideList overrides, ResourceLocation name) {
+	public ColorizerOBJBakedModel(BakedModel bakedColorizer, OBJModelCopy objModel, IModelConfiguration owner, TextureAtlasSprite baseSprite, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
 		super(bakedColorizer, owner, baseSprite, bakery, spriteGetter, transform, overrides, name);
 		this.objModel = objModel;
 	}
 
 	@Override
-	protected IBakedModel generateModel(ImmutableMap<String, String> textures) {
-		TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(new ResourceLocation(textures.get("#stored")));
+	protected BakedModel generateModel(ImmutableMap<String, String> textures) {
+		TextureAtlasSprite texture = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(textures.get("#stored")));
 		return this.objModel.setTexture(texture).bake(this.owner, this.bakery, this.spriteGetter, this.transform, this.overrides, this.name);
 	}
 }

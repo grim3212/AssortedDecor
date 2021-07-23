@@ -5,39 +5,39 @@ import java.util.function.Supplier;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class NeonUpdatePacket {
 
 	private BlockPos pos;
-	private IFormattableTextComponent[] lines;
+	private MutableComponent[] lines;
 
-	public NeonUpdatePacket(BlockPos pos, IFormattableTextComponent[] linesIn) {
+	public NeonUpdatePacket(BlockPos pos, MutableComponent[] linesIn) {
 		this.pos = pos;
 
 		// We want to save formatting codes
-		this.lines = new IFormattableTextComponent[] { linesIn[0], linesIn[1], linesIn[2], linesIn[3] };
+		this.lines = new MutableComponent[] { linesIn[0], linesIn[1], linesIn[2], linesIn[3] };
 	}
 
-	public static NeonUpdatePacket decode(PacketBuffer buf) {
+	public static NeonUpdatePacket decode(FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
 
-		IFormattableTextComponent[] lines = new IFormattableTextComponent[4];
+		MutableComponent[] lines = new MutableComponent[4];
 		for (int i = 0; i < 4; i++) {
-			lines[i] = (IFormattableTextComponent) buf.readComponent();
+			lines[i] = (MutableComponent) buf.readComponent();
 		}
 
 		return new NeonUpdatePacket(pos, lines);
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos);
 
 		for (int i = 0; i < 4; i++) {
@@ -48,9 +48,9 @@ public class NeonUpdatePacket {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
-				PlayerEntity player = ctx.get().getSender();
+				Player player = ctx.get().getSender();
 				BlockState state = player.level.getBlockState(this.pos);
-				TileEntity te = player.level.getBlockEntity(this.pos);
+				BlockEntity te = player.level.getBlockEntity(this.pos);
 
 				if (te instanceof NeonSignTileEntity) {
 					NeonSignTileEntity neonSign = (NeonSignTileEntity) te;

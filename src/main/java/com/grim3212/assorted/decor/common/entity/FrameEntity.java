@@ -4,55 +4,55 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.item.FrameItem.FrameMaterial;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.HangingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawnData {
 
 	private FrameMaterial material;
 	protected float resistance = 0.0F;
-	private AxisAlignedBB fireboundingBox = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+	private AABB fireboundingBox = new AABB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 
-	private static final DataParameter<Boolean> BURNT = EntityDataManager.defineId(FrameEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> FRAME_ID = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_RED = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_GREEN = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_BLUE = EntityDataManager.defineId(FrameEntity.class, DataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> BURNT = SynchedEntityData.defineId(FrameEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> FRAME_ID = SynchedEntityData.defineId(FrameEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_RED = SynchedEntityData.defineId(FrameEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_GREEN = SynchedEntityData.defineId(FrameEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_BLUE = SynchedEntityData.defineId(FrameEntity.class, EntityDataSerializers.INT);
 
-	public FrameEntity(EntityType<? extends FrameEntity> type, World world) {
+	public FrameEntity(EntityType<? extends FrameEntity> type, Level world) {
 		super(type, world);
 	}
 
-	public FrameEntity(World world) {
+	public FrameEntity(Level world) {
 		this(DecorEntityTypes.FRAME.get(), world);
 	}
 
-	public FrameEntity(World world, BlockPos pos, Direction direction, FrameMaterial type) {
+	public FrameEntity(Level world, BlockPos pos, Direction direction, FrameMaterial type) {
 		this(world);
 		this.pos = pos;
 		this.material = type;
@@ -81,7 +81,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (player.mayUseItemAt(pos, this.direction, itemstack)) {
 			if (!itemstack.isEmpty()) {
@@ -90,20 +90,20 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 					DyeColor color = DyeColor.getColor(itemstack);
 					if (color != null) {
 						if (dyeFrame(color)) {
-							if (!player.abilities.instabuild) {
+							if (!player.getAbilities().instabuild) {
 								itemstack.shrink(1);
 							}
-							return ActionResultType.SUCCESS;
+							return InteractionResult.SUCCESS;
 						}
 					}
 				}
 
 				if (itemstack.getItem() == this.material.getFrameItem()) {
-					return updateFrame() ? ActionResultType.SUCCESS : ActionResultType.FAIL;
+					return updateFrame() ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 				}
 			}
 		}
-		return ActionResultType.FAIL;
+		return InteractionResult.FAIL;
 	}
 
 	public boolean updateFrame() {
@@ -176,11 +176,11 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	public void setResistance(FrameMaterial material) {
 		switch (material) {
-		case WOOD:
-			this.resistance = 9.0F;
-			break;
-		case IRON:
-			this.resistance = 18.0F;
+			case WOOD:
+				this.resistance = 9.0F;
+				break;
+			case IRON:
+				this.resistance = 18.0F;
 		}
 	}
 
@@ -213,7 +213,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 			height = height / 32.0D;
 			depth = depth / 32.0D;
 
-			this.setBoundingBox(new AxisAlignedBB(x - width, y - height, z - depth, x + width, y + height, z + depth));
+			this.setBoundingBox(new AABB(x - width, y - height, z - depth, x + width, y + height, z + depth));
 
 			if (this.direction.getAxis() == Direction.Axis.Z) {
 				width += 0.1F;
@@ -224,7 +224,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 				height += 0.1F;
 				depth += 0.1F;
 			}
-			this.fireboundingBox = new AxisAlignedBB(x - width, y - height, z - depth, x + width, y + height, z + depth);
+			this.fireboundingBox = new AABB(x - width, y - height, z - depth, x + width, y + height, z + depth);
 		}
 
 	}
@@ -256,7 +256,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	@Override
 	public boolean canCollideWith(Entity ent) {
-		return ent instanceof PlayerEntity && this.canBeCollidedWith();
+		return ent instanceof Player && this.canBeCollidedWith();
 	}
 
 	@Override
@@ -266,11 +266,11 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	@Override
 	public boolean isPickable() {
-		PlayerEntity player = AssortedDecor.proxy.getClientPlayer();
+		Player player = AssortedDecor.proxy.getClientPlayer();
 		if (player == null)
 			return false;
 
-		for (Hand hand : Hand.values()) {
+		for (InteractionHand hand : InteractionHand.values()) {
 			ItemStack handStack = player.getItemInHand(hand);
 
 			if (!handStack.isEmpty()) {
@@ -287,16 +287,16 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 		if (this.isInvulnerableTo(damagesource)) {
 			return false;
 		} else {
-			if (!this.removed && !this.level.isClientSide) {
-				if (damagesource.getEntity() instanceof PlayerEntity) {
-					this.remove();
+			if (!this.isRemoved() && !this.level.isClientSide) {
+				if (damagesource.getEntity() instanceof Player) {
+					this.discard();
 					this.markHurt();
 					this.dropItem(damagesource.getEntity());
 					return true;
 				}
 
 				if (damage > this.resistance) {
-					this.remove();
+					this.discard();
 					this.markHurt();
 					this.dropItem(damagesource.getEntity());
 					return true;
@@ -324,7 +324,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbttagcompound) {
+	public void addAdditionalSaveData(CompoundTag nbttagcompound) {
 		super.addAdditionalSaveData(nbttagcompound);
 		nbttagcompound.putByte("Facing", (byte) this.direction.get2DDataValue());
 		nbttagcompound.putInt("Motive", this.getFrameID());
@@ -337,7 +337,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbttagcompound) {
+	public void readAdditionalSaveData(CompoundTag nbttagcompound) {
 		super.readAdditionalSaveData(nbttagcompound);
 		this.direction = Direction.from2DDataValue(nbttagcompound.getByte("Facing"));
 		this.getEntityData().set(COLOR_RED, nbttagcompound.getInt("Red"));
@@ -350,7 +350,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer data) {
+	public void writeSpawnData(FriendlyByteBuf data) {
 		data.writeInt(this.getFrameID());
 		data.writeBlockPos(this.pos);
 		data.writeEnum(this.material);
@@ -364,7 +364,7 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer data) {
+	public void readSpawnData(FriendlyByteBuf data) {
 		this.getEntityData().set(FRAME_ID, data.readInt());
 
 		this.pos = data.readBlockPos();
@@ -392,9 +392,9 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 	public void dropItem(Entity brokenEntity) {
 		if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
 			this.playBreakSound();
-			if (brokenEntity instanceof PlayerEntity) {
-				PlayerEntity playerentity = (PlayerEntity) brokenEntity;
-				if (playerentity.abilities.instabuild) {
+			if (brokenEntity instanceof Player) {
+				Player playerentity = (Player) brokenEntity;
+				if (playerentity.getAbilities().instabuild) {
 					return;
 				}
 			}
@@ -405,27 +405,27 @@ public class FrameEntity extends HangingEntity implements IEntityAdditionalSpawn
 
 	public void playBreakSound() {
 		switch (this.material) {
-		case WOOD:
-			this.playSound(SoundEvents.WOOD_BREAK, 1.0F, 1.0F);
-			break;
-		case IRON:
-			this.playSound(SoundEvents.METAL_BREAK, 1.0F, 1.0F);
+			case WOOD:
+				this.playSound(SoundEvents.WOOD_BREAK, 1.0F, 1.0F);
+				break;
+			case IRON:
+				this.playSound(SoundEvents.METAL_BREAK, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
 	public void playPlacementSound() {
 		switch (this.material) {
-		case WOOD:
-			this.playSound(SoundEvents.WOOD_PLACE, 1.0F, 1.0F);
-			break;
-		case IRON:
-			this.playSound(SoundEvents.METAL_PLACE, 1.0F, 1.0F);
+			case WOOD:
+				this.playSound(SoundEvents.WOOD_PLACE, 1.0F, 1.0F);
+				break;
+			case IRON:
+				this.playSound(SoundEvents.METAL_PLACE, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 

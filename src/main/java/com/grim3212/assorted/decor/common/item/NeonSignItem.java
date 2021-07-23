@@ -7,27 +7,27 @@ import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 import com.grim3212.assorted.decor.common.network.NeonOpenPacket;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.WallOrFloorItem;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
-public class NeonSignItem extends WallOrFloorItem {
+public class NeonSignItem extends StandingAndWallBlockItem {
 
 	public NeonSignItem(Item.Properties props) {
 		super(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get(), props);
 	}
 
 	@Override
-	protected boolean updateCustomBlockEntityTag(BlockPos pos, World worldIn, @Nullable PlayerEntity player, ItemStack stack, BlockState state) {
+	protected boolean updateCustomBlockEntityTag(BlockPos pos, Level worldIn, @Nullable Player player, ItemStack stack, BlockState state) {
 		boolean flag = super.updateCustomBlockEntityTag(pos, worldIn, player, stack, state);
 		if (!worldIn.isClientSide && !flag && player != null) {
 			((NeonSignTileEntity) worldIn.getBlockEntity(pos)).setOwner(player);
-			PacketHandler.sendTo((ServerPlayerEntity) player, new NeonOpenPacket(pos));
+			PacketHandler.sendTo((ServerPlayer) player, new NeonOpenPacket(pos));
 		}
 
 		return flag;

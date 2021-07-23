@@ -6,47 +6,48 @@ import javax.annotation.Nullable;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.ICommandSource;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.vector.Vector2f;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentUtils;
-import net.minecraft.util.text.event.ClickEvent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.commands.CommandSource;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class NeonSignTileEntity extends TileEntity {
+public class NeonSignTileEntity extends BlockEntity {
 
-	public static final StringTextComponent EMPTY = new StringTextComponent("");
+	public static final TextComponent EMPTY = new TextComponent("");
 
-	public IFormattableTextComponent[] signText = new IFormattableTextComponent[] { EMPTY, EMPTY, EMPTY, EMPTY };
+	public MutableComponent[] signText = new MutableComponent[] { EMPTY, EMPTY, EMPTY, EMPTY };
 	private UUID owner;
 	public int mode = 0;
 
-	public NeonSignTileEntity() {
-		super(DecorTileEntityTypes.NEON_SIGN.get());
+	public NeonSignTileEntity(BlockPos pos, BlockState state) {
+		super(DecorTileEntityTypes.NEON_SIGN.get(), pos, state);
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public IFormattableTextComponent getText(int line) {
+	public MutableComponent getText(int line) {
 		return this.signText[line];
 	}
 
-	public void setText(int line, IFormattableTextComponent signText) {
+	public void setText(int line, MutableComponent signText) {
 		this.signText[line] = signText;
 	}
 
@@ -60,16 +61,16 @@ public class NeonSignTileEntity extends TileEntity {
 	}
 
 	public Entity getOwner() {
-		return this.owner != null && this.level instanceof ServerWorld ? ((ServerWorld) this.level).getEntity(this.owner) : null;
+		return this.owner != null && this.level instanceof ServerLevel ? ((ServerLevel) this.level).getEntity(this.owner) : null;
 	}
 
-	public boolean executeCommand(PlayerEntity playerIn) {
-		for (ITextComponent itextcomponent : this.signText) {
+	public boolean executeCommand(Player playerIn) {
+		for (Component itextcomponent : this.signText) {
 			Style style = itextcomponent == null ? null : itextcomponent.getStyle();
 			if (style != null && style.getClickEvent() != null) {
 				ClickEvent clickevent = style.getClickEvent();
 				if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
-					playerIn.getServer().getCommands().performCommand(this.getCommandSource((ServerPlayerEntity) playerIn), clickevent.getValue());
+					playerIn.getServer().getCommands().performCommand(this.getCommandSource((ServerPlayer) playerIn), clickevent.getValue());
 				}
 			}
 		}
@@ -77,45 +78,45 @@ public class NeonSignTileEntity extends TileEntity {
 		return true;
 	}
 
-	public CommandSource getCommandSource(@Nullable ServerPlayerEntity playerIn) {
+	public CommandSourceStack getCommandSource(@Nullable ServerPlayer playerIn) {
 		String s = playerIn == null ? "Sign" : playerIn.getName().getString();
-		ITextComponent itextcomponent = (ITextComponent) (playerIn == null ? new StringTextComponent("Sign") : playerIn.getDisplayName());
-		return new CommandSource(ICommandSource.NULL, Vector3d.atCenterOf(this.worldPosition), Vector2f.ZERO, (ServerWorld) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
+		Component itextcomponent = (Component) (playerIn == null ? new TextComponent("Sign") : playerIn.getDisplayName());
+		return new CommandSourceStack(CommandSource.NULL, Vec3.atCenterOf(this.worldPosition), Vec2.ZERO, (ServerLevel) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT compound) {
+	public CompoundTag save(CompoundTag compound) {
 		super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}
 
 	@Override
-	public void load(BlockState state, CompoundNBT nbt) {
-		super.load(state, nbt);
+	public void load(CompoundTag nbt) {
+		super.load(nbt);
 		this.readPacketNBT(nbt);
 	}
 
-	public void writePacketNBT(CompoundNBT cmp) {
+	public void writePacketNBT(CompoundTag cmp) {
 		cmp.putInt("Mode", mode);
 		cmp.putUUID("Owner", owner);
 
 		for (int i = 0; i < 4; ++i) {
-			String s = IFormattableTextComponent.Serializer.toJson(this.signText[i]);
+			String s = MutableComponent.Serializer.toJson(this.signText[i]);
 			cmp.putString("Text" + (i + 1), s);
 		}
 	}
 
-	public void readPacketNBT(CompoundNBT cmp) {
+	public void readPacketNBT(CompoundTag cmp) {
 		this.mode = cmp.getInt("Mode");
 		this.owner = cmp.getUUID("Owner");
 
 		for (int i = 0; i < 4; ++i) {
 			String s = cmp.getString("Text" + (i + 1));
-			IFormattableTextComponent itextcomponent = IFormattableTextComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
-			if (this.level instanceof ServerWorld) {
+			MutableComponent itextcomponent = MutableComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
+			if (this.level instanceof ServerLevel) {
 				try {
-					this.signText[i] = TextComponentUtils.updateForEntity(this.getCommandSource((ServerPlayerEntity) null), itextcomponent, (Entity) null, 0);
+					this.signText[i] = ComponentUtils.updateForEntity(this.getCommandSource((ServerPlayer) null), itextcomponent, (Entity) null, 0);
 				} catch (CommandSyntaxException commandsyntaxexception) {
 					this.signText[i] = itextcomponent;
 				}
@@ -126,22 +127,22 @@ public class NeonSignTileEntity extends TileEntity {
 	}
 
 	@Override
-	public CompoundNBT getUpdateTag() {
-		return save(new CompoundNBT());
+	public CompoundTag getUpdateTag() {
+		return save(new CompoundTag());
 	}
 
 	@Override
-	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT nbtTagCompound = new CompoundNBT();
+	public ClientboundBlockEntityDataPacket getUpdatePacket() {
+		CompoundTag nbtTagCompound = new CompoundTag();
 		writePacketNBT(nbtTagCompound);
-		return new SUpdateTileEntityPacket(this.worldPosition, 1, nbtTagCompound);
+		return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, nbtTagCompound);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		super.onDataPacket(net, pkt);
 		this.readPacketNBT(pkt.getTag());
-		if (level instanceof ClientWorld) {
+		if (level instanceof ClientLevel) {
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}
 	}

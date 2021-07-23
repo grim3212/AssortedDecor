@@ -2,13 +2,13 @@ package com.grim3212.assorted.decor.common.item;
 
 import com.grim3212.assorted.decor.common.entity.WallpaperEntity;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemUseContext;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 
 public class WallpaperItem extends Item {
 
@@ -17,10 +17,10 @@ public class WallpaperItem extends Item {
 	}
 
 	@Override
-	public ActionResultType useOn(ItemUseContext context) {
+	public InteractionResult useOn(UseOnContext context) {
 		Direction facing = context.getClickedFace();
-		PlayerEntity playerIn = context.getPlayer();
-		World worldIn = context.getLevel();
+		Player playerIn = context.getPlayer();
+		Level worldIn = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 
 		if (facing != Direction.DOWN && facing != Direction.UP && playerIn.mayUseItemAt(pos.relative(facing), facing, context.getItemInHand())) {
@@ -35,9 +35,9 @@ public class WallpaperItem extends Item {
 				context.getItemInHand().shrink(1);
 			}
 
-			return ActionResultType.SUCCESS;
+			return InteractionResult.SUCCESS;
 		} else {
-			return ActionResultType.FAIL;
+			return InteractionResult.FAIL;
 		}
 	}
 }

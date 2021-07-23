@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 

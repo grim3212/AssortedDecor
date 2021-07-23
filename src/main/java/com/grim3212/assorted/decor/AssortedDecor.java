@@ -21,8 +21,8 @@ import com.grim3212.assorted.decor.common.network.PacketHandler;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -33,8 +33,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(AssortedDecor.MODID)
 public class AssortedDecor {
@@ -46,7 +46,7 @@ public class AssortedDecor {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	public static final ItemGroup ASSORTED_DECOR_ITEM_GROUP = (new ItemGroup("assorteddecor") {
+	public static final CreativeModeTab ASSORTED_DECOR_ITEM_GROUP = (new CreativeModeTab("assorteddecor") {
 		@Override
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack makeIcon() {

@@ -5,33 +5,33 @@ import java.util.List;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.HangingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class WallpaperEntity extends HangingEntity implements IEntityAdditionalSpawnData {
 
@@ -40,29 +40,29 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	public boolean isBlockLeft;
 	public boolean isBlockRight;
 
-	public AxisAlignedBB fireboundingBox;
+	public AABB fireboundingBox;
 
-	private static final DataParameter<Boolean> BURNT = EntityDataManager.<Boolean>defineId(WallpaperEntity.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> WALLPAPER_ID = EntityDataManager.<Integer>defineId(WallpaperEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_RED = EntityDataManager.<Integer>defineId(WallpaperEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_GREEN = EntityDataManager.<Integer>defineId(WallpaperEntity.class, DataSerializers.INT);
-	private static final DataParameter<Integer> COLOR_BLUE = EntityDataManager.<Integer>defineId(WallpaperEntity.class, DataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> BURNT = SynchedEntityData.<Boolean>defineId(WallpaperEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> WALLPAPER_ID = SynchedEntityData.<Integer>defineId(WallpaperEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_RED = SynchedEntityData.<Integer>defineId(WallpaperEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_GREEN = SynchedEntityData.<Integer>defineId(WallpaperEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> COLOR_BLUE = SynchedEntityData.<Integer>defineId(WallpaperEntity.class, EntityDataSerializers.INT);
 
-	public WallpaperEntity(EntityType<? extends WallpaperEntity> type, World world) {
+	public WallpaperEntity(EntityType<? extends WallpaperEntity> type, Level world) {
 		super(type, world);
 		this.isBlockUp = false;
 		this.isBlockDown = false;
 		this.isBlockLeft = false;
 		this.isBlockRight = false;
-		this.fireboundingBox = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
+		this.fireboundingBox = new AABB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
 		this.direction = Direction.SOUTH;
 	}
 
-	public WallpaperEntity(World world) {
+	public WallpaperEntity(Level world) {
 		this(DecorEntityTypes.WALLPAPER.get(), world);
 	}
 
-	public WallpaperEntity(World world, BlockPos pos, Direction direction) {
+	public WallpaperEntity(Level world, BlockPos pos, Direction direction) {
 		this(world);
 		this.pos = pos;
 		this.setDirection(direction);
@@ -111,11 +111,11 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 			d6 = d6 / 32.0D;
 			d7 = d7 / 32.0D;
 			d8 = d8 / 32.0D;
-			this.setBoundingBox(new AxisAlignedBB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8));
+			this.setBoundingBox(new AABB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8));
 			d6 = 1.0F;
 			d7 = 1.0F;
 			d8 = 1.0F;
-			this.fireboundingBox = new AxisAlignedBB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8);
+			this.fireboundingBox = new AABB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public ActionResultType interact(PlayerEntity player, Hand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (!stack.isEmpty()) {
 			if (DecorConfig.COMMON.dyeWallpaper.get()) {
@@ -132,7 +132,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 				if (color != null) {
 					dyeWallpaper(color);
 					stack.shrink(1);
-					return ActionResultType.SUCCESS;
+					return InteractionResult.SUCCESS;
 				}
 
 			}
@@ -142,7 +142,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 			}
 		}
 
-		return ActionResultType.PASS;
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 		this.getEntityData().define(BURNT, false);
 	}
 
-	public ActionResultType updateWallpaper() {
+	public InteractionResult updateWallpaper() {
 		int newWallpaper = this.getWallpaperID() + 1;
 
 		if (newWallpaper >= DecorConfig.COMMON.numWallpapers.get()) {
@@ -165,7 +165,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 		if (!this.level.isClientSide)
 			playPlacementSound();
 
-		return ActionResultType.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	public boolean updateWallpaper(int wallpaper) {
@@ -217,9 +217,9 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public boolean isPickable() {
-		PlayerEntity player = Minecraft.getInstance().player;
+		Player player = Minecraft.getInstance().player;
 
-		for (Hand hand : Hand.values()) {
+		for (InteractionHand hand : InteractionHand.values()) {
 			ItemStack handStack = player.getItemInHand(hand);
 			return !handStack.isEmpty() && (handStack.getItem() == DecorItems.WALLPAPER.get() || handStack.getItem() instanceof AxeItem || DyeColor.getColor(handStack) != null);
 		}
@@ -244,7 +244,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT nbt) {
+	public void addAdditionalSaveData(CompoundTag nbt) {
 		super.addAdditionalSaveData(nbt);
 		nbt.putByte("Facing", (byte) this.direction.get2DDataValue());
 		nbt.putInt("Motive", this.getWallpaperID());
@@ -255,7 +255,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT nbt) {
+	public void readAdditionalSaveData(CompoundTag nbt) {
 		super.readAdditionalSaveData(nbt);
 		this.direction = Direction.from2DDataValue(nbt.getByte("Facing"));
 		this.getEntityData().set(WALLPAPER_ID, nbt.getInt("Motive"));
@@ -267,7 +267,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public void writeSpawnData(PacketBuffer buf) {
+	public void writeSpawnData(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos);
 		buf.writeInt(this.getWallpaperID());
 		buf.writeInt(this.direction.get2DDataValue());
@@ -278,7 +278,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer buf) {
+	public void readSpawnData(FriendlyByteBuf buf) {
 		this.pos = buf.readBlockPos();
 		this.getEntityData().set(WALLPAPER_ID, buf.readInt());
 		setDirection(Direction.from2DDataValue(buf.readInt()));
@@ -302,9 +302,9 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	public void dropItem(Entity brokenEntity) {
 		if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
 			this.playSound(SoundEvents.WOOL_BREAK, 1.0F, 1.0F);
-			if (brokenEntity instanceof PlayerEntity) {
-				PlayerEntity playerentity = (PlayerEntity) brokenEntity;
-				if (playerentity.abilities.instabuild) {
+			if (brokenEntity instanceof Player) {
+				Player playerentity = (Player) brokenEntity;
+				if (playerentity.getAbilities().instabuild) {
 					return;
 				}
 			}
@@ -319,7 +319,7 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	}
 
 	@Override
-	public IPacket<?> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

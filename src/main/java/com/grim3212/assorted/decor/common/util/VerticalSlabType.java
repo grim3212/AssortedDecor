@@ -1,10 +1,10 @@
 package com.grim3212.assorted.decor.common.util;
 
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.core.Direction;
+import net.minecraft.util.StringRepresentable;
 
 // Horizontal facing but with a double option
-public enum VerticalSlabType implements IStringSerializable {
+public enum VerticalSlabType implements StringRepresentable {
 	NORTH("north"),
 	SOUTH("south"),
 	EAST("east"),

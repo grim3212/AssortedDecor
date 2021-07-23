@@ -1,22 +1,22 @@
 package com.grim3212.assorted.decor.common.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer.Builder;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class IlluminationTubeBlock extends Block {
 
@@ -34,31 +34,31 @@ public class IlluminationTubeBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch (state.getValue(FACING)) {
-		case EAST:
-			return TORCH_EAST;
-		case NORTH:
-			return TORCH_NORTH;
-		case SOUTH:
-			return TORCH_SOUTH;
-		case UP:
-			return STANDING;
-		case WEST:
-			return TORCH_WEST;
-		case DOWN:
-		default:
-			return STANDING_FLIPPED;
+			case EAST:
+				return TORCH_EAST;
+			case NORTH:
+				return TORCH_NORTH;
+			case SOUTH:
+				return TORCH_SOUTH;
+			case UP:
+				return STANDING;
+			case WEST:
+				return TORCH_WEST;
+			case DOWN:
+			default:
+				return STANDING_FLIPPED;
 		}
 	}
 
 	@Override
-	public VoxelShape getBlockSupportShape(BlockState state, IBlockReader reader, BlockPos pos) {
-		return VoxelShapes.empty();
+	public VoxelShape getBlockSupportShape(BlockState state, BlockGetter reader, BlockPos pos) {
+		return Shapes.empty();
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		Direction direction = state.getValue(FACING);
 		BlockPos blockpos = pos.relative(direction.getOpposite());
 		BlockState blockstate = worldIn.getBlockState(blockpos);
@@ -66,9 +66,9 @@ public class IlluminationTubeBlock extends Block {
 	}
 
 	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockstate = this.defaultBlockState();
-		IWorldReader iworldreader = context.getLevel();
+		LevelReader iworldreader = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
 		Direction[] adirection = context.getNearestLookingDirections();
 
@@ -84,12 +84,12 @@ public class IlluminationTubeBlock extends Block {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		return facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : stateIn;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, IWorld world, BlockPos pos, Rotation direction) {
+	public BlockState rotate(BlockState state, LevelAccessor world, BlockPos pos, Rotation direction) {
 		return super.rotate(state, world, pos, direction);
 	}
 

@@ -4,10 +4,10 @@ import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 public class NeonOpenPacket {
 
@@ -17,11 +17,11 @@ public class NeonOpenPacket {
 		this.pos = pos;
 	}
 
-	public static NeonOpenPacket decode(PacketBuffer buf) {
+	public static NeonOpenPacket decode(FriendlyByteBuf buf) {
 		return new NeonOpenPacket(buf.readBlockPos());
 	}
 
-	public void encode(PacketBuffer buf) {
+	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos);
 	}
 

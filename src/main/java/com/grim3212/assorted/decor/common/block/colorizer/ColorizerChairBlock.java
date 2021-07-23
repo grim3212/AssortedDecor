@@ -1,12 +1,12 @@
 package com.grim3212.assorted.decor.common.block.colorizer;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.level.BlockGetter;
 
 public class ColorizerChairBlock extends ColorizerRotateBlock {
 
@@ -17,21 +17,21 @@ public class ColorizerChairBlock extends ColorizerRotateBlock {
 	private static final VoxelShape SOUTH = Block.box(0.0F, 0.0F, 12.96F, 16F, 16F, 16F);
 
 	@Override
-	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch (state.getValue(FACING)) {
 		case EAST:
-			return VoxelShapes.or(BASE, EAST);
+			return Shapes.or(BASE, EAST);
 		case NORTH:
-			return VoxelShapes.or(BASE, NORTH);
+			return Shapes.or(BASE, NORTH);
 		case SOUTH:
-			return VoxelShapes.or(BASE, SOUTH);
+			return Shapes.or(BASE, SOUTH);
 		case WEST:
-			return VoxelShapes.or(BASE, WEST);
+			return Shapes.or(BASE, WEST);
 		default:
 			break;
 		}
 
-		return VoxelShapes.block();
+		return Shapes.block();
 	}
 
 }

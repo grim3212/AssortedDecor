@@ -9,37 +9,40 @@ import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
 import com.grim3212.assorted.decor.common.network.NeonChangeModePacket;
 import com.grim3212.assorted.decor.common.network.NeonUpdatePacket;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
+import com.mojang.math.Matrix4f;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.fonts.TextInputUtil;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.Atlases;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
-import net.minecraft.client.renderer.model.RenderMaterial;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.tileentity.SignTileEntityRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class NeonSignScreen extends Screen {
-	private final SignTileEntityRenderer.SignModel signModel = new SignTileEntityRenderer.SignModel();
+	private SignRenderer.SignModel signModel;
 	/** Reference to the sign object. */
 	private final NeonSignTileEntity tileSign;
 	/** Counts the number of screen updates. */
@@ -49,15 +52,15 @@ public class NeonSignScreen extends Screen {
 
 	private final int bgWidth = 176;
 	private final int bgHeight = 208;
-	private TextInputUtil textInputUtil;
+	private TextFieldHelper textInputUtil;
 	private final String[] lines;
 
 	public static final ResourceLocation NEON_SIGN_GUI_TEXTURE = new ResourceLocation(AssortedDecor.MODID, "textures/gui/screen/neon_sign.png");
 
 	public NeonSignScreen(NeonSignTileEntity teSign) {
-		super(new TranslationTextComponent("sign.edit"));
+		super(new TranslatableComponent("sign.edit"));
 		this.tileSign = teSign;
-		this.lines = IntStream.range(0, 4).mapToObj(teSign::getText).map(ITextComponent::getString).toArray((p_243354_0_) -> {
+		this.lines = IntStream.range(0, 4).mapToObj(teSign::getText).map(Component::getString).toArray((p_243354_0_) -> {
 			return new String[p_243354_0_];
 		});
 	}
@@ -67,67 +70,68 @@ public class NeonSignScreen extends Screen {
 		int x = (width - bgWidth) / 2;
 		int y = (height - bgHeight) / 2;
 
-		this.buttons.clear();
-		this.children.clear();
+		this.clearWidgets();
 
-		this.textInputUtil = new TextInputUtil(() -> {
+		this.textInputUtil = new TextFieldHelper(() -> {
 			return this.lines[this.editLine];
 		}, (s) -> {
 			this.lines[this.editLine] = s;
-			this.tileSign.setText(this.editLine, new StringTextComponent(s));
-		}, TextInputUtil.createClipboardGetter(this.minecraft), TextInputUtil.createClipboardSetter(this.minecraft), (s) -> {
+			this.tileSign.setText(this.editLine, new TextComponent(s));
+		}, TextFieldHelper.createClipboardGetter(this.minecraft), TextFieldHelper.createClipboardSetter(this.minecraft), (s) -> {
 			return this.minecraft.font.width(s) <= 90;
 		});
 
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		this.addButton(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, new TranslationTextComponent("gui.done"), btn -> {
+		this.addRenderableWidget(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, new TranslatableComponent("gui.done"), btn -> {
 			this.close();
 		}));
 
 		for (int l = 0; l < 11; l++) {
 			final int id = l + 1;
-			this.addButton(new NeonButton(x + 11 + 14 * l, y + 136, new StringTextComponent(""), 176, l * 14, btn -> {
+			this.addRenderableWidget(new NeonButton(x + 11 + 14 * l, y + 136, new TextComponent(""), 176, l * 14, btn -> {
 				addSignText(id);
 			}));
 		}
 
 		for (int i1 = 11; i1 < 16; i1++) {
 			final int id = i1 + 1;
-			this.addButton(new NeonButton(x + 11 + 14 * (i1 - 11), y + 150, new StringTextComponent(""), 176, i1 * 14, btn -> {
+			this.addRenderableWidget(new NeonButton(x + 11 + 14 * (i1 - 11), y + 150, new TextComponent(""), 176, i1 * 14, btn -> {
 				addSignText(id);
 			}));
 		}
 
-		this.addButton(new NeonButton(x + 11 + 70, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.bold"), 204, 0, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 70, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.bold"), 204, 0, btn -> {
 			addSignText(17);
 		}));
-		this.addButton(new NeonButton(x + 11 + 84, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.italic"), 204, 14, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 84, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.italic"), 204, 14, btn -> {
 			addSignText(18);
 		}));
-		this.addButton(new NeonButton(x + 11 + 98, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.underline"), 204, 28, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 98, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.underline"), 204, 28, btn -> {
 			addSignText(19);
 		}));
-		this.addButton(new NeonButton(x + 11 + 112, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.strikethrough"), 204, 42, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 112, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.strikethrough"), 204, 42, btn -> {
 			addSignText(20);
 		}));
-		this.addButton(new NeonButton(x + 11 + 126, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.random"), 204, 56, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 126, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.random"), 204, 56, btn -> {
 			addSignText(21);
 		}));
-		this.addButton(new NeonButton(x + 11 + 140, y + 150, new TranslationTextComponent("screen.assorteddecor.neon_sign.reset"), 204, 70, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 140, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.reset"), 204, 70, btn -> {
 			addSignText(22);
 		}));
-		this.addButton(new NeonButton(x + 11, y + 164, new StringTextComponent(""), 0, 208, 51, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11, y + 164, new TextComponent(""), 0, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 0;
 			PacketHandler.sendToServer(new NeonChangeModePacket(0, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
-		this.addButton(new NeonButton(x + 11 + 51, y + 164, new StringTextComponent(""), 51, 208, 52, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 51, y + 164, new TextComponent(""), 51, 208, 52, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 1;
 			PacketHandler.sendToServer(new NeonChangeModePacket(1, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
-		this.addButton(new NeonButton(x + 11 + 103, y + 164, new StringTextComponent(""), 103, 208, 51, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 103, y + 164, new TextComponent(""), 103, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 2;
 			PacketHandler.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
+
+		this.signModel = new SignModel(this.minecraft.getEntityModels().bakeLayer(new ModelLayerLocation(new ResourceLocation(AssortedDecor.MODID, "sign/neon_sign"), "main")));
 	}
 
 	private void addSignText(int id) {
@@ -156,39 +160,39 @@ public class NeonSignScreen extends Screen {
 	@Override
 	public void tick() {
 		++this.updateCounter;
-		if (!this.tileSign.getType().isValid(this.tileSign.getBlockState().getBlock())) {
+		if (!this.tileSign.getType().isValid(this.tileSign.getBlockState())) {
 			this.close();
 		}
 	}
 
-	private TextFormatting getFormatting(int buttonId) {
+	private ChatFormatting getFormatting(int buttonId) {
 		switch (buttonId) {
-		case 11:
-			return TextFormatting.GREEN;
-		case 12:
-			return TextFormatting.AQUA;
-		case 13:
-			return TextFormatting.RED;
-		case 14:
-			return TextFormatting.LIGHT_PURPLE;
-		case 15:
-			return TextFormatting.YELLOW;
-		case 16:
-			return TextFormatting.WHITE;
-		case 17:
-			return TextFormatting.BOLD;
-		case 18:
-			return TextFormatting.ITALIC;
-		case 19:
-			return TextFormatting.UNDERLINE;
-		case 20:
-			return TextFormatting.STRIKETHROUGH;
-		case 21:
-			return TextFormatting.OBFUSCATED;
-		case 22:
-			return TextFormatting.RESET;
+			case 11:
+				return ChatFormatting.GREEN;
+			case 12:
+				return ChatFormatting.AQUA;
+			case 13:
+				return ChatFormatting.RED;
+			case 14:
+				return ChatFormatting.LIGHT_PURPLE;
+			case 15:
+				return ChatFormatting.YELLOW;
+			case 16:
+				return ChatFormatting.WHITE;
+			case 17:
+				return ChatFormatting.BOLD;
+			case 18:
+				return ChatFormatting.ITALIC;
+			case 19:
+				return ChatFormatting.UNDERLINE;
+			case 20:
+				return ChatFormatting.STRIKETHROUGH;
+			case 21:
+				return ChatFormatting.OBFUSCATED;
+			case 22:
+				return ChatFormatting.RESET;
 		}
-		return TextFormatting.getById(buttonId - 1);
+		return ChatFormatting.getById(buttonId - 1);
 	}
 
 	@Override
@@ -213,8 +217,8 @@ public class NeonSignScreen extends Screen {
 	}
 
 	@Override
-	public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		RenderHelper.setupForFlatItems();
+	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+		Lighting.setupForFlatItems();
 		this.renderBackground(matrixStack);
 		drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 40, 16777215);
 		matrixStack.pushPose();
@@ -232,10 +236,10 @@ public class NeonSignScreen extends Screen {
 		float f1 = 0.6666667F;
 		matrixStack.pushPose();
 		matrixStack.scale(f1, -f1, -f1);
-		IRenderTypeBuffer.Impl irendertypebuffer$impl = this.minecraft.renderBuffers().bufferSource();
-		RenderMaterial rendermaterial = new RenderMaterial(Atlases.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileSign.mode));
-		IVertexBuilder ivertexbuilder = rendermaterial.buffer(irendertypebuffer$impl, this.signModel::renderType);
-		this.signModel.sign.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
+		MultiBufferSource.BufferSource irendertypebuffer$impl = this.minecraft.renderBuffers().bufferSource();
+		Material rendermaterial = new Material(Sheets.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileSign.mode));
+		VertexConsumer ivertexbuilder = rendermaterial.buffer(irendertypebuffer$impl, this.signModel::renderType);
+		this.signModel.root.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
 		if (flag) {
 			this.signModel.stick.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
 		}
@@ -286,18 +290,18 @@ public class NeonSignScreen extends Screen {
 					int j2 = this.minecraft.font.width(s1.substring(0, l1)) - this.minecraft.font.width(s1) / 2;
 					int k2 = Math.min(i2, j2);
 					int l2 = Math.max(i2, j2);
-					Tessellator tessellator = Tessellator.getInstance();
+					Tesselator tessellator = Tesselator.getInstance();
 					BufferBuilder bufferbuilder = tessellator.getBuilder();
 					RenderSystem.disableTexture();
 					RenderSystem.enableColorLogicOp();
 					RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-					bufferbuilder.begin(7, DefaultVertexFormats.POSITION_COLOR);
+					bufferbuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 					bufferbuilder.vertex(matrix4f, (float) k2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.vertex(matrix4f, (float) l2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.vertex(matrix4f, (float) l2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.vertex(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.end();
-					WorldVertexBufferUploader.end(bufferbuilder);
+					BufferUploader.end(bufferbuilder);
 					RenderSystem.disableColorLogicOp();
 					RenderSystem.enableTexture();
 				}
@@ -305,7 +309,7 @@ public class NeonSignScreen extends Screen {
 		}
 
 		matrixStack.popPose();
-		RenderHelper.setupFor3DItems();
+		Lighting.setupFor3DItems();
 		matrixStack.pushPose();
 		matrixStack.translate(0, 0, 100);
 		super.render(matrixStack, mouseX, mouseY, partialTicks);
