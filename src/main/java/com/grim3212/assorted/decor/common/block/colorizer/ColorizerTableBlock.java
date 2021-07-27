@@ -85,7 +85,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		BlockState superState = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-		return superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
+		return superState.getBlock() == this ? superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos)) : superState;
 	}
 
 	public boolean canConnectTo(BlockGetter worldIn, BlockPos currentPos, BlockPos placePos) {
