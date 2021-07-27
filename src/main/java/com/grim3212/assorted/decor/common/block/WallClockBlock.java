@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.block;
 
-import com.grim3212.assorted.decor.common.block.tileentity.WallClockTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.WallClockBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -115,13 +115,13 @@ public class WallClockBlock extends HorizontalDirectionalBlock implements Entity
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new WallClockTileEntity(pos, state);
+		return new WallClockBlockEntity(pos, state);
 	}
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return (level1, blockPos, blockState, t) -> {
-			if (t instanceof WallClockTileEntity wallclock) {
+			if (t instanceof WallClockBlockEntity wallclock) {
 				wallclock.tick();
 			}
 		};

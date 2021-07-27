@@ -1,40 +1,37 @@
-package com.grim3212.assorted.decor.client.tileentity;
+package com.grim3212.assorted.decor.client.blockentity;
 
-import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.handler.NeonSignStitchHandler;
 import com.grim3212.assorted.decor.common.block.NeonSignStandingBlock;
 import com.grim3212.assorted.decor.common.block.NeonSignWallBlock;
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.blockentity.SignRenderer.SignModel;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WoodType;
 
-public class NeonSignTileEntityRenderer implements BlockEntityRenderer<NeonSignTileEntity> {
+public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSignBlockEntity> {
 
 	private final SignRenderer.SignModel model;
 	private final Font font;
 
-	public NeonSignTileEntityRenderer(BlockEntityRendererProvider.Context context) {
-		this.model = new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(AssortedDecor.MODID, "sign/neon_sign"), "main")));
+	public NeonSignBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+		this.model = SignRenderer.createSignModel(context.getModelSet(), WoodType.OAK);
 		this.font = context.getFont();
 	}
 
 	@Override
-	public void render(NeonSignTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(NeonSignBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BlockState blockstate = tileEntityIn.getBlockState();
 		matrixStackIn.pushPose();
 		float f = 0.6666667F;

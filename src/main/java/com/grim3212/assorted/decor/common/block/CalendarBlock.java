@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.block;
 
-import com.grim3212.assorted.decor.common.block.tileentity.CalendarTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.CalendarBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,7 +52,7 @@ public class CalendarBlock extends HorizontalDirectionalBlock implements EntityB
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new CalendarTileEntity(pos, state);
+		return new CalendarBlockEntity(pos, state);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package com.grim3212.assorted.decor.common.network;
 
 import java.util.function.Supplier;
 
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,8 +33,8 @@ public class NeonChangeModePacket {
 		if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
 			ctx.get().enqueueWork(() -> {
 				BlockEntity te = ctx.get().getSender().getCommandSenderWorld().getBlockEntity(this.pos);
-				if (te instanceof NeonSignTileEntity) {
-					((NeonSignTileEntity) te).mode = this.mode;
+				if (te instanceof NeonSignBlockEntity) {
+					((NeonSignBlockEntity) te).mode = this.mode;
 				}
 			});
 			ctx.get().setPacketHandled(true);

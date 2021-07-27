@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.handler.NeonSignStitchHandler;
 import com.grim3212.assorted.decor.common.block.NeonSignStandingBlock;
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.network.NeonChangeModePacket;
 import com.grim3212.assorted.decor.common.network.NeonUpdatePacket;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
@@ -37,6 +37,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -44,7 +45,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class NeonSignScreen extends Screen {
 	private SignRenderer.SignModel signModel;
 	/** Reference to the sign object. */
-	private final NeonSignTileEntity tileSign;
+	private final NeonSignBlockEntity tileSign;
 	/** Counts the number of screen updates. */
 	private int updateCounter;
 	/** The index of the line that is being edited. */
@@ -57,7 +58,7 @@ public class NeonSignScreen extends Screen {
 
 	public static final ResourceLocation NEON_SIGN_GUI_TEXTURE = new ResourceLocation(AssortedDecor.MODID, "textures/gui/screen/neon_sign.png");
 
-	public NeonSignScreen(NeonSignTileEntity teSign) {
+	public NeonSignScreen(NeonSignBlockEntity teSign) {
 		super(new TranslatableComponent("sign.edit"));
 		this.tileSign = teSign;
 		this.lines = IntStream.range(0, 4).mapToObj(teSign::getText).map(Component::getString).toArray((p_243354_0_) -> {
@@ -69,8 +70,6 @@ public class NeonSignScreen extends Screen {
 	public void init() {
 		int x = (width - bgWidth) / 2;
 		int y = (height - bgHeight) / 2;
-
-		this.clearWidgets();
 
 		this.textInputUtil = new TextFieldHelper(() -> {
 			return this.lines[this.editLine];
@@ -131,7 +130,7 @@ public class NeonSignScreen extends Screen {
 			PacketHandler.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
 
-		this.signModel = new SignModel(this.minecraft.getEntityModels().bakeLayer(new ModelLayerLocation(new ResourceLocation(AssortedDecor.MODID, "sign/neon_sign"), "main")));
+		this.signModel = SignRenderer.createSignModel(this.getMinecraft().getEntityModels(), WoodType.OAK);
 	}
 
 	private void addSignText(int id) {

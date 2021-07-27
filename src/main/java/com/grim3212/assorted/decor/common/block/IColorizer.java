@@ -2,7 +2,7 @@ package com.grim3212.assorted.decor.common.block;
 
 import javax.annotation.Nullable;
 
-import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 
 import net.minecraft.core.BlockPos;
@@ -24,8 +24,8 @@ public interface IColorizer {
 	public default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
 		BlockState state = worldIn.getBlockState(pos);
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if (te instanceof ColorizerTileEntity) {
-			ColorizerTileEntity tileColorizer = (ColorizerTileEntity) te;
+		if (te instanceof ColorizerBlockEntity) {
+			ColorizerBlockEntity tileColorizer = (ColorizerBlockEntity) te;
 			BlockState storedState = tileColorizer.getStoredBlockState();
 
 			// Can only clear a filled colorizer
@@ -55,8 +55,8 @@ public interface IColorizer {
 
 	public default boolean setColorizer(Level worldIn, BlockPos pos, @Nullable BlockState toSetState, Player player, InteractionHand hand, boolean consumeItem) {
 		BlockEntity tileentity = worldIn.getBlockEntity(pos);
-		if (tileentity instanceof ColorizerTileEntity) {
-			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
+		if (tileentity instanceof ColorizerBlockEntity) {
+			ColorizerBlockEntity te = (ColorizerBlockEntity) tileentity;
 			te.setStoredBlockState(toSetState != null ? toSetState : Blocks.AIR.defaultBlockState());
 
 			// Remove an item if config allows and we are not resetting
@@ -73,8 +73,8 @@ public interface IColorizer {
 
 	public default BlockState getStoredState(BlockGetter worldIn, BlockPos pos) {
 		BlockEntity te = worldIn.getBlockEntity(pos);
-		if (te instanceof ColorizerTileEntity) {
-			return ((ColorizerTileEntity) te).getStoredBlockState();
+		if (te instanceof ColorizerBlockEntity) {
+			return ((ColorizerBlockEntity) te).getStoredBlockState();
 		}
 		return Blocks.AIR.defaultBlockState();
 	}

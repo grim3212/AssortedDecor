@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.common.block.colorizer;
 
 import com.grim3212.assorted.decor.common.block.IColorizer;
-import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.core.BlockPos;
@@ -58,14 +58,14 @@ public class ColorizerFenceBlock extends FenceBlock implements IColorizer, Entit
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new ColorizerTileEntity(pos, state);
+		return new ColorizerBlockEntity(pos, state);
 	}
 
 	@Override
 	public boolean addLandingEffects(BlockState state, ServerLevel worldObj, BlockPos blockPosition, BlockState iblockstate, LivingEntity entity, int numberOfParticles) {
 		BlockEntity tileentity = (BlockEntity) worldObj.getBlockEntity(blockPosition);
-		if (tileentity instanceof ColorizerTileEntity) {
-			ColorizerTileEntity te = (ColorizerTileEntity) tileentity;
+		if (tileentity instanceof ColorizerBlockEntity) {
+			ColorizerBlockEntity te = (ColorizerBlockEntity) tileentity;
 			if (te.getStoredBlockState() == Blocks.AIR.defaultBlockState()) {
 				return super.addLandingEffects(state, worldObj, blockPosition, iblockstate, entity, numberOfParticles);
 			} else {

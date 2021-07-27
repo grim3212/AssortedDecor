@@ -8,7 +8,7 @@ import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
 import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
 import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
-import com.grim3212.assorted.decor.common.block.tileentity.DecorTileEntityTypes;
+import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
 import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorItemTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorLootProvider;
@@ -55,7 +55,7 @@ public class AssortedDecor {
 	});
 
 	public AssortedDecor() {
-		DistExecutor.callWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
+		DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
 		proxy.starting();
 
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -67,7 +67,8 @@ public class AssortedDecor {
 
 		DecorBlocks.BLOCKS.register(modBus);
 		DecorItems.ITEMS.register(modBus);
-		DecorTileEntityTypes.TILE_ENTITIES.register(modBus);
+		AssortedDecor.LOGGER.info(DecorBlocks.NEON_SIGN.getId().getPath());
+		DecorBlockEntityTypes.BLOCK_ENTITIES.register(modBus);
 		DecorEntityTypes.ENTITIES.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.CLIENT, DecorConfig.CLIENT_SPEC);

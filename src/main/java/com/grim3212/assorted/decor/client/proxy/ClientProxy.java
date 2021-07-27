@@ -1,13 +1,16 @@
 package com.grim3212.assorted.decor.client.proxy;
 
+import com.grim3212.assorted.decor.client.blockentity.CalendarBlockEntityRenderer;
+import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
-import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
@@ -20,6 +23,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.NbtUtils;
@@ -32,12 +36,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmlclient.registry.RenderingRegistry;
 
 public class ClientProxy implements IProxy {
 
@@ -45,6 +49,7 @@ public class ClientProxy implements IProxy {
 	public void starting() {
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addListener(this::setupClient);
+		modBus.addListener(this::registerRenderers);
 		modBus.addListener(this::loadComplete);
 
 		if (Minecraft.getInstance() != null) {
@@ -63,6 +68,11 @@ public class ClientProxy implements IProxy {
 		}
 	}
 
+	private void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+		event.registerEntityRenderer(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
+		event.registerEntityRenderer(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
+	}
+
 	private void setupClient(final FMLClientSetupEvent event) {
 		for (Block b : DecorBlocks.colorizerBlocks()) {
 			ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
@@ -72,11 +82,8 @@ public class ClientProxy implements IProxy {
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.cutout());
 
-		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.WALLPAPER.get(), WallpaperRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(DecorEntityTypes.FRAME.get(), FrameRenderer::new);
-
-		//ClientRegistry.bindTileEntityRenderer(DecorTileEntityTypes.NEON_SIGN.get(), NeonSignTileEntityRenderer::new);
-		//ClientRegistry.bindTileEntityRenderer(DecorTileEntityTypes.CALENDAR.get(), CalendarTileEntityRenderer::new);
+		BlockEntityRenderers.register(DecorBlockEntityTypes.NEON_SIGN.get(), NeonSignBlockEntityRenderer::new);
+		BlockEntityRenderers.register(DecorBlockEntityTypes.CALENDAR.get(), CalendarBlockEntityRenderer::new);
 	}
 
 	public void loadComplete(final FMLLoadCompleteEvent event) {
@@ -89,8 +96,8 @@ public class ClientProxy implements IProxy {
 				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
 					if (pos != null) {
 						BlockEntity te = worldIn.getBlockEntity(pos);
-						if (te != null && te instanceof ColorizerTileEntity) {
-							return Minecraft.getInstance().getBlockColors().getColor(((ColorizerTileEntity) te).getStoredBlockState(), worldIn, pos, tint);
+						if (te != null && te instanceof ColorizerBlockEntity) {
+							return Minecraft.getInstance().getBlockColors().getColor(((ColorizerBlockEntity) te).getStoredBlockState(), worldIn, pos, tint);
 						}
 					}
 					return 16777215;
@@ -155,7 +162,7 @@ public class ClientProxy implements IProxy {
 	}
 
 	@Override
-	public void openNeonSign(NeonSignTileEntity tile) {
+	public void openNeonSign(NeonSignBlockEntity tile) {
 		Minecraft.getInstance().setScreen(new NeonSignScreen(tile));
 	}
 
@@ -164,11 +171,11 @@ public class ClientProxy implements IProxy {
 		BlockEntity tileentity = Minecraft.getInstance().player.getCommandSenderWorld().getBlockEntity(pos);
 
 		// Make sure TileEntity exists
-		if (!(tileentity instanceof NeonSignTileEntity)) {
-			tileentity = new NeonSignTileEntity(pos, tileentity.getBlockState());
+		if (!(tileentity instanceof NeonSignBlockEntity)) {
+			tileentity = new NeonSignBlockEntity(pos, tileentity.getBlockState());
 			tileentity.setLevel(Minecraft.getInstance().player.getCommandSenderWorld());
 		}
 
-		openNeonSign((NeonSignTileEntity) tileentity);
+		openNeonSign((NeonSignBlockEntity) tileentity);
 	}
 }

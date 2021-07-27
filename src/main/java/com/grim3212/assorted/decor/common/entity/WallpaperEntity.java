@@ -58,12 +58,12 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 		this.direction = Direction.SOUTH;
 	}
 
-	public WallpaperEntity(Level world) {
-		this(DecorEntityTypes.WALLPAPER.get(), world);
+	public WallpaperEntity(EntityType<? extends WallpaperEntity> type, Level level, BlockPos pos, Direction dir) {
+		super(type, level, pos);
 	}
 
 	public WallpaperEntity(Level world, BlockPos pos, Direction direction) {
-		this(world);
+		this(DecorEntityTypes.WALLPAPER.get(), world, pos, direction);
 		this.pos = pos;
 		this.setDirection(direction);
 
@@ -321,5 +321,12 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
+	}
+
+	@Override
+	public boolean shouldRenderAtSqrDistance(double p_31769_) {
+		double d0 = 16.0D;
+		d0 = d0 * 64.0D * getViewScale();
+		return p_31769_ < d0 * d0;
 	}
 }

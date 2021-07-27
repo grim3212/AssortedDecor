@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.common.block.tileentity.ColorizerTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.client.Minecraft;
@@ -68,8 +68,8 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
 		BlockState blockState = Blocks.AIR.defaultBlockState();
-		if (extraData.getData(ColorizerTileEntity.BLOCK_STATE) != null) {
-			blockState = extraData.getData(ColorizerTileEntity.BLOCK_STATE);
+		if (extraData.getData(ColorizerBlockEntity.BLOCK_STATE) != null) {
+			blockState = extraData.getData(ColorizerBlockEntity.BLOCK_STATE);
 		}
 
 		return this.getCachedModel(blockState).getQuads(state, side, rand, extraData);
@@ -109,7 +109,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 
 	@Override
 	public TextureAtlasSprite getParticleIcon(IModelData data) {
-		BlockState state = data.getData(ColorizerTileEntity.BLOCK_STATE);
+		BlockState state = data.getData(ColorizerBlockEntity.BLOCK_STATE);
 		if (state == null) {
 			return this.baseSprite;
 		} else if (state == Blocks.AIR.defaultBlockState()) {

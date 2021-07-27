@@ -19,9 +19,10 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	public static final BooleanProperty UP = BooleanProperty.create("up");
 
+	//TODO: Make sure bounding box is good
 	public static final VoxelShape POT_STOOL = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 16F, 13.12F);
 	private static final VoxelShape STOOL_FLOOR = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 10.08F, 13.12F);
-	private static final VoxelShape STOOL_CEILING = Block.box(2.88F, 16F, 2.88F, 13.12F, 5.92F, 13.12F);
+	private static final VoxelShape STOOL_CEILING = Block.box(2.88F, 5.92F, 2.88F, 13.12F, 16F, 13.12F);
 	private static final VoxelShape STOOL_NORTH = Block.box(2.88F, 2.88F, 5.92F, 13.12F, 12.96F, 16F);
 	private static final VoxelShape STOOL_SOUTH = Block.box(2.88F, 2.88F, 0.0F, 13.12F, 12.96F, 10.08F);
 	private static final VoxelShape STOOL_WEST = Block.box(5.92F, 2.88F, 2.88F, 16F, 12.96F, 13.12F);
@@ -50,7 +51,8 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos).setValue(UP, isPotUp(stateIn, worldIn, currentPos));
+		BlockState state = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return state.getBlock() == this ? state.setValue(UP, isPotUp(stateIn, worldIn, currentPos)) : state;
 	}
 
 	private boolean isPotUp(BlockState stoolState, BlockGetter world, BlockPos pos) {

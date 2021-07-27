@@ -3,7 +3,7 @@ package com.grim3212.assorted.decor.common.network;
 import java.util.function.Supplier;
 
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -52,8 +52,8 @@ public class NeonUpdatePacket {
 				BlockState state = player.level.getBlockState(this.pos);
 				BlockEntity te = player.level.getBlockEntity(this.pos);
 
-				if (te instanceof NeonSignTileEntity) {
-					NeonSignTileEntity neonSign = (NeonSignTileEntity) te;
+				if (te instanceof NeonSignBlockEntity) {
+					NeonSignBlockEntity neonSign = (NeonSignBlockEntity) te;
 					if (!neonSign.getOwner().getUUID().equals(player.getUUID())) {
 						AssortedDecor.LOGGER.warn(AssortedDecor.MODNAME, "Player " + player.getName().getString() + " just tried to change a neon sign they don't own");
 						return;

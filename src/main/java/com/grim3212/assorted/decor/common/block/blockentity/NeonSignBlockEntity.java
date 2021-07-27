@@ -1,4 +1,4 @@
-package com.grim3212.assorted.decor.common.block.tileentity;
+package com.grim3212.assorted.decor.common.block.blockentity;
 
 import java.util.UUID;
 
@@ -24,13 +24,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class NeonSignTileEntity extends BlockEntity {
+public class NeonSignBlockEntity extends BlockEntity {
 
 	public static final TextComponent EMPTY = new TextComponent("");
 
@@ -38,8 +39,12 @@ public class NeonSignTileEntity extends BlockEntity {
 	private UUID owner;
 	public int mode = 0;
 
-	public NeonSignTileEntity(BlockPos pos, BlockState state) {
-		super(DecorTileEntityTypes.NEON_SIGN.get(), pos, state);
+	public NeonSignBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
+	}
+	
+	public NeonSignBlockEntity(BlockPos pos, BlockState state) {
+		super(DecorBlockEntityTypes.NEON_SIGN.get(), pos, state);
 	}
 
 	@OnlyIn(Dist.CLIENT)

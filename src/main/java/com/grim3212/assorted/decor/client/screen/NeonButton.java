@@ -42,7 +42,7 @@ public class NeonButton extends Button {
 	public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		if (this.visible) {
 			Minecraft mc = Minecraft.getInstance();
-			mc.getTextureManager().bindForSetup(NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
+			RenderSystem.setShaderTexture(0, NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
 			RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
 			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
 			int i = this.getYImage(this.isHovered);

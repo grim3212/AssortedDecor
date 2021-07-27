@@ -1,8 +1,9 @@
 package com.grim3212.assorted.decor.common.proxy;
 
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
-
 import net.minecraft.world.entity.player.Player;
+
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 
@@ -17,7 +18,7 @@ public interface IProxy {
 		return null;
 	}
 
-	default void openNeonSign(NeonSignTileEntity tile) {
+	default void openNeonSign(NeonSignBlockEntity tile) {
 	}
 
 	default void handleOpenNeonSign(BlockPos pos) {

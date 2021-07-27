@@ -19,10 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
 
 	private static final ResourceLocation wallpaperTexture = new ResourceLocation(AssortedDecor.MODID, "textures/entity/wallpapers.png");
@@ -33,6 +30,7 @@ public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
 
 	@Override
 	public void render(WallpaperEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 		matrixStackIn.pushPose();
 
 		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityYaw));

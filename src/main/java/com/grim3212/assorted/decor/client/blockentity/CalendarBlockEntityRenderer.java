@@ -1,7 +1,7 @@
-package com.grim3212.assorted.decor.client.tileentity;
+package com.grim3212.assorted.decor.client.blockentity;
 
 import com.grim3212.assorted.decor.common.block.CalendarBlock;
-import com.grim3212.assorted.decor.common.block.tileentity.CalendarTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.CalendarBlockEntity;
 import com.grim3212.assorted.decor.common.util.DateHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
@@ -13,16 +13,16 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
-public class CalendarTileEntityRenderer implements BlockEntityRenderer<CalendarTileEntity> {
+public class CalendarBlockEntityRenderer implements BlockEntityRenderer<CalendarBlockEntity> {
 
 	private final Font font;
 
-	public CalendarTileEntityRenderer(BlockEntityRendererProvider.Context context) {
+	public CalendarBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		this.font = context.getFont();
 	}
 
 	@Override
-	public void render(CalendarTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(CalendarBlockEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 
 		float f1 = 0.6666667F;

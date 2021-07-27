@@ -1,4 +1,4 @@
-package com.grim3212.assorted.decor.common.block.tileentity;
+package com.grim3212.assorted.decor.common.block.blockentity;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -9,20 +9,25 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ColorizerTileEntity extends BlockEntity {
+public class ColorizerBlockEntity extends BlockEntity {
 
 	// TODO: Color overrides
 	public static final ModelProperty<BlockState> BLOCK_STATE = new ModelProperty<BlockState>();
 	protected BlockState blockState = Blocks.AIR.defaultBlockState();
 
-	public ColorizerTileEntity(BlockPos pos, BlockState state) {
-		super(DecorTileEntityTypes.COLORIZER.get(), pos, state);
+	public ColorizerBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
+	}
+	
+	public ColorizerBlockEntity(BlockPos pos, BlockState state) {
+		super(DecorBlockEntityTypes.COLORIZER.get(), pos, state);
 	}
 
 	@Override
@@ -33,7 +38,7 @@ public class ColorizerTileEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
+		compound = super.save(compound);
 		this.writePacketNBT(compound);
 		return compound;
 	}

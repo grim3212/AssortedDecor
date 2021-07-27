@@ -1,4 +1,4 @@
-package com.grim3212.assorted.decor.common.block.tileentity;
+package com.grim3212.assorted.decor.common.block.blockentity;
 
 import com.grim3212.assorted.decor.common.block.WallClockBlock;
 
@@ -9,12 +9,17 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class WallClockTileEntity extends BlockEntity {
+public class WallClockBlockEntity extends BlockEntity {
 
-	public WallClockTileEntity(BlockPos pos, BlockState state) {
-		super(DecorTileEntityTypes.WALL_CLOCK.get(), pos, state);
+	public WallClockBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
+		super(tileEntityTypeIn, pos, state);
+	}
+
+	public WallClockBlockEntity(BlockPos pos, BlockState state) {
+		super(DecorBlockEntityTypes.WALL_CLOCK.get(), pos, state);
 	}
 
 	private int time = 0;

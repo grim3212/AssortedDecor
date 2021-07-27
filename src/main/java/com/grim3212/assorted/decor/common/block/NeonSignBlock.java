@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.common.block;
 
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.common.block.tileentity.NeonSignTileEntity;
+import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
 import net.minecraft.core.BlockPos;
@@ -54,7 +54,7 @@ public class NeonSignBlock extends Block implements SimpleWaterloggedBlock, Enti
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new NeonSignTileEntity(pos, state);
+		return new NeonSignBlockEntity(pos, state);
 	}
 
 	@Override
@@ -65,12 +65,12 @@ public class NeonSignBlock extends Block implements SimpleWaterloggedBlock, Enti
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (worldIn.isClientSide) {
-			AssortedDecor.proxy.openNeonSign((NeonSignTileEntity) worldIn.getBlockEntity(pos));
+			AssortedDecor.proxy.openNeonSign((NeonSignBlockEntity) worldIn.getBlockEntity(pos));
 			return InteractionResult.SUCCESS;
 		} else {
 			BlockEntity tileentity = worldIn.getBlockEntity(pos);
-			if (tileentity instanceof NeonSignTileEntity) {
-				NeonSignTileEntity sign = (NeonSignTileEntity) tileentity;
+			if (tileentity instanceof NeonSignBlockEntity) {
+				NeonSignBlockEntity sign = (NeonSignBlockEntity) tileentity;
 				return sign.executeCommand(player) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 			}
 			return InteractionResult.FAIL;
