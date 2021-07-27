@@ -41,8 +41,8 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockState stoolState = super.getStateForPlacement(context);
-		
-		if(stoolState == null) {
+
+		if (stoolState == null) {
 			return this.defaultBlockState();
 		}
 		return stoolState.setValue(UP, isPotUp(stoolState, context.getLevel(), context.getClickedPos()));
@@ -50,7 +50,8 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos).setValue(UP, isPotUp(stateIn, worldIn, currentPos));
+		BlockState state = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return state.getBlock() == this ? state.setValue(UP, isPotUp(stateIn, worldIn, currentPos)) : state;
 	}
 
 	private boolean isPotUp(BlockState stoolState, IBlockReader world, BlockPos pos) {
@@ -64,19 +65,19 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 		}
 
 		switch (getFacing(state)) {
-		case DOWN:
-			return STOOL_CEILING;
-		case EAST:
-			return STOOL_EAST;
-		case NORTH:
-			return STOOL_NORTH;
-		case SOUTH:
-			return STOOL_SOUTH;
-		case WEST:
-			return STOOL_WEST;
-		case UP:
-		default:
-			return STOOL_FLOOR;
+			case DOWN:
+				return STOOL_CEILING;
+			case EAST:
+				return STOOL_EAST;
+			case NORTH:
+				return STOOL_NORTH;
+			case SOUTH:
+				return STOOL_SOUTH;
+			case WEST:
+				return STOOL_WEST;
+			case UP:
+			default:
+				return STOOL_FLOOR;
 		}
 	}
 
@@ -87,19 +88,19 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 		}
 
 		switch (getFacing(state)) {
-		case DOWN:
-			return STOOL_CEILING;
-		case EAST:
-			return STOOL_EAST;
-		case NORTH:
-			return STOOL_NORTH;
-		case SOUTH:
-			return STOOL_SOUTH;
-		case WEST:
-			return STOOL_WEST;
-		case UP:
-		default:
-			return COLLISION_STOOL_FLOOR;
+			case DOWN:
+				return STOOL_CEILING;
+			case EAST:
+				return STOOL_EAST;
+			case NORTH:
+				return STOOL_NORTH;
+			case SOUTH:
+				return STOOL_SOUTH;
+			case WEST:
+				return STOOL_WEST;
+			case UP:
+			default:
+				return COLLISION_STOOL_FLOOR;
 		}
 	}
 

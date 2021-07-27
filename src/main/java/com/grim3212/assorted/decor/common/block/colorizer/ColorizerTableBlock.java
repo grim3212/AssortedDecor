@@ -42,19 +42,19 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		switch (getFacing(state)) {
-		case DOWN:
-			return ColorizerCounterBlock.COUNTER_CEILING;
-		case EAST:
-			return ColorizerCounterBlock.COUNTER_EAST;
-		case NORTH:
-			return ColorizerCounterBlock.COUNTER_NORTH;
-		case SOUTH:
-			return ColorizerCounterBlock.COUNTER_SOUTH;
-		case WEST:
-			return ColorizerCounterBlock.COUNTER_WEST;
-		case UP:
-		default:
-			return ColorizerCounterBlock.COUNTER_FLOOR;
+			case DOWN:
+				return ColorizerCounterBlock.COUNTER_CEILING;
+			case EAST:
+				return ColorizerCounterBlock.COUNTER_EAST;
+			case NORTH:
+				return ColorizerCounterBlock.COUNTER_NORTH;
+			case SOUTH:
+				return ColorizerCounterBlock.COUNTER_SOUTH;
+			case WEST:
+				return ColorizerCounterBlock.COUNTER_WEST;
+			case UP:
+			default:
+				return ColorizerCounterBlock.COUNTER_FLOOR;
 		}
 	}
 
@@ -67,11 +67,11 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockState tableState = super.getStateForPlacement(context);
-		
-		if(tableState == null) {
+
+		if (tableState == null) {
 			return this.defaultBlockState();
 		}
-		
+
 		BlockPos blockpos = context.getClickedPos();
 		BlockPos northPos = blockpos.north();
 		BlockPos eastPos = blockpos.east();
@@ -85,7 +85,7 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		BlockState superState = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-		return superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos));
+		return superState.getBlock() == this ? superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos)) : superState;
 	}
 
 	public boolean canConnectTo(IBlockReader worldIn, BlockPos currentPos, BlockPos placePos) {
