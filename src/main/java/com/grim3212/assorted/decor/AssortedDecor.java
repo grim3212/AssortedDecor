@@ -67,7 +67,6 @@ public class AssortedDecor {
 
 		DecorBlocks.BLOCKS.register(modBus);
 		DecorItems.ITEMS.register(modBus);
-		AssortedDecor.LOGGER.info(DecorBlocks.NEON_SIGN.getId().getPath());
 		DecorBlockEntityTypes.BLOCK_ENTITIES.register(modBus);
 		DecorEntityTypes.ENTITIES.register(modBus);
 

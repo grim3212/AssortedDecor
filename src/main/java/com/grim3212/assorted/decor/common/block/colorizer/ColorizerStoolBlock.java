@@ -19,7 +19,6 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 
 	public static final BooleanProperty UP = BooleanProperty.create("up");
 
-	//TODO: Make sure bounding box is good
 	public static final VoxelShape POT_STOOL = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 16F, 13.12F);
 	private static final VoxelShape STOOL_FLOOR = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 10.08F, 13.12F);
 	private static final VoxelShape STOOL_CEILING = Block.box(2.88F, 5.92F, 2.88F, 13.12F, 16F, 13.12F);

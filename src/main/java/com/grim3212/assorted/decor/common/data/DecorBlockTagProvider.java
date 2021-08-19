@@ -3,8 +3,8 @@ package com.grim3212.assorted.decor.common.data;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -28,6 +28,9 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 		this.tag(BlockTags.WALL_SIGNS).add(DecorBlocks.NEON_SIGN_WALL.get());
 
 		this.tag(BlockTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get());
+
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.QUARTZ_DOOR.get());
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.colorizerBlocks());
 	}
 
 	@Override
