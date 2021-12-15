@@ -4,29 +4,29 @@ import javax.annotation.Nullable;
 
 import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ColorizerVerticalSlabBlock extends ColorizerBlock implements SimpleWaterloggedBlock {
 
@@ -56,16 +56,16 @@ public class ColorizerVerticalSlabBlock extends ColorizerBlock implements Simple
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		VerticalSlabType slabtype = state.getValue(TYPE);
 		switch (slabtype) {
-		case DOUBLE:
-			return Shapes.block();
-		case NORTH:
-			return NORTH_SHAPE;
-		case EAST:
-			return EAST_SHAPE;
-		case WEST:
-			return WEST_SHAPE;
-		default:
-			return SOUTH_SHAPE;
+			case DOUBLE:
+				return Shapes.block();
+			case NORTH:
+				return NORTH_SHAPE;
+			case EAST:
+				return EAST_SHAPE;
+			case WEST:
+				return WEST_SHAPE;
+			default:
+				return SOUTH_SHAPE;
 		}
 	}
 
@@ -128,7 +128,7 @@ public class ColorizerVerticalSlabBlock extends ColorizerBlock implements Simple
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(WATERLOGGED)) {
-			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+			worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 
 		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -137,14 +137,14 @@ public class ColorizerVerticalSlabBlock extends ColorizerBlock implements Simple
 	@Override
 	public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
 		switch (type) {
-		case LAND:
-			return false;
-		case WATER:
-			return worldIn.getFluidState(pos).is(FluidTags.WATER);
-		case AIR:
-			return false;
-		default:
-			return false;
+			case LAND:
+				return false;
+			case WATER:
+				return worldIn.getFluidState(pos).is(FluidTags.WATER);
+			case AIR:
+				return false;
+			default:
+				return false;
 		}
 	}
 

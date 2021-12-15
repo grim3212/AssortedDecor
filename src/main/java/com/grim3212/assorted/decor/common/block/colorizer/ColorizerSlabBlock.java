@@ -50,7 +50,7 @@ public class ColorizerSlabBlock extends SlabBlock implements IColorizer, EntityB
 	}
 
 	@Override
-	public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
 		ItemStack itemstack = new ItemStack(this);
 		NBTHelper.putTag(itemstack, "stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
 		return itemstack;

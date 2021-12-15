@@ -1,6 +1,5 @@
 package com.grim3212.assorted.decor.client.screen;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -8,7 +7,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.fmlclient.gui.GuiUtils;
 
 public class NeonButton extends Button {
 
@@ -66,7 +64,7 @@ public class NeonButton extends Button {
 
 		if (this.hoverCount > 30 && !this.getMessage().getString().isEmpty()) {
 			Minecraft mc = Minecraft.getInstance();
-			GuiUtils.drawHoveringText(matrixStack, ImmutableList.of(this.getMessage()), x, y, mc.screen.width, mc.screen.height, 120, mc.font);
+			mc.screen.renderTooltip(matrixStack, getMessage(), x, y);
 		}
 	}
 

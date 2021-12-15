@@ -42,7 +42,7 @@ public class NeonSignBlockEntity extends BlockEntity {
 	public NeonSignBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 	}
-	
+
 	public NeonSignBlockEntity(BlockPos pos, BlockState state) {
 		super(DecorBlockEntityTypes.NEON_SIGN.get(), pos, state);
 	}
@@ -90,34 +90,26 @@ public class NeonSignBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		super.save(compound);
-		this.writePacketNBT(compound);
-		return compound;
+	protected void saveAdditional(CompoundTag compound) {
+		super.saveAdditional(compound);
+		compound.putInt("Mode", mode);
+		compound.putUUID("Owner", owner);
+
+		for (int i = 0; i < 4; ++i) {
+			String s = MutableComponent.Serializer.toJson(this.signText[i]);
+			compound.putString("Text" + (i + 1), s);
+		}
 	}
 
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
-		this.readPacketNBT(nbt);
-	}
 
-	public void writePacketNBT(CompoundTag cmp) {
-		cmp.putInt("Mode", mode);
-		cmp.putUUID("Owner", owner);
+		this.mode = nbt.getInt("Mode");
+		this.owner = nbt.getUUID("Owner");
 
 		for (int i = 0; i < 4; ++i) {
-			String s = MutableComponent.Serializer.toJson(this.signText[i]);
-			cmp.putString("Text" + (i + 1), s);
-		}
-	}
-
-	public void readPacketNBT(CompoundTag cmp) {
-		this.mode = cmp.getInt("Mode");
-		this.owner = cmp.getUUID("Owner");
-
-		for (int i = 0; i < 4; ++i) {
-			String s = cmp.getString("Text" + (i + 1));
+			String s = nbt.getString("Text" + (i + 1));
 			MutableComponent itextcomponent = MutableComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
 			if (this.level instanceof ServerLevel) {
 				try {
@@ -133,20 +125,17 @@ public class NeonSignBlockEntity extends BlockEntity {
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		return this.saveWithoutMetadata();
 	}
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		CompoundTag nbtTagCompound = new CompoundTag();
-		writePacketNBT(nbtTagCompound);
-		return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, nbtTagCompound);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		super.onDataPacket(net, pkt);
-		this.readPacketNBT(pkt.getTag());
 		if (level instanceof ClientLevel) {
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);
 		}

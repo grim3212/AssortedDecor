@@ -103,7 +103,7 @@ public class PlanterPotBlock extends Block {
 
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
-		worldIn.getBlockTicks().scheduleTick(pos, this, 10);
+		worldIn.scheduleTick(pos, this, 10);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class ColorizerBlockEntity extends BlockEntity {
 	public ColorizerBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
 	}
-	
+
 	public ColorizerBlockEntity(BlockPos pos, BlockState state) {
 		super(DecorBlockEntityTypes.COLORIZER.get(), pos, state);
 	}
@@ -33,43 +33,31 @@ public class ColorizerBlockEntity extends BlockEntity {
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
-		this.readPacketNBT(nbt);
+		this.blockState = NbtUtils.readBlockState(nbt.getCompound("stored_state"));
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag compound) {
-		compound = super.save(compound);
-		this.writePacketNBT(compound);
-		return compound;
-	}
-
-	public void writePacketNBT(CompoundTag cmp) {
+	protected void saveAdditional(CompoundTag cmp) {
+		super.saveAdditional(cmp);
 		if (this.blockState.getBlock().getRegistryName() != null)
 			cmp.put("stored_state", NbtUtils.writeBlockState(this.blockState));
 		else
 			cmp.put("stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
 	}
 
-	public void readPacketNBT(CompoundTag cmp) {
-		this.blockState = NbtUtils.readBlockState(cmp.getCompound("stored_state"));
-	}
-
 	@Override
 	public CompoundTag getUpdateTag() {
-		return save(new CompoundTag());
+		return this.saveWithoutMetadata();
 	}
 
 	@Override
 	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		CompoundTag nbtTagCompound = new CompoundTag();
-		writePacketNBT(nbtTagCompound);
-		return new ClientboundBlockEntityDataPacket(this.worldPosition, 1, nbtTagCompound);
+		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
 		super.onDataPacket(net, pkt);
-		this.readPacketNBT(pkt.getTag());
 		requestModelDataUpdate();
 		if (level instanceof ClientLevel) {
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 0);

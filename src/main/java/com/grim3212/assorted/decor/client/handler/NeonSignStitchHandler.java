@@ -19,20 +19,20 @@ public class NeonSignStitchHandler {
 
 	public static ResourceLocation getSignTexture(int mode) {
 		switch (mode) {
-		case 0:
-			return NEON_SIGN_TEXTURE;
-		case 1:
-			return NEON_SIGN_WHITE_TEXTURE;
-		case 2:
-			return NEON_SIGN_CLEAR_TEXTURE;
-		default:
-			return VANILLA_SIGN;
+			case 0:
+				return NEON_SIGN_TEXTURE;
+			case 1:
+				return NEON_SIGN_WHITE_TEXTURE;
+			case 2:
+				return NEON_SIGN_CLEAR_TEXTURE;
+			default:
+				return VANILLA_SIGN;
 		}
 	}
 
 	@SubscribeEvent
 	public static void onStitch(TextureStitchEvent.Pre event) {
-		if (!event.getMap().location().equals(Sheets.SIGN_SHEET)) {
+		if (!event.getAtlas().location().equals(Sheets.SIGN_SHEET)) {
 			return;
 		}
 
