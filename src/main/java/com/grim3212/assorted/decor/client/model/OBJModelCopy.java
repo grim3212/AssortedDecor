@@ -78,7 +78,7 @@ public class OBJModelCopy implements IMultipartModelGeometry<OBJModelCopy> {
 	private static ResourceManager manager = Minecraft.getInstance().getResourceManager();
 
 	public static OBJModelCopy loadModel(OBJModel.ModelSettings settings) {
-		try (Resource resource = manager.getResource(settings.modelLocation); LineReader rdr = new LineReader(resource)) {
+		try (Resource resource = manager.getResource(settings.modelLocation()); LineReader rdr = new LineReader(resource)) {
 			return new OBJModelCopy(rdr, settings);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Could not find OBJ model", e);
@@ -88,12 +88,12 @@ public class OBJModelCopy implements IMultipartModelGeometry<OBJModelCopy> {
 	}
 
 	OBJModelCopy(LineReader reader, ModelSettings settings) throws IOException {
-		this.modelLocation = settings.modelLocation;
-		this.detectCullableFaces = settings.detectCullableFaces;
-		this.diffuseLighting = settings.diffuseLighting;
-		this.flipV = settings.flipV;
-		this.ambientToFullbright = settings.ambientToFullbright;
-		this.materialLibraryOverrideLocation = settings.materialLibraryOverrideLocation;
+		this.modelLocation = settings.modelLocation();
+		this.detectCullableFaces = settings.detectCullableFaces();
+		this.diffuseLighting = settings.diffuseLighting();
+		this.flipV = settings.flipV();
+		this.ambientToFullbright = settings.ambientToFullbright();
+		this.materialLibraryOverrideLocation = settings.materialLibraryOverrideLocation();
 
 		// for relative references to material libraries
 		String modelDomain = modelLocation.getNamespace();

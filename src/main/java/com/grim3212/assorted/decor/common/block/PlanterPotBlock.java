@@ -55,8 +55,14 @@ public class PlanterPotBlock extends Block {
 			return true;
 		}
 
-		if (world.getBlockState(pos).getBlock() == DecorBlocks.PLANTER_POT.get()) {
-			int top = world.getBlockState(pos).getValue(TOP);
+		BlockState planterBlock = world.getBlockState(pos);
+		if (planterBlock.getBlock() != DecorBlocks.PLANTER_POT.get()) {
+			pos = pos.relative(facing.getOpposite());
+			planterBlock = world.getBlockState(pos);
+		}
+
+		if (planterBlock.getBlock() == DecorBlocks.PLANTER_POT.get()) {
+			int top = planterBlock.getValue(TOP);
 			switch (top) {
 				case 0:
 					if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
