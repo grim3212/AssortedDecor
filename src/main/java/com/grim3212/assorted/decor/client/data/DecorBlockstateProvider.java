@@ -20,15 +20,14 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
+import net.minecraft.core.Direction;
+import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -38,6 +37,7 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorBlockstateProvider extends BlockStateProvider {
 
@@ -157,7 +157,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	}
 
 	private static String name(Block i) {
-		return Registry.BLOCK.getKey(i).getPath();
+		return ForgeRegistries.BLOCKS.getKey(i).getPath();
 	}
 
 	private void colorizer(Block b, ResourceLocation model) {

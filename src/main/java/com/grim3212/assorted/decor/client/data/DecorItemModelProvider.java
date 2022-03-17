@@ -5,12 +5,12 @@ import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.Registry;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorItemModelProvider extends ItemModelProvider {
 
@@ -44,7 +44,7 @@ public class DecorItemModelProvider extends ItemModelProvider {
 	}
 
 	private static String name(Item i) {
-		return Registry.ITEM.getKey(i).getPath();
+		return ForgeRegistries.ITEMS.getKey(i).getPath();
 	}
 
 	private ResourceLocation prefix(String name) {
