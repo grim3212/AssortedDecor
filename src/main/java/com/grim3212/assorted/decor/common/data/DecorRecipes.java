@@ -47,6 +47,7 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', DecorTags.Items.INGOTS_STEEL).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer, prefix("steel_roadway_manhole"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_LIGHT.get()).define('M', DecorBlocks.ILLUMINATION_PLATE.get()).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
 
+		ShapedRecipeBuilder.shaped(DecorItems.PAINT_ROLLER.get()).define('S', Tags.Items.RODS_WOODEN).define('W', ItemTags.WOOL).pattern("WWW").pattern(" S ").pattern(" S ").unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer);
 		ShapelessRecipeBuilder.shapeless(DecorItems.PAINT_ROLLER.get()).requires(DecorTags.Items.PAINT_ROLLERS).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_paint_roller", has(DecorItems.PAINT_ROLLER.get())).save(consumer, prefix("paint_roller_wash"));
 
 		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> {
