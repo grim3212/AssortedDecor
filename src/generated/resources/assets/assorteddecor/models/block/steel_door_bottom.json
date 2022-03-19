@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom",
+  "textures": {
+    "bottom": "assorteddecor:block/steel_door_bottom",
+    "top": "assorteddecor:block/steel_door_top"
+  }
+}

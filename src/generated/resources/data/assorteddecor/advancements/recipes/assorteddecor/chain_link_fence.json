@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:chain_link_fence"
+    ]
+  },
+  "criteria": {
+    "has_chain_link": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "assorteddecor:chain_link"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:chain_link_fence"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_chain_link",
+      "has_the_recipe"
+    ]
+  ]
+}

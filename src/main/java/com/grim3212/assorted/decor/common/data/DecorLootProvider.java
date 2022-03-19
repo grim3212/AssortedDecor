@@ -58,6 +58,10 @@ public class DecorLootProvider implements DataProvider {
 		blocks.add(DecorBlocks.ROADWAY.get());
 		blocks.add(DecorBlocks.ROADWAY_LIGHT.get());
 		blocks.add(DecorBlocks.ROADWAY_MANHOLE.get());
+		blocks.add(DecorBlocks.CHAIN_LINK_FENCE.get());
+		blocks.add(DecorBlocks.FOUNTAIN.get());
+		blocks.add(DecorBlocks.DECORATIVE_STONE.get());
+		blocks.add(DecorBlocks.STONE_PATH.get());
 
 		DecorBlocks.ROADWAY_COLORS.forEach((c, r) -> blocks.add(r.get()));
 
@@ -126,6 +130,15 @@ public class DecorLootProvider implements DataProvider {
 
 		Path quartzDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.QUARTZ_DOOR.get().getRegistryName());
 		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), quartzDoorPath);
+
+		Path chainLinkDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.CHAIN_LINK_DOOR.get().getRegistryName());
+		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.CHAIN_LINK_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), chainLinkDoorPath);
+
+		Path glassDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.GLASS_DOOR.get().getRegistryName());
+		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.GLASS_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), glassDoorPath);
+
+		Path steelDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.STEEL_DOOR.get().getRegistryName());
+		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.STEEL_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), steelDoorPath);
 	}
 
 	private static Path getPath(Path root, ResourceLocation id) {

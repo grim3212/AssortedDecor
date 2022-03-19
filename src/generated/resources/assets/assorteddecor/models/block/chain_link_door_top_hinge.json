@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_rh",
+  "textures": {
+    "bottom": "assorteddecor:block/chain_link_door_bottom",
+    "top": "assorteddecor:block/chain_link_door_top"
+  }
+}

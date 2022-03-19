@@ -36,7 +36,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
@@ -107,6 +109,13 @@ public class DecorBlocks {
 	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(DyeColor.BLACK));
 
 	public static final RegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<DoorBlock> GLASS_DOOR = register("glass_door", () -> new DoorBlock(Block.Properties.of(Material.GLASS, Blocks.GLASS.defaultMaterialColor()).strength(0.75F, 7.5F).sound(SoundType.GLASS).noOcclusion()));
+	public static final RegistryObject<DoorBlock> STEEL_DOOR = register("steel_door", () -> new DoorBlock(Block.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()));
+	public static final RegistryObject<DoorBlock> CHAIN_LINK_DOOR = register("chain_link_door", () -> new DoorBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<IronBarsBlock> CHAIN_LINK_FENCE = register("chain_link_fence", () -> new IronBarsBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<FountainBlock> FOUNTAIN = register("fountain", () -> new FountainBlock(Block.Properties.of(Material.STONE).strength(1.5F, 10.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> STONE_PATH = register("stone_path", () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> DECORATIVE_STONE = register("decorative_stone", () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
 
 	public static final RegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).noCollission().strength(1f)));
 	public static final RegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1f)));

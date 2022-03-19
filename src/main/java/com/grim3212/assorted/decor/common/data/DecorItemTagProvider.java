@@ -27,13 +27,10 @@ public class DecorItemTagProvider extends ItemTagsProvider {
 		this.tag(Tags.Items.FENCE_GATES).add(DecorBlocks.COLORIZER_FENCE_GATE.get().asItem());
 		this.tag(ItemTags.WALLS).add(DecorBlocks.COLORIZER_WALL.get().asItem());
 		this.tag(ItemTags.TRAPDOORS).add(DecorBlocks.COLORIZER_TRAP_DOOR.get().asItem());
-		this.tag(ItemTags.DOORS).add(DecorBlocks.COLORIZER_DOOR.get().asItem());
 		this.tag(ItemTags.STAIRS).add(DecorBlocks.COLORIZER_STAIRS.get().asItem());
 		this.tag(ItemTags.SLABS).add(DecorBlocks.COLORIZER_SLAB.get().asItem());
 
 		this.tag(ItemTags.SIGNS).add(DecorItems.NEON_SIGN.get());
-
-		this.tag(ItemTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get().asItem());
 
 		this.tag(DecorTags.Items.LANTERN_SOURCE).addTag(ItemTags.CANDLES);
 		this.tag(DecorTags.Items.LANTERN_SOURCE).add(DecorBlocks.ILLUMINATION_TUBE.get().asItem(), Blocks.TORCH.asItem(), Blocks.SOUL_TORCH.asItem());

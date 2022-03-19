@@ -141,11 +141,25 @@ public class DecorRecipes extends RecipeProvider {
 			ShapedRecipeBuilder.shaped(b, 4).define('G', Tags.Items.GLASS).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', b.getColor().getTag()).pattern("GAG").pattern("ALA").pattern("GAG").unlockedBy("has_dye", has(Tags.Items.DYES)).unlockedBy("has_tube", has(DecorBlocks.ILLUMINATION_TUBE.get())).save(consumer);
 		});
 
+		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', Tags.Items.INGOTS_IRON).define('N', Tags.Items.NUGGETS_IRON).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_STEEL).define('N', DecorTags.Items.NUGGETS_STEEL).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(consumer, prefix("chain_link_steel"));
+		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_ALUMINUM).define('N', DecorTags.Items.NUGGETS_ALUMINUM).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM)).save(consumer, prefix("chain_link_aluminum"));
+		ShapedRecipeBuilder.shaped(DecorBlocks.CHAIN_LINK_FENCE.get(), 8).define('X', DecorItems.CHAIN_LINK.get()).pattern("XXX").pattern("XXX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.QUARTZ_DOOR.get(), 3).define('X', Items.QUARTZ).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_quartz", has(Items.QUARTZ)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.GLASS_DOOR.get(), 3).define('X', Tags.Items.GLASS).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_glass", has(Tags.Items.GLASS)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.STEEL_DOOR.get(), 3).define('X', DecorTags.Items.INGOTS_STEEL).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_steel", has(DecorTags.Items.INGOTS_STEEL)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.CHAIN_LINK_DOOR.get(), 3).define('X', DecorItems.CHAIN_LINK.get()).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(consumer);
+
+		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_ALUMINUM).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM)).save(consumer, prefix("fountain_aluminum"));
+		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_STEEL).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(consumer, prefix("fountain_steel"));
+		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', Tags.Items.INGOTS_IRON).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
 
 		ShapedRecipeBuilder.shaped(DecorBlocks.CALENDAR.get()).define('#', Items.PAPER).pattern("##").pattern("##").pattern("##").unlockedBy("has_paper", has(Items.PAPER)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.WALL_CLOCK.get()).define('#', ItemTags.PLANKS).define('C', Items.CLOCK).pattern("###").pattern("#C#").pattern("###").unlockedBy("has_clock", has(Items.CLOCK)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.WALL_CLOCK.get()).define('#', ItemTags.PLANKS).define('R', Tags.Items.DUSTS_REDSTONE).define('G', Tags.Items.INGOTS_GOLD).pattern("#G#").pattern("GRG").pattern("#G#").unlockedBy("has_redstone", has(Tags.Items.DUSTS_REDSTONE)).unlockedBy("has_gold", has(Tags.Items.INGOTS_GOLD)).save(consumer, prefix("wall_clock_alt"));
+
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.STONE), DecorBlocks.DECORATIVE_STONE.get()).unlockedBy("has_stone", has(Blocks.STONE)).save(consumer, prefix("decorative_path_stonecutting"));
+		SingleItemRecipeBuilder.stonecutting(Ingredient.of(Blocks.STONE), DecorBlocks.STONE_PATH.get()).unlockedBy("has_stone", has(Blocks.STONE)).save(consumer, prefix("stone_path_stonecutting"));
 	}
 
 	private ResourceLocation prefix(String name) {

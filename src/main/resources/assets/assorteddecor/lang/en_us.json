@@ -13,6 +13,7 @@
 	"item.assorteddecor.unfired_clay_decoration": "Unfired Clay Decoration",
 	"item.assorteddecor.tarball": "Tarball",
 	"item.assorteddecor.asphalt": "Asphalt",
+	"item.assorteddecor.chain_link": "Chain Link",
 	"item.assorteddecor.paint_roller": "Paint Roller",
 	"item.assorteddecor.paint_roller_white": "White Paint Roller",
 	"item.assorteddecor.paint_roller_orange": "Orange Paint Roller",
@@ -32,6 +33,9 @@
 	"item.assorteddecor.paint_roller_black": "Black Paint Roller",
 	
 	"block.assorteddecor.sidewalk": "Sidewalk",
+	"block.assorteddecor.stone_path": "Stone Path",
+	"block.assorteddecor.decorative_stone": "Decorative Stone",
+	"block.assorteddecor.fountain": "Fountain",
 	"block.assorteddecor.siding_vertical_white": "White Vertical Siding",
 	"block.assorteddecor.siding_vertical_orange": "Orange Vertical Siding",
 	"block.assorteddecor.siding_vertical_magenta": "Magenta Vertical Siding",
@@ -141,6 +145,10 @@
 	"block.assorteddecor.fluro_black": "Black Fluro Tube",
 	
 	"block.assorteddecor.quartz_door": "Quartz Door",
+	"block.assorteddecor.chain_link_fence": "Chain Link Fence",
+	"block.assorteddecor.chain_link_door": "Chain Link Door",
+	"block.assorteddecor.steel_door": "Steel Door",
+	"block.assorteddecor.glass_door": "Glass Door",
 	"block.assorteddecor.calendar": "Calendar",
 	"block.assorteddecor.wall_clock": "Wall Clock",
 	

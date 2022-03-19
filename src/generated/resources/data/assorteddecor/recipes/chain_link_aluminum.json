@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " N ",
+    "NXN",
+    " N "
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "N": {
+      "tag": "forge:nuggets/aluminum"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:chain_link",
+    "count": 4
+  }
+}

@@ -67,6 +67,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		extraModels();
 
 		genericBlock(DecorBlocks.SIDEWALK.get());
+		genericBlock(DecorBlocks.STONE_PATH.get());
+		genericBlock(DecorBlocks.DECORATIVE_STONE.get());
 
 		genericRoadway(DecorBlocks.ROADWAY.get());
 		genericSiding(DecorBlocks.SIDING_HORIZONTAL.get());
@@ -126,6 +128,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		illuminationPlate();
 
 		doorBlock(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"));
+		doorBlock(DecorBlocks.CHAIN_LINK_DOOR.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_top"));
+		doorBlock(DecorBlocks.GLASS_DOOR.get(), resource("block/glass_door_bottom"), resource("block/glass_door_top"));
+		doorBlock(DecorBlocks.STEEL_DOOR.get(), resource("block/steel_door_bottom"), resource("block/steel_door_top"));
+
+		paneBlock(DecorBlocks.CHAIN_LINK_FENCE.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_bottom"));
 
 		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
 		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ResourceLocation(AssortedDecor.MODID, "block/chair"));
@@ -178,6 +185,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		calendar();
 		wallClock();
+		fountain();
 
 		this.loaderModels.previousModels();
 	}
@@ -191,6 +199,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void genericSiding(Block b) {
 		String name = name(b);
 		getVariantBuilder(b).partialState().setModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name, resource("block/color_cube_bottom_top")).texture("side", resource("block/" + name)).texture("bottom", resource("block/siding_top_bottom")).texture("top", resource("block/siding_top_bottom"))).build());
+		itemModels().withExistingParent(name, prefix("block/" + name));
+	}
+
+	private void fountain() {
+		String name = name(DecorBlocks.FOUNTAIN.get());
+		getVariantBuilder(DecorBlocks.FOUNTAIN.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeBottomTop(name, new ResourceLocation("block/furnace_side"), new ResourceLocation("block/furnace_top"), resource("block/fountain_top"))).build());
 		itemModels().withExistingParent(name, prefix("block/" + name));
 	}
 

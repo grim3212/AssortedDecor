@@ -30,9 +30,9 @@ public class DecorBlockTagProvider extends BlockTagsProvider {
 		this.tag(BlockTags.STANDING_SIGNS).add(DecorBlocks.NEON_SIGN.get());
 		this.tag(BlockTags.WALL_SIGNS).add(DecorBlocks.NEON_SIGN_WALL.get());
 
-		this.tag(BlockTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get());
+		this.tag(BlockTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get(), DecorBlocks.GLASS_DOOR.get(), DecorBlocks.CHAIN_LINK_DOOR.get(), DecorBlocks.STEEL_DOOR.get());
 
-		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.QUARTZ_DOOR.get(), DecorBlocks.IRON_LANTERN.get(), DecorBlocks.ILLUMINATION_PLATE.get(), DecorBlocks.SIDEWALK.get(), DecorBlocks.ROADWAY.get(), DecorBlocks.ROADWAY_LIGHT.get(), DecorBlocks.ROADWAY_MANHOLE.get(), DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.QUARTZ_DOOR.get(), DecorBlocks.IRON_LANTERN.get(), DecorBlocks.ILLUMINATION_PLATE.get(), DecorBlocks.SIDEWALK.get(), DecorBlocks.ROADWAY.get(), DecorBlocks.ROADWAY_LIGHT.get(), DecorBlocks.ROADWAY_MANHOLE.get(), DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get(), DecorBlocks.STEEL_DOOR.get(), DecorBlocks.STONE_PATH.get(), DecorBlocks.DECORATIVE_STONE.get());
 		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.colorizerBlocks());
 
 		this.tag(DecorTags.Blocks.ROADWAYS).add(DecorBlocks.ROADWAY.get());

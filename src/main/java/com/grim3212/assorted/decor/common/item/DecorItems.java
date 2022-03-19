@@ -32,6 +32,7 @@ public class DecorItems {
 	public static final RegistryObject<AsphaltItem> ASPHALT = register("asphalt", () -> new AsphaltItem(new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 
 	public static final RegistryObject<Item> PAINT_ROLLER = register("paint_roller", () -> new Item(new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP).stacksTo(1)));
+	public static final RegistryObject<Item> CHAIN_LINK = register("chain_link", () -> new Item(new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP)));
 
 	public static final Map<DyeColor, RegistryObject<PaintRollerItem>> PAINT_ROLLER_COLORS = Maps.newHashMap();
 

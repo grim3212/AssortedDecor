@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "assorteddecor:colorizer_door",
-    "assorteddecor:quartz_door"
+    "assorteddecor:quartz_door",
+    "assorteddecor:glass_door",
+    "assorteddecor:chain_link_door",
+    "assorteddecor:steel_door"
   ]
 }

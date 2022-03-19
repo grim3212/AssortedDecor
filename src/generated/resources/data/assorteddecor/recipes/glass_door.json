@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:glass_door",
+    "count": 3
+  }
+}

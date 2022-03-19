@@ -34,8 +34,15 @@ public class DecorItemModelProvider extends ItemModelProvider {
 		generatedItem(DecorBlocks.CALENDAR.get().asItem());
 		generatedItem(DecorBlocks.WALL_CLOCK.get().asItem());
 		generatedItem(DecorBlocks.QUARTZ_DOOR.get().asItem());
+		generatedItem(DecorBlocks.CHAIN_LINK_DOOR.get().asItem());
+		generatedItem(DecorBlocks.GLASS_DOOR.get().asItem());
+		generatedItem(DecorBlocks.STEEL_DOOR.get().asItem());
 		generatedItem(DecorItems.TARBALL.get());
 		generatedItem(DecorItems.ASPHALT.get());
+		generatedItem(DecorItems.CHAIN_LINK.get());
+
+		String chainFenceName = name(DecorBlocks.CHAIN_LINK_FENCE.get().asItem());
+		withExistingParent(chainFenceName, "item/generated").texture("layer0", prefix("block/chain_link_door_bottom"));
 
 		handheldItem(DecorItems.PAINT_ROLLER.get());
 

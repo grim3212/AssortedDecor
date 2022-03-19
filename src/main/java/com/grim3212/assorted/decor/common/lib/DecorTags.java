@@ -35,6 +35,8 @@ public class DecorTags {
 		public static final TagKey<Item> BUCKETS_WATER = forgeTag("buckets/water");
 		public static final TagKey<Item> INGOTS_ALUMINUM = forgeTag("ingots/aluminum");
 		public static final TagKey<Item> INGOTS_STEEL = forgeTag("ingots/steel");
+		public static final TagKey<Item> NUGGETS_ALUMINUM = forgeTag("nuggets/aluminum");
+		public static final TagKey<Item> NUGGETS_STEEL = forgeTag("nuggets/steel");
 
 		public static final TagKey<Item> TAR = forgeTag("tar");
 		public static final TagKey<Item> LANTERN_SOURCE = decorTag("lantern_source");

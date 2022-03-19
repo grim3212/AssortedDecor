@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:chain_link"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:chain_link_fence",
+    "count": 8
+  }
+}

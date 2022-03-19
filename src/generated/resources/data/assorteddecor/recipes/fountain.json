@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XIX",
+    "XWX",
+    "XIX"
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:cobblestone"
+    },
+    "W": {
+      "tag": "forge:buckets/water"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:fountain"
+  }
+}

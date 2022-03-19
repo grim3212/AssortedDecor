@@ -85,6 +85,10 @@ public class ClientProxy implements IProxy {
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_PLATE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CHAIN_LINK_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CHAIN_LINK_FENCE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.GLASS_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.STEEL_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CLAY_DECORATION.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.BONE_DECORATION.get(), RenderType.cutout());
