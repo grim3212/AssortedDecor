@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "assorteddecor:roadway_purple_wash"
+      "assorteddecor:roadway_wash"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "assorteddecor:roadway_purple_wash"
+        "recipe": "assorteddecor:roadway_wash"
       }
     }
   },

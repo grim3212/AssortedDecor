@@ -48,7 +48,8 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_LIGHT.get()).define('M', DecorBlocks.ILLUMINATION_PLATE.get()).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(DecorItems.PAINT_ROLLER.get()).define('S', Tags.Items.RODS_WOODEN).define('W', ItemTags.WOOL).pattern("WWW").pattern(" S ").pattern(" S ").unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer);
-		ShapelessRecipeBuilder.shapeless(DecorItems.PAINT_ROLLER.get()).requires(DecorTags.Items.PAINT_ROLLERS).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_paint_roller", has(DecorItems.PAINT_ROLLER.get())).save(consumer, prefix("paint_roller_wash"));
+		// How to keep paint rollers as a container but not drop on specific recipes?
+		// ShapelessRecipeBuilder.shapeless(DecorItems.PAINT_ROLLER.get()).requires(DecorTags.Items.PAINT_ROLLERS).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_paint_roller", has(DecorItems.PAINT_ROLLER.get())).save(consumer, prefix("paint_roller_wash"));
 
 		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> {
 			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorItems.PAINT_ROLLER.get()).requires(new IngredientBlockListIngredient(c.getTag(), DecorTags.Items.PAINT_ROLLERS)).unlockedBy("has_dye", has(c.getTag())).save(consumer);
@@ -64,8 +65,9 @@ public class DecorRecipes extends RecipeProvider {
 		DecorBlocks.ROADWAY_COLORS.forEach((c, r) -> {
 			PaintRollerItem matchingColor = DecorItems.PAINT_ROLLER_COLORS.get(c).get();
 			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorBlocks.ROADWAY.get()).requires(matchingColor).unlockedBy("has_paint", has(matchingColor)).save(consumer);
-			ShapelessRecipeBuilder.shapeless(DecorBlocks.ROADWAY.get()).requires(DecorTags.Items.ROADWAYS_COLOR).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_roadway_color", has(DecorTags.Items.ROADWAYS_COLOR)).save(consumer, prefix(r.getId().getPath() + "_wash"));
 		});
+		
+		ShapelessRecipeBuilder.shapeless(DecorBlocks.ROADWAY.get()).requires(DecorTags.Items.ROADWAYS_COLOR).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_roadway_color", has(DecorTags.Items.ROADWAYS_COLOR)).save(consumer, prefix(DecorBlocks.ROADWAY.getId().getPath() + "_wash"));
 
 		ShapedRecipeBuilder.shaped(DecorItems.WALLPAPER.get()).define('X', ItemTags.WOOL).define('#', Items.PAPER).pattern("#X").pattern("#X").pattern("#X").unlockedBy("has_paper", has(Items.PAPER)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorItems.WOOD_FRAME.get()).define('X', ItemTags.PLANKS).pattern("  X").pattern(" X ").pattern("X  ").unlockedBy("has_planks", has(ItemTags.PLANKS)).save(consumer);
