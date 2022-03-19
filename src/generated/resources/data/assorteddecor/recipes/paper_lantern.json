@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "C": {
+      "tag": "assorteddecor:lantern_source"
+    }
+  },
+  "result": {
+    "item": "assorteddecor:paper_lantern"
+  }
+}

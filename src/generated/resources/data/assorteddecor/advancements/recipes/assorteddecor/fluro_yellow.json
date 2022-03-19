@@ -6,24 +6,12 @@
     ]
   },
   "criteria": {
-    "has_dye": {
+    "has_fluro": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "forge:dyes"
-          }
-        ]
-      }
-    },
-    "has_tube": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "assorteddecor:illumination_tube"
-            ]
+            "tag": "assorteddecor:fluro"
           }
         ]
       }
@@ -37,8 +25,7 @@
   },
   "requirements": [
     [
-      "has_dye",
-      "has_tube",
+      "has_fluro",
       "has_the_recipe"
     ]
   ]

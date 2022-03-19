@@ -72,7 +72,6 @@ public class AssortedDecor {
 
 		ModLoadingContext.get().registerConfig(Type.CLIENT, DecorConfig.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(Type.COMMON, DecorConfig.COMMON_SPEC);
-
 	}
 
 	private void setup(final FMLCommonSetupEvent event) {

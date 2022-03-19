@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:tar"
+    },
+    {
+      "tag": "minecraft:planks"
+    },
+    {
+      "item": "assorteddecor:paint_roller_magenta"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:siding_horizontal",
+    "count": 4,
+    "nbt": "{BlockStateTag:{color:\"magenta\"}}"
+  }
+}

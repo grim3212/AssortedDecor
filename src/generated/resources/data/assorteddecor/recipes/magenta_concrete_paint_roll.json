@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_magenta"
+    },
+    {
+      "tag": "forge:concrete"
+    }
+  ],
+  "result": {
+    "item": "minecraft:magenta_concrete"
+  }
+}

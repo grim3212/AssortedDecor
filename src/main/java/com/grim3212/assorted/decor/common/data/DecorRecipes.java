@@ -3,8 +3,13 @@ package com.grim3212.assorted.decor.common.data;
 import java.util.function.Consumer;
 
 import com.grim3212.assorted.decor.AssortedDecor;
+import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.FluroBlock;
+import com.grim3212.assorted.decor.common.crafting.IngredientBlockListIngredient;
+import com.grim3212.assorted.decor.common.crafting.ShapelessItemStackBuilder;
 import com.grim3212.assorted.decor.common.item.DecorItems;
+import com.grim3212.assorted.decor.common.item.PaintRollerItem;
 import com.grim3212.assorted.decor.common.lib.DecorTags;
 
 import net.minecraft.data.DataGenerator;
@@ -16,13 +21,14 @@ import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorRecipes extends RecipeProvider {
 
@@ -32,6 +38,34 @@ public class DecorRecipes extends RecipeProvider {
 
 	@Override
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+		ShapedRecipeBuilder.shaped(DecorBlocks.SIDEWALK.get(), 6).define('X', Tags.Items.STONE).pattern("XXX").pattern("XXX").unlockedBy("has_stone", has(Tags.Items.STONE)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorItems.TARBALL.get(), 16).define('X', ItemTags.COALS).define('G', Tags.Items.GRAVEL).define('W', DecorTags.Items.BUCKETS_WATER).pattern("X").pattern("G").pattern("W").unlockedBy("has_coal", has(ItemTags.COALS)).save(consumer);
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(DecorTags.Items.TAR), DecorItems.ASPHALT.get(), 0.35f, 200).unlockedBy("has_tar", has(DecorTags.Items.TAR)).save(consumer);
+
+		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY.get()).define('A', DecorItems.ASPHALT.get()).define('X', Tags.Items.STONE).pattern("A").pattern("X").unlockedBy("has_asphalt", has(DecorItems.ASPHALT.get())).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', Tags.Items.INGOTS_IRON).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', DecorTags.Items.INGOTS_STEEL).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer, prefix("steel_roadway_manhole"));
+		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_LIGHT.get()).define('M', DecorBlocks.ILLUMINATION_PLATE.get()).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
+
+		ShapelessRecipeBuilder.shapeless(DecorItems.PAINT_ROLLER.get()).requires(DecorTags.Items.PAINT_ROLLERS).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_paint_roller", has(DecorItems.PAINT_ROLLER.get())).save(consumer, prefix("paint_roller_wash"));
+
+		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> {
+			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorItems.PAINT_ROLLER.get()).requires(new IngredientBlockListIngredient(c.getTag(), DecorTags.Items.PAINT_ROLLERS)).unlockedBy("has_dye", has(c.getTag())).save(consumer);
+			ShapelessRecipeBuilder.shapeless(PaintRollerItem.WOOL_BY_DYE.get(c)).requires(r.get()).requires(ItemTags.WOOL).unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer, prefix(name(PaintRollerItem.WOOL_BY_DYE.get(c).asItem()) + "_paint_roll"));
+			ShapelessRecipeBuilder.shapeless(PaintRollerItem.CONCRETE_BY_DYE.get(c)).requires(r.get()).requires(DecorTags.Items.CONCRETE).unlockedBy("has_concrete", has(DecorTags.Items.CONCRETE)).save(consumer, prefix(name(PaintRollerItem.CONCRETE_BY_DYE.get(c).asItem()) + "_paint_roll"));
+			ShapelessRecipeBuilder.shapeless(PaintRollerItem.CONCRETE_POWDER_BY_DYE.get(c)).requires(r.get()).requires(DecorTags.Items.CONCRETE_POWDER).unlockedBy("has_concrete_powder", has(DecorTags.Items.CONCRETE_POWDER)).save(consumer, prefix(name(PaintRollerItem.CONCRETE_POWDER_BY_DYE.get(c).asItem()) + "_paint_roll"));
+			ShapelessRecipeBuilder.shapeless(PaintRollerItem.CARPET_BY_DYE.get(c)).requires(r.get()).requires(DecorTags.Items.CARPET).unlockedBy("has_carpet", has(DecorTags.Items.CARPET)).save(consumer, prefix(name(PaintRollerItem.CARPET_BY_DYE.get(c).asItem()) + "_paint_roll"));
+			ShapelessRecipeBuilder.shapeless(FluroBlock.FLURO_BY_DYE.get(c).get()).requires(r.get()).requires(DecorTags.Items.FLURO).unlockedBy("has_fluro", has(DecorTags.Items.FLURO)).save(consumer, prefix(name(FluroBlock.FLURO_BY_DYE.get(c).get()) + "_paint_roll"));
+			ShapelessItemStackBuilder.shapeless(ColorChangingBlock.getColorStack(new ItemStack(DecorBlocks.SIDING_VERTICAL.get(), 4), c)).requires(DecorTags.Items.TAR).requires(Tags.Items.COBBLESTONE).requires(r.get()).unlockedBy("has_tar", has(DecorTags.Items.TAR)).save(consumer, prefix("siding_vertical_" + c.getName()));
+			ShapelessItemStackBuilder.shapeless(ColorChangingBlock.getColorStack(new ItemStack(DecorBlocks.SIDING_HORIZONTAL.get(), 4), c)).requires(DecorTags.Items.TAR).requires(ItemTags.PLANKS).requires(r.get()).unlockedBy("has_tar", has(DecorTags.Items.TAR)).save(consumer, prefix("siding_horizontal_" + c.getName()));
+		});
+
+		DecorBlocks.ROADWAY_COLORS.forEach((c, r) -> {
+			PaintRollerItem matchingColor = DecorItems.PAINT_ROLLER_COLORS.get(c).get();
+			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorBlocks.ROADWAY.get()).requires(matchingColor).unlockedBy("has_paint", has(matchingColor)).save(consumer);
+			ShapelessRecipeBuilder.shapeless(DecorBlocks.ROADWAY.get()).requires(DecorTags.Items.ROADWAYS_COLOR).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_roadway_color", has(DecorTags.Items.ROADWAYS_COLOR)).save(consumer, prefix(r.getId().getPath() + "_wash"));
+		});
+
 		ShapedRecipeBuilder.shaped(DecorItems.WALLPAPER.get()).define('X', ItemTags.WOOL).define('#', Items.PAPER).pattern("#X").pattern("#X").pattern("#X").unlockedBy("has_paper", has(Items.PAPER)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorItems.WOOD_FRAME.get()).define('X', ItemTags.PLANKS).pattern("  X").pattern(" X ").pattern("X  ").unlockedBy("has_planks", has(ItemTags.PLANKS)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorItems.IRON_FRAME.get()).define('X', Tags.Items.INGOTS_IRON).pattern("  X").pattern(" X ").pattern("X  ").unlockedBy("has_iron", has(Tags.Items.INGOTS_IRON)).save(consumer);
@@ -72,9 +106,19 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_TUBE.get(), 4).define('G', Tags.Items.GLASS).define('L', Tags.Items.DUSTS_GLOWSTONE).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern(" A ").pattern("GLG").pattern(" A ").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_TUBE.get(), 4).define('G', Tags.Items.GLASS).define('L', Tags.Items.DUSTS_GLOWSTONE).define('A', Tags.Items.INGOTS_IRON).pattern(" A ").pattern("GLG").pattern(" A ").unlockedBy("has_aluminum", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer, prefix("illumination_tube_iron"));
 
+		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_PLATE.get(), 8).define('G', Tags.Items.GLASS_PANES).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern("GGG").pattern("ALA").pattern("GGG").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_PLATE.get(), 8).define('G', Tags.Items.GLASS_PANES).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', Tags.Items.INGOTS_IRON).pattern("GGG").pattern("ALA").pattern("GGG").unlockedBy("has_aluminum", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer, prefix("illumination_plate_iron"));
+
 		ShapedRecipeBuilder.shaped(DecorItems.UNFIRED_PLANTER_POT.get()).define('X', Items.CLAY_BALL).pattern("X X").pattern("XXX").unlockedBy("has_clay", has(Items.CLAY_BALL)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorItems.UNFIRED_CLAY_DECORATION.get()).define('X', Items.CLAY_BALL).pattern(" X ").pattern("XXX").pattern("XXX").unlockedBy("has_clay", has(Items.CLAY_BALL)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.BONE_DECORATION.get()).define('X', Tags.Items.BONES).pattern(" X ").pattern("XXX").pattern("XXX").unlockedBy("has_bones", has(Tags.Items.BONES)).save(consumer);
+
+		ShapedRecipeBuilder.shaped(DecorBlocks.PAPER_LANTERN.get()).define('P', Items.PAPER).define('C', DecorTags.Items.LANTERN_SOURCE).pattern(" P ").pattern("PCP").unlockedBy("has_lantern_input", has(DecorTags.Items.LANTERN_SOURCE)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.BONE_LANTERN.get()).define('P', Tags.Items.BONES).define('C', DecorTags.Items.LANTERN_SOURCE).pattern(" P ").pattern("PCP").unlockedBy("has_lantern_input", has(DecorTags.Items.LANTERN_SOURCE)).save(consumer);
+		ShapedRecipeBuilder.shaped(DecorBlocks.IRON_LANTERN.get()).define('P', Tags.Items.INGOTS_IRON).define('C', DecorTags.Items.LANTERN_SOURCE).pattern(" P ").pattern("PCP").unlockedBy("has_lantern_input", has(DecorTags.Items.LANTERN_SOURCE)).save(consumer);
 
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(DecorItems.UNFIRED_PLANTER_POT.get()), DecorBlocks.PLANTER_POT.get(), 0.35f, 200).unlockedBy("has_unfired_planter_pot", has(DecorItems.UNFIRED_PLANTER_POT.get())).save(consumer);
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(DecorItems.UNFIRED_CLAY_DECORATION.get()), DecorBlocks.CLAY_DECORATION.get(), 0.35f, 200).unlockedBy("has_unfired_clay_decoration", has(DecorItems.UNFIRED_CLAY_DECORATION.get())).save(consumer);
 
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_SLAB.get(), 2).unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).save(consumer, prefix("colorizer_slab_stonecutting"));
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_VERTICAL_SLAB.get(), 2).unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).save(consumer, prefix("colorizer_vertical_slab_stonecutting"));
@@ -92,9 +136,10 @@ public class DecorRecipes extends RecipeProvider {
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_PYRAMID.get()).unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).save(consumer, prefix("colorizer_pyramid_stonecutting"));
 		SingleItemRecipeBuilder.stonecutting(Ingredient.of(DecorBlocks.COLORIZER.get()), DecorBlocks.COLORIZER_FULL_PYRAMID.get()).unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).save(consumer, prefix("colorizer_full_pyramid_stonecutting"));
 
-		for (Block b : DecorBlocks.fluroBlocks()) {
-			ShapedRecipeBuilder.shaped(b, 4).define('G', Tags.Items.GLASS).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', fromMaterialColor(b.defaultMaterialColor()).getTag()).pattern("GAG").pattern("ALA").pattern("GAG").unlockedBy("has_dye", has(Tags.Items.DYES)).unlockedBy("has_tube", has(DecorBlocks.ILLUMINATION_TUBE.get())).save(consumer);
-		}
+		FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> {
+			FluroBlock b = x.getValue().get();
+			ShapedRecipeBuilder.shaped(b, 4).define('G', Tags.Items.GLASS).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', b.getColor().getTag()).pattern("GAG").pattern("ALA").pattern("GAG").unlockedBy("has_dye", has(Tags.Items.DYES)).unlockedBy("has_tube", has(DecorBlocks.ILLUMINATION_TUBE.get())).save(consumer);
+		});
 
 		ShapedRecipeBuilder.shaped(DecorBlocks.QUARTZ_DOOR.get(), 3).define('X', Items.QUARTZ).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_quartz", has(Items.QUARTZ)).save(consumer);
 
@@ -107,44 +152,12 @@ public class DecorRecipes extends RecipeProvider {
 		return new ResourceLocation(AssortedDecor.MODID, name);
 	}
 
-	/*
-	 * Not spending time right now to figure this out so just making it super easy
-	 */
-	private DyeColor fromMaterialColor(MaterialColor color) {
-		switch (color.id) {
-			case 15:
-				return DyeColor.ORANGE;
-			case 16:
-				return DyeColor.MAGENTA;
-			case 17:
-				return DyeColor.LIGHT_BLUE;
-			case 18:
-				return DyeColor.YELLOW;
-			case 19:
-				return DyeColor.LIME;
-			case 20:
-				return DyeColor.PINK;
-			case 21:
-				return DyeColor.GRAY;
-			case 22:
-				return DyeColor.LIGHT_GRAY;
-			case 23:
-				return DyeColor.CYAN;
-			case 24:
-				return DyeColor.PURPLE;
-			case 25:
-				return DyeColor.BLUE;
-			case 26:
-				return DyeColor.BROWN;
-			case 27:
-				return DyeColor.GREEN;
-			case 28:
-				return DyeColor.RED;
-			case 29:
-				return DyeColor.BLACK;
-			default:
-				return DyeColor.WHITE;
-		}
+	private String name(Item i) {
+		return ForgeRegistries.ITEMS.getKey(i).getPath();
+	}
+
+	private String name(Block i) {
+		return ForgeRegistries.BLOCKS.getKey(i).getPath();
 	}
 
 	@Override

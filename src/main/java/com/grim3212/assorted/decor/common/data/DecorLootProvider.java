@@ -9,7 +9,9 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.FluroBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
@@ -29,6 +31,8 @@ import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyExplosionDecay;
+import net.minecraft.world.level.storage.loot.functions.CopyBlockState;
+import net.minecraft.world.level.storage.loot.functions.CopyBlockState.Builder;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
@@ -45,6 +49,17 @@ public class DecorLootProvider implements DataProvider {
 		this.generator = generator;
 
 		blocks.add(DecorBlocks.PLANTER_POT.get());
+		blocks.add(DecorBlocks.CLAY_DECORATION.get());
+		blocks.add(DecorBlocks.BONE_DECORATION.get());
+		blocks.add(DecorBlocks.PAPER_LANTERN.get());
+		blocks.add(DecorBlocks.BONE_LANTERN.get());
+		blocks.add(DecorBlocks.IRON_LANTERN.get());
+		blocks.add(DecorBlocks.SIDEWALK.get());
+		blocks.add(DecorBlocks.ROADWAY.get());
+		blocks.add(DecorBlocks.ROADWAY_LIGHT.get());
+		blocks.add(DecorBlocks.ROADWAY_MANHOLE.get());
+
+		DecorBlocks.ROADWAY_COLORS.forEach((c, r) -> blocks.add(r.get()));
 
 		blocks.add(DecorBlocks.COLORIZER.get());
 		blocks.add(DecorBlocks.COLORIZER_CHAIR.get());
@@ -77,11 +92,11 @@ public class DecorLootProvider implements DataProvider {
 		blocks.add(DecorBlocks.NEON_SIGN.get());
 
 		blocks.add(DecorBlocks.ILLUMINATION_TUBE.get());
+		blocks.add(DecorBlocks.ILLUMINATION_PLATE.get());
 		blocks.add(DecorBlocks.CALENDAR.get());
 		blocks.add(DecorBlocks.WALL_CLOCK.get());
 
-		for (Block b : DecorBlocks.fluroBlocks())
-			blocks.add(b);
+		FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> blocks.add(x.getValue().get()));
 	}
 
 	@Override
@@ -91,6 +106,9 @@ public class DecorLootProvider implements DataProvider {
 		for (Block b : blocks) {
 			tables.put(b.getRegistryName(), genRegular(b));
 		}
+
+		tables.put(DecorBlocks.SIDING_VERTICAL.getId(), genColor(DecorBlocks.SIDING_VERTICAL.get()));
+		tables.put(DecorBlocks.SIDING_HORIZONTAL.getId(), genColor(DecorBlocks.SIDING_HORIZONTAL.get()));
 
 		for (Map.Entry<ResourceLocation, LootTable.Builder> e : tables.entrySet()) {
 			Path path = getPath(generator.getOutputFolder(), e.getKey());
@@ -136,6 +154,13 @@ public class DecorLootProvider implements DataProvider {
 	private static LootTable.Builder genVerticalSlab(Block b) {
 		LootPoolEntryContainer.Builder<?> entry = LootItem.lootTableItem(b).apply(ApplyExplosionDecay.explosionDecay()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE))));
 		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantValue.exactly(1)).add(entry);
+		return LootTable.lootTable().withPool(pool);
+	}
+
+	private static LootTable.Builder genColor(Block b) {
+		LootPoolEntryContainer.Builder<?> entry = LootItem.lootTableItem(b);
+		Builder func = CopyBlockState.copyState(b).copy(ColorChangingBlock.COLOR);
+		LootPool.Builder pool = LootPool.lootPool().name("main").setRolls(ConstantValue.exactly(1)).add(entry).when(ExplosionCondition.survivesExplosion()).apply(func);
 		return LootTable.lootTable().withPool(pool);
 	}
 

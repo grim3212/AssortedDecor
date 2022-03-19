@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:roadway"
+    ]
+  },
+  "criteria": {
+    "has_asphalt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "assorteddecor:asphalt"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:roadway"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_asphalt",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_pink"
+    },
+    {
+      "tag": "forge:concrete"
+    }
+  ],
+  "result": {
+    "item": "minecraft:pink_concrete"
+  }
+}

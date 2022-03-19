@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_cyan"
+    },
+    {
+      "tag": "forge:concrete_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:cyan_concrete_powder"
+  }
+}

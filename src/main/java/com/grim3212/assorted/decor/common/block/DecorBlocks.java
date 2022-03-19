@@ -1,8 +1,11 @@
 package com.grim3212.assorted.decor.common.block;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.google.common.collect.Maps;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerChairBlock;
@@ -25,10 +28,12 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTableBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerTrapDoorBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerWallBlock;
+import com.grim3212.assorted.decor.common.item.ColorChangingItem;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
 
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
@@ -82,31 +87,51 @@ public class DecorBlocks {
 	public static final RegistryObject<NeonSignBlock> NEON_SIGN_WALL = registerNoItem("neon_sign_wall", () -> new NeonSignWallBlock());
 
 	public static final RegistryObject<IlluminationTubeBlock> ILLUMINATION_TUBE = register("illumination_tube", () -> new IlluminationTubeBlock(Block.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel(state -> 15).sound(SoundType.GLASS)));
+	public static final RegistryObject<IlluminationPlateBlock> ILLUMINATION_PLATE = register("illumination_plate", () -> new IlluminationPlateBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).lightLevel(state -> 15).sound(SoundType.GLASS)));
 
-	public static final RegistryObject<FluroBlock> FLURO_WHITE = register("fluro_white", () -> new FluroBlock(MaterialColor.SNOW));
-	public static final RegistryObject<FluroBlock> FLURO_ORANGE = register("fluro_orange", () -> new FluroBlock(MaterialColor.COLOR_ORANGE));
-	public static final RegistryObject<FluroBlock> FLURO_MAGENTA = register("fluro_magenta", () -> new FluroBlock(MaterialColor.COLOR_MAGENTA));
-	public static final RegistryObject<FluroBlock> FLURO_LIGHT_BLUE = register("fluro_light_blue", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_BLUE));
-	public static final RegistryObject<FluroBlock> FLURO_YELLOW = register("fluro_yellow", () -> new FluroBlock(MaterialColor.COLOR_YELLOW));
-	public static final RegistryObject<FluroBlock> FLURO_LIME = register("fluro_lime", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_GREEN));
-	public static final RegistryObject<FluroBlock> FLURO_PINK = register("fluro_pink", () -> new FluroBlock(MaterialColor.COLOR_PINK));
-	public static final RegistryObject<FluroBlock> FLURO_GRAY = register("fluro_gray", () -> new FluroBlock(MaterialColor.COLOR_GRAY));
-	public static final RegistryObject<FluroBlock> FLURO_LIGHT_GRAY = register("fluro_light_gray", () -> new FluroBlock(MaterialColor.COLOR_LIGHT_GRAY));
-	public static final RegistryObject<FluroBlock> FLURO_CYAN = register("fluro_cyan", () -> new FluroBlock(MaterialColor.COLOR_CYAN));
-	public static final RegistryObject<FluroBlock> FLURO_PURPLE = register("fluro_purple", () -> new FluroBlock(MaterialColor.COLOR_PURPLE));
-	public static final RegistryObject<FluroBlock> FLURO_BLUE = register("fluro_blue", () -> new FluroBlock(MaterialColor.COLOR_BLUE));
-	public static final RegistryObject<FluroBlock> FLURO_BROWN = register("fluro_brown", () -> new FluroBlock(MaterialColor.COLOR_BROWN));
-	public static final RegistryObject<FluroBlock> FLURO_GREEN = register("fluro_green", () -> new FluroBlock(MaterialColor.COLOR_GREEN));
-	public static final RegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(MaterialColor.COLOR_RED));
-	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(MaterialColor.COLOR_BLACK));
+	public static final RegistryObject<FluroBlock> FLURO_WHITE = register("fluro_white", () -> new FluroBlock(DyeColor.WHITE));
+	public static final RegistryObject<FluroBlock> FLURO_ORANGE = register("fluro_orange", () -> new FluroBlock(DyeColor.ORANGE));
+	public static final RegistryObject<FluroBlock> FLURO_MAGENTA = register("fluro_magenta", () -> new FluroBlock(DyeColor.MAGENTA));
+	public static final RegistryObject<FluroBlock> FLURO_LIGHT_BLUE = register("fluro_light_blue", () -> new FluroBlock(DyeColor.LIGHT_BLUE));
+	public static final RegistryObject<FluroBlock> FLURO_YELLOW = register("fluro_yellow", () -> new FluroBlock(DyeColor.YELLOW));
+	public static final RegistryObject<FluroBlock> FLURO_LIME = register("fluro_lime", () -> new FluroBlock(DyeColor.LIME));
+	public static final RegistryObject<FluroBlock> FLURO_PINK = register("fluro_pink", () -> new FluroBlock(DyeColor.PINK));
+	public static final RegistryObject<FluroBlock> FLURO_GRAY = register("fluro_gray", () -> new FluroBlock(DyeColor.GRAY));
+	public static final RegistryObject<FluroBlock> FLURO_LIGHT_GRAY = register("fluro_light_gray", () -> new FluroBlock(DyeColor.LIGHT_GRAY));
+	public static final RegistryObject<FluroBlock> FLURO_CYAN = register("fluro_cyan", () -> new FluroBlock(DyeColor.CYAN));
+	public static final RegistryObject<FluroBlock> FLURO_PURPLE = register("fluro_purple", () -> new FluroBlock(DyeColor.PURPLE));
+	public static final RegistryObject<FluroBlock> FLURO_BLUE = register("fluro_blue", () -> new FluroBlock(DyeColor.BLUE));
+	public static final RegistryObject<FluroBlock> FLURO_BROWN = register("fluro_brown", () -> new FluroBlock(DyeColor.BROWN));
+	public static final RegistryObject<FluroBlock> FLURO_GREEN = register("fluro_green", () -> new FluroBlock(DyeColor.GREEN));
+	public static final RegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(DyeColor.RED));
+	public static final RegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(DyeColor.BLACK));
 
 	public static final RegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion()));
 
 	public static final RegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).noCollission().strength(1f)));
 	public static final RegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1f)));
 
-	public static Block[] fluroBlocks() {
-		return new Block[] { FLURO_WHITE.get(), FLURO_ORANGE.get(), FLURO_MAGENTA.get(), FLURO_LIGHT_BLUE.get(), FLURO_YELLOW.get(), FLURO_LIME.get(), FLURO_PINK.get(), FLURO_GRAY.get(), FLURO_LIGHT_GRAY.get(), FLURO_CYAN.get(), FLURO_PURPLE.get(), FLURO_BLUE.get(), FLURO_BROWN.get(), FLURO_GREEN.get(), FLURO_RED.get(), FLURO_BLACK.get() };
+	public static final RegistryObject<ClayDecorationBlock> CLAY_DECORATION = register("clay_decoration", () -> new ClayDecorationBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.STONE).noCollission().color(MaterialColor.COLOR_BROWN).instabreak()));
+	public static final RegistryObject<BoneDecorationBlock> BONE_DECORATION = register("bone_decoration", () -> new BoneDecorationBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.BONE_BLOCK).noCollission().color(MaterialColor.COLOR_LIGHT_GRAY).instabreak()));
+
+	public static final RegistryObject<LanternBlock> PAPER_LANTERN = register("paper_lantern", () -> new LanternBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.WOOL).noCollission().color(MaterialColor.COLOR_RED).strength(0.1F)));
+	public static final RegistryObject<LanternBlock> BONE_LANTERN = register("bone_lantern", () -> new LanternBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.BONE_BLOCK).noCollission().color(MaterialColor.COLOR_RED).strength(0.1F)));
+	public static final RegistryObject<LanternBlock> IRON_LANTERN = register("iron_lantern", () -> new LanternBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).noCollission().color(MaterialColor.COLOR_GRAY).strength(0.5F)));
+
+	public static final RegistryObject<Block> SIDEWALK = register("sidewalk", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().friction(0.4F)));
+
+	public static final RegistryObject<ColorChangingBlock> SIDING_VERTICAL = registerColorChanging("siding_vertical", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<ColorChangingBlock> SIDING_HORIZONTAL = registerColorChanging("siding_horizontal", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+
+	public static final RegistryObject<RoadwayBlock> ROADWAY = register("roadway", () -> new RoadwayBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<RoadwayManholeBlock> ROADWAY_MANHOLE = register("roadway_manhole", () -> new RoadwayManholeBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<RoadwayLightBlock> ROADWAY_LIGHT = register("roadway_light", () -> new RoadwayLightBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().lightLevel((b) -> b.getValue(RoadwayLightBlock.ACTIVE) ? 15 : 0)));
+
+	public static final Map<DyeColor, RegistryObject<RoadwayColorBlock>> ROADWAY_COLORS = Maps.newHashMap();
+
+	static {
+		ROADWAY_COLORS.put(DyeColor.WHITE, register("roadway_white", () -> new RoadwayWhiteBlock(Block.Properties.of(Material.STONE, MaterialColor.SNOW).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops())));
+		Arrays.stream(DyeColor.values()).filter((c) -> c != DyeColor.WHITE).forEach((color) -> ROADWAY_COLORS.put(color, register("roadway_" + color.getName(), () -> new RoadwayColorBlock(color, Block.Properties.of(Material.STONE, color.getMaterialColor()).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()))));
 	}
 
 	private static <T extends Block> RegistryObject<T> register(String name, Supplier<? extends T> sup) {
@@ -125,6 +150,14 @@ public class DecorBlocks {
 
 	private static Supplier<BlockItem> item(final RegistryObject<? extends Block> block) {
 		return () -> new BlockItem(block.get(), new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP));
+	}
+
+	private static <T extends Block> RegistryObject<T> registerColorChanging(String name, Supplier<? extends T> sup) {
+		return register(name, sup, block -> colorChangingItem(block));
+	}
+
+	private static Supplier<BlockItem> colorChangingItem(final RegistryObject<? extends Block> block) {
+		return () -> new ColorChangingItem(block.get(), new Item.Properties().tab(AssortedDecor.ASSORTED_DECOR_ITEM_GROUP));
 	}
 
 	public static Block[] colorizerBlocks() {

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_blue"
+    },
+    {
+      "tag": "forge:carpet"
+    }
+  ],
+  "result": {
+    "item": "minecraft:blue_carpet"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:roadway_blue"
+    ]
+  },
+  "criteria": {
+    "has_paint": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "assorteddecor:paint_roller_blue"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:roadway_blue"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_paint",
+      "has_the_recipe"
+    ]
+  ]
+}

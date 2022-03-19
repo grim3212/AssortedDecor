@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_brown"
+    },
+    {
+      "tag": "forge:concrete_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:brown_concrete_powder"
+  }
+}

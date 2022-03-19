@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "assorteddecor:paint_rollers"
+    },
+    {
+      "tag": "forge:buckets/water"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:paint_roller"
+  }
+}

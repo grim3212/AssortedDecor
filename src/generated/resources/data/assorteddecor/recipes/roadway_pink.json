@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:roadway"
+    },
+    {
+      "item": "assorteddecor:paint_roller_pink"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:roadway_pink"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "assorteddecor:item/paint_roller_cyan"
+  }
+}

@@ -29,10 +29,25 @@ public class DecorItemModelProvider extends ItemModelProvider {
 		generatedItem(DecorItems.WOOD_FRAME.get());
 		generatedItem(DecorItems.IRON_FRAME.get());
 		generatedItem(DecorItems.UNFIRED_PLANTER_POT.get());
+		generatedItem(DecorItems.UNFIRED_CLAY_DECORATION.get());
 		generatedItem(DecorItems.NEON_SIGN.get());
 		generatedItem(DecorBlocks.CALENDAR.get().asItem());
 		generatedItem(DecorBlocks.WALL_CLOCK.get().asItem());
 		generatedItem(DecorBlocks.QUARTZ_DOOR.get().asItem());
+		generatedItem(DecorItems.TARBALL.get());
+		generatedItem(DecorItems.ASPHALT.get());
+
+		handheldItem(DecorItems.PAINT_ROLLER.get());
+
+		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> handheldItem(r.get()));
+	}
+
+	private ItemModelBuilder handheldItem(String name) {
+		return withExistingParent(name, "item/handheld").texture("layer0", prefix("item/" + name));
+	}
+
+	private ItemModelBuilder handheldItem(Item i) {
+		return handheldItem(name(i));
 	}
 
 	private ItemModelBuilder generatedItem(String name) {

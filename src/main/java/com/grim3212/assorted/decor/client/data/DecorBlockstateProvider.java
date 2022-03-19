@@ -2,14 +2,21 @@ package com.grim3212.assorted.decor.client.data;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
+import com.grim3212.assorted.decor.common.block.BoneDecorationBlock;
+import com.grim3212.assorted.decor.common.block.ClayDecorationBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.FluroBlock;
 import com.grim3212.assorted.decor.common.block.IlluminationTubeBlock;
 import com.grim3212.assorted.decor.common.block.PlanterPotBlock;
+import com.grim3212.assorted.decor.common.block.RoadwayLightBlock;
+import com.grim3212.assorted.decor.common.block.RoadwayManholeBlock;
+import com.grim3212.assorted.decor.common.block.RoadwayWhiteBlock;
 import com.grim3212.assorted.decor.common.block.WallClockBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBaseBlock;
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerFireplaceBlock;
@@ -23,6 +30,7 @@ import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
@@ -32,6 +40,7 @@ import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelBuilder;
+import net.minecraftforge.client.model.generators.ModelBuilder.FaceRotation;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
@@ -55,23 +64,68 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
+		extraModels();
+
+		genericBlock(DecorBlocks.SIDEWALK.get());
+
+		genericRoadway(DecorBlocks.ROADWAY.get());
+		genericSiding(DecorBlocks.SIDING_HORIZONTAL.get());
+		genericSiding(DecorBlocks.SIDING_VERTICAL.get());
+
+		DecorBlocks.ROADWAY_COLORS.entrySet().stream().filter((e) -> e.getKey() != DyeColor.WHITE).map((e) -> e.getValue()).collect(Collectors.toList()).forEach((r) -> genericRoadway(r.get()));
+
+		getVariantBuilder(DecorBlocks.ROADWAY_COLORS.get(DyeColor.WHITE).get()).forAllStates(state -> {
+			int type = state.getValue(RoadwayWhiteBlock.TYPE);
+			return ConfiguredModel.builder().modelFile(roadwayModel("roadway_white_" + type, resource("block/roadways/roadway_white_" + type))).build();
+		});
+		itemModels().withExistingParent(name(DecorBlocks.ROADWAY_COLORS.get(DyeColor.WHITE).get()), prefix("block/roadway_white_11"));
+
+		getVariantBuilder(DecorBlocks.ROADWAY_LIGHT.get()).forAllStates(state -> {
+			boolean active = state.getValue(RoadwayLightBlock.ACTIVE);
+			return ConfiguredModel.builder().modelFile(roadwayModel("roadway_light_" + (active ? "on" : "off"), resource("block/roadways/roadway_light_" + (active ? "on" : "off")))).build();
+		});
+		itemModels().withExistingParent(name(DecorBlocks.ROADWAY_LIGHT.get()), prefix("block/roadway_light_on"));
+
+		getVariantBuilder(DecorBlocks.ROADWAY_MANHOLE.get()).forAllStates(state -> {
+			boolean open = state.getValue(RoadwayManholeBlock.OPEN);
+			return ConfiguredModel.builder().modelFile(models().cubeBottomTop("roadway_manhole_" + (open ? "open" : "closed"), resource("block/roadways/roadway_side"), resource("block/roadways/roadway_" + (open ? "manhole_bottom" : "manhole_closed")), resource("block/roadways/roadway_manhole_" + (open ? "open" : "closed")))).build();
+		});
+		itemModels().withExistingParent(name(DecorBlocks.ROADWAY_MANHOLE.get()), prefix("block/roadway_manhole_closed"));
+
 		particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
 		particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
 
 		Function<BlockState, ModelFile> modelFunc = (state) -> {
-			return state.getValue(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube")) : models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
+			return state.getValue(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube"))
+					: models().getBuilder(prefix("block/illuminuation_tube_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch_wall"))).texture("torch", prefix("block/illumination_tube"));
 		};
 
-		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get()).forAllStates(state -> {
+		getVariantBuilder(DecorBlocks.ILLUMINATION_TUBE.get()).forAllStatesExcept(state -> {
 			Direction dir = state.getValue(BlockStateProperties.FACING);
 			return ConfiguredModel.builder().modelFile(modelFunc.apply(state)).rotationX(dir == Direction.DOWN ? 180 : 0).rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 90) % 360).build();
-		});
+		}, BlockStateProperties.WATERLOGGED);
 
 		itemModels().withExistingParent("illumination_tube", "item/generated").texture("layer0", prefix("block/illumination_tube"));
 
-		doorBlock(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"));
+		getVariantBuilder(DecorBlocks.CLAY_DECORATION.get()).forAllStatesExcept(state -> {
+			int decoration = state.getValue(ClayDecorationBlock.DECORATION);
+			return ConfiguredModel.builder().modelFile(crossModel("clay_decoration_" + decoration, prefix("block/decorations/clay_decoration_" + decoration))).build();
+		}, BlockStateProperties.WATERLOGGED);
+		itemModels().withExistingParent("clay_decoration", "item/generated").texture("layer0", prefix("block/decorations/clay_decoration_0"));
 
-		extraModels();
+		getVariantBuilder(DecorBlocks.BONE_DECORATION.get()).forAllStatesExcept(state -> {
+			int decoration = state.getValue(BoneDecorationBlock.DECORATION);
+			return ConfiguredModel.builder().modelFile(crossModel("bone_decoration_" + decoration, prefix("block/decorations/bone_decoration_" + decoration))).build();
+		}, BlockStateProperties.WATERLOGGED);
+		itemModels().withExistingParent("bone_decoration", "item/generated").texture("layer0", prefix("block/decorations/bone_decoration_0"));
+
+		cross(DecorBlocks.PAPER_LANTERN.get());
+		cross(DecorBlocks.BONE_LANTERN.get());
+		cross(DecorBlocks.IRON_LANTERN.get());
+
+		illuminationPlate();
+
+		doorBlock(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"));
 
 		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
 		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ResourceLocation(AssortedDecor.MODID, "block/chair"));
@@ -114,17 +168,115 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		BlockModelBuilder fluro = this.models().getBuilder(prefix("block/fluro")).parent(this.models().getExistingFile(resource("block/color_cube_all")));
 		fluro.texture("all", resource("block/fluro"));
 
-		for (Block b : DecorBlocks.fluroBlocks()) {
+		FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> {
+			Block b = x.getValue().get();
 			ModelFile fluroModel = models().withExistingParent(name(b), prefix("block/fluro"));
 
 			getVariantBuilder(b).partialState().addModels(new ConfiguredModel(fluroModel));
 			itemModels().getBuilder(name(b)).parent(fluroModel);
-		}
+		});
 
 		calendar();
 		wallClock();
 
 		this.loaderModels.previousModels();
+	}
+
+	private void genericRoadway(Block b) {
+		String name = name(b);
+		getVariantBuilder(b).partialState().setModels(ConfiguredModel.builder().modelFile(roadwayModel(name, resource("block/roadways/" + name))).build());
+		itemModels().withExistingParent(name, prefix("block/" + name));
+	}
+
+	private void genericSiding(Block b) {
+		String name = name(b);
+		getVariantBuilder(b).partialState().setModels(ConfiguredModel.builder().modelFile(models().withExistingParent(name, resource("block/color_cube_bottom_top")).texture("side", resource("block/" + name)).texture("bottom", resource("block/siding_top_bottom")).texture("top", resource("block/siding_top_bottom"))).build());
+		itemModels().withExistingParent(name, prefix("block/" + name));
+	}
+
+	private BlockModelBuilder roadwayModel(String name, ResourceLocation top) {
+		return models().cubeBottomTop(name, resource("block/roadways/roadway_side"), resource("block/roadways/roadway_bottom"), top);
+	}
+
+	private void genericBlock(Block b) {
+		String name = name(b);
+		simpleBlock(b);
+		itemModels().withExistingParent(name, prefix("block/" + name));
+	}
+
+	private BlockModelBuilder crossModel(String name, String texture) {
+		return models().cross(name, new ResourceLocation(texture));
+	}
+
+	private void cross(Block b) {
+		String s = name(b);
+		ResourceLocation texture = blockTexture(b);
+
+		getVariantBuilder(b).partialState().setModels(new ConfiguredModel(models().cross(s, texture)));
+		itemModels().withExistingParent(s, "item/generated").texture("layer0", texture);
+	}
+
+	private void illuminationPlate() {
+		BlockModelBuilder plateModel = this.models().getBuilder(prefix("block/illumination_plate")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate"));
+		plateModel.element().from(4, 0, 4).to(12, 2, 12).allFaces((dir, face) -> {
+			switch (dir) {
+				case EAST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 12, 4, 4).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
+			}
+		});
+
+		BlockModelBuilder plateWallModel = this.models().getBuilder(prefix("block/illumination_plate_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate"));
+		plateWallModel.element().from(0, 4, 4).to(2, 12, 12).allFaces((dir, face) -> {
+			switch (dir) {
+				case EAST:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(14, 4, 16, 12);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(0, 4, 2, 12);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 4, 12, 12).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 16, 4, 14).rotation(FaceRotation.COUNTERCLOCKWISE_90);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 14, 12, 16).rotation(FaceRotation.CLOCKWISE_90);
+					break;
+			}
+		});
+
+		Function<BlockState, ModelFile> modelFunc = (state) -> {
+			return state.getValue(IlluminationTubeBlock.FACING).getAxis().isVertical() ? plateModel : plateWallModel;
+		};
+
+		getVariantBuilder(DecorBlocks.ILLUMINATION_PLATE.get()).forAllStatesExcept(state -> {
+			Direction dir = state.getValue(BlockStateProperties.FACING);
+			return ConfiguredModel.builder().modelFile(modelFunc.apply(state)).rotationX(dir == Direction.DOWN ? 180 : 0).rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot()) + 90) % 360).build();
+		}, BlockStateProperties.WATERLOGGED);
+
+		itemModels().getBuilder(name(DecorBlocks.ILLUMINATION_PLATE.get())).parent(plateWallModel);
 	}
 
 	private void extraModels() {
@@ -141,6 +293,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		BlockModelBuilder color_cube_all = this.models().getBuilder(prefix("block/color_cube_all")).parent(this.models().getExistingFile(resource("block/color_cube")));
 		color_cube_all.texture("particle", "#all").texture("down", "#all").texture("up", "#all").texture("north", "#all").texture("south", "#all").texture("west", "#all").texture("east", "#all");
+
+		BlockModelBuilder color_cube_bottom_top = this.models().getBuilder(prefix("block/color_cube_bottom_top")).parent(this.models().getExistingFile(resource("block/color_cube")));
+		color_cube_bottom_top.texture("particle", "#side").texture("down", "#bottom").texture("up", "#top").texture("north", "#side").texture("south", "#side").texture("west", "#side").texture("east", "#side");
 	}
 
 	private void particleOnly(Block b, ResourceLocation particle) {

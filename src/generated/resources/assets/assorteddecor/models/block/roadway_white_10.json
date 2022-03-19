@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "assorteddecor:block/roadways/roadway_side",
+    "bottom": "assorteddecor:block/roadways/roadway_bottom",
+    "top": "assorteddecor:block/roadways/roadway_white_10"
+  }
+}

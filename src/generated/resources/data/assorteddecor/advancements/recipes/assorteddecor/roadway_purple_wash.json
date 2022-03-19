@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "assorteddecor:roadway_purple_wash"
+    ]
+  },
+  "criteria": {
+    "has_roadway_color": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "assorteddecor:roadways/color"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "assorteddecor:roadway_purple_wash"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_roadway_color",
+      "has_the_recipe"
+    ]
+  ]
+}

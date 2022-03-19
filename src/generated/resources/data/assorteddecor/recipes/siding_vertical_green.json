@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:tar"
+    },
+    {
+      "tag": "forge:cobblestone"
+    },
+    {
+      "item": "assorteddecor:paint_roller_green"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:siding_vertical",
+    "count": 4,
+    "nbt": "{BlockStateTag:{color:\"green\"}}"
+  }
+}

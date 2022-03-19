@@ -1,0 +1,56 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "assorteddecor:block/illumination_plate",
+    "texture": "assorteddecor:block/illumination_plate"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        4,
+        4
+      ],
+      "to": [
+        2,
+        12,
+        12
+      ],
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            12.0,
+            16.0,
+            4.0,
+            14.0
+          ],
+          "rotation": 270
+        },
+        "up": {
+          "texture": "#texture",
+          "uv": [
+            4.0,
+            14.0,
+            12.0,
+            16.0
+          ],
+          "rotation": 90
+        },
+        "north": {
+          "texture": "#texture"
+        },
+        "south": {
+          "texture": "#texture"
+        },
+        "west": {
+          "texture": "#texture",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "assorteddecor:block/roadway_light_off"
+    },
+    "active=true": {
+      "model": "assorteddecor:block/roadway_light_on"
+    }
+  }
+}

@@ -7,7 +7,9 @@ import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
+import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
+import com.grim3212.assorted.decor.common.block.FluroBlock;
 import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
 import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
@@ -26,9 +28,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AirItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -79,8 +83,15 @@ public class ClientProxy implements IProxy {
 		}
 
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_PLATE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CLAY_DECORATION.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.BONE_DECORATION.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.PAPER_LANTERN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.BONE_LANTERN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.IRON_LANTERN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ROADWAY_MANHOLE.get(), RenderType.cutout());
 
 		BlockEntityRenderers.register(DecorBlockEntityTypes.NEON_SIGN.get(), NeonSignBlockEntityRenderer::new);
 		BlockEntityRenderers.register(DecorBlockEntityTypes.CALENDAR.get(), CalendarBlockEntityRenderer::new);
@@ -141,7 +152,7 @@ public class ClientProxy implements IProxy {
 				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
 					return state.getBlock().defaultMaterialColor().col;
 				}
-			}, DecorBlocks.fluroBlocks());
+			}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
 
 			items.register(new ItemColor() {
 				@Override
@@ -152,7 +163,28 @@ public class ClientProxy implements IProxy {
 					}
 					return 16777215;
 				}
-			}, DecorBlocks.fluroBlocks());
+			}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
+
+			blocks.register(new BlockColor() {
+				@Override
+				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
+					return state.getValue(ColorChangingBlock.COLOR).getMaterialColor().col;
+				}
+			}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
+
+			items.register(new ItemColor() {
+				@Override
+				public int getColor(ItemStack stack, int tint) {
+					if (stack != null && stack.hasTag() && stack.getTag().contains("BlockStateTag")) {
+						CompoundTag blockState = NBTHelper.getTag(stack.getTag(), "BlockStateTag");
+						if (blockState.contains("color")) {
+							DyeColor color = DyeColor.byName(NBTHelper.getString(blockState, "color"), DyeColor.WHITE);
+							return color.getMaterialColor().col;
+						}
+					}
+					return 16777215;
+				}
+			}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
 		});
 	}
 

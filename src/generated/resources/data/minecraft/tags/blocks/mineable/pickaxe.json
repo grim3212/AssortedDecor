@@ -2,6 +2,14 @@
   "replace": false,
   "values": [
     "assorteddecor:quartz_door",
+    "assorteddecor:iron_lantern",
+    "assorteddecor:illumination_plate",
+    "assorteddecor:sidewalk",
+    "assorteddecor:roadway",
+    "assorteddecor:roadway_light",
+    "assorteddecor:roadway_manhole",
+    "assorteddecor:siding_horizontal",
+    "assorteddecor:siding_vertical",
     "assorteddecor:colorizer",
     "assorteddecor:colorizer_chair",
     "assorteddecor:colorizer_table",
@@ -30,6 +38,22 @@
     "assorteddecor:colorizer_firering",
     "assorteddecor:colorizer_firepit",
     "assorteddecor:colorizer_firepit_covered",
-    "assorteddecor:colorizer_stove"
+    "assorteddecor:colorizer_stove",
+    "assorteddecor:roadway_pink",
+    "assorteddecor:roadway_blue",
+    "assorteddecor:roadway_magenta",
+    "assorteddecor:roadway_orange",
+    "assorteddecor:roadway_purple",
+    "assorteddecor:roadway_cyan",
+    "assorteddecor:roadway_light_blue",
+    "assorteddecor:roadway_lime",
+    "assorteddecor:roadway_light_gray",
+    "assorteddecor:roadway_black",
+    "assorteddecor:roadway_yellow",
+    "assorteddecor:roadway_red",
+    "assorteddecor:roadway_brown",
+    "assorteddecor:roadway_white",
+    "assorteddecor:roadway_gray",
+    "assorteddecor:roadway_green"
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "assorteddecor:block/decorations/clay_decoration_0"
+  }
+}

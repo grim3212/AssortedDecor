@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller"
+    },
+    {
+      "type": "assorteddecor:blocklist",
+      "input": {
+        "tag": "forge:dyes/lime"
+      },
+      "blockList": {
+        "tag": "assorteddecor:paint_rollers"
+      }
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:paint_roller_lime"
+  }
+}

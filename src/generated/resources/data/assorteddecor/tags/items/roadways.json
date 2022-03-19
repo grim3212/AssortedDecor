@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "assorteddecor:roadway",
+    "#assorteddecor:roadways/color"
+  ]
+}
