@@ -1,14 +1,23 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "assorteddecor:paint_roller_green"
-    },
-    {
-      "tag": "assorteddecor:fluro"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
   ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    },
+    "A": {
+      "tag": "forge:dyes/green"
+    }
+  },
   "result": {
-    "item": "assorteddecor:fluro_green"
+    "item": "assorteddecor:fluro_green",
+    "count": 4
   }
 }

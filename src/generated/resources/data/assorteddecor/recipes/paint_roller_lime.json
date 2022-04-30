@@ -5,11 +5,11 @@
       "item": "assorteddecor:paint_roller"
     },
     {
-      "type": "assorteddecor:blocklist",
-      "input": {
+      "type": "forge:difference",
+      "base": {
         "tag": "forge:dyes/lime"
       },
-      "blockList": {
+      "subtracted": {
         "tag": "assorteddecor:paint_rollers"
       }
     }

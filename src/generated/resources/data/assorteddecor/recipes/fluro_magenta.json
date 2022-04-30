@@ -1,14 +1,23 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "assorteddecor:paint_roller_magenta"
-    },
-    {
-      "tag": "assorteddecor:fluro"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
   ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    },
+    "A": {
+      "tag": "forge:dyes/magenta"
+    }
+  },
   "result": {
-    "item": "assorteddecor:fluro_magenta"
+    "item": "assorteddecor:fluro_magenta",
+    "count": 4
   }
 }

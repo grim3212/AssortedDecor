@@ -1,14 +1,23 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "assorteddecor:paint_roller_cyan"
-    },
-    {
-      "tag": "assorteddecor:fluro"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
   ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    },
+    "A": {
+      "tag": "forge:dyes/cyan"
+    }
+  },
   "result": {
-    "item": "assorteddecor:fluro_cyan"
+    "item": "assorteddecor:fluro_cyan",
+    "count": 4
   }
 }

@@ -1,14 +1,23 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "assorteddecor:paint_roller_light_blue"
-    },
-    {
-      "tag": "assorteddecor:fluro"
-    }
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
   ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    },
+    "A": {
+      "tag": "forge:dyes/light_blue"
+    }
+  },
   "result": {
-    "item": "assorteddecor:fluro_light_blue"
+    "item": "assorteddecor:fluro_light_blue",
+    "count": 4
   }
 }

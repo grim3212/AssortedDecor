@@ -6,7 +6,6 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.FluroBlock;
-import com.grim3212.assorted.decor.common.crafting.IngredientBlockListIngredient;
 import com.grim3212.assorted.decor.common.crafting.ShapelessItemStackBuilder;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.item.PaintRollerItem;
@@ -28,6 +27,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.DifferenceIngredient;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorRecipes extends RecipeProvider {
@@ -48,11 +48,9 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_LIGHT.get()).define('M', DecorBlocks.ILLUMINATION_PLATE.get()).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(DecorItems.PAINT_ROLLER.get()).define('S', Tags.Items.RODS_WOODEN).define('W', ItemTags.WOOL).pattern("WWW").pattern(" S ").pattern(" S ").unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer);
-		// How to keep paint rollers as a container but not drop on specific recipes?
-		// ShapelessRecipeBuilder.shapeless(DecorItems.PAINT_ROLLER.get()).requires(DecorTags.Items.PAINT_ROLLERS).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_paint_roller", has(DecorItems.PAINT_ROLLER.get())).save(consumer, prefix("paint_roller_wash"));
-
+		
 		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> {
-			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorItems.PAINT_ROLLER.get()).requires(new IngredientBlockListIngredient(c.getTag(), DecorTags.Items.PAINT_ROLLERS)).unlockedBy("has_dye", has(c.getTag())).save(consumer);
+			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorItems.PAINT_ROLLER.get()).requires(DifferenceIngredient.of(Ingredient.of(c.getTag()), Ingredient.of(DecorTags.Items.PAINT_ROLLERS))).unlockedBy("has_dye", has(c.getTag())).save(consumer);
 			ShapelessRecipeBuilder.shapeless(PaintRollerItem.WOOL_BY_DYE.get(c)).requires(r.get()).requires(ItemTags.WOOL).unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer, prefix(name(PaintRollerItem.WOOL_BY_DYE.get(c).asItem()) + "_paint_roll"));
 			ShapelessRecipeBuilder.shapeless(PaintRollerItem.CONCRETE_BY_DYE.get(c)).requires(r.get()).requires(DecorTags.Items.CONCRETE).unlockedBy("has_concrete", has(DecorTags.Items.CONCRETE)).save(consumer, prefix(name(PaintRollerItem.CONCRETE_BY_DYE.get(c).asItem()) + "_paint_roll"));
 			ShapelessRecipeBuilder.shapeless(PaintRollerItem.CONCRETE_POWDER_BY_DYE.get(c)).requires(r.get()).requires(DecorTags.Items.CONCRETE_POWDER).unlockedBy("has_concrete_powder", has(DecorTags.Items.CONCRETE_POWDER)).save(consumer, prefix(name(PaintRollerItem.CONCRETE_POWDER_BY_DYE.get(c).asItem()) + "_paint_roll"));
