@@ -81,6 +81,10 @@ public class ObjModelCopy extends SimpleUnbakedGeometry<ObjModelCopy> {
 	public final String mtlOverride;
 
 	public final ResourceLocation modelLocation;
+	
+	// Start Changes
+	private TextureAtlasSprite texture;
+	// End Changes
 
 	private final Map<String, String> deprecationWarnings;
 
@@ -306,6 +310,21 @@ public class ObjModelCopy extends SimpleUnbakedGeometry<ObjModelCopy> {
 		default -> new Vector4f(Float.parseFloat(line[1]), Float.parseFloat(line[2]), Float.parseFloat(line[3]), Float.parseFloat(line[4]));
 		};
 	}
+	
+	// Start Changes
+	public ObjModelCopy setTexture(TextureAtlasSprite sprite) {
+		this.texture = sprite;
+		return this;
+	}
+
+	public TextureAtlasSprite getTexture() {
+		if (this.texture != null) {
+			return this.texture;
+		}
+		return null;
+	}
+	// End Changes
+	
 
 	@Override
 	protected void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
@@ -464,13 +483,49 @@ public class ObjModelCopy extends SimpleUnbakedGeometry<ObjModelCopy> {
 
 		public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
 			for (ModelMesh mesh : meshes) {
-				mesh.addQuads(owner, modelBuilder, spriteGetter, modelTransform);
+				ObjMaterialLibrary.Material mat = mesh.mat;
+				if (mat == null)
+					continue;
+
+				TextureAtlasSprite texture = getTexture();
+				if (texture == null)
+					texture = spriteGetter.apply(UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, owner));
+
+				int tintIndex = mat.diffuseTintIndex;
+				Vector4f colorTint = mat.diffuseColor;
+
+				for (int[][] face : mesh.faces) {
+					Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.getRotation());
+					if (quad.getRight() == null)
+						modelBuilder.addUnculledFace(quad.getLeft());
+					else
+						modelBuilder.addCulledFace(quad.getRight(), quad.getLeft());
+				}
 			}
 		}
 
 		public void bake(CompositeRenderable.PartBuilder<?> builder, IGeometryBakingContext configuration) {
 			for (ModelMesh mesh : this.meshes) {
-				mesh.bake(builder, configuration);
+				ObjMaterialLibrary.Material mat = mesh.mat;
+				if (mat == null)
+					return;
+				int tintIndex = mat.diffuseTintIndex;
+				Vector4f colorTint = mat.diffuseColor;
+				
+				ResourceLocation textureLocation = getTexture().getName();
+				if (textureLocation == null)
+					textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
+
+				final List<BakedQuad> quads = new ArrayList<>();
+
+				for (var face : mesh.faces) {
+					var pair = makeQuad(face, tintIndex, colorTint, mat.ambientColor, UnitTextureAtlasSprite.INSTANCE, Transformation.identity());
+					quads.add(pair.getLeft());
+				}
+				
+				ResourceLocation texturePath = new ResourceLocation(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
+
+				builder.addMesh(texturePath, quads);
 			}
 		}
 
@@ -535,42 +590,6 @@ public class ObjModelCopy extends SimpleUnbakedGeometry<ObjModelCopy> {
 		public ModelMesh(@Nullable ObjMaterialLibrary.Material currentMat, @Nullable String currentSmoothingGroup) {
 			this.mat = currentMat;
 			this.smoothingGroup = currentSmoothingGroup;
-		}
-
-		public void addQuads(IGeometryBakingContext owner, IModelBuilder<?> modelBuilder, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform) {
-			if (mat == null)
-				return;
-			TextureAtlasSprite texture = spriteGetter.apply(UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, owner));
-			int tintIndex = mat.diffuseTintIndex;
-			Vector4f colorTint = mat.diffuseColor;
-
-			for (int[][] face : faces) {
-				Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.getRotation());
-				if (quad.getRight() == null)
-					modelBuilder.addUnculledFace(quad.getLeft());
-				else
-					modelBuilder.addCulledFace(quad.getRight(), quad.getLeft());
-			}
-		}
-
-		public void bake(CompositeRenderable.PartBuilder<?> builder, IGeometryBakingContext configuration) {
-			ObjMaterialLibrary.Material mat = this.mat;
-			if (mat == null)
-				return;
-			int tintIndex = mat.diffuseTintIndex;
-			Vector4f colorTint = mat.diffuseColor;
-
-			final List<BakedQuad> quads = new ArrayList<>();
-
-			for (var face : this.faces) {
-				var pair = makeQuad(face, tintIndex, colorTint, mat.ambientColor, UnitTextureAtlasSprite.INSTANCE, Transformation.identity());
-				quads.add(pair.getLeft());
-			}
-
-			ResourceLocation textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
-			ResourceLocation texturePath = new ResourceLocation(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
-
-			builder.addMesh(texturePath, quads);
 		}
 	}
 

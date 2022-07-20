@@ -58,7 +58,7 @@ public class ClientProxy implements IProxy {
 
 	private void registerLoaders(final ModelEvent.RegisterGeometryLoaders event) {
 		event.register("models/colorizer", ColorizerBlockModel.Loader.INSTANCE);
-		event.register("models/colorizer_obj", ColorizerObjModel.Loader.INSTANCE);
+		event.register("models/colorizer_obj", ColorizerObjModel.ColorizerObjLoader.INSTANCE);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/door_bottom_left",
+  "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "assorteddecor:block/chain_link_door_bottom",
     "top": "assorteddecor:block/chain_link_door_top"

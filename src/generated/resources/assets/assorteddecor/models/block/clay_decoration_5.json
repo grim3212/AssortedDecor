@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cross",
+  "render_type": "minecraft:cutout",
   "textures": {
     "cross": "assorteddecor:block/decorations/clay_decoration_5"
   }

@@ -91,7 +91,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		getVariantBuilder(DecorBlocks.ROADWAY_MANHOLE.get()).forAllStates(state -> {
 			boolean open = state.getValue(RoadwayManholeBlock.OPEN);
-			return ConfiguredModel.builder().modelFile(models().cubeBottomTop("roadway_manhole_" + (open ? "open" : "closed"), resource("block/roadways/roadway_side"), resource("block/roadways/roadway_" + (open ? "manhole_bottom" : "manhole_closed")), resource("block/roadways/roadway_manhole_" + (open ? "open" : "closed")))).build();
+			return ConfiguredModel.builder().modelFile(models().cubeBottomTop("roadway_manhole_" + (open ? "open" : "closed"), resource("block/roadways/roadway_side"), resource("block/roadways/roadway_" + (open ? "manhole_bottom" : "manhole_closed")), resource("block/roadways/roadway_manhole_" + (open ? "open" : "closed"))).renderType(CUTOUT_RENDER_TYPE)).build();
 		});
 		itemModels().withExistingParent(name(DecorBlocks.ROADWAY_MANHOLE.get()), prefix("block/roadway_manhole_closed"));
 
@@ -112,13 +112,13 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		getVariantBuilder(DecorBlocks.CLAY_DECORATION.get()).forAllStatesExcept(state -> {
 			int decoration = state.getValue(ClayDecorationBlock.DECORATION);
-			return ConfiguredModel.builder().modelFile(crossModel("clay_decoration_" + decoration, prefix("block/decorations/clay_decoration_" + decoration))).build();
+			return ConfiguredModel.builder().modelFile(crossModel("clay_decoration_" + decoration, prefix("block/decorations/clay_decoration_" + decoration)).renderType(CUTOUT_RENDER_TYPE)).build();
 		}, BlockStateProperties.WATERLOGGED);
 		itemModels().withExistingParent("clay_decoration", "item/generated").texture("layer0", prefix("block/decorations/clay_decoration_0"));
 
 		getVariantBuilder(DecorBlocks.BONE_DECORATION.get()).forAllStatesExcept(state -> {
 			int decoration = state.getValue(BoneDecorationBlock.DECORATION);
-			return ConfiguredModel.builder().modelFile(crossModel("bone_decoration_" + decoration, prefix("block/decorations/bone_decoration_" + decoration))).build();
+			return ConfiguredModel.builder().modelFile(crossModel("bone_decoration_" + decoration, prefix("block/decorations/bone_decoration_" + decoration)).renderType(CUTOUT_RENDER_TYPE)).build();
 		}, BlockStateProperties.WATERLOGGED);
 		itemModels().withExistingParent("bone_decoration", "item/generated").texture("layer0", prefix("block/decorations/bone_decoration_0"));
 
@@ -128,12 +128,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		illuminationPlate();
 
-		doorBlock(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"));
-		doorBlock(DecorBlocks.CHAIN_LINK_DOOR.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_top"));
-		doorBlock(DecorBlocks.GLASS_DOOR.get(), resource("block/glass_door_bottom"), resource("block/glass_door_top"));
-		doorBlock(DecorBlocks.STEEL_DOOR.get(), resource("block/steel_door_bottom"), resource("block/steel_door_top"));
+		doorBlockWithRenderType(DecorBlocks.QUARTZ_DOOR.get(), resource("block/quartz_door_bottom"), resource("block/quartz_door_top"), CUTOUT_RENDER_TYPE);
+		doorBlockWithRenderType(DecorBlocks.CHAIN_LINK_DOOR.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_top"), CUTOUT_RENDER_TYPE);
+		doorBlockWithRenderType(DecorBlocks.GLASS_DOOR.get(), resource("block/glass_door_bottom"), resource("block/glass_door_top"), CUTOUT_RENDER_TYPE);
+		doorBlockWithRenderType(DecorBlocks.STEEL_DOOR.get(), resource("block/steel_door_bottom"), resource("block/steel_door_top"), CUTOUT_RENDER_TYPE);
 
-		paneBlock(DecorBlocks.CHAIN_LINK_FENCE.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_bottom"));
+		paneBlockWithRenderType(DecorBlocks.CHAIN_LINK_FENCE.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_bottom"), CUTOUT_RENDER_TYPE);
 
 		colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(AssortedDecor.MODID, "block/tinted_cube"));
 		colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ResourceLocation(AssortedDecor.MODID, "block/chair"));
