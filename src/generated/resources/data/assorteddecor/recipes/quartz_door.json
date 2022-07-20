@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XX",
-    "XX",
-    "XX"
-  ],
   "key": {
     "X": {
       "item": "minecraft:quartz"
     }
   },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
   "result": {
-    "item": "assorteddecor:quartz_door",
-    "count": 3
+    "count": 3,
+    "item": "assorteddecor:quartz_door"
   }
 }

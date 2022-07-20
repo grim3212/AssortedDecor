@@ -1,13 +1,13 @@
 {
   "variants": {
-    "part=top": {
-      "model": "assorteddecor:block/colorizer_lamp_post_top"
+    "part=bottom": {
+      "model": "assorteddecor:block/colorizer_lamp_post_bottom"
     },
     "part=middle": {
       "model": "assorteddecor:block/colorizer_lamp_post_middle"
     },
-    "part=bottom": {
-      "model": "assorteddecor:block/colorizer_lamp_post_bottom"
+    "part=top": {
+      "model": "assorteddecor:block/colorizer_lamp_post_top"
     }
   }
 }

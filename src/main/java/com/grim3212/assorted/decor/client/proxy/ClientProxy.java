@@ -3,7 +3,7 @@ package com.grim3212.assorted.decor.client.proxy;
 import com.grim3212.assorted.decor.client.blockentity.CalendarBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
-import com.grim3212.assorted.decor.client.model.ColorizerOBJModel;
+import com.grim3212.assorted.decor.client.model.ColorizerObjModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
 import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
@@ -23,8 +23,6 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -41,7 +39,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -55,11 +53,12 @@ public class ClientProxy implements IProxy {
 		modBus.addListener(this::setupClient);
 		modBus.addListener(this::registerRenderers);
 		modBus.addListener(this::loadComplete);
+		modBus.addListener(this::registerLoaders);
+	}
 
-		if (Minecraft.getInstance() != null) {
-			ModelLoaderRegistry.registerLoader(ColorizerBlockModel.Loader.LOCATION, ColorizerBlockModel.Loader.INSTANCE);
-			ModelLoaderRegistry.registerLoader(ColorizerOBJModel.Loader.LOCATION, ColorizerOBJModel.Loader.INSTANCE);
-		}
+	private void registerLoaders(final ModelEvent.RegisterGeometryLoaders event) {
+		event.register("models/colorizer", ColorizerBlockModel.Loader.INSTANCE);
+		event.register("models/colorizer_obj", ColorizerObjModel.Loader.INSTANCE);
 	}
 
 	@Override
@@ -78,25 +77,6 @@ public class ClientProxy implements IProxy {
 	}
 
 	private void setupClient(final FMLClientSetupEvent event) {
-		for (Block b : DecorBlocks.colorizerBlocks()) {
-			ItemBlockRenderTypes.setRenderLayer(b, RenderType.translucent());
-		}
-
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_TUBE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ILLUMINATION_PLATE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.QUARTZ_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CHAIN_LINK_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CHAIN_LINK_FENCE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.GLASS_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.STEEL_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.WALL_CLOCK.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.CLAY_DECORATION.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.BONE_DECORATION.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.PAPER_LANTERN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.BONE_LANTERN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.IRON_LANTERN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(DecorBlocks.ROADWAY_MANHOLE.get(), RenderType.cutout());
-
 		BlockEntityRenderers.register(DecorBlockEntityTypes.NEON_SIGN.get(), NeonSignBlockEntityRenderer::new);
 		BlockEntityRenderers.register(DecorBlockEntityTypes.CALENDAR.get(), CalendarBlockEntityRenderer::new);
 	}

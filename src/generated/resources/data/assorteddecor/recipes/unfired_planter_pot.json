@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X X",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "minecraft:clay_ball"
     }
   },
+  "pattern": [
+    "X X",
+    "XXX"
+  ],
   "result": {
     "item": "assorteddecor:unfired_planter_pot"
   }

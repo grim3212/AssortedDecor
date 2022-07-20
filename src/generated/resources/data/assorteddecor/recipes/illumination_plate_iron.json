@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "GGG",
-    "ALA",
-    "GGG"
-  ],
   "key": {
+    "A": {
+      "tag": "forge:ingots/iron"
+    },
     "G": {
       "tag": "forge:glass_panes"
     },
     "L": {
       "item": "assorteddecor:illumination_tube"
-    },
-    "A": {
-      "tag": "forge:ingots/iron"
     }
   },
+  "pattern": [
+    "GGG",
+    "ALA",
+    "GGG"
+  ],
   "result": {
-    "item": "assorteddecor:illumination_plate",
-    "count": 8
+    "count": 8,
+    "item": "assorteddecor:illumination_plate"
   }
 }

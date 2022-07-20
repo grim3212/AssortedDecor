@@ -1,8 +1,8 @@
 {
   "type": "minecraft:stonecutting",
+  "count": 2,
   "ingredient": {
     "item": "assorteddecor:colorizer"
   },
-  "result": "assorteddecor:colorizer_vertical_slab",
-  "count": 2
+  "result": "assorteddecor:colorizer_vertical_slab"
 }

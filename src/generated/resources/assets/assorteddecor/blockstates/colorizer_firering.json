@@ -6,11 +6,11 @@
       }
     },
     {
-      "when": {
-        "active": "true"
-      },
       "apply": {
         "model": "assorteddecor:block/fire"
+      },
+      "when": {
+        "active": "true"
       }
     }
   ]

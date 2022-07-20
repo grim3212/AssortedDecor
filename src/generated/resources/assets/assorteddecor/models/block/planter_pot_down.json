@@ -1,11 +1,35 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "assorteddecor:block/planter_pot",
-    "side": "assorteddecor:block/planter_pot"
-  },
   "elements": [
     {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#side",
+          "uv": [
+            13.0,
+            13.0,
+            3.0,
+            3.0
+          ]
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
       "from": [
         3,
         0,
@@ -15,35 +39,11 @@
         13,
         16,
         13
-      ],
-      "faces": {
-        "down": {
-          "texture": "#side",
-          "uv": [
-            13.0,
-            13.0,
-            3.0,
-            3.0
-          ],
-          "cullface": "down"
-        },
-        "up": {
-          "texture": "#top",
-          "cullface": "up"
-        },
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "particle": "assorteddecor:block/planter_pot",
+    "side": "assorteddecor:block/planter_pot"
+  }
 }

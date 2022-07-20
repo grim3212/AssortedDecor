@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,7 +29,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ColorizerBrush extends Item {
 
 	public ColorizerBrush(Properties properties) {
-		super(properties.durability(DecorConfig.COMMON.brushChargeCount.get()));
+		super(properties.durability(16));
+	}
+
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public int getMaxDamage(ItemStack stack) {
+		return DecorConfig.COMMON.brushChargeCount.get();
 	}
 
 	@Override
@@ -39,9 +48,9 @@ public class ColorizerBrush extends Item {
 		BlockState state = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
 
 		if (state.getBlock() == Blocks.AIR) {
-			tooltip.add(new TranslatableComponent("tooltip.colorizer_brush.empty"));
+			tooltip.add(Component.translatable("tooltip.colorizer_brush.empty"));
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.colorizer_brush.stored", state.getBlock().getName()));
+			tooltip.add(Component.translatable("tooltip.colorizer_brush.stored", state.getBlock().getName()));
 		}
 	}
 

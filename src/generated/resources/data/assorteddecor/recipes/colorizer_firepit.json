@@ -1,19 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
   "pattern": [
     "XPX",
     "XXX"
   ],
-  "key": {
-    "X": {
-      "item": "assorteddecor:colorizer"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
-  },
   "result": {
-    "item": "assorteddecor:colorizer_firepit",
-    "count": 4
+    "count": 4,
+    "item": "assorteddecor:colorizer_firepit"
   }
 }

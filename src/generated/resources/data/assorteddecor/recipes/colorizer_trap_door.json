@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XXX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "assorteddecor:colorizer"
     }
   },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
   "result": {
-    "item": "assorteddecor:colorizer_trap_door",
-    "count": 2
+    "count": 2,
+    "item": "assorteddecor:colorizer_trap_door"
   }
 }

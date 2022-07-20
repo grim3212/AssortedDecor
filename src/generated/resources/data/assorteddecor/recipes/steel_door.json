@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XX",
-    "XX",
-    "XX"
-  ],
   "key": {
     "X": {
       "tag": "forge:ingots/steel"
     }
   },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
   "result": {
-    "item": "assorteddecor:steel_door",
-    "count": 3
+    "count": 3,
+    "item": "assorteddecor:steel_door"
   }
 }

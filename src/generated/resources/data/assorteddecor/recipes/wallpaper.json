@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:paper"
+    },
+    "X": {
+      "tag": "minecraft:wool"
+    }
+  },
   "pattern": [
     "#X",
     "#X",
     "#X"
   ],
-  "key": {
-    "X": {
-      "tag": "minecraft:wool"
-    },
-    "#": {
-      "item": "minecraft:paper"
-    }
-  },
   "result": {
     "item": "assorteddecor:wallpaper"
   }

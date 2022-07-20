@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " SX",
-    " RS",
-    "R  "
-  ],
   "key": {
-    "X": {
-      "item": "assorteddecor:colorizer"
-    },
     "R": {
       "tag": "forge:rods/wooden"
     },
     "S": {
       "tag": "forge:string"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
     }
   },
+  "pattern": [
+    " SX",
+    " RS",
+    "R  "
+  ],
   "result": {
     "item": "assorteddecor:colorizer_brush"
   }

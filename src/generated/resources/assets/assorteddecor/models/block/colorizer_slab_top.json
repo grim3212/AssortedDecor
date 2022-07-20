@@ -1,9 +1,9 @@
 {
-  "textures": {
-    "particle": "assorteddecor:block/colorizer"
-  },
-  "loader": "assorteddecor:models/colorizer",
   "colorizer": {
     "parent": "assorteddecor:block/slab_top"
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
   }
 }

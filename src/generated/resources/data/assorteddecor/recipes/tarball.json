@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "G",
-    "W"
-  ],
   "key": {
-    "X": {
-      "tag": "minecraft:coals"
-    },
     "G": {
       "tag": "forge:gravel"
     },
     "W": {
       "tag": "forge:buckets/water"
+    },
+    "X": {
+      "tag": "minecraft:coals"
     }
   },
+  "pattern": [
+    "X",
+    "G",
+    "W"
+  ],
   "result": {
-    "item": "assorteddecor:tarball",
-    "count": 16
+    "count": 16,
+    "item": "assorteddecor:tarball"
   }
 }

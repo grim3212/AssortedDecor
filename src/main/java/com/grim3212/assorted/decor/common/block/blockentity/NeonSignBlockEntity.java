@@ -17,7 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +32,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NeonSignBlockEntity extends BlockEntity {
 
-	public static final TextComponent EMPTY = new TextComponent("");
+	public static final MutableComponent EMPTY = Component.literal("");
 
 	public MutableComponent[] signText = new MutableComponent[] { EMPTY, EMPTY, EMPTY, EMPTY };
 	private UUID owner;
@@ -85,7 +84,7 @@ public class NeonSignBlockEntity extends BlockEntity {
 
 	public CommandSourceStack getCommandSource(@Nullable ServerPlayer playerIn) {
 		String s = playerIn == null ? "Sign" : playerIn.getName().getString();
-		Component itextcomponent = (Component) (playerIn == null ? new TextComponent("Sign") : playerIn.getDisplayName());
+		Component itextcomponent = (Component) (playerIn == null ? Component.literal("Sign") : playerIn.getDisplayName());
 		return new CommandSourceStack(CommandSource.NULL, Vec3.atCenterOf(this.worldPosition), Vec2.ZERO, (ServerLevel) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
 	}
 

@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "XXX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "item": "minecraft:clay_ball"
     }
   },
+  "pattern": [
+    " X ",
+    "XXX",
+    "XXX"
+  ],
   "result": {
     "item": "assorteddecor:unfired_clay_decoration"
   }

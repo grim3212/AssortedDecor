@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "M",
-    "X"
-  ],
   "key": {
     "M": {
       "tag": "forge:ingots/iron"
@@ -12,6 +8,10 @@
       "item": "assorteddecor:roadway"
     }
   },
+  "pattern": [
+    "M",
+    "X"
+  ],
   "result": {
     "item": "assorteddecor:roadway_manhole"
   }

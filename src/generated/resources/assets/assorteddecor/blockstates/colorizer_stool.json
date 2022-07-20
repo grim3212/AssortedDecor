@@ -1,41 +1,40 @@
 {
   "variants": {
-    "face=floor,facing=north,up=false": {
-      "model": "assorteddecor:block/colorizer_stool"
-    },
-    "face=wall,facing=north,up=false": {
+    "face=ceiling,facing=east,up=false": {
       "model": "assorteddecor:block/colorizer_stool",
-      "x": 90
+      "x": 180,
+      "y": 270
+    },
+    "face=ceiling,facing=east,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
+      "x": 180,
+      "y": 270
     },
     "face=ceiling,facing=north,up=false": {
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180,
       "y": 180
     },
-    "face=floor,facing=south,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "y": 180
-    },
-    "face=wall,facing=south,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "x": 90,
+    "face=ceiling,facing=north,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
+      "x": 180,
       "y": 180
     },
     "face=ceiling,facing=south,up=false": {
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180
     },
-    "face=floor,facing=west,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "y": 270
-    },
-    "face=wall,facing=west,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "x": 90,
-      "y": 270
+    "face=ceiling,facing=south,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
+      "x": 180
     },
     "face=ceiling,facing=west,up=false": {
       "model": "assorteddecor:block/colorizer_stool",
+      "x": 180,
+      "y": 90
+    },
+    "face=ceiling,facing=west,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
       "x": 180,
       "y": 90
     },
@@ -43,57 +42,35 @@
       "model": "assorteddecor:block/colorizer_stool",
       "y": 90
     },
-    "face=wall,facing=east,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "x": 90,
+    "face=floor,facing=east,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
       "y": 90
     },
-    "face=ceiling,facing=east,up=false": {
-      "model": "assorteddecor:block/colorizer_stool",
-      "x": 180,
-      "y": 270
+    "face=floor,facing=north,up=false": {
+      "model": "assorteddecor:block/colorizer_stool"
     },
     "face=floor,facing=north,up=true": {
       "model": "assorteddecor:block/colorizer_stool_up"
     },
-    "face=wall,facing=north,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 90
-    },
-    "face=ceiling,facing=north,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 180,
+    "face=floor,facing=south,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
       "y": 180
     },
     "face=floor,facing=south,up=true": {
       "model": "assorteddecor:block/colorizer_stool_up",
       "y": 180
     },
-    "face=wall,facing=south,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 90,
-      "y": 180
-    },
-    "face=ceiling,facing=south,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 180
+    "face=floor,facing=west,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
+      "y": 270
     },
     "face=floor,facing=west,up=true": {
       "model": "assorteddecor:block/colorizer_stool_up",
       "y": 270
     },
-    "face=wall,facing=west,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
+    "face=wall,facing=east,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
       "x": 90,
-      "y": 270
-    },
-    "face=ceiling,facing=west,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 180,
-      "y": 90
-    },
-    "face=floor,facing=east,up=true": {
-      "model": "assorteddecor:block/colorizer_stool_up",
       "y": 90
     },
     "face=wall,facing=east,up=true": {
@@ -101,9 +78,32 @@
       "x": 90,
       "y": 90
     },
-    "face=ceiling,facing=east,up=true": {
+    "face=wall,facing=north,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
+      "x": 90
+    },
+    "face=wall,facing=north,up=true": {
       "model": "assorteddecor:block/colorizer_stool_up",
-      "x": 180,
+      "x": 90
+    },
+    "face=wall,facing=south,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=south,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=west,up=false": {
+      "model": "assorteddecor:block/colorizer_stool",
+      "x": 90,
+      "y": 270
+    },
+    "face=wall,facing=west,up=true": {
+      "model": "assorteddecor:block/colorizer_stool_up",
+      "x": 90,
       "y": 270
     }
   }

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.35,
   "ingredient": {
     "tag": "forge:tar"
   },
-  "result": "assorteddecor:asphalt",
-  "experience": 0.35,
-  "cookingtime": 200
+  "result": "assorteddecor:asphalt"
 }

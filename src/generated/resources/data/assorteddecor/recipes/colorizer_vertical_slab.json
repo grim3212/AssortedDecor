@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "X",
-    "X",
-    "X"
-  ],
   "key": {
     "X": {
       "item": "assorteddecor:colorizer"
     }
   },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
   "result": {
-    "item": "assorteddecor:colorizer_vertical_slab",
-    "count": 6
+    "count": 6,
+    "item": "assorteddecor:colorizer_vertical_slab"
   }
 }

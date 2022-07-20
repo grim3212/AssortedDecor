@@ -116,12 +116,12 @@ public class PaintRollerItem extends Item {
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
+	public boolean hasCraftingRemainingItem(ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack) {
+	public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
 		ItemStack copy = itemStack.copy();
 
 		copy.setDamageValue(copy.getDamageValue() + 1);

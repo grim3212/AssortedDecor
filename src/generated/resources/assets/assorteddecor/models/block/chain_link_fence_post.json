@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/template_glass_pane_post",
   "textures": {
-    "pane": "assorteddecor:block/chain_link_door_bottom",
-    "edge": "assorteddecor:block/chain_link_door_bottom"
+    "edge": "assorteddecor:block/chain_link_door_bottom",
+    "pane": "assorteddecor:block/chain_link_door_bottom"
   }
 }

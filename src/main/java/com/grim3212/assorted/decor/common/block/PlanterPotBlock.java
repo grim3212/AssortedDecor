@@ -1,12 +1,11 @@
 package com.grim3212.assorted.decor.common.block;
 
-import java.util.Random;
-
 import com.grim3212.assorted.decor.common.block.colorizer.ColorizerStoolBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -64,46 +63,46 @@ public class PlanterPotBlock extends Block {
 		if (planterBlock.getBlock() == DecorBlocks.PLANTER_POT.get()) {
 			int top = planterBlock.getValue(TOP);
 			switch (top) {
-				case 0:
-					if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
-						return true;
-					}
+			case 0:
+				if ((plantType == PlantType.PLAINS && !this.isStool(world, pos)) || (plantType == PlantType.PLAINS && plant.getBlock() instanceof FlowerBlock)) {
+					return true;
+				}
 
-					if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
-						boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-						return hasWater;
-					}
-					break;
-				case 1:
-					if ((plantType == PlantType.DESERT && !this.isStool(world, pos)) || (plantType == PlantType.DESERT && plant.getBlock() == Blocks.DEAD_BUSH)) {
-						return true;
-					}
-					if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
-						boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
-						return hasWater;
-					}
-					break;
-				case 2:
-					return false;
-				case 3:
-					return false;
-				case 4:
-					if (plantType == PlantType.CROP && !this.isStool(world, pos))
-						return true;
-					break;
-				case 5:
-					return false;
-				case 6:
-					if (plantType == PlantType.NETHER && !this.isStool(world, pos))
-						return true;
-					break;
+				if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
+					boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+					return hasWater;
+				}
+				break;
+			case 1:
+				if ((plantType == PlantType.DESERT && !this.isStool(world, pos)) || (plantType == PlantType.DESERT && plant.getBlock() == Blocks.DEAD_BUSH)) {
+					return true;
+				}
+				if (plantType == PlantType.BEACH && !this.isStool(world, pos)) {
+					boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+					return hasWater;
+				}
+				break;
+			case 2:
+				return false;
+			case 3:
+				return false;
+			case 4:
+				if (plantType == PlantType.CROP && !this.isStool(world, pos))
+					return true;
+				break;
+			case 5:
+				return false;
+			case 6:
+				if (plantType == PlantType.NETHER && !this.isStool(world, pos))
+					return true;
+				break;
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
 		worldIn.updateNeighborsAt(pos, this);
 	}
 

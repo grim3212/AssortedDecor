@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
   "pattern": [
     "XGX",
     "XXX",
     " X "
   ],
-  "key": {
-    "X": {
-      "item": "assorteddecor:colorizer"
-    },
-    "G": {
-      "item": "minecraft:glowstone"
-    }
-  },
   "result": {
-    "item": "assorteddecor:colorizer_lamp_post",
-    "count": 2
+    "count": 2,
+    "item": "assorteddecor:colorizer_lamp_post"
   }
 }

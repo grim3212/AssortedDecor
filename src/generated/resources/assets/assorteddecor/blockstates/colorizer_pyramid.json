@@ -1,38 +1,18 @@
 {
   "variants": {
-    "face=floor,facing=north": {
-      "model": "assorteddecor:block/colorizer_pyramid"
-    },
-    "face=wall,facing=north": {
+    "face=ceiling,facing=east": {
       "model": "assorteddecor:block/colorizer_pyramid",
-      "x": 90
+      "x": 180,
+      "y": 270
     },
     "face=ceiling,facing=north": {
       "model": "assorteddecor:block/colorizer_pyramid",
       "x": 180,
       "y": 180
     },
-    "face=floor,facing=south": {
-      "model": "assorteddecor:block/colorizer_pyramid",
-      "y": 180
-    },
-    "face=wall,facing=south": {
-      "model": "assorteddecor:block/colorizer_pyramid",
-      "x": 90,
-      "y": 180
-    },
     "face=ceiling,facing=south": {
       "model": "assorteddecor:block/colorizer_pyramid",
       "x": 180
-    },
-    "face=floor,facing=west": {
-      "model": "assorteddecor:block/colorizer_pyramid",
-      "y": 270
-    },
-    "face=wall,facing=west": {
-      "model": "assorteddecor:block/colorizer_pyramid",
-      "x": 90,
-      "y": 270
     },
     "face=ceiling,facing=west": {
       "model": "assorteddecor:block/colorizer_pyramid",
@@ -43,14 +23,34 @@
       "model": "assorteddecor:block/colorizer_pyramid",
       "y": 90
     },
+    "face=floor,facing=north": {
+      "model": "assorteddecor:block/colorizer_pyramid"
+    },
+    "face=floor,facing=south": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "y": 180
+    },
+    "face=floor,facing=west": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "y": 270
+    },
     "face=wall,facing=east": {
       "model": "assorteddecor:block/colorizer_pyramid",
       "x": 90,
       "y": 90
     },
-    "face=ceiling,facing=east": {
+    "face=wall,facing=north": {
       "model": "assorteddecor:block/colorizer_pyramid",
-      "x": 180,
+      "x": 90
+    },
+    "face=wall,facing=south": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=west": {
+      "model": "assorteddecor:block/colorizer_pyramid",
+      "x": 90,
       "y": 270
     }
   }

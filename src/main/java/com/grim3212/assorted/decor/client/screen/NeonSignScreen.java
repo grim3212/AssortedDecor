@@ -31,8 +31,6 @@ import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -57,7 +55,7 @@ public class NeonSignScreen extends Screen {
 	public static final ResourceLocation NEON_SIGN_GUI_TEXTURE = new ResourceLocation(AssortedDecor.MODID, "textures/gui/screen/neon_sign.png");
 
 	public NeonSignScreen(NeonSignBlockEntity teSign) {
-		super(new TranslatableComponent("sign.edit"));
+		super(Component.translatable("sign.edit"));
 		this.tileSign = teSign;
 		this.lines = IntStream.range(0, 4).mapToObj(teSign::getText).map(Component::getString).toArray((p_243354_0_) -> {
 			return new String[p_243354_0_];
@@ -73,57 +71,57 @@ public class NeonSignScreen extends Screen {
 			return this.lines[this.editLine];
 		}, (s) -> {
 			this.lines[this.editLine] = s;
-			this.tileSign.setText(this.editLine, new TextComponent(s));
+			this.tileSign.setText(this.editLine, Component.literal(s));
 		}, TextFieldHelper.createClipboardGetter(this.minecraft), TextFieldHelper.createClipboardSetter(this.minecraft), (s) -> {
 			return this.minecraft.font.width(s) <= 90;
 		});
 
 		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		this.addRenderableWidget(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, new TranslatableComponent("gui.done"), btn -> {
+		this.addRenderableWidget(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, Component.translatable("gui.done"), btn -> {
 			this.close();
 		}));
 
 		for (int l = 0; l < 11; l++) {
 			final int id = l + 1;
-			this.addRenderableWidget(new NeonButton(x + 11 + 14 * l, y + 136, new TextComponent(""), 176, l * 14, btn -> {
+			this.addRenderableWidget(new NeonButton(x + 11 + 14 * l, y + 136, Component.literal(""), 176, l * 14, btn -> {
 				addSignText(id);
 			}));
 		}
 
 		for (int i1 = 11; i1 < 16; i1++) {
 			final int id = i1 + 1;
-			this.addRenderableWidget(new NeonButton(x + 11 + 14 * (i1 - 11), y + 150, new TextComponent(""), 176, i1 * 14, btn -> {
+			this.addRenderableWidget(new NeonButton(x + 11 + 14 * (i1 - 11), y + 150, Component.literal(""), 176, i1 * 14, btn -> {
 				addSignText(id);
 			}));
 		}
 
-		this.addRenderableWidget(new NeonButton(x + 11 + 70, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.bold"), 204, 0, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 70, y + 150, Component.translatable("screen.assorteddecor.neon_sign.bold"), 204, 0, btn -> {
 			addSignText(17);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 84, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.italic"), 204, 14, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 84, y + 150, Component.translatable("screen.assorteddecor.neon_sign.italic"), 204, 14, btn -> {
 			addSignText(18);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 98, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.underline"), 204, 28, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 98, y + 150, Component.translatable("screen.assorteddecor.neon_sign.underline"), 204, 28, btn -> {
 			addSignText(19);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 112, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.strikethrough"), 204, 42, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 112, y + 150, Component.translatable("screen.assorteddecor.neon_sign.strikethrough"), 204, 42, btn -> {
 			addSignText(20);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 126, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.random"), 204, 56, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 126, y + 150, Component.translatable("screen.assorteddecor.neon_sign.random"), 204, 56, btn -> {
 			addSignText(21);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 140, y + 150, new TranslatableComponent("screen.assorteddecor.neon_sign.reset"), 204, 70, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 140, y + 150, Component.translatable("screen.assorteddecor.neon_sign.reset"), 204, 70, btn -> {
 			addSignText(22);
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11, y + 164, new TextComponent(""), 0, 208, 51, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11, y + 164, Component.literal(""), 0, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 0;
 			PacketHandler.sendToServer(new NeonChangeModePacket(0, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 51, y + 164, new TextComponent(""), 51, 208, 52, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 51, y + 164, Component.literal(""), 51, 208, 52, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 1;
 			PacketHandler.sendToServer(new NeonChangeModePacket(1, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
-		this.addRenderableWidget(new NeonButton(x + 11 + 103, y + 164, new TextComponent(""), 103, 208, 51, true, btn -> {
+		this.addRenderableWidget(new NeonButton(x + 11 + 103, y + 164, Component.literal(""), 103, 208, 51, true, btn -> {
 			NeonSignScreen.this.tileSign.mode = 2;
 			PacketHandler.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getBlockPos()));
 		}));
@@ -164,30 +162,30 @@ public class NeonSignScreen extends Screen {
 
 	private ChatFormatting getFormatting(int buttonId) {
 		switch (buttonId) {
-			case 11:
-				return ChatFormatting.GREEN;
-			case 12:
-				return ChatFormatting.AQUA;
-			case 13:
-				return ChatFormatting.RED;
-			case 14:
-				return ChatFormatting.LIGHT_PURPLE;
-			case 15:
-				return ChatFormatting.YELLOW;
-			case 16:
-				return ChatFormatting.WHITE;
-			case 17:
-				return ChatFormatting.BOLD;
-			case 18:
-				return ChatFormatting.ITALIC;
-			case 19:
-				return ChatFormatting.UNDERLINE;
-			case 20:
-				return ChatFormatting.STRIKETHROUGH;
-			case 21:
-				return ChatFormatting.OBFUSCATED;
-			case 22:
-				return ChatFormatting.RESET;
+		case 11:
+			return ChatFormatting.GREEN;
+		case 12:
+			return ChatFormatting.AQUA;
+		case 13:
+			return ChatFormatting.RED;
+		case 14:
+			return ChatFormatting.LIGHT_PURPLE;
+		case 15:
+			return ChatFormatting.YELLOW;
+		case 16:
+			return ChatFormatting.WHITE;
+		case 17:
+			return ChatFormatting.BOLD;
+		case 18:
+			return ChatFormatting.ITALIC;
+		case 19:
+			return ChatFormatting.UNDERLINE;
+		case 20:
+			return ChatFormatting.STRIKETHROUGH;
+		case 21:
+			return ChatFormatting.OBFUSCATED;
+		case 22:
+			return ChatFormatting.RESET;
 		}
 		return ChatFormatting.getById(buttonId - 1);
 	}
@@ -297,8 +295,7 @@ public class NeonSignScreen extends Screen {
 					bufferbuilder.vertex(matrix4f, (float) l2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.vertex(matrix4f, (float) l2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
 					bufferbuilder.vertex(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
-					bufferbuilder.end();
-					BufferUploader.end(bufferbuilder);
+					BufferUploader.drawWithShader(bufferbuilder.end());
 					RenderSystem.disableColorLogicOp();
 					RenderSystem.enableTexture();
 				}

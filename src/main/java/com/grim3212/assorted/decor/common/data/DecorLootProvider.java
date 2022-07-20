@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.FluroBlock;
@@ -16,9 +14,9 @@ import com.grim3212.assorted.decor.common.block.colorizer.ColorizerVerticalSlabB
 import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
@@ -38,10 +36,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorLootProvider implements DataProvider {
 
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private final DataGenerator generator;
 	private final List<Block> blocks = new ArrayList<>();
 
@@ -103,12 +101,16 @@ public class DecorLootProvider implements DataProvider {
 		FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> blocks.add(x.getValue().get()));
 	}
 
+	private ResourceLocation key(Block b) {
+		return ForgeRegistries.BLOCKS.getKey(b);
+	}
+
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(CachedOutput cache) throws IOException {
 		Map<ResourceLocation, LootTable.Builder> tables = new HashMap<>();
 
 		for (Block b : blocks) {
-			tables.put(b.getRegistryName(), genRegular(b));
+			tables.put(key(b), genRegular(b));
 		}
 
 		tables.put(DecorBlocks.SIDING_VERTICAL.getId(), genColor(DecorBlocks.SIDING_VERTICAL.get()));
@@ -116,29 +118,29 @@ public class DecorLootProvider implements DataProvider {
 
 		for (Map.Entry<ResourceLocation, LootTable.Builder> e : tables.entrySet()) {
 			Path path = getPath(generator.getOutputFolder(), e.getKey());
-			DataProvider.save(GSON, cache, LootTables.serialize(e.getValue().setParamSet(LootContextParamSets.BLOCK).build()), path);
+			DataProvider.saveStable(cache, LootTables.serialize(e.getValue().setParamSet(LootContextParamSets.BLOCK).build()), path);
 		}
 
-		Path doorPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_DOOR.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.COLORIZER_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), doorPath);
+		Path doorPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_DOOR.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genDoor(DecorBlocks.COLORIZER_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), doorPath);
 
-		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParamSet(LootContextParamSets.BLOCK).build()), slabPath);
+		Path slabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_SLAB.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genSlab(DecorBlocks.COLORIZER_SLAB.get()).setParamSet(LootContextParamSets.BLOCK).build()), slabPath);
 
-		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParamSet(LootContextParamSets.BLOCK).build()), verticalSlabPath);
+		Path verticalSlabPath = getPath(generator.getOutputFolder(), DecorBlocks.COLORIZER_VERTICAL_SLAB.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genVerticalSlab(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).setParamSet(LootContextParamSets.BLOCK).build()), verticalSlabPath);
 
-		Path quartzDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.QUARTZ_DOOR.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), quartzDoorPath);
+		Path quartzDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.QUARTZ_DOOR.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genDoor(DecorBlocks.QUARTZ_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), quartzDoorPath);
 
-		Path chainLinkDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.CHAIN_LINK_DOOR.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.CHAIN_LINK_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), chainLinkDoorPath);
+		Path chainLinkDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.CHAIN_LINK_DOOR.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genDoor(DecorBlocks.CHAIN_LINK_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), chainLinkDoorPath);
 
-		Path glassDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.GLASS_DOOR.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.GLASS_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), glassDoorPath);
+		Path glassDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.GLASS_DOOR.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genDoor(DecorBlocks.GLASS_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), glassDoorPath);
 
-		Path steelDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.STEEL_DOOR.get().getRegistryName());
-		DataProvider.save(GSON, cache, LootTables.serialize(genDoor(DecorBlocks.STEEL_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), steelDoorPath);
+		Path steelDoorPath = getPath(generator.getOutputFolder(), DecorBlocks.STEEL_DOOR.getId());
+		DataProvider.saveStable(cache, LootTables.serialize(genDoor(DecorBlocks.STEEL_DOOR.get()).setParamSet(LootContextParamSets.BLOCK).build()), steelDoorPath);
 	}
 
 	private static Path getPath(Path root, ResourceLocation id) {

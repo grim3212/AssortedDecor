@@ -1,10 +1,9 @@
 package com.grim3212.assorted.decor.common.block;
 
-import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -42,7 +41,7 @@ public class FountainBlock extends Block {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(ACTIVE) && !level.hasNeighborSignal(pos)) {
 			level.setBlock(pos, state.cycle(ACTIVE), 2);
 		}
@@ -55,7 +54,7 @@ public class FountainBlock extends Block {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random rand) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(ACTIVE)) {
 			level.addParticle(ParticleTypes.SPLASH, pos.getX() + 0.5D, pos.getY() + 1.0D, pos.getZ() + 0.5D, 0.0D, 1.0D, 0.0D);
 			level.addParticle(ParticleTypes.SPLASH, pos.getX() + 0.5D, pos.getY() + 1.25D, pos.getZ() + 0.5D, 0.0D, 1.0D, 0.0D);

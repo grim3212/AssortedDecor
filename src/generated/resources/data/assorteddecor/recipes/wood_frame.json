@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "  X",
-    " X ",
-    "X  "
-  ],
   "key": {
     "X": {
       "tag": "minecraft:planks"
     }
   },
+  "pattern": [
+    "  X",
+    " X ",
+    "X  "
+  ],
   "result": {
     "item": "assorteddecor:wood_frame"
   }

@@ -1,13 +1,13 @@
 {
-  "textures": {
-    "particle": "assorteddecor:block/colorizer"
-  },
-  "loader": "assorteddecor:models/colorizer",
   "colorizer": {
     "parent": "assorteddecor:block/stove",
     "textures": {
-      "wood": "minecraft:block/oak_planks",
-      "net": "assorteddecor:block/net"
+      "net": "assorteddecor:block/net",
+      "wood": "minecraft:block/oak_planks"
     }
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
   }
 }

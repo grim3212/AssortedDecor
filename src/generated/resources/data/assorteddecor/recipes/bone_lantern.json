@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "assorteddecor:lantern_source"
+    },
+    "P": {
+      "tag": "forge:bones"
+    }
+  },
   "pattern": [
     " P ",
     "PCP"
   ],
-  "key": {
-    "P": {
-      "tag": "forge:bones"
-    },
-    "C": {
-      "tag": "assorteddecor:lantern_source"
-    }
-  },
   "result": {
     "item": "assorteddecor:bone_lantern"
   }

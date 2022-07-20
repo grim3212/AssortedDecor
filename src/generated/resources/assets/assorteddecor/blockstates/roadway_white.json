@@ -6,6 +6,12 @@
     "type=1": {
       "model": "assorteddecor:block/roadway_white_1"
     },
+    "type=10": {
+      "model": "assorteddecor:block/roadway_white_10"
+    },
+    "type=11": {
+      "model": "assorteddecor:block/roadway_white_11"
+    },
     "type=2": {
       "model": "assorteddecor:block/roadway_white_2"
     },
@@ -29,12 +35,6 @@
     },
     "type=9": {
       "model": "assorteddecor:block/roadway_white_9"
-    },
-    "type=10": {
-      "model": "assorteddecor:block/roadway_white_10"
-    },
-    "type=11": {
-      "model": "assorteddecor:block/roadway_white_11"
     }
   }
 }

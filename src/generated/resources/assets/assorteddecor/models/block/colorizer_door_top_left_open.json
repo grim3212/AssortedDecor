@@ -1,0 +1,9 @@
+{
+  "colorizer": {
+    "parent": "assorteddecor:block/door_top_left_open"
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  }
+}

@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "III",
-    "XPX",
-    "XXX"
-  ],
   "key": {
-    "X": {
-      "item": "assorteddecor:colorizer"
-    },
     "I": {
       "item": "minecraft:iron_bars"
     },
     "P": {
       "tag": "minecraft:planks"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
     }
   },
+  "pattern": [
+    "III",
+    "XPX",
+    "XXX"
+  ],
   "result": {
-    "item": "assorteddecor:colorizer_firepit_covered",
-    "count": 4
+    "count": 4,
+    "item": "assorteddecor:colorizer_firepit_covered"
   }
 }

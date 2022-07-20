@@ -1,15 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "XXX",
-    "XXX"
-  ],
   "key": {
     "X": {
       "tag": "forge:bones"
     }
   },
+  "pattern": [
+    " X ",
+    "XXX",
+    "XXX"
+  ],
   "result": {
     "item": "assorteddecor:bone_decoration"
   }

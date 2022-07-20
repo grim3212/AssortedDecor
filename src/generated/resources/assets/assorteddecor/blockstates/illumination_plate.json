@@ -4,8 +4,8 @@
       "model": "assorteddecor:block/illumination_plate",
       "x": 180
     },
-    "facing=up": {
-      "model": "assorteddecor:block/illumination_plate"
+    "facing=east": {
+      "model": "assorteddecor:block/illumination_plate_wall"
     },
     "facing=north": {
       "model": "assorteddecor:block/illumination_plate_wall",
@@ -15,12 +15,12 @@
       "model": "assorteddecor:block/illumination_plate_wall",
       "y": 90
     },
+    "facing=up": {
+      "model": "assorteddecor:block/illumination_plate"
+    },
     "facing=west": {
       "model": "assorteddecor:block/illumination_plate_wall",
       "y": 180
-    },
-    "facing=east": {
-      "model": "assorteddecor:block/illumination_plate_wall"
     }
   }
 }

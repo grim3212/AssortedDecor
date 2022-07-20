@@ -1,9 +1,9 @@
 {
-  "loader": "assorteddecor:models/colorizer",
   "colorizer": {
     "parent": "assorteddecor:item/brush",
     "textures": {
       "handle": "assorteddecor:item/brush_handle"
     }
-  }
+  },
+  "loader": "assorteddecor:models/colorizer"
 }

@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class DecorBlockEntityTypes {
 
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, AssortedDecor.MODID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, AssortedDecor.MODID);
 
 	public static final RegistryObject<BlockEntityType<ColorizerBlockEntity>> COLORIZER = BLOCK_ENTITIES.register("colorizer", () -> BlockEntityType.Builder.of(ColorizerBlockEntity::new, DecorBlocks.COLORIZER.get()).build(null));
 	public static final RegistryObject<BlockEntityType<NeonSignBlockEntity>> NEON_SIGN = BLOCK_ENTITIES.register("neon_sign", () -> BlockEntityType.Builder.of(NeonSignBlockEntity::new, DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get()).build(null));

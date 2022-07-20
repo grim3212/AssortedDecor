@@ -1,9 +1,9 @@
 {
   "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.35,
   "ingredient": {
     "item": "assorteddecor:unfired_clay_decoration"
   },
-  "result": "assorteddecor:clay_decoration",
-  "experience": 0.35,
-  "cookingtime": 200
+  "result": "assorteddecor:clay_decoration"
 }

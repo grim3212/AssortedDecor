@@ -27,6 +27,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,7 +35,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod(AssortedDecor.MODID)
 public class AssortedDecor {
@@ -78,23 +78,19 @@ public class AssortedDecor {
 		PacketHandler.init();
 	}
 
-	private void gatherData(GatherDataEvent event) {
+	private void gatherData(final GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
 
-		if (event.includeServer()) {
-			datagenerator.addProvider(new DecorRecipes(datagenerator));
-			DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(datagenerator, fileHelper);
-			datagenerator.addProvider(blockTagProvider);
-			datagenerator.addProvider(new DecorItemTagProvider(datagenerator, blockTagProvider, fileHelper));
-			datagenerator.addProvider(new DecorLootProvider(datagenerator));
-		}
+		datagenerator.addProvider(event.includeServer(), new DecorRecipes(datagenerator));
+		DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(datagenerator, fileHelper);
+		datagenerator.addProvider(event.includeServer(), blockTagProvider);
+		datagenerator.addProvider(event.includeServer(), new DecorItemTagProvider(datagenerator, blockTagProvider, fileHelper));
+		datagenerator.addProvider(event.includeServer(), new DecorLootProvider(datagenerator));
 
-		if (event.includeClient()) {
-			ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, fileHelper);
-			datagenerator.addProvider(new DecorBlockstateProvider(datagenerator, fileHelper, loadedModels));
-			datagenerator.addProvider(loadedModels);
-			datagenerator.addProvider(new DecorItemModelProvider(datagenerator, fileHelper));
-		}
+		ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, fileHelper);
+		datagenerator.addProvider(event.includeClient(), new DecorBlockstateProvider(datagenerator, fileHelper, loadedModels));
+		datagenerator.addProvider(event.includeClient(), loadedModels);
+		datagenerator.addProvider(event.includeClient(), new DecorItemModelProvider(datagenerator, fileHelper));
 	}
 }
