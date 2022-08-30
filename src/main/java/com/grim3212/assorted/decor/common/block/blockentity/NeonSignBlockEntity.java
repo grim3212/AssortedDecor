@@ -24,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
@@ -74,7 +75,7 @@ public class NeonSignBlockEntity extends BlockEntity {
 			if (style != null && style.getClickEvent() != null) {
 				ClickEvent clickevent = style.getClickEvent();
 				if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
-					playerIn.getServer().getCommands().performCommand(this.getCommandSource((ServerPlayer) playerIn), clickevent.getValue());
+					playerIn.getServer().getCommands().performPrefixedCommand(this.getCommandSource((ServerPlayer) playerIn), clickevent.getValue());
 				}
 			}
 		}
