@@ -16,5 +16,6 @@ public class DecorBlockEntityTypes {
 	public static final RegistryObject<BlockEntityType<NeonSignBlockEntity>> NEON_SIGN = BLOCK_ENTITIES.register("neon_sign", () -> BlockEntityType.Builder.of(NeonSignBlockEntity::new, DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get()).build(null));
 	public static final RegistryObject<BlockEntityType<CalendarBlockEntity>> CALENDAR = BLOCK_ENTITIES.register("calendar", () -> BlockEntityType.Builder.of(CalendarBlockEntity::new, DecorBlocks.CALENDAR.get()).build(null));
 	public static final RegistryObject<BlockEntityType<WallClockBlockEntity>> WALL_CLOCK = BLOCK_ENTITIES.register("wall_clock", () -> BlockEntityType.Builder.of(WallClockBlockEntity::new, DecorBlocks.WALL_CLOCK.get()).build(null));
+	public static final RegistryObject<BlockEntityType<CageBlockEntity>> CAGE = BLOCK_ENTITIES.register("cage", () -> BlockEntityType.Builder.of(CageBlockEntity::new, DecorBlocks.CAGE.get()).build(null));
 
 }

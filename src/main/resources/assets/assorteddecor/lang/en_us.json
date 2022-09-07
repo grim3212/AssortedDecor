@@ -1,6 +1,8 @@
 {
 	"itemGroup.assorteddecor": "Assorted Decor",
 	
+	"assorteddecor.container.cage": "Cage",
+	
 	"tooltip.colorizer_brush.empty": "Empty",
 	"tooltip.colorizer_brush.stored": "Stored: %s",
 	
@@ -32,6 +34,7 @@
 	"item.assorteddecor.paint_roller_red": "Red Paint Roller",
 	"item.assorteddecor.paint_roller_black": "Black Paint Roller",
 	
+	"block.assorteddecor.cage": "Cage",
 	"block.assorteddecor.sidewalk": "Sidewalk",
 	"block.assorteddecor.stone_path": "Stone Path",
 	"block.assorteddecor.decorative_stone": "Decorative Stone",

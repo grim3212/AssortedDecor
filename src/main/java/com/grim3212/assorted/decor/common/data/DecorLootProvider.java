@@ -60,6 +60,7 @@ public class DecorLootProvider implements DataProvider {
 		blocks.add(DecorBlocks.FOUNTAIN.get());
 		blocks.add(DecorBlocks.DECORATIVE_STONE.get());
 		blocks.add(DecorBlocks.STONE_PATH.get());
+		blocks.add(DecorBlocks.CAGE.get());
 
 		DecorBlocks.ROADWAY_COLORS.forEach((c, r) -> blocks.add(r.get()));
 

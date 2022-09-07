@@ -1,5 +1,9 @@
 package com.grim3212.assorted.decor;
 
+import java.util.List;
+import java.util.function.Supplier;
+
+import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,11 +20,14 @@ import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.handler.TagLoadListener;
+import com.grim3212.assorted.decor.common.inventory.DecorContainerTypes;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
 
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -30,10 +37,12 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(AssortedDecor.MODID)
@@ -62,6 +71,7 @@ public class AssortedDecor {
 
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
+		modBus.addListener(this::processIMC);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 
@@ -69,6 +79,7 @@ public class AssortedDecor {
 		DecorItems.ITEMS.register(modBus);
 		DecorBlockEntityTypes.BLOCK_ENTITIES.register(modBus);
 		DecorEntityTypes.ENTITIES.register(modBus);
+		DecorContainerTypes.CONTAINER_TYPES.register(modBus);
 
 		ModLoadingContext.get().registerConfig(Type.CLIENT, DecorConfig.CLIENT_SPEC);
 		ModLoadingContext.get().registerConfig(Type.COMMON, DecorConfig.COMMON_SPEC);
@@ -76,6 +87,20 @@ public class AssortedDecor {
 
 	private void setup(final FMLCommonSetupEvent event) {
 		PacketHandler.init();
+	}
+
+	public static List<Tuple<ResourceLocation, String>> cageItems = Lists.newArrayList();
+
+	private void processIMC(final InterModProcessEvent event) {
+		event.enqueueWork(() -> {
+			InterModComms.getMessages(MODID, (s) -> s.equalsIgnoreCase("addCageItem")).forEach(message -> {
+				Supplier<List<Tuple<ResourceLocation, String>>> supplier = message.getMessageSupplier();
+				supplier.get().forEach(item -> {
+					cageItems.add(item);
+					LOGGER.info("Registered {} for Cage support", item.getA());
+				});
+			});
+		});
 	}
 
 	private void gatherData(final GatherDataEvent event) {

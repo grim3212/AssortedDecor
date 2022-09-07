@@ -1,11 +1,13 @@
 package com.grim3212.assorted.decor.client.proxy;
 
+import com.grim3212.assorted.decor.client.blockentity.CageBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.blockentity.CalendarBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRenderer;
 import com.grim3212.assorted.decor.client.model.ColorizerBlockModel;
 import com.grim3212.assorted.decor.client.model.ColorizerObjModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
 import com.grim3212.assorted.decor.client.render.entity.WallpaperRenderer;
+import com.grim3212.assorted.decor.client.screen.CageScreen;
 import com.grim3212.assorted.decor.client.screen.NeonSignScreen;
 import com.grim3212.assorted.decor.common.block.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
@@ -14,6 +16,7 @@ import com.grim3212.assorted.decor.common.block.blockentity.ColorizerBlockEntity
 import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
 import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
+import com.grim3212.assorted.decor.common.inventory.DecorContainerTypes;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
 import com.grim3212.assorted.decor.common.util.NBTHelper;
@@ -23,6 +26,7 @@ import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -40,9 +44,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class ClientProxy implements IProxy {
@@ -52,8 +56,9 @@ public class ClientProxy implements IProxy {
 		final IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 		modBus.addListener(this::setupClient);
 		modBus.addListener(this::registerRenderers);
-		modBus.addListener(this::loadComplete);
 		modBus.addListener(this::registerLoaders);
+		modBus.addListener(this::registerItemColorHandles);
+		modBus.addListener(this::registerBlockColorHandles);
 	}
 
 	private void registerLoaders(final ModelEvent.RegisterGeometryLoaders event) {
@@ -79,97 +84,101 @@ public class ClientProxy implements IProxy {
 	private void setupClient(final FMLClientSetupEvent event) {
 		BlockEntityRenderers.register(DecorBlockEntityTypes.NEON_SIGN.get(), NeonSignBlockEntityRenderer::new);
 		BlockEntityRenderers.register(DecorBlockEntityTypes.CALENDAR.get(), CalendarBlockEntityRenderer::new);
+		BlockEntityRenderers.register(DecorBlockEntityTypes.CAGE.get(), CageBlockEntityRenderer::new);
+
+		MenuScreens.register(DecorContainerTypes.CAGE.get(), CageScreen::new);
 	}
 
-	public void loadComplete(final FMLLoadCompleteEvent event) {
-		event.enqueueWork(() -> {
-			ItemColors items = Minecraft.getInstance().getItemColors();
-			BlockColors blocks = Minecraft.getInstance().getBlockColors();
+	public void registerBlockColorHandles(final RegisterColorHandlersEvent.Block event) {
+		BlockColors blocks = event.getBlockColors();
 
-			blocks.register(new BlockColor() {
-				@Override
-				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
-					if (pos != null) {
-						BlockEntity te = worldIn.getBlockEntity(pos);
-						if (te != null && te instanceof ColorizerBlockEntity) {
-							return Minecraft.getInstance().getBlockColors().getColor(((ColorizerBlockEntity) te).getStoredBlockState(), worldIn, pos, tint);
+		event.register(new BlockColor() {
+			@Override
+			public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
+				if (pos != null) {
+					BlockEntity te = worldIn.getBlockEntity(pos);
+					if (te != null && te instanceof ColorizerBlockEntity) {
+						return blocks.getColor(((ColorizerBlockEntity) te).getStoredBlockState(), worldIn, pos, tint);
+					}
+				}
+				return 16777215;
+			}
+		}, DecorBlocks.colorizerBlocks());
+
+		event.register(new BlockColor() {
+			@Override
+			public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
+				return state.getBlock().defaultMaterialColor().col;
+			}
+		}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
+
+		event.register(new BlockColor() {
+			@Override
+			public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
+				return state.getValue(ColorChangingBlock.COLOR).getMaterialColor().col;
+			}
+		}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
+	}
+
+	public void registerItemColorHandles(final RegisterColorHandlersEvent.Item event) {
+		ItemColors items = event.getItemColors();
+
+		event.register(new ItemColor() {
+			@Override
+			public int getColor(ItemStack stack, int tint) {
+				if (stack != null && stack.hasTag()) {
+					if (stack.getTag().contains("stored_state")) {
+						BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+						ItemStack colorStack = new ItemStack(stored.getBlock());
+						if (colorStack.getItem() != null) {
+							return items.getColor(colorStack, tint);
 						}
 					}
-					return 16777215;
 				}
-			}, DecorBlocks.colorizerBlocks());
+				return 16777215;
+			}
+		}, DecorBlocks.colorizerBlocks());
 
-			items.register(new ItemColor() {
-				@Override
-				public int getColor(ItemStack stack, int tint) {
-					if (stack != null && stack.hasTag()) {
-						if (stack.getTag().contains("stored_state")) {
-							BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
-							ItemStack colorStack = new ItemStack(stored.getBlock());
-							if (colorStack.getItem() != null) {
-								return Minecraft.getInstance().getItemColors().getColor(colorStack, tint);
-							}
+		event.register(new ItemColor() {
+			@Override
+			public int getColor(ItemStack stack, int tint) {
+				if (stack != null && stack.hasTag()) {
+					if (stack.getTag().contains("stored_state")) {
+						BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+						ItemStack colorStack = new ItemStack(stored.getBlock());
+						if (colorStack.getItem() != null && !(colorStack.getItem() instanceof AirItem)) {
+							return items.getColor(colorStack, tint);
 						}
 					}
-					return 16777215;
 				}
-			}, DecorBlocks.colorizerBlocks());
+				return 16777215;
+			}
+		}, DecorItems.COLORIZER_BRUSH.get());
 
-			items.register(new ItemColor() {
-				@Override
-				public int getColor(ItemStack stack, int tint) {
-					if (stack != null && stack.hasTag()) {
-						if (stack.getTag().contains("stored_state")) {
-							BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
-							ItemStack colorStack = new ItemStack(stored.getBlock());
-							if (colorStack.getItem() != null && !(colorStack.getItem() instanceof AirItem)) {
-								return Minecraft.getInstance().getItemColors().getColor(colorStack, tint);
-							}
-						}
+		event.register(new ItemColor() {
+			@Override
+			public int getColor(ItemStack stack, int tint) {
+				Block b = Block.byItem(stack.getItem());
+				if (b != Blocks.AIR) {
+					return b.defaultMaterialColor().col;
+				}
+				return 16777215;
+			}
+		}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
+
+		event.register(new ItemColor() {
+			@Override
+			public int getColor(ItemStack stack, int tint) {
+				if (stack != null && stack.hasTag() && stack.getTag().contains("BlockStateTag")) {
+					CompoundTag blockState = NBTHelper.getTag(stack.getTag(), "BlockStateTag");
+					if (blockState.contains("color")) {
+						DyeColor color = DyeColor.byName(NBTHelper.getString(blockState, "color"), DyeColor.WHITE);
+						return color.getMaterialColor().col;
 					}
-					return 16777215;
 				}
-			}, DecorItems.COLORIZER_BRUSH.get());
-
-			blocks.register(new BlockColor() {
-				@Override
-				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
-					return state.getBlock().defaultMaterialColor().col;
-				}
-			}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
-
-			items.register(new ItemColor() {
-				@Override
-				public int getColor(ItemStack stack, int tint) {
-					Block b = Block.byItem(stack.getItem());
-					if (b != Blocks.AIR) {
-						return b.defaultMaterialColor().col;
-					}
-					return 16777215;
-				}
-			}, FluroBlock.FLURO_BY_DYE.entrySet().stream().map((x) -> x.getValue().get()).toArray(Block[]::new));
-
-			blocks.register(new BlockColor() {
-				@Override
-				public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
-					return state.getValue(ColorChangingBlock.COLOR).getMaterialColor().col;
-				}
-			}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
-
-			items.register(new ItemColor() {
-				@Override
-				public int getColor(ItemStack stack, int tint) {
-					if (stack != null && stack.hasTag() && stack.getTag().contains("BlockStateTag")) {
-						CompoundTag blockState = NBTHelper.getTag(stack.getTag(), "BlockStateTag");
-						if (blockState.contains("color")) {
-							DyeColor color = DyeColor.byName(NBTHelper.getString(blockState, "color"), DyeColor.WHITE);
-							return color.getMaterialColor().col;
-						}
-					}
-					return 16777215;
-				}
-			}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
-		});
+				return 16777215;
+			}
+		}, DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get());
 	}
 
 	@Override

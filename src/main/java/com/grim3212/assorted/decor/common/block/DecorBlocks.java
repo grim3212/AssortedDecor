@@ -32,14 +32,18 @@ import com.grim3212.assorted.decor.common.item.ColorChangingItem;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.util.ColorizerUtil.SlopeType;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -128,6 +132,7 @@ public class DecorBlocks {
 	public static final RegistryObject<LanternBlock> IRON_LANTERN = register("iron_lantern", () -> new LanternBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).noCollission().color(MaterialColor.COLOR_GRAY).strength(0.5F)));
 
 	public static final RegistryObject<Block> SIDEWALK = register("sidewalk", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().friction(0.4F)));
+	public static final RegistryObject<CageBlock> CAGE = register("cage", () -> new CageBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.8F, 5.0F).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(DecorBlocks::never).isRedstoneConductor(DecorBlocks::never).isSuffocating(DecorBlocks::never).isViewBlocking(DecorBlocks::never)));
 
 	public static final RegistryObject<ColorChangingBlock> SIDING_VERTICAL = registerColorChanging("siding_vertical", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
 	public static final RegistryObject<ColorChangingBlock> SIDING_HORIZONTAL = registerColorChanging("siding_horizontal", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
@@ -172,5 +177,13 @@ public class DecorBlocks {
 	public static Block[] colorizerBlocks() {
 		return new Block[] { COLORIZER.get(), COLORIZER_CHAIR.get(), COLORIZER_TABLE.get(), COLORIZER_COUNTER.get(), COLORIZER_STOOL.get(), COLORIZER_FENCE.get(), COLORIZER_FENCE_GATE.get(), COLORIZER_WALL.get(), COLORIZER_TRAP_DOOR.get(), COLORIZER_DOOR.get(), COLORIZER_SLAB.get(), COLORIZER_VERTICAL_SLAB.get(), COLORIZER_STAIRS.get(), COLORIZER_LAMP_POST.get(), COLORIZER_SLOPE.get(), COLORIZER_SLOPED_ANGLE.get(), COLORIZER_SLOPED_INTERSECTION.get(), COLORIZER_SLOPED_POST.get(),
 				COLORIZER_OBLIQUE_SLOPE.get(), COLORIZER_CORNER.get(), COLORIZER_SLANTED_CORNER.get(), COLORIZER_PYRAMID.get(), COLORIZER_FULL_PYRAMID.get(), COLORIZER_FIREPLACE.get(), COLORIZER_CHIMNEY.get(), COLORIZER_FIRERING.get(), COLORIZER_FIREPIT.get(), COLORIZER_FIREPIT_COVERED.get(), COLORIZER_STOVE.get() };
+	}
+
+	private static boolean never(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> type) {
+		return false;
+	}
+
+	private static boolean never(BlockState state, BlockGetter getter, BlockPos pos) {
+		return false;
 	}
 }

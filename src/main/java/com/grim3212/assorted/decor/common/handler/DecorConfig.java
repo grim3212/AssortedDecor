@@ -73,10 +73,16 @@ public final class DecorConfig {
 	public static class Client {
 
 		public final ForgeConfigSpec.DoubleValue widthWallpaper;
+		
+		public final ForgeConfigSpec.DoubleValue cageEntitySpinMod;
 
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("Wallpaper");
 			widthWallpaper = builder.comment("Set this to determine how much the wallpaper will stick off of the wall.").defineInRange("widthWallpaper", 1.0D, 0.1D, 5.0D);
+			builder.pop();
+			
+			builder.push("Cage");
+			cageEntitySpinMod = builder.comment("This is the modifier for how fast entities spin when displayed inside the Cage.").defineInRange("cageEntitySpinMod", 3.0D, 1.0D, 20.0D);
 			builder.pop();
 		}
 

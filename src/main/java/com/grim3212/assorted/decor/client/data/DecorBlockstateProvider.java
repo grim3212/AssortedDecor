@@ -70,6 +70,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		genericBlock(DecorBlocks.SIDEWALK.get());
 		genericBlock(DecorBlocks.STONE_PATH.get());
 		genericBlock(DecorBlocks.DECORATIVE_STONE.get());
+		genericCutoutBlock(DecorBlocks.CAGE.get());
 
 		genericRoadway(DecorBlocks.ROADWAY.get());
 		genericSiding(DecorBlocks.SIDING_HORIZONTAL.get());
@@ -216,6 +217,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void genericBlock(Block b) {
 		String name = name(b);
 		simpleBlock(b);
+		itemModels().withExistingParent(name, prefix("block/" + name));
+	}
+	
+	private void genericCutoutBlock(Block b) {
+		String name = name(b);
+		simpleBlock(b, models().cubeAll(name, blockTexture(b)).renderType(CUTOUT_RENDER_TYPE));
 		itemModels().withExistingParent(name, prefix("block/" + name));
 	}
 
