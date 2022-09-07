@@ -1,6 +1,9 @@
 package com.grim3212.assorted.decor.common.entity;
 
 import java.util.List;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
 
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.item.DecorItems;
@@ -24,10 +27,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockCollisions;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DiodeBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
@@ -328,5 +335,37 @@ public class WallpaperEntity extends HangingEntity implements IEntityAdditionalS
 		double d0 = 16.0D;
 		d0 = d0 * 64.0D * getViewScale();
 		return p_31769_ < d0 * d0;
+	}
+
+	protected static final Predicate<Entity> HANGING_ENTITY_EXCLUDING_WALLPAPER = (ent) -> {
+		return ent instanceof HangingEntity && !(ent instanceof WallpaperEntity);
+	};
+
+	private Iterable<VoxelShape> getBlockCollisions(@Nullable Entity ent, AABB aabb) {
+		return () -> {
+			return new BlockCollisions(this.level, ent, aabb, true);
+		};
+	}
+
+	@Override
+	public boolean survives() {
+		for (VoxelShape voxelshape : this.getBlockCollisions(this, this.getBoundingBox())) {
+			if (!voxelshape.isEmpty()) {
+				return false;
+			}
+		}
+
+		if (!this.level.getEntityCollisions(this, this.getBoundingBox()).isEmpty()) {
+			return false;
+		} else {
+			BlockPos blockpos = this.pos.relative(this.direction.getOpposite());
+			BlockState blockstate = this.level.getBlockState(blockpos);
+
+			if (!blockstate.getMaterial().isSolid() && !DiodeBlock.isDiode(blockstate)) {
+				return false;
+			}
+
+			return this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY_EXCLUDING_WALLPAPER).isEmpty();
+		}
 	}
 }
