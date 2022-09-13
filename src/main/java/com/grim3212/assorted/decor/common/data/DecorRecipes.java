@@ -150,7 +150,8 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.GLASS_DOOR.get(), 3).define('X', Tags.Items.GLASS).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_glass", has(Tags.Items.GLASS)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.STEEL_DOOR.get(), 3).define('X', DecorTags.Items.INGOTS_STEEL).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_steel", has(DecorTags.Items.INGOTS_STEEL)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.CHAIN_LINK_DOOR.get(), 3).define('X', DecorItems.CHAIN_LINK.get()).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(consumer);
-
+		ShapedRecipeBuilder.shaped(DecorBlocks.CAGE.get(), 1).define('X', Items.IRON_BARS).pattern("XXX").pattern("X X").pattern("XXX").unlockedBy("has_iron_bars", has(Items.IRON_BARS)).save(consumer);
+		
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_ALUMINUM).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM)).save(consumer, prefix("fountain_aluminum"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_STEEL).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(consumer, prefix("fountain_steel"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', Tags.Items.INGOTS_IRON).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
