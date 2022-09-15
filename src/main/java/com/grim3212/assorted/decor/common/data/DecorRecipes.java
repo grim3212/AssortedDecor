@@ -27,10 +27,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.DifferenceIngredient;
+import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class DecorRecipes extends RecipeProvider {
+public class DecorRecipes extends RecipeProvider implements IConditionBuilder {
 
 	public DecorRecipes(DataGenerator generatorIn) {
 		super(generatorIn);
@@ -44,11 +46,11 @@ public class DecorRecipes extends RecipeProvider {
 
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY.get()).define('A', DecorItems.ASPHALT.get()).define('X', Tags.Items.STONE).pattern("A").pattern("X").unlockedBy("has_asphalt", has(DecorItems.ASPHALT.get())).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', Tags.Items.INGOTS_IRON).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
-		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', DecorTags.Items.INGOTS_STEEL).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer, prefix("steel_roadway_manhole"));
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_STEEL))).addRecipe(ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_MANHOLE.get()).define('M', DecorTags.Items.INGOTS_STEEL).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get()))::save).generateAdvancement().build(consumer, prefix("steel_roadway_manhole"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.ROADWAY_LIGHT.get()).define('M', DecorBlocks.ILLUMINATION_PLATE.get()).define('X', DecorBlocks.ROADWAY.get()).pattern("M").pattern("X").unlockedBy("has_roadway", has(DecorBlocks.ROADWAY.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(DecorItems.PAINT_ROLLER.get()).define('S', Tags.Items.RODS_WOODEN).define('W', ItemTags.WOOL).pattern("WWW").pattern(" S ").pattern(" S ").unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer);
-		
+
 		DecorItems.PAINT_ROLLER_COLORS.forEach((c, r) -> {
 			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorItems.PAINT_ROLLER.get()).requires(DifferenceIngredient.of(Ingredient.of(c.getTag()), Ingredient.of(DecorTags.Items.PAINT_ROLLERS))).unlockedBy("has_dye", has(c.getTag())).save(consumer);
 			ShapelessRecipeBuilder.shapeless(PaintRollerItem.WOOL_BY_DYE.get(c)).requires(r.get()).requires(ItemTags.WOOL).unlockedBy("has_wool", has(ItemTags.WOOL)).save(consumer, prefix(name(PaintRollerItem.WOOL_BY_DYE.get(c).asItem()) + "_paint_roll"));
@@ -64,7 +66,7 @@ public class DecorRecipes extends RecipeProvider {
 			PaintRollerItem matchingColor = DecorItems.PAINT_ROLLER_COLORS.get(c).get();
 			ShapelessRecipeBuilder.shapeless(r.get()).requires(DecorBlocks.ROADWAY.get()).requires(matchingColor).unlockedBy("has_paint", has(matchingColor)).save(consumer);
 		});
-		
+
 		ShapelessRecipeBuilder.shapeless(DecorBlocks.ROADWAY.get()).requires(DecorTags.Items.ROADWAYS_COLOR).requires(DecorTags.Items.BUCKETS_WATER).unlockedBy("has_roadway_color", has(DecorTags.Items.ROADWAYS_COLOR)).save(consumer, prefix(DecorBlocks.ROADWAY.getId().getPath() + "_wash"));
 
 		ShapedRecipeBuilder.shaped(DecorItems.WALLPAPER.get()).define('X', ItemTags.WOOL).define('#', Items.PAPER).pattern("#X").pattern("#X").pattern("#X").unlockedBy("has_paper", has(Items.PAPER)).save(consumer);
@@ -104,10 +106,12 @@ public class DecorRecipes extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(DecorBlocks.COLORIZER_FIRERING.get(), 4).define('X', DecorBlocks.COLORIZER.get()).define('P', ItemTags.PLANKS).pattern(" X ").pattern("XPX").pattern(" X ").unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.COLORIZER_STOVE.get(), 4).define('X', DecorBlocks.COLORIZER.get()).define('I', Items.IRON_BARS).define('P', ItemTags.PLANKS).pattern("XXX").pattern("IPI").pattern("XXX").unlockedBy("has_colorizer", has(DecorBlocks.COLORIZER.get())).unlockedBy("has_iron_bars", has(Items.IRON_BARS)).save(consumer);
 
-		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_TUBE.get(), 4).define('G', Tags.Items.GLASS).define('L', Tags.Items.DUSTS_GLOWSTONE).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern(" A ").pattern("GLG").pattern(" A ").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer);
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_ALUMINUM))).addRecipe(ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_TUBE.get(), 4).define('G', Tags.Items.GLASS).define('L', Tags.Items.DUSTS_GLOWSTONE).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern(" A ").pattern("GLG").pattern(" A ").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))::save).generateAdvancement()
+				.build(consumer, DecorBlocks.ILLUMINATION_TUBE.getId());
 		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_TUBE.get(), 4).define('G', Tags.Items.GLASS).define('L', Tags.Items.DUSTS_GLOWSTONE).define('A', Tags.Items.INGOTS_IRON).pattern(" A ").pattern("GLG").pattern(" A ").unlockedBy("has_aluminum", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer, prefix("illumination_tube_iron"));
 
-		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_PLATE.get(), 8).define('G', Tags.Items.GLASS_PANES).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern("GGG").pattern("ALA").pattern("GGG").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer);
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_ALUMINUM))).addRecipe(ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_PLATE.get(), 8).define('G', Tags.Items.GLASS_PANES).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', DecorTags.Items.INGOTS_ALUMINUM).pattern("GGG").pattern("ALA").pattern("GGG").unlockedBy("has_aluminum", has(DecorTags.Items.INGOTS_ALUMINUM)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE))::save)
+				.generateAdvancement().build(consumer, DecorBlocks.ILLUMINATION_PLATE.getId());
 		ShapedRecipeBuilder.shaped(DecorBlocks.ILLUMINATION_PLATE.get(), 8).define('G', Tags.Items.GLASS_PANES).define('L', DecorBlocks.ILLUMINATION_TUBE.get()).define('A', Tags.Items.INGOTS_IRON).pattern("GGG").pattern("ALA").pattern("GGG").unlockedBy("has_aluminum", has(Tags.Items.INGOTS_IRON)).unlockedBy("has_glowstone", has(Tags.Items.DUSTS_GLOWSTONE)).save(consumer, prefix("illumination_plate_iron"));
 
 		ShapedRecipeBuilder.shaped(DecorItems.UNFIRED_PLANTER_POT.get()).define('X', Items.CLAY_BALL).pattern("X X").pattern("XXX").unlockedBy("has_clay", has(Items.CLAY_BALL)).save(consumer);
@@ -143,15 +147,15 @@ public class DecorRecipes extends RecipeProvider {
 		});
 
 		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', Tags.Items.INGOTS_IRON).define('N', Tags.Items.NUGGETS_IRON).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);
-		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_STEEL).define('N', DecorTags.Items.NUGGETS_STEEL).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(consumer, prefix("chain_link_steel"));
-		ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_ALUMINUM).define('N', DecorTags.Items.NUGGETS_ALUMINUM).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM)).save(consumer, prefix("chain_link_aluminum"));
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_STEEL))).addRecipe(ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_STEEL).define('N', DecorTags.Items.NUGGETS_STEEL).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL))::save).generateAdvancement().build(consumer, prefix("chain_link_steel"));
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_ALUMINUM))).addRecipe(ShapedRecipeBuilder.shaped(DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_ALUMINUM).define('N', DecorTags.Items.NUGGETS_ALUMINUM).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM))::save).generateAdvancement().build(consumer, prefix("chain_link_aluminum"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.CHAIN_LINK_FENCE.get(), 8).define('X', DecorItems.CHAIN_LINK.get()).pattern("XXX").pattern("XXX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.QUARTZ_DOOR.get(), 3).define('X', Items.QUARTZ).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_quartz", has(Items.QUARTZ)).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.GLASS_DOOR.get(), 3).define('X', Tags.Items.GLASS).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_glass", has(Tags.Items.GLASS)).save(consumer);
-		ShapedRecipeBuilder.shaped(DecorBlocks.STEEL_DOOR.get(), 3).define('X', DecorTags.Items.INGOTS_STEEL).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_steel", has(DecorTags.Items.INGOTS_STEEL)).save(consumer);
+		ConditionalRecipe.builder().addCondition(not(tagEmpty(DecorTags.Items.INGOTS_STEEL))).addRecipe(ShapedRecipeBuilder.shaped(DecorBlocks.STEEL_DOOR.get(), 3).define('X', DecorTags.Items.INGOTS_STEEL).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_steel", has(DecorTags.Items.INGOTS_STEEL))::save).generateAdvancement().build(consumer, DecorBlocks.STEEL_DOOR.getId());
 		ShapedRecipeBuilder.shaped(DecorBlocks.CHAIN_LINK_DOOR.get(), 3).define('X', DecorItems.CHAIN_LINK.get()).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(consumer);
 		ShapedRecipeBuilder.shaped(DecorBlocks.CAGE.get(), 1).define('X', Items.IRON_BARS).pattern("XXX").pattern("X X").pattern("XXX").unlockedBy("has_iron_bars", has(Items.IRON_BARS)).save(consumer);
-		
+
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_ALUMINUM).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_ALUMINUM)).save(consumer, prefix("fountain_aluminum"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', DecorTags.Items.INGOTS_STEEL).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(consumer, prefix("fountain_steel"));
 		ShapedRecipeBuilder.shaped(DecorBlocks.FOUNTAIN.get()).define('X', Tags.Items.COBBLESTONE).define('W', DecorTags.Items.BUCKETS_WATER).define('I', Tags.Items.INGOTS_IRON).pattern("XIX").pattern("XWX").pattern("XIX").unlockedBy("has_ingot", has(Tags.Items.INGOTS_IRON)).save(consumer);

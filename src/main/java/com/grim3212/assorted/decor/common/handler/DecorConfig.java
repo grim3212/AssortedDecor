@@ -20,7 +20,7 @@ public final class DecorConfig {
 	}
 
 	public static class Common {
-
+		
 		public final ForgeConfigSpec.BooleanValue dyeFrames;
 		public final ForgeConfigSpec.BooleanValue burnFrames;
 		public final ForgeConfigSpec.BooleanValue dyeWallpaper;

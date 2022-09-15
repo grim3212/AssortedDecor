@@ -1,18 +1,34 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "M": {
-      "tag": "forge:ingots/steel"
-    },
-    "X": {
-      "item": "assorteddecor:roadway"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/steel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "M": {
+            "tag": "forge:ingots/steel"
+          },
+          "X": {
+            "item": "assorteddecor:roadway"
+          }
+        },
+        "pattern": [
+          "M",
+          "X"
+        ],
+        "result": {
+          "item": "assorteddecor:roadway_manhole"
+        }
+      }
     }
-  },
-  "pattern": [
-    "M",
-    "X"
-  ],
-  "result": {
-    "item": "assorteddecor:roadway_manhole"
-  }
+  ]
 }

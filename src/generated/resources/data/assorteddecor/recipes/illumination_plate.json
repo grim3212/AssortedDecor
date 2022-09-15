@@ -1,23 +1,39 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "A": {
-      "tag": "forge:ingots/aluminum"
-    },
-    "G": {
-      "tag": "forge:glass_panes"
-    },
-    "L": {
-      "item": "assorteddecor:illumination_tube"
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "forge:tag_empty",
+            "tag": "forge:ingots/aluminum"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "key": {
+          "A": {
+            "tag": "forge:ingots/aluminum"
+          },
+          "G": {
+            "tag": "forge:glass_panes"
+          },
+          "L": {
+            "item": "assorteddecor:illumination_tube"
+          }
+        },
+        "pattern": [
+          "GGG",
+          "ALA",
+          "GGG"
+        ],
+        "result": {
+          "count": 8,
+          "item": "assorteddecor:illumination_plate"
+        }
+      }
     }
-  },
-  "pattern": [
-    "GGG",
-    "ALA",
-    "GGG"
-  ],
-  "result": {
-    "count": 8,
-    "item": "assorteddecor:illumination_plate"
-  }
+  ]
 }
