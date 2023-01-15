@@ -2,8 +2,10 @@ package com.grim3212.assorted.decor.client.screen;
 
 import java.util.stream.IntStream;
 
+import org.joml.Matrix4f;
+
 import com.grim3212.assorted.decor.AssortedDecor;
-import com.grim3212.assorted.decor.client.handler.NeonSignStitchHandler;
+import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRenderer;
 import com.grim3212.assorted.decor.common.block.NeonSignStandingBlock;
 import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.network.NeonChangeModePacket;
@@ -19,7 +21,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
-import com.mojang.math.Matrix4f;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
@@ -76,10 +77,9 @@ public class NeonSignScreen extends Screen {
 			return this.minecraft.font.width(s) <= 90;
 		});
 
-		this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		this.addRenderableWidget(new Button(x + (bgWidth - 154) / 2, y + 179, 154, 20, Component.translatable("gui.done"), btn -> {
+		this.addRenderableWidget(Button.builder(Component.translatable("gui.done"), btn -> {
 			this.close();
-		}));
+		}).bounds(x + (bgWidth - 154) / 2, y + 179, 154, 20).build());
 
 		for (int l = 0; l < 11; l++) {
 			final int id = l + 1;
@@ -146,8 +146,6 @@ public class NeonSignScreen extends Screen {
 
 	@Override
 	public void removed() {
-		this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
-
 		// Update lines on server side
 		PacketHandler.sendToServer(new NeonUpdatePacket(this.tileSign.getBlockPos(), this.tileSign.signText));
 	}
@@ -162,30 +160,30 @@ public class NeonSignScreen extends Screen {
 
 	private ChatFormatting getFormatting(int buttonId) {
 		switch (buttonId) {
-		case 11:
-			return ChatFormatting.GREEN;
-		case 12:
-			return ChatFormatting.AQUA;
-		case 13:
-			return ChatFormatting.RED;
-		case 14:
-			return ChatFormatting.LIGHT_PURPLE;
-		case 15:
-			return ChatFormatting.YELLOW;
-		case 16:
-			return ChatFormatting.WHITE;
-		case 17:
-			return ChatFormatting.BOLD;
-		case 18:
-			return ChatFormatting.ITALIC;
-		case 19:
-			return ChatFormatting.UNDERLINE;
-		case 20:
-			return ChatFormatting.STRIKETHROUGH;
-		case 21:
-			return ChatFormatting.OBFUSCATED;
-		case 22:
-			return ChatFormatting.RESET;
+			case 11:
+				return ChatFormatting.GREEN;
+			case 12:
+				return ChatFormatting.AQUA;
+			case 13:
+				return ChatFormatting.RED;
+			case 14:
+				return ChatFormatting.LIGHT_PURPLE;
+			case 15:
+				return ChatFormatting.YELLOW;
+			case 16:
+				return ChatFormatting.WHITE;
+			case 17:
+				return ChatFormatting.BOLD;
+			case 18:
+				return ChatFormatting.ITALIC;
+			case 19:
+				return ChatFormatting.UNDERLINE;
+			case 20:
+				return ChatFormatting.STRIKETHROUGH;
+			case 21:
+				return ChatFormatting.OBFUSCATED;
+			case 22:
+				return ChatFormatting.RESET;
 		}
 		return ChatFormatting.getById(buttonId - 1);
 	}
@@ -232,7 +230,7 @@ public class NeonSignScreen extends Screen {
 		matrixStack.pushPose();
 		matrixStack.scale(f1, -f1, -f1);
 		MultiBufferSource.BufferSource irendertypebuffer$impl = this.minecraft.renderBuffers().bufferSource();
-		Material rendermaterial = new Material(Sheets.SIGN_SHEET, NeonSignStitchHandler.getSignTexture(tileSign.mode));
+		Material rendermaterial = new Material(Sheets.SIGN_SHEET, NeonSignBlockEntityRenderer.getSignTexture(tileSign.mode));
 		VertexConsumer ivertexbuilder = rendermaterial.buffer(irendertypebuffer$impl, this.signModel::renderType);
 		this.signModel.root.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
 		if (flag) {

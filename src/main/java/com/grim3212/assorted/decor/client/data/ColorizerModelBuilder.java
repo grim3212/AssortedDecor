@@ -18,7 +18,7 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
 	protected ColorizerModelBuilder(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper) {
 		super(outputLocation, existingFileHelper);
-		this.textures = Maps.newHashMap();
+		this.textures = Maps.newConcurrentMap();
 	}
 
 	public ColorizerModelBuilder loader(ResourceLocation loader) {
@@ -50,7 +50,7 @@ public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
 		if (model != null) {
 			ret.addProperty("model", model.toString());
-			
+
 			if (this.textures.size() > 0) {
 				JsonObject textureObj = new JsonObject();
 

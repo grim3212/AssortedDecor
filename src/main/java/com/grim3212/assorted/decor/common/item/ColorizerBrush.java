@@ -8,6 +8,9 @@ import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -45,7 +48,7 @@ public class ColorizerBrush extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		BlockState state = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+		BlockState state = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state"));
 
 		if (state.getBlock() == Blocks.AIR) {
 			tooltip.add(Component.translatable("tooltip.colorizer_brush.empty"));
@@ -61,7 +64,7 @@ public class ColorizerBrush extends Item {
 		Player player = context.getPlayer();
 		InteractionHand hand = context.getHand();
 
-		BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+		BlockState stored = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state"));
 		BlockState hit = world.getBlockState(context.getClickedPos());
 
 		if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {

@@ -4,7 +4,7 @@ import com.grim3212.assorted.decor.common.block.blockentity.CageBlockEntity;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
 import com.grim3212.assorted.decor.common.util.CageLogic;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -25,11 +25,10 @@ public class CageBlockEntityRenderer implements BlockEntityRenderer<CageBlockEnt
 		CageLogic cageLogic = cage.getCageLogic();
 		ItemStack stack = cage.getItem(0);
 		if (!stack.isEmpty()) {
-			
+
 			poseStack.translate(0.0D, (double) 0.4F, 0.0D);
-			poseStack.mulPose(Vector3f.YP.rotationDegrees((float)Mth.lerp((double)partialTicks, cageLogic.getPrevMobRotation(), cageLogic.getMobRotation()) * DecorConfig.CLIENT.cageEntitySpinMod.get().floatValue()));
+			poseStack.mulPose(Axis.YP.rotationDegrees((float) Mth.lerp((double) partialTicks, cageLogic.getPrevMobRotation(), cageLogic.getMobRotation()) * DecorConfig.CLIENT.cageEntitySpinMod.get().floatValue()));
 			poseStack.translate(0.0D, (double) -0.2F, 0.0D);
-			
 
 			Entity cageEntity = cageLogic.getEntity();
 			if (cageEntity != null) {
@@ -41,11 +40,11 @@ public class CageBlockEntityRenderer implements BlockEntityRenderer<CageBlockEnt
 				}
 
 				poseStack.scale(f, f, f);
-				
+
 				EntityRenderDispatcher entityRendererDispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
 				entityRendererDispatcher.setRenderShadow(false);
 				entityRendererDispatcher.render(cageEntity, 0, 0, 0, Minecraft.getInstance().getFrameTime(), 1, poseStack, source, combinedLightIn);
-				
+
 			}
 		}
 

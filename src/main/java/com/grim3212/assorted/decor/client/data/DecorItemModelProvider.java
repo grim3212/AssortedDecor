@@ -4,7 +4,7 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -14,8 +14,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DecorItemModelProvider extends ItemModelProvider {
 
-	public DecorItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, AssortedDecor.MODID, existingFileHelper);
+	public DecorItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, AssortedDecor.MODID, existingFileHelper);
 	}
 
 	@Override

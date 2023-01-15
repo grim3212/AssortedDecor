@@ -1,3 +1,12 @@
 {
-  "parent": "assorteddecor:block/colorizer_brush"
+  "colorizer": {
+    "parent": "assorteddecor:item/brush",
+    "textures": {
+      "handle": "assorteddecor:item/brush_handle"
+    }
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  }
 }

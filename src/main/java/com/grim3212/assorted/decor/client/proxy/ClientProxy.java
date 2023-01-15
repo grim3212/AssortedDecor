@@ -30,6 +30,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.player.Player;
@@ -128,7 +129,7 @@ public class ClientProxy implements IProxy {
 			public int getColor(ItemStack stack, int tint) {
 				if (stack != null && stack.hasTag()) {
 					if (stack.getTag().contains("stored_state")) {
-						BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+						BlockState stored = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state"));
 						ItemStack colorStack = new ItemStack(stored.getBlock());
 						if (colorStack.getItem() != null) {
 							return items.getColor(colorStack, tint);
@@ -144,7 +145,7 @@ public class ClientProxy implements IProxy {
 			public int getColor(ItemStack stack, int tint) {
 				if (stack != null && stack.hasTag()) {
 					if (stack.getTag().contains("stored_state")) {
-						BlockState stored = NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state"));
+						BlockState stored = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state"));
 						ItemStack colorStack = new ItemStack(stored.getBlock());
 						if (colorStack.getItem() != null && !(colorStack.getItem() instanceof AirItem)) {
 							return items.getColor(colorStack, tint);

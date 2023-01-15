@@ -1,3 +1,9 @@
 {
-  "parent": "assorteddecor:block/colorizer_fence_inventory"
+  "colorizer": {
+    "parent": "assorteddecor:item/fence_inventory"
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  }
 }

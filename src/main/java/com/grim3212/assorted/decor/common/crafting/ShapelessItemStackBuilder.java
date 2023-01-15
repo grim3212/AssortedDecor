@@ -14,8 +14,8 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.Registry;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ShapelessItemStackBuilder {
 	private final ItemStack result;
@@ -30,13 +31,15 @@ public class ShapelessItemStackBuilder {
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	@Nullable
 	private String group;
+	private final RecipeCategory category;
 
-	ShapelessItemStackBuilder(ItemStack item) {
+	ShapelessItemStackBuilder(ItemStack item, RecipeCategory category) {
 		this.result = item;
+		this.category = category;
 	}
 
-	public static ShapelessItemStackBuilder shapeless(ItemStack item) {
-		return new ShapelessItemStackBuilder(item);
+	public static ShapelessItemStackBuilder shapeless(ItemStack item, RecipeCategory category) {
+		return new ShapelessItemStackBuilder(item, category);
 	}
 
 	public ShapelessItemStackBuilder requires(TagKey<Item> tag) {
@@ -86,13 +89,13 @@ public class ShapelessItemStackBuilder {
 	}
 
 	public ResourceLocation getDefaultRecipeId(ItemLike item) {
-		return Registry.ITEM.getKey(item.asItem());
+		return ForgeRegistries.ITEMS.getKey(item.asItem());
 	}
 
 	public void save(Consumer<FinishedRecipe> consumer, ResourceLocation location) {
 		this.ensureValid(location);
 		this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location)).rewards(AdvancementRewards.Builder.recipe(location)).requirements(RequirementsStrategy.OR);
-		consumer.accept(new ShapelessItemStackBuilder.Result(location, this.result, this.group == null ? "" : this.group, this.ingredients, this.advancement, new ResourceLocation(location.getNamespace(), "recipes/" + this.result.getItem().getItemCategory().getRecipeFolderName() + "/" + location.getPath())));
+		consumer.accept(new ShapelessItemStackBuilder.Result(location, this.result, this.group == null ? "" : this.group, this.ingredients, this.advancement, new ResourceLocation(location.getNamespace(), "recipes/" + this.category.getFolderName() + "/" + location.getPath())));
 	}
 
 	private void ensureValid(ResourceLocation location) {
@@ -132,7 +135,7 @@ public class ShapelessItemStackBuilder {
 			json.add("ingredients", jsonarray);
 			JsonObject jsonobject = new JsonObject();
 
-			jsonobject.addProperty("item", Registry.ITEM.getKey(this.result.getItem()).toString());
+			jsonobject.addProperty("item", ForgeRegistries.ITEMS.getKey(this.result.getItem()).toString());
 			jsonobject.addProperty("count", this.result.getCount());
 			if (this.result.hasTag())
 				jsonobject.addProperty("nbt", this.result.getTag().toString());

@@ -4,8 +4,7 @@ import com.grim3212.assorted.decor.common.block.CalendarBlock;
 import com.grim3212.assorted.decor.common.block.blockentity.CalendarBlockEntity;
 import com.grim3212.assorted.decor.common.util.DateHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -29,7 +28,7 @@ public class CalendarBlockEntityRenderer implements BlockEntityRenderer<Calendar
 		float f2 = tileEntityIn.getBlockState().getValue(CalendarBlock.FACING).toYRot();
 
 		matrixStackIn.translate(0.5F, 0.5F, 0.5F);
-		matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), -f2, true));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(-f2));
 		matrixStackIn.translate(0.0F, -0.3125F, -0.4375F);
 
 		float f3 = 0.015F * f1;

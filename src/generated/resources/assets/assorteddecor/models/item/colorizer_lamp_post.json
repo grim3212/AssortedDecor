@@ -1,3 +1,12 @@
 {
-  "parent": "assorteddecor:block/colorizer_lamp_post_inventory"
+  "colorizer": {
+    "parent": "assorteddecor:item/lamp_post_inventory",
+    "textures": {
+      "lamp": "minecraft:block/glowstone"
+    }
+  },
+  "loader": "assorteddecor:models/colorizer",
+  "textures": {
+    "particle": "assorteddecor:block/colorizer"
+  }
 }

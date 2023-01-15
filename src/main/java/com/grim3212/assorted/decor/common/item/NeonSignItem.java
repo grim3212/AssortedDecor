@@ -7,19 +7,20 @@ import com.grim3212.assorted.decor.common.block.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.network.NeonOpenPacket;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class NeonSignItem extends StandingAndWallBlockItem {
 
 	public NeonSignItem(Item.Properties props) {
-		super(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get(), props);
+		super(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get(), props, Direction.DOWN);
 	}
 
 	@Override

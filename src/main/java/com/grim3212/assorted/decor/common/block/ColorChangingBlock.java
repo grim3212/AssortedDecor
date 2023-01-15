@@ -1,14 +1,10 @@
 package com.grim3212.assorted.decor.common.block;
 
-import java.util.Arrays;
-
 import com.grim3212.assorted.decor.common.util.NBTHelper;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -40,11 +36,6 @@ public class ColorChangingBlock extends Block implements ICanColor {
 	@Override
 	public BlockState stateForColor(BlockState state, DyeColor color) {
 		return state.setValue(COLOR, color);
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		Arrays.stream(DyeColor.values()).forEach(x -> items.add(getColorStack(new ItemStack(this), x)));
 	}
 
 	@Override

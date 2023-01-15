@@ -1,6 +1,8 @@
 package com.grim3212.assorted.decor;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import org.apache.commons.compress.utils.Lists;
@@ -10,12 +12,15 @@ import org.apache.logging.log4j.Logger;
 import com.grim3212.assorted.decor.client.data.ColorizerModelProvider;
 import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
 import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
+import com.grim3212.assorted.decor.client.data.DecorSpriteSourceProvider;
 import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
+import com.grim3212.assorted.decor.common.creative.DecorCreativeTab;
 import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorItemTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorLootProvider;
+import com.grim3212.assorted.decor.common.data.DecorLootProvider.BlockTables;
 import com.grim3212.assorted.decor.common.data.DecorRecipes;
 import com.grim3212.assorted.decor.common.entity.DecorEntityTypes;
 import com.grim3212.assorted.decor.common.handler.DecorConfig;
@@ -25,13 +30,14 @@ import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.network.PacketHandler;
 import com.grim3212.assorted.decor.common.proxy.IProxy;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -55,14 +61,6 @@ public class AssortedDecor {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	public static final CreativeModeTab ASSORTED_DECOR_ITEM_GROUP = (new CreativeModeTab("assorteddecor") {
-		@Override
-		@OnlyIn(Dist.CLIENT)
-		public ItemStack makeIcon() {
-			return new ItemStack(DecorItems.WALLPAPER.get());
-		}
-	});
-
 	public AssortedDecor() {
 		DistExecutor.unsafeCallWhenOn(Dist.CLIENT, () -> () -> proxy = new ClientProxy());
 		proxy.starting();
@@ -72,6 +70,7 @@ public class AssortedDecor {
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
 		modBus.addListener(this::processIMC);
+		modBus.addListener(DecorCreativeTab::registerTabs);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
 
@@ -105,17 +104,20 @@ public class AssortedDecor {
 
 	private void gatherData(final GatherDataEvent event) {
 		DataGenerator datagenerator = event.getGenerator();
+		PackOutput packOutput = datagenerator.getPackOutput();
 		ExistingFileHelper fileHelper = event.getExistingFileHelper();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-		datagenerator.addProvider(event.includeServer(), new DecorRecipes(datagenerator));
-		DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(datagenerator, fileHelper);
+		datagenerator.addProvider(event.includeServer(), new DecorRecipes(packOutput));
+		DecorBlockTagProvider blockTagProvider = new DecorBlockTagProvider(packOutput, lookupProvider, fileHelper);
 		datagenerator.addProvider(event.includeServer(), blockTagProvider);
-		datagenerator.addProvider(event.includeServer(), new DecorItemTagProvider(datagenerator, blockTagProvider, fileHelper));
-		datagenerator.addProvider(event.includeServer(), new DecorLootProvider(datagenerator));
+		datagenerator.addProvider(event.includeServer(), new DecorItemTagProvider(packOutput, lookupProvider, blockTagProvider, fileHelper));
+		datagenerator.addProvider(event.includeServer(), new DecorLootProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(BlockTables::new, LootContextParamSets.BLOCK))));
 
-		ColorizerModelProvider loadedModels = new ColorizerModelProvider(datagenerator, fileHelper);
-		datagenerator.addProvider(event.includeClient(), new DecorBlockstateProvider(datagenerator, fileHelper, loadedModels));
+		ColorizerModelProvider loadedModels = new ColorizerModelProvider(packOutput, fileHelper);
+		datagenerator.addProvider(event.includeClient(), new DecorBlockstateProvider(packOutput, fileHelper, loadedModels));
 		datagenerator.addProvider(event.includeClient(), loadedModels);
-		datagenerator.addProvider(event.includeClient(), new DecorItemModelProvider(datagenerator, fileHelper));
+		datagenerator.addProvider(event.includeClient(), new DecorItemModelProvider(packOutput, fileHelper));
+		datagenerator.addProvider(event.includeClient(), new DecorSpriteSourceProvider(packOutput, fileHelper));
 	}
 }

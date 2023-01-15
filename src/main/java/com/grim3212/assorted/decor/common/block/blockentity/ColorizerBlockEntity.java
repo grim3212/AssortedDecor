@@ -2,6 +2,7 @@ package com.grim3212.assorted.decor.common.block.blockentity;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.Connection;
@@ -32,7 +33,7 @@ public class ColorizerBlockEntity extends BlockEntity {
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
-		this.blockState = NbtUtils.readBlockState(nbt.getCompound("stored_state"));
+		this.blockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("stored_state"));
 	}
 
 	@Override
@@ -82,6 +83,8 @@ public class ColorizerBlockEntity extends BlockEntity {
 				level.blockUpdated(worldPosition, getBlockState().getBlock());
 			}
 		}
+		
+		this.setChanged();
 	}
 
 	public void setStoredBlockState(String registryName) {

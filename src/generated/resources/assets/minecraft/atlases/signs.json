@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "assorteddecor:model/neon_sign"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "assorteddecor:model/neon_sign_clear"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "assorteddecor:model/neon_sign_white"
+    }
+  ]
+}

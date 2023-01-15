@@ -1,27 +1,22 @@
 package com.grim3212.assorted.decor.client.model;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
@@ -42,17 +37,14 @@ public class ColorizerObjModel implements IUnbakedGeometry<ColorizerObjModel> {
 		this.objModel = objModel;
 	}
 
-	@Nonnull
 	@Override
-	public Collection<Material> getMaterials(IGeometryBakingContext owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<Pair<String, String>> missingTextureErrors) {
-		Set<Material> ret = new HashSet<>();
-		ret.addAll(this.objModel.getMaterials(owner, modelGetter, missingTextureErrors));
-		return ret;
+	public void resolveParents(Function<ResourceLocation, UnbakedModel> modelGetter, IGeometryBakingContext context) {
+		this.objModel.resolveParents(modelGetter, context);
 	}
 
 	@Nullable
 	@Override
-	public BakedModel bake(IGeometryBakingContext owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
+	public BakedModel bake(IGeometryBakingContext owner, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
 		BakedModel bakedColorizer = this.objModel.bake(owner, bakery, spriteGetter, transform, overrides, name);
 		return new ColorizerObjBakedModel(bakedColorizer, objModel, owner, spriteGetter.apply(owner.getMaterial("particle")), bakery, spriteGetter, transform, overrides, name);
 	}
@@ -60,8 +52,8 @@ public class ColorizerObjModel implements IUnbakedGeometry<ColorizerObjModel> {
 	public static class ColorizerObjLoader implements IGeometryLoader<ColorizerObjModel>, ResourceManagerReloadListener {
 		public static ColorizerObjLoader INSTANCE = new ColorizerObjLoader();
 
-		private final Map<ObjModelCopy.ModelSettings, ColorizerObjModel> modelCache = Maps.newHashMap();
-		private final Map<ResourceLocation, ObjMaterialLibrary> materialCache = Maps.newHashMap();
+		private final Map<ObjModelCopy.ModelSettings, ColorizerObjModel> modelCache = Maps.newConcurrentMap();
+		private final Map<ResourceLocation, ObjMaterialLibrary> materialCache = Maps.newConcurrentMap();
 
 		private ResourceManager manager = Minecraft.getInstance().getResourceManager();
 

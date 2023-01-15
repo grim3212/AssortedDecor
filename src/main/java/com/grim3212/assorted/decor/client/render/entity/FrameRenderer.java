@@ -1,14 +1,15 @@
 package com.grim3212.assorted.decor.client.render.entity;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.entity.FrameEntity;
 import com.grim3212.assorted.decor.common.entity.FrameEntity.FrameType;
 import com.grim3212.assorted.decor.common.item.FrameItem.FrameMaterial;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -33,7 +34,7 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
 	public void render(FrameEntity entityIn, float entityInYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
 
-		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityInYaw));
+		matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityInYaw));
 		renderBeams(entityIn, entityInYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 
 		matrixStackIn.popPose();

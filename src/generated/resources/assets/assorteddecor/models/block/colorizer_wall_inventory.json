@@ -1,9 +1,0 @@
-{
-  "colorizer": {
-    "parent": "assorteddecor:block/wall_inventory"
-  },
-  "loader": "assorteddecor:models/colorizer",
-  "textures": {
-    "particle": "assorteddecor:block/colorizer"
-  }
-}

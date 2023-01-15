@@ -28,7 +28,7 @@ public class NeonButton extends Button {
 	}
 
 	public NeonButton(int x, int y, Component buttonText, int texX, int texY, int width, boolean changeHoverDir, Button.OnPress onPress) {
-		super(x, y, 14, 14, buttonText, onPress);
+		super(x, y, 14, 14, buttonText, onPress, Button.DEFAULT_NARRATION);
 		this.texX = texX;
 		this.texY = texY;
 		this.changeHoverDir = changeHoverDir;
@@ -42,12 +42,12 @@ public class NeonButton extends Button {
 			Minecraft mc = Minecraft.getInstance();
 			RenderSystem.setShaderTexture(0, NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
 			RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
-			this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+			this.isHovered = mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 			int i = this.getYImage(this.isHovered);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-			this.blit(matrixStack, this.x, this.y, texX + (changeHoverDir ? 0 : width * (i - 1)), texY + (changeHoverDir ? height * (i - 1) : 0), this.width, this.height);
+			this.blit(matrixStack, this.getX(), this.getY(), texX + (changeHoverDir ? 0 : width * (i - 1)), texY + (changeHoverDir ? height * (i - 1) : 0), this.width, this.height);
 			this.renderBg(matrixStack, mc, mouseX, mouseY);
 		}
 	}
@@ -64,7 +64,7 @@ public class NeonButton extends Button {
 
 		if (this.hoverCount > 30 && !this.getMessage().getString().isEmpty()) {
 			Minecraft mc = Minecraft.getInstance();
-			mc.screen.renderTooltip(matrixStack, getMessage(), x, y);
+			mc.screen.renderTooltip(matrixStack, getMessage(), getX(), getY());
 		}
 	}
 

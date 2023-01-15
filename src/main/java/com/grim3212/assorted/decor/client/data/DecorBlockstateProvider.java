@@ -27,7 +27,7 @@ import com.grim3212.assorted.decor.common.util.VerticalSlabType;
 
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
@@ -53,8 +53,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private static final ResourceLocation COLORIZER_MODEL_LOADER = new ResourceLocation(AssortedDecor.MODID, "models/colorizer");
 	private static final ResourceLocation COLORIZER_OBJ_MODEL_LOADER = new ResourceLocation(AssortedDecor.MODID, "models/colorizer_obj");
 
-	public DecorBlockstateProvider(DataGenerator generator, ExistingFileHelper exFileHelper, ColorizerModelProvider loader) {
-		super(generator, AssortedDecor.MODID, exFileHelper);
+	public DecorBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper, ColorizerModelProvider loader) {
+		super(output, AssortedDecor.MODID, exFileHelper);
 		this.loaderModels = loader;
 	}
 
@@ -150,9 +150,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		colorizerSlab();
 		colorizerVerticalSlab();
 		colorizerLampPost();
-
-		ColorizerModelBuilder colorizerBrushModel = this.loaderModels.getBuilder("colorizer_brush").loader(COLORIZER_MODEL_LOADER).colorizer(new ResourceLocation(AssortedDecor.MODID, "item/brush")).addTexture("handle", new ResourceLocation(AssortedDecor.MODID, "item/brush_handle"));
-		itemModels().getBuilder(prefix("item/colorizer_brush")).parent(colorizerBrushModel);
+		
+		getModelBuilder(prefix("item/colorizer_brush"), new ResourceLocation(AssortedDecor.MODID, "item/brush")).addTexture("handle", new ResourceLocation(AssortedDecor.MODID, "item/brush_handle"));
 
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/slope.obj"));
 		colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), new ResourceLocation(AssortedDecor.MODID, "models/block/sloped_angle.obj"));
@@ -219,7 +218,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		simpleBlock(b);
 		itemModels().withExistingParent(name, prefix("block/" + name));
 	}
-	
+
 	private void genericCutoutBlock(Block b) {
 		String name = name(b);
 		simpleBlock(b, models().cubeAll(name, blockTexture(b)).renderType(CUTOUT_RENDER_TYPE));
@@ -242,50 +241,50 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		BlockModelBuilder plateModel = this.models().getBuilder(prefix("block/illumination_plate")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate")).renderType(CUTOUT_RENDER_TYPE);
 		plateModel.element().from(4, 0, 4).to(12, 2, 12).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case NORTH:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case SOUTH:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case WEST:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case DOWN:
-				face.texture("#texture").uvs(12, 12, 4, 4).cullface(Direction.DOWN);
-				break;
-			case UP:
-			default:
-				face.texture("#texture").uvs(4, 4, 12, 12);
-				break;
+				case EAST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 12, 4, 4).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
 			}
 		});
 
 		BlockModelBuilder plateWallModel = this.models().getBuilder(prefix("block/illumination_plate_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate")).renderType(CUTOUT_RENDER_TYPE);
 		plateWallModel.element().from(0, 4, 4).to(2, 12, 12).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#texture").uvs(4, 4, 12, 12);
-				break;
-			case NORTH:
-				face.texture("#texture").uvs(14, 4, 16, 12);
-				break;
-			case SOUTH:
-				face.texture("#texture").uvs(0, 4, 2, 12);
-				break;
-			case WEST:
-				face.texture("#texture").uvs(4, 4, 12, 12).cullface(Direction.WEST);
-				break;
-			case DOWN:
-				face.texture("#texture").uvs(12, 16, 4, 14).rotation(FaceRotation.COUNTERCLOCKWISE_90);
-				break;
-			case UP:
-			default:
-				face.texture("#texture").uvs(4, 14, 12, 16).rotation(FaceRotation.CLOCKWISE_90);
-				break;
+				case EAST:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(14, 4, 16, 12);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(0, 4, 2, 12);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 4, 12, 12).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 16, 4, 14).rotation(FaceRotation.COUNTERCLOCKWISE_90);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 14, 12, 16).rotation(FaceRotation.CLOCKWISE_90);
+					break;
 			}
 		});
 
@@ -450,25 +449,25 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		calendarModel.element().from(4, 2, 0).to(12, 15, 1).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#all").uvs(14, 1, 16, 15);
-				break;
-			case NORTH:
-				face.texture("#all").uvs(0, 0, 4, 16).cullface(Direction.NORTH);
-				break;
-			case SOUTH:
-				face.texture("#all").uvs(2.5F, 0F, 13.5F, 16F);
-				break;
-			case WEST:
-				face.texture("#all").uvs(0, 1, 2, 15);
-				break;
-			case DOWN:
-				face.texture("#all").uvs(12, 2, 4, 0);
-				break;
-			case UP:
-			default:
-				face.texture("#all").uvs(4, 0, 12, 2);
-				break;
+				case EAST:
+					face.texture("#all").uvs(14, 1, 16, 15);
+					break;
+				case NORTH:
+					face.texture("#all").uvs(0, 0, 4, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#all").uvs(2.5F, 0F, 13.5F, 16F);
+					break;
+				case WEST:
+					face.texture("#all").uvs(0, 1, 2, 15);
+					break;
+				case DOWN:
+					face.texture("#all").uvs(12, 2, 4, 0);
+					break;
+				case UP:
+				default:
+					face.texture("#all").uvs(4, 0, 12, 2);
+					break;
 			}
 		});
 
@@ -480,25 +479,25 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		defaultWallClockModel.element().from(0, 0, 0).to(2, 16, 16).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#front").uvs(0, 0, 16, 16);
-				break;
-			case NORTH:
-				face.texture("#side").uvs(14, 0, 16, 16).cullface(Direction.NORTH);
-				break;
-			case SOUTH:
-				face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.SOUTH);
-				break;
-			case WEST:
-				face.texture("#back").uvs(0, 0, 16, 16).cullface(Direction.WEST);
-				break;
-			case DOWN:
-				face.texture("#side").uvs(16, 16, 14, 0).cullface(Direction.DOWN);
-				break;
-			case UP:
-			default:
-				face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.UP);
-				break;
+				case EAST:
+					face.texture("#front").uvs(0, 0, 16, 16);
+					break;
+				case NORTH:
+					face.texture("#side").uvs(14, 0, 16, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.SOUTH);
+					break;
+				case WEST:
+					face.texture("#back").uvs(0, 0, 16, 16).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#side").uvs(16, 16, 14, 0).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.UP);
+					break;
 			}
 		});
 
@@ -516,19 +515,19 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-			case NORTH:
-			case SOUTH:
-			case WEST:
-				face.texture("#side").uvs(3, 0, 13, 16);
-				break;
-			case DOWN:
-				face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
-				break;
-			case UP:
-			default:
-				face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
-				break;
+				case EAST:
+				case NORTH:
+				case SOUTH:
+				case WEST:
+					face.texture("#side").uvs(3, 0, 13, 16);
+					break;
+				case DOWN:
+					face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
+					break;
+				case UP:
+				default:
+					face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
+					break;
 			}
 		});
 
@@ -645,22 +644,22 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 	private void colorizerFence() {
 		ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", new ResourceLocation(AssortedDecor.MODID, "block/fence_post"));
 		ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", new ResourceLocation(AssortedDecor.MODID, "block/fence_side"));
-		ConfiguredModel colorizerFenceInventoryModel = getModel("colorizer_fence_inventory", new ResourceLocation(AssortedDecor.MODID, "block/fence_inventory"));
+		
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_FENCE.get()).part().modelFile(colorizerFencePostModel.model).addModel().end();
 		fourWayMultipart(builder, colorizerFenceSideModel.model);
 
-		itemModels().getBuilder(prefix("item/colorizer_fence")).parent(colorizerFenceInventoryModel.model);
+		getModel(prefix("item/colorizer_fence"), new ResourceLocation(AssortedDecor.MODID, "item/fence_inventory"));
 	}
 
 	private void colorizerWall() {
 		ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", new ResourceLocation(AssortedDecor.MODID, "block/wall_post"));
 		ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", new ResourceLocation(AssortedDecor.MODID, "block/wall_side"));
 		ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", new ResourceLocation(AssortedDecor.MODID, "block/wall_side_tall"));
-		ConfiguredModel colorizerWallInventoryModel = getModel("colorizer_wall_inventory", new ResourceLocation(AssortedDecor.MODID, "block/wall_inventory"));
 
 		wallBlock(DecorBlocks.COLORIZER_WALL.get(), colorizerWallPostModel.model, colorizerWallSideModel.model, colorizerWallSideTallModel.model);
-		itemModels().getBuilder(prefix("item/colorizer_wall")).parent(colorizerWallInventoryModel.model);
+		
+		getModel(prefix("item/colorizer_wall"), new ResourceLocation(AssortedDecor.MODID, "item/wall_inventory"));
 	}
 
 	private void colorizerTrapDoor() {
@@ -681,10 +680,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerDoorTopRightModel = getModel("colorizer_door_top_right", new ResourceLocation(AssortedDecor.MODID, "block/door_top_right"));
 		ConfiguredModel colorizerDoorTopLeftOpenModel = getModel("colorizer_door_top_left_open", new ResourceLocation(AssortedDecor.MODID, "block/door_top_left_open"));
 		ConfiguredModel colorizerDoorTopRightOpenModel = getModel("colorizer_door_top_right_open", new ResourceLocation(AssortedDecor.MODID, "block/door_top_right_open"));
-		ConfiguredModel colorizerDoorItemModel = getModel("colorizer_door", new ResourceLocation(AssortedDecor.MODID, "item/door"));
 
 		doorBlock(DecorBlocks.COLORIZER_DOOR.get(), colorizerDoorBottomLeftModel.model, colorizerDoorBottomLeftOpenModel.model, colorizerDoorBottomRightModel.model, colorizerDoorBottomRightOpenModel.model, colorizerDoorTopLeftModel.model, colorizerDoorTopLeftOpenModel.model, colorizerDoorTopRightModel.model, colorizerDoorTopRightOpenModel.model);
-		itemModels().getBuilder(prefix("item/colorizer_door")).parent(colorizerDoorItemModel.model);
+		getModel(prefix("item/colorizer_door"), new ResourceLocation(AssortedDecor.MODID, "item/door"));
 	}
 
 	private void colorizerStairs() {
@@ -722,10 +720,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_bottom"));
 		ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_middle"));
 		ColorizerModelBuilder colorizerLampPostTopModel = getModelBuilder("colorizer_lamp_post_top", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_top")).addTexture("lamp", new ResourceLocation("block/glowstone"));
-		ColorizerModelBuilder colorizerLampPostInventoryModel = getModelBuilder("colorizer_lamp_post_inventory", new ResourceLocation(AssortedDecor.MODID, "block/lamp_post_inventory")).addTexture("lamp", new ResourceLocation("block/glowstone"));
 
 		getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(new ConfiguredModel(colorizerLampPostTopModel));
-		itemModels().getBuilder(prefix("item/colorizer_lamp_post")).parent(colorizerLampPostInventoryModel);
+
+		getModelBuilder(prefix("item/colorizer_lamp_post"), new ResourceLocation(AssortedDecor.MODID, "item/lamp_post_inventory")).addTexture("lamp", new ResourceLocation("block/glowstone"));
 	}
 
 	private void colorizerFireplace() {

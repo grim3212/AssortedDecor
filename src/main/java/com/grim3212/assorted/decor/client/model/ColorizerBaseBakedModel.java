@@ -24,9 +24,10 @@ import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
@@ -41,7 +42,7 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 
 public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedModel> {
-	protected final ModelBakery bakery;
+	protected final ModelBaker bakery;
 	protected final Function<Material, TextureAtlasSprite> spriteGetter;
 	protected final ModelState transform;
 	protected final ResourceLocation name;
@@ -49,7 +50,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 	protected final ItemOverrides overrides;
 	protected final TextureAtlasSprite baseSprite;
 
-	public ColorizerBaseBakedModel(BakedModel bakedColorizer, IGeometryBakingContext owner, TextureAtlasSprite baseSprite, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
+	public ColorizerBaseBakedModel(BakedModel bakedColorizer, IGeometryBakingContext owner, TextureAtlasSprite baseSprite, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ItemOverrides overrides, ResourceLocation name) {
 		super(bakedColorizer);
 		this.bakery = bakery;
 		this.spriteGetter = spriteGetter;
@@ -110,7 +111,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 			} else {
 				BlockModelShaper blockModel = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper();
 				TextureAtlasSprite blockTexture = blockModel.getParticleIcon(blockState);
-				texture = blockTexture.getName().toString();
+				texture = blockTexture.contents().name().toString();
 			}
 
 			newTexture.put("particle", texture);
@@ -153,7 +154,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 			ColorizerBaseBakedModel bridgeModel = (ColorizerBaseBakedModel) originalModel;
 
 			if (stack.hasTag() && stack.getTag().contains("stored_state")) {
-				return bridgeModel.getCachedModel(NbtUtils.readBlockState(NBTHelper.getTag(stack, "stored_state")));
+				return bridgeModel.getCachedModel(NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state")));
 			}
 
 			return bridgeModel.getCachedModel(Blocks.AIR.defaultBlockState());

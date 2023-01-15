@@ -1,27 +1,32 @@
 package com.grim3212.assorted.decor.common.data;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
 import com.grim3212.assorted.decor.common.lib.DecorTags;
 
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DecorItemTagProvider extends ItemTagsProvider {
 
-	public DecorItemTagProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, blockTagProvider, AssortedDecor.MODID, existingFileHelper);
+	public DecorItemTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, TagsProvider<Block> blockTags, ExistingFileHelper existingFileHelper) {
+		super(output, lookup, blockTags, AssortedDecor.MODID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(Provider provider) {
 		this.tag(DecorTags.Items.BUCKETS_WATER).add(Items.WATER_BUCKET);
 		this.tag(Tags.Items.FENCES).add(DecorBlocks.COLORIZER_FENCE.get().asItem());
 		this.tag(Tags.Items.FENCE_GATES).add(DecorBlocks.COLORIZER_FENCE_GATE.get().asItem());

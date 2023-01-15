@@ -1,19 +1,17 @@
 package com.grim3212.assorted.decor.common.util;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 
-import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.tags.ITag;
 
 public class ConfigurableBlockStates {
 
@@ -79,9 +77,9 @@ public class ConfigurableBlockStates {
 			}
 
 			for (ResourceLocation t : this.tags) {
-				Optional<Named<Block>> foundTag = Registry.BLOCK.getTag(BlockTags.create(t));
-				if (foundTag != null && foundTag.isPresent()) {
-					foundTag.stream().flatMap((o) -> o.stream().map((bls) -> bls.value().defaultBlockState())).forEach(state -> states.add(state));
+				ITag<Block> foundTag = ForgeRegistries.BLOCKS.tags().getTag(BlockTags.create(t));
+				if (foundTag != null && !foundTag.isEmpty()) {
+					foundTag.stream().map((o) -> o.defaultBlockState()).forEach(state -> states.add(state));
 				} else {
 					AssortedDecor.LOGGER.warn(t.toString() + " is not a valid block tag.");
 				}
