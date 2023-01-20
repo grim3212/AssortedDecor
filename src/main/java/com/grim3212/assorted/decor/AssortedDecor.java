@@ -16,6 +16,7 @@ import com.grim3212.assorted.decor.client.data.DecorSpriteSourceProvider;
 import com.grim3212.assorted.decor.client.proxy.ClientProxy;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.blockentity.DecorBlockEntityTypes;
+import com.grim3212.assorted.decor.common.crafting.StoredFluidIngredient;
 import com.grim3212.assorted.decor.common.creative.DecorCreativeTab;
 import com.grim3212.assorted.decor.common.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.common.data.DecorItemTagProvider;
@@ -39,6 +40,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -50,6 +52,8 @@ import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(AssortedDecor.MODID)
 public class AssortedDecor {
@@ -70,6 +74,7 @@ public class AssortedDecor {
 		modBus.addListener(this::setup);
 		modBus.addListener(this::gatherData);
 		modBus.addListener(this::processIMC);
+		modBus.addListener(this::registerRecipeSerializers);
 		modBus.addListener(DecorCreativeTab::registerTabs);
 
 		MinecraftForge.EVENT_BUS.register(new TagLoadListener());
@@ -119,5 +124,11 @@ public class AssortedDecor {
 		datagenerator.addProvider(event.includeClient(), loadedModels);
 		datagenerator.addProvider(event.includeClient(), new DecorItemModelProvider(packOutput, fileHelper));
 		datagenerator.addProvider(event.includeClient(), new DecorSpriteSourceProvider(packOutput, fileHelper));
+	}
+
+	private void registerRecipeSerializers(final RegisterEvent event) {
+		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(new ResourceLocation(AssortedDecor.MODID, "fluid"), StoredFluidIngredient.Serializer.INSTANCE);
+		}
 	}
 }

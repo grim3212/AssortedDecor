@@ -1,4 +1,4 @@
-package com.grim3212.assorted.decor.common.lib;
+package com.grim3212.assorted.decor.common.util;
 
 import com.grim3212.assorted.decor.AssortedDecor;
 
@@ -32,7 +32,8 @@ public class DecorTags {
 	}
 
 	public static class Items {
-		public static final TagKey<Item> BUCKETS_WATER = forgeTag("buckets/water");
+		public static final TagKey<Item> FLUID_CONTAINERS = forgeTag("containers/fluid");
+		
 		public static final TagKey<Item> INGOTS_ALUMINUM = forgeTag("ingots/aluminum");
 		public static final TagKey<Item> INGOTS_STEEL = forgeTag("ingots/steel");
 		public static final TagKey<Item> NUGGETS_ALUMINUM = forgeTag("nuggets/aluminum");

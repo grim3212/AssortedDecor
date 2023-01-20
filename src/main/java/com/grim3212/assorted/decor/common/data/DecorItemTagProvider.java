@@ -5,7 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.item.DecorItems;
-import com.grim3212.assorted.decor.common.lib.DecorTags;
+import com.grim3212.assorted.decor.common.util.DecorTags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
@@ -27,7 +27,8 @@ public class DecorItemTagProvider extends ItemTagsProvider {
 
 	@Override
 	protected void addTags(Provider provider) {
-		this.tag(DecorTags.Items.BUCKETS_WATER).add(Items.WATER_BUCKET);
+		this.tag(DecorTags.Items.FLUID_CONTAINERS).add(Items.BUCKET, Items.WATER_BUCKET, Items.LAVA_BUCKET);
+
 		this.tag(Tags.Items.FENCES).add(DecorBlocks.COLORIZER_FENCE.get().asItem());
 		this.tag(Tags.Items.FENCE_GATES).add(DecorBlocks.COLORIZER_FENCE_GATE.get().asItem());
 		this.tag(ItemTags.WALLS).add(DecorBlocks.COLORIZER_WALL.get().asItem());

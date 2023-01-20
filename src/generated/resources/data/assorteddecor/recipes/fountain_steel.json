@@ -6,7 +6,9 @@
       "tag": "forge:ingots/steel"
     },
     "W": {
-      "tag": "forge:buckets/water"
+      "type": "assorteddecor:fluid",
+      "amount": 1000,
+      "fluid": "minecraft:water"
     },
     "X": {
       "tag": "forge:cobblestone"

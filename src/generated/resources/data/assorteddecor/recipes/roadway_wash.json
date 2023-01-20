@@ -6,7 +6,9 @@
       "tag": "assorteddecor:roadways/color"
     },
     {
-      "tag": "forge:buckets/water"
+      "type": "assorteddecor:fluid",
+      "amount": 1000,
+      "fluid": "minecraft:water"
     }
   ],
   "result": {

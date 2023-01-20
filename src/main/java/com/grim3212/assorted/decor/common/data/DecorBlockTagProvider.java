@@ -6,7 +6,7 @@ import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.DecorBlocks;
 import com.grim3212.assorted.decor.common.block.FluroBlock;
 import com.grim3212.assorted.decor.common.item.PaintRollerItem;
-import com.grim3212.assorted.decor.common.lib.DecorTags;
+import com.grim3212.assorted.decor.common.util.DecorTags;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;

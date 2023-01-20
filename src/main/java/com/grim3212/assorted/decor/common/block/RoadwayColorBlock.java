@@ -1,12 +1,11 @@
 package com.grim3212.assorted.decor.common.block;
 
-import com.grim3212.assorted.decor.common.lib.DecorTags;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +25,7 @@ public class RoadwayColorBlock extends Block implements ICanColor {
 		if (!player.getAbilities().mayBuild) {
 			return InteractionResult.PASS;
 		} else {
-			if (player.getItemInHand(hand).is(DecorTags.Items.BUCKETS_WATER)) {
+			if (player.getItemInHand(hand).is(Items.WATER_BUCKET)) {
 				level.setBlock(pos, DecorBlocks.ROADWAY.get().defaultBlockState(), 3);
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
