@@ -1,10 +1,10 @@
 package com.grim3212.assorted.decor.client.data;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.AssortedDecor;
 import com.grim3212.assorted.decor.common.block.BoneDecorationBlock;
 import com.grim3212.assorted.decor.common.block.ClayDecorationBlock;
@@ -219,7 +219,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		simpleBlock(b);
 		itemModels().withExistingParent(name, prefix("block/" + name));
 	}
-	
+
 	private void genericCutoutBlock(Block b) {
 		String name = name(b);
 		simpleBlock(b, models().cubeAll(name, blockTexture(b)).renderType(CUTOUT_RENDER_TYPE));
@@ -242,50 +242,50 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 		BlockModelBuilder plateModel = this.models().getBuilder(prefix("block/illumination_plate")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate")).renderType(CUTOUT_RENDER_TYPE);
 		plateModel.element().from(4, 0, 4).to(12, 2, 12).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case NORTH:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case SOUTH:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case WEST:
-				face.texture("#texture").uvs(4, 14, 12, 16);
-				break;
-			case DOWN:
-				face.texture("#texture").uvs(12, 12, 4, 4).cullface(Direction.DOWN);
-				break;
-			case UP:
-			default:
-				face.texture("#texture").uvs(4, 4, 12, 12);
-				break;
+				case EAST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 14, 12, 16);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 12, 4, 4).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
 			}
 		});
 
 		BlockModelBuilder plateWallModel = this.models().getBuilder(prefix("block/illumination_plate_wall")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", prefix("block/illumination_plate")).texture("texture", prefix("block/illumination_plate")).renderType(CUTOUT_RENDER_TYPE);
 		plateWallModel.element().from(0, 4, 4).to(2, 12, 12).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#texture").uvs(4, 4, 12, 12);
-				break;
-			case NORTH:
-				face.texture("#texture").uvs(14, 4, 16, 12);
-				break;
-			case SOUTH:
-				face.texture("#texture").uvs(0, 4, 2, 12);
-				break;
-			case WEST:
-				face.texture("#texture").uvs(4, 4, 12, 12).cullface(Direction.WEST);
-				break;
-			case DOWN:
-				face.texture("#texture").uvs(12, 16, 4, 14).rotation(FaceRotation.COUNTERCLOCKWISE_90);
-				break;
-			case UP:
-			default:
-				face.texture("#texture").uvs(4, 14, 12, 16).rotation(FaceRotation.CLOCKWISE_90);
-				break;
+				case EAST:
+					face.texture("#texture").uvs(4, 4, 12, 12);
+					break;
+				case NORTH:
+					face.texture("#texture").uvs(14, 4, 16, 12);
+					break;
+				case SOUTH:
+					face.texture("#texture").uvs(0, 4, 2, 12);
+					break;
+				case WEST:
+					face.texture("#texture").uvs(4, 4, 12, 12).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#texture").uvs(12, 16, 4, 14).rotation(FaceRotation.COUNTERCLOCKWISE_90);
+					break;
+				case UP:
+				default:
+					face.texture("#texture").uvs(4, 14, 12, 16).rotation(FaceRotation.CLOCKWISE_90);
+					break;
 			}
 		});
 
@@ -450,25 +450,25 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		calendarModel.element().from(4, 2, 0).to(12, 15, 1).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#all").uvs(14, 1, 16, 15);
-				break;
-			case NORTH:
-				face.texture("#all").uvs(0, 0, 4, 16).cullface(Direction.NORTH);
-				break;
-			case SOUTH:
-				face.texture("#all").uvs(2.5F, 0F, 13.5F, 16F);
-				break;
-			case WEST:
-				face.texture("#all").uvs(0, 1, 2, 15);
-				break;
-			case DOWN:
-				face.texture("#all").uvs(12, 2, 4, 0);
-				break;
-			case UP:
-			default:
-				face.texture("#all").uvs(4, 0, 12, 2);
-				break;
+				case EAST:
+					face.texture("#all").uvs(14, 1, 16, 15);
+					break;
+				case NORTH:
+					face.texture("#all").uvs(0, 0, 4, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#all").uvs(2.5F, 0F, 13.5F, 16F);
+					break;
+				case WEST:
+					face.texture("#all").uvs(0, 1, 2, 15);
+					break;
+				case DOWN:
+					face.texture("#all").uvs(12, 2, 4, 0);
+					break;
+				case UP:
+				default:
+					face.texture("#all").uvs(4, 0, 12, 2);
+					break;
 			}
 		});
 
@@ -480,29 +480,29 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		defaultWallClockModel.element().from(0, 0, 0).to(2, 16, 16).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-				face.texture("#front").uvs(0, 0, 16, 16);
-				break;
-			case NORTH:
-				face.texture("#side").uvs(14, 0, 16, 16).cullface(Direction.NORTH);
-				break;
-			case SOUTH:
-				face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.SOUTH);
-				break;
-			case WEST:
-				face.texture("#back").uvs(0, 0, 16, 16).cullface(Direction.WEST);
-				break;
-			case DOWN:
-				face.texture("#side").uvs(16, 16, 14, 0).cullface(Direction.DOWN);
-				break;
-			case UP:
-			default:
-				face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.UP);
-				break;
+				case EAST:
+					face.texture("#front").uvs(0, 0, 16, 16);
+					break;
+				case NORTH:
+					face.texture("#side").uvs(14, 0, 16, 16).cullface(Direction.NORTH);
+					break;
+				case SOUTH:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.SOUTH);
+					break;
+				case WEST:
+					face.texture("#back").uvs(0, 0, 16, 16).cullface(Direction.WEST);
+					break;
+				case DOWN:
+					face.texture("#side").uvs(16, 16, 14, 0).cullface(Direction.DOWN);
+					break;
+				case UP:
+				default:
+					face.texture("#side").uvs(0, 0, 2, 16).cullface(Direction.UP);
+					break;
 			}
 		});
 
-		List<BlockModelBuilder> clocks = Lists.newArrayList();
+		List<BlockModelBuilder> clocks = new ArrayList<>();
 		for (int i = 0; i < 64; i++) {
 			String name = prefix("block/wall_clock/wall_clock_" + (i + 1));
 			clocks.add(this.models().getBuilder(name).parent(defaultWallClockModel).texture("front", name));
@@ -516,19 +516,19 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
 		potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
 			switch (dir) {
-			case EAST:
-			case NORTH:
-			case SOUTH:
-			case WEST:
-				face.texture("#side").uvs(3, 0, 13, 16);
-				break;
-			case DOWN:
-				face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
-				break;
-			case UP:
-			default:
-				face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
-				break;
+				case EAST:
+				case NORTH:
+				case SOUTH:
+				case WEST:
+					face.texture("#side").uvs(3, 0, 13, 16);
+					break;
+				case DOWN:
+					face.texture("#side").cullface(Direction.DOWN).uvs(13, 13, 3, 3);
+					break;
+				case UP:
+				default:
+					face.texture("#top").cullface(Direction.UP).uvs(3, 3, 13, 13);
+					break;
 			}
 		});
 

@@ -8,9 +8,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:explosion_decay"
-            },
-            {
               "add": false,
               "conditions": [
                 {
@@ -23,12 +20,14 @@
               ],
               "count": 2.0,
               "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
             }
           ],
           "name": "assorteddecor:colorizer_slab"
         }
       ],
-      "name": "main",
       "rolls": 1.0
     }
   ]

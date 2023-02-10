@@ -1,11 +1,11 @@
 package com.grim3212.assorted.decor.common.crafting;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -26,7 +26,7 @@ import net.minecraft.world.level.ItemLike;
 
 public class ShapelessItemStackBuilder {
 	private final ItemStack result;
-	private final List<Ingredient> ingredients = Lists.newArrayList();
+	private final List<Ingredient> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	@Nullable
 	private String group;

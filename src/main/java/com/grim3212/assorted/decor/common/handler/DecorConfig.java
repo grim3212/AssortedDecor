@@ -1,10 +1,10 @@
 package com.grim3212.assorted.decor.common.handler;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.common.util.ConfigurableBlockStates;
 
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -20,7 +20,7 @@ public final class DecorConfig {
 	}
 
 	public static class Common {
-		
+
 		public final ForgeConfigSpec.BooleanValue dyeFrames;
 		public final ForgeConfigSpec.BooleanValue burnFrames;
 		public final ForgeConfigSpec.BooleanValue dyeWallpaper;
@@ -53,7 +53,7 @@ public final class DecorConfig {
 			consumeBlock = builder.comment("Set this to true if the colorizer brush should consume a block when using them").define("consumeBlock", true);
 			smoothness = builder.comment("Set this to determine how smooth all of the different slopes collision boxes should be.").defineInRange("smoothness", 2, 1, 10);
 
-			brushDisallowedBlocks = builder.comment("A list of blocks that the brush is unable to break / use the texture of.").define("brushDisallowedBlocks", Lists.newArrayList("block|minecraft:spawner"));
+			brushDisallowedBlocks = builder.comment("A list of blocks that the brush is unable to break / use the texture of.").define("brushDisallowedBlocks", Arrays.asList("block|minecraft:spawner"));
 			builder.pop();
 		}
 
@@ -73,14 +73,14 @@ public final class DecorConfig {
 	public static class Client {
 
 		public final ForgeConfigSpec.DoubleValue widthWallpaper;
-		
+
 		public final ForgeConfigSpec.DoubleValue cageEntitySpinMod;
 
 		public Client(ForgeConfigSpec.Builder builder) {
 			builder.push("Wallpaper");
 			widthWallpaper = builder.comment("Set this to determine how much the wallpaper will stick off of the wall.").defineInRange("widthWallpaper", 1.0D, 0.1D, 5.0D);
 			builder.pop();
-			
+
 			builder.push("Cage");
 			cageEntitySpinMod = builder.comment("This is the modifier for how fast entities spin when displayed inside the Cage.").defineInRange("cageEntitySpinMod", 3.0D, 1.0D, 20.0D);
 			builder.pop();
