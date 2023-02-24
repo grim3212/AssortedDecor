@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "tag": "forge:tar"
+  },
+  "result": "assorteddecor:asphalt"
+}

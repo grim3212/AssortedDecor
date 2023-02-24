@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "key": {
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
+  "pattern": [
+    "X  ",
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:colorizer_chair"
+  }
+}

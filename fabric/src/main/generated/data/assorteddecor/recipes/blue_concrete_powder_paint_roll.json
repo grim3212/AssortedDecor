@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_blue"
+    },
+    {
+      "tag": "c:concrete_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:blue_concrete_powder"
+  }
+}

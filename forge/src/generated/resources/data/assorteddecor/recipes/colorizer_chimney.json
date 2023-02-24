@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
+  "pattern": [
+    "X X",
+    "X X",
+    "XIX"
+  ],
+  "result": {
+    "count": 6,
+    "item": "assorteddecor:colorizer_chimney"
+  }
+}

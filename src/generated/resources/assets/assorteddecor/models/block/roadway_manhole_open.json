@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "bottom": "assorteddecor:block/roadways/roadway_manhole_bottom",
-    "side": "assorteddecor:block/roadways/roadway_side",
-    "top": "assorteddecor:block/roadways/roadway_manhole_open"
-  }
-}

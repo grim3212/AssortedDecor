@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "assortedlib:item_tag_populated",
+      "tag": "forge:ingots/steel"
+    },
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "criteria": {
+    "has_roadway": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "assorteddecor:roadway"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:steel_roadway_manhole"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_roadway",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:steel_roadway_manhole"
+    ]
+  }
+}

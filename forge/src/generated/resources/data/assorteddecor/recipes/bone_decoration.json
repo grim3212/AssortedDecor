@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:bones"
+    }
+  },
+  "pattern": [
+    " X ",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "item": "assorteddecor:bone_decoration"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "forge:ingots/iron"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "L": {
+      "tag": "forge:dusts/glowstone"
+    }
+  },
+  "pattern": [
+    " A ",
+    "GLG",
+    " A "
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:illumination_tube"
+  }
+}

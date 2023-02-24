@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "values": [
+        "c:ingots/steel"
+      ]
+    },
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "key": {
+    "M": {
+      "tag": "c:ingots/steel"
+    },
+    "X": {
+      "item": "assorteddecor:roadway"
+    }
+  },
+  "pattern": [
+    "M",
+    "X"
+  ],
+  "result": {
+    "item": "assorteddecor:roadway_manhole"
+  }
+}

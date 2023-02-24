@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller"
+    },
+    {
+      "type": "forge:difference",
+      "base": {
+        "tag": "forge:dyes/pink"
+      },
+      "subtracted": {
+        "tag": "assorteddecor:paint_rollers"
+      }
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:paint_roller_pink"
+  }
+}

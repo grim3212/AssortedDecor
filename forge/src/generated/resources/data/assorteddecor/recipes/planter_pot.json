@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "planter_pot"
+    }
+  ],
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "assorteddecor:unfired_planter_pot"
+  },
+  "result": "assorteddecor:planter_pot"
+}

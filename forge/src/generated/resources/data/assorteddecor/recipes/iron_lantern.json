@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "key": {
+    "C": {
+      "tag": "assorteddecor:lantern_source"
+    },
+    "P": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "pattern": [
+    " P ",
+    "PCP"
+  ],
+  "result": {
+    "item": "assorteddecor:iron_lantern"
+  }
+}

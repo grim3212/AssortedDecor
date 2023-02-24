@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:item_tag_populated",
+      "tag": "forge:ingots/aluminum"
+    },
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/aluminum"
+    },
+    "X": {
+      "tag": "forge:ingots/aluminum"
+    }
+  },
+  "pattern": [
+    " N ",
+    "NXN",
+    " N "
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:chain_link"
+  }
+}

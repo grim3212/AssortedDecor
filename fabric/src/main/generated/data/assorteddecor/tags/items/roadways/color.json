@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "assorteddecor:roadway_light_gray",
+    "assorteddecor:roadway_orange",
+    "assorteddecor:roadway_gray",
+    "assorteddecor:roadway_yellow",
+    "assorteddecor:roadway_purple",
+    "assorteddecor:roadway_black",
+    "assorteddecor:roadway_brown",
+    "assorteddecor:roadway_magenta",
+    "assorteddecor:roadway_light_blue",
+    "assorteddecor:roadway_lime",
+    "assorteddecor:roadway_green",
+    "assorteddecor:roadway_blue",
+    "assorteddecor:roadway_cyan",
+    "assorteddecor:roadway_white",
+    "assorteddecor:roadway_pink",
+    "assorteddecor:roadway_red"
+  ]
+}

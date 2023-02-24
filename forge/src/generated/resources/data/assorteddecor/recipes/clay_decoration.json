@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "assorteddecor:unfired_clay_decoration"
+  },
+  "result": "assorteddecor:clay_decoration"
+}

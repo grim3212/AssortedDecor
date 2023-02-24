@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "c:dyes/lime"
+    },
+    "G": {
+      "tag": "c:glass"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    }
+  },
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:fluro_lime"
+  }
+}

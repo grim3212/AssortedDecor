@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "key": {
+    "B": {
+      "tag": "forge:dyes/blue"
+    },
+    "D": {
+      "tag": "forge:dyes"
+    },
+    "G": {
+      "tag": "forge:dyes/green"
+    },
+    "R": {
+      "tag": "forge:dyes/red"
+    },
+    "X": {
+      "tag": "forge:stone"
+    }
+  },
+  "pattern": [
+    "XRX",
+    "GDB",
+    "XDX"
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:colorizer"
+  }
+}

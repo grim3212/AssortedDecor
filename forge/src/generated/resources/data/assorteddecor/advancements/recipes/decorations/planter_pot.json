@@ -1,0 +1,40 @@
+{
+  "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "planter_pot"
+    }
+  ],
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:planter_pot"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unfired_planter_pot": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "assorteddecor:unfired_planter_pot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_unfired_planter_pot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:planter_pot"
+    ]
+  }
+}

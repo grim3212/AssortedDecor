@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "values": [
+        "c:ingots/aluminum"
+      ]
+    },
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
+  "key": {
+    "A": {
+      "tag": "c:ingots/aluminum"
+    },
+    "G": {
+      "tag": "c:glass"
+    },
+    "L": {
+      "tag": "c:dusts/glowstone"
+    }
+  },
+  "pattern": [
+    " A ",
+    "GLG",
+    " A "
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:illumination_tube"
+  }
+}

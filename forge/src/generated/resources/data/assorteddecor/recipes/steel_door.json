@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:item_tag_populated",
+      "tag": "forge:ingots/steel"
+    },
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "key": {
+    "X": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 3,
+    "item": "assorteddecor:steel_door"
+  }
+}

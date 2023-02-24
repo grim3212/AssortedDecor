@@ -1,0 +1,16 @@
+// 1.19.3	2023-02-22T08:44:51.9715868	Assorted Decor block tags
+421ec497034ccbf1d9bac480394e11d8cd55e395 data/assorteddecor/tags/blocks/brush_disallowed_blocks.json
+3058f98ee3e9cef0dfea7da99da191b1c0868336 data/assorteddecor/tags/blocks/fluro.json
+81bbe75cc0b7e38bd7254ec4c5cde27ddad04753 data/assorteddecor/tags/blocks/roadways.json
+a8ad4dd3e8facdf381b3f65905ec8e6ac83cea4b data/assorteddecor/tags/blocks/roadways/all.json
+3cdb9a2ba383b4f7dd9431f411e4556ca2875ea0 data/assorteddecor/tags/blocks/roadways/color.json
+51719617e074f8d53904dbf8d85dc5ec05e3d87f data/minecraft/tags/blocks/doors.json
+451457a0bdf9fcfe6bc1c7f5ee7666e90ed67e51 data/minecraft/tags/blocks/fences.json
+2a5180716031a478a9bd67d81c8e0644dbe4cbb1 data/minecraft/tags/blocks/fence_gates.json
+894e09a317f645cc4783947c2ac4e99d6183d9f3 data/minecraft/tags/blocks/mineable/pickaxe.json
+f08b4de2cda81515a128278f91f857bc66bd38c0 data/minecraft/tags/blocks/slabs.json
+c0b2b3d7f6220c57bcd234d75e0515d6cf23fbaa data/minecraft/tags/blocks/stairs.json
+5c0216c4f9f20eaa7721c5dba5460365fb7972f2 data/minecraft/tags/blocks/standing_signs.json
+d0a37b703283ee9d9cced4d9f69831de6ae10bcb data/minecraft/tags/blocks/trapdoors.json
+4352e893a2f028534fcd76b93025833068daddb2 data/minecraft/tags/blocks/walls.json
+ee42eb196e0c32b0e340081e4699f7bf2bcea535 data/minecraft/tags/blocks/wall_signs.json

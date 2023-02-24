@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "X": {
+      "item": "assorteddecor:colorizer"
+    }
+  },
+  "pattern": [
+    "XGX",
+    "XXX",
+    " X "
+  ],
+  "result": {
+    "count": 2,
+    "item": "assorteddecor:colorizer_lamp_post"
+  }
+}

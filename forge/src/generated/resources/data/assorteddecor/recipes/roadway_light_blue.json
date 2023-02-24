@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "forge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assorteddecor:roadway"
+    },
+    {
+      "item": "assorteddecor:paint_roller_light_blue"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:roadway_light_blue"
+  }
+}

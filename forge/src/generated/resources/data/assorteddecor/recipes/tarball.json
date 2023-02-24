@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:gravel"
+    },
+    "W": {
+      "type": "assortedlib:stored_fluid_ingredient",
+      "amount": 1000,
+      "fluid": "minecraft:water"
+    },
+    "X": {
+      "tag": "minecraft:coals"
+    }
+  },
+  "pattern": [
+    "X",
+    "G",
+    "W"
+  ],
+  "result": {
+    "count": 16,
+    "item": "assorteddecor:tarball"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#assorteddecor:roadways",
+    "assorteddecor:roadway_light",
+    "assorteddecor:roadway_manhole"
+  ]
+}

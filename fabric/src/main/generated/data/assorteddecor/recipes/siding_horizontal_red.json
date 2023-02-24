@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "c:tar"
+    },
+    {
+      "tag": "minecraft:planks"
+    },
+    {
+      "item": "assorteddecor:paint_roller_red"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:siding_horizontal",
+    "nbt": "{BlockStateTag:{color:\"red\"}}"
+  }
+}

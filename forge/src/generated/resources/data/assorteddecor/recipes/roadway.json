@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "assorteddecor:asphalt"
+    },
+    "X": {
+      "tag": "forge:stone"
+    }
+  },
+  "pattern": [
+    "A",
+    "X"
+  ],
+  "result": {
+    "item": "assorteddecor:roadway"
+  }
+}

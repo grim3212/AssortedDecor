@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_white"
+    },
+    {
+      "tag": "c:carpet"
+    }
+  ],
+  "result": {
+    "item": "minecraft:white_carpet"
+  }
+}

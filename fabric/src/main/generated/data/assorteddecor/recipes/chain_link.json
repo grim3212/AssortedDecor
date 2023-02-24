@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "key": {
+    "N": {
+      "tag": "c:nuggets/iron"
+    },
+    "X": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "pattern": [
+    " N ",
+    "NXN",
+    " N "
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:chain_link"
+  }
+}

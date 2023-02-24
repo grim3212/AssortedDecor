@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "pattern": [
+    " X ",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "item": "assorteddecor:unfired_clay_decoration"
+  }
+}
