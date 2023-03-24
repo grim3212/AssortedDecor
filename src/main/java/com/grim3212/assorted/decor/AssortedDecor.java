@@ -1,11 +1,11 @@
 package com.grim3212.assorted.decor;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-import org.apache.commons.compress.utils.Lists;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -93,7 +93,7 @@ public class AssortedDecor {
 		PacketHandler.init();
 	}
 
-	public static List<Tuple<ResourceLocation, String>> cageItems = Lists.newArrayList();
+	public static List<Tuple<ResourceLocation, String>> cageItems = new ArrayList<>();
 
 	private void processIMC(final InterModProcessEvent event) {
 		event.enqueueWork(() -> {

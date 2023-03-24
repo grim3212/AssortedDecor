@@ -18,8 +18,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ColorizerBlockEntity extends BlockEntity {
 
-	// TODO: Color overrides
-	public static final ModelProperty<BlockState> BLOCK_STATE = new ModelProperty<BlockState>();
 	protected BlockState blockState = Blocks.AIR.defaultBlockState();
 
 	public ColorizerBlockEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
@@ -64,11 +62,6 @@ public class ColorizerBlockEntity extends BlockEntity {
 		}
 	}
 
-	@Override
-	public ModelData getModelData() {
-		return ModelData.builder().with(BLOCK_STATE, blockState).build();
-	}
-
 	public BlockState getStoredBlockState() {
 		return blockState;
 	}
@@ -79,9 +72,7 @@ public class ColorizerBlockEntity extends BlockEntity {
 		if (level != null) {
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 			level.getLightEngine().checkBlock(getBlockPos());
-			if (!level.isClientSide) {
-				level.blockUpdated(worldPosition, getBlockState().getBlock());
-			}
+			level.blockUpdated(worldPosition, getBlockState().getBlock());
 		}
 		
 		this.setChanged();

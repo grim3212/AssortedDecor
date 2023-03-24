@@ -26,6 +26,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtUtils;
@@ -34,14 +35,18 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.BakedModelWrapper;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.client.model.data.ModelProperty;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
 
 public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedModel> {
+	public static final ModelProperty<BlockState> BLOCK_STATE = new ModelProperty<>();
+	
 	protected final ModelBaker bakery;
 	protected final Function<Material, TextureAtlasSprite> spriteGetter;
 	protected final ModelState transform;
@@ -60,6 +65,17 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 		this.overrides = overrides;
 		this.baseSprite = baseSprite;
 	}
+	
+	@Override
+	public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
+		if (level.getBlockEntity(pos)instanceof ColorizerBlockEntity colorizer) {
+			return ModelData.builder()
+                    .with(BLOCK_STATE, colorizer.getStoredBlockState())
+                    .build();
+        }
+		
+		return super.getModelData(level, pos, state, modelData);
+	}
 
 	@Nonnull
 	@Override
@@ -71,8 +87,8 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData extraData, @Nullable RenderType renderType) {
 		BlockState blockState = Blocks.AIR.defaultBlockState();
-		if (extraData.get(ColorizerBlockEntity.BLOCK_STATE) != null) {
-			blockState = extraData.get(ColorizerBlockEntity.BLOCK_STATE);
+		if (extraData.get(BLOCK_STATE) != null) {
+			blockState = extraData.get(BLOCK_STATE);
 		}
 
 		return this.getCachedModel(blockState).getQuads(state, side, rand, extraData, RenderType.translucent());
@@ -126,7 +142,7 @@ public abstract class ColorizerBaseBakedModel extends BakedModelWrapper<BakedMod
 
 	@Override
 	public TextureAtlasSprite getParticleIcon(ModelData data) {
-		BlockState state = data.get(ColorizerBlockEntity.BLOCK_STATE);
+		BlockState state = data.get(BLOCK_STATE);
 		if (state == null) {
 			return this.baseSprite;
 		} else if (state == Blocks.AIR.defaultBlockState()) {
