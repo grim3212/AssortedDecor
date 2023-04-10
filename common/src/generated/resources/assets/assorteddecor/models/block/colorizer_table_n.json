@@ -2,7 +2,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/table_n"
   },
-  "loader": "assorteddecor:models/colorizer",
+  "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
   }

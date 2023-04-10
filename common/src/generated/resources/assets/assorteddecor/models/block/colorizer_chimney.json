@@ -5,7 +5,7 @@
       "top": "assorteddecor:block/chimney_top"
     }
   },
-  "loader": "assorteddecor:models/colorizer",
+  "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
   }

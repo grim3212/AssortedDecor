@@ -1,5 +1,10 @@
 package com.grim3212.assorted.decor.common.blocks.blockentity;
 
+import com.grim3212.assorted.decor.common.properties.DecorModelProperties;
+import com.grim3212.assorted.lib.client.model.data.IBlockModelData;
+import com.grim3212.assorted.lib.client.model.data.IModelDataBuilder;
+import com.grim3212.assorted.lib.core.block.IBlockEntityWithModelData;
+import com.grim3212.assorted.lib.platform.ClientServices;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,8 +16,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
-public abstract class ColorizerBlockEntity extends BlockEntity {
+public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWithModelData {
 
     protected BlockState storedBlockState = Blocks.AIR.defaultBlockState();
 
@@ -57,6 +63,8 @@ public abstract class ColorizerBlockEntity extends BlockEntity {
             level.getLightEngine().checkBlock(getBlockPos());
             if (!level.isClientSide) {
                 level.blockUpdated(worldPosition, getBlockState().getBlock());
+            } else {
+                ClientServices.MODELS.requestModelDataRefresh(this);
             }
         }
 
@@ -65,5 +73,10 @@ public abstract class ColorizerBlockEntity extends BlockEntity {
 
     public void setStoredBlockState(String registryName) {
         this.setStoredBlockState(Services.PLATFORM.getRegistry(Registries.BLOCK).getValue(new ResourceLocation(registryName)).orElseGet(() -> Blocks.AIR).defaultBlockState());
+    }
+
+    @Override
+    public @NotNull IBlockModelData getBlockModelData() {
+        return IModelDataBuilder.create().withInitial(DecorModelProperties.BLOCK_STATE, this.storedBlockState).build();
     }
 }

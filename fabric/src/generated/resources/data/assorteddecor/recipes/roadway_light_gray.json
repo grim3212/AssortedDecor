@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "assorteddecor:roadway"
+    },
+    {
+      "item": "assorteddecor:paint_roller_light_gray"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:roadway_light_gray"
+  }
+}

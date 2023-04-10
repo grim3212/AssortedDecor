@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "assorteddecor:chain_link"
+    }
+  },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 3,
+    "item": "assorteddecor:chain_link_door"
+  }
+}

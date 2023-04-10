@@ -4,7 +4,6 @@ import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 
 public class CageLogic {
@@ -63,14 +62,13 @@ public class CageLogic {
     }
 
     public void serverTick() {
-        if (this.isActivated()) {
-            if (this.getEntity() != null) {
-                if (this.getEntity() instanceof Mob mob) {
-//					mob.baseTick();
-                }
-            }
-        }
-
+//        if (this.isActivated()) {
+//            if (this.getEntity() != null) {
+//                if (this.getEntity() instanceof Mob mob) {
+//                    mob.baseTick();
+//                }
+//            }
+//        }
     }
 
     public double getMobRotation() {

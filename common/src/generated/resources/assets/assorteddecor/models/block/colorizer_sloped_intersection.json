@@ -73,7 +73,7 @@
       ]
     }
   },
-  "loader": "assorteddecor:models/colorizer_obj",
+  "loader": "assorteddecor:colorizer_obj",
   "model": "assorteddecor:models/block/sloped_intersection.obj",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

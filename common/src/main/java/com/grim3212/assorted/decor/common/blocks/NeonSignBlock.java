@@ -1,8 +1,9 @@
 package com.grim3212.assorted.decor.common.blocks;
 
-import com.grim3212.assorted.decor.DecorProxy;
 import com.grim3212.assorted.decor.common.blocks.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.items.DecorItems;
+import com.grim3212.assorted.decor.common.network.NeonOpenPacket;
+import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -63,10 +64,9 @@ public class NeonSignBlock extends Block implements SimpleWaterloggedBlock, Enti
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (worldIn.isClientSide) {
-            DecorProxy.INSTANCE.openNeonSignScreen((NeonSignBlockEntity) worldIn.getBlockEntity(pos));
-            return InteractionResult.SUCCESS;
-        } else {
+        if (!worldIn.isClientSide) {
+            Services.NETWORK.sendTo(player, new NeonOpenPacket(pos));
+
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof NeonSignBlockEntity) {
                 NeonSignBlockEntity sign = (NeonSignBlockEntity) tileentity;
@@ -74,6 +74,7 @@ public class NeonSignBlock extends Block implements SimpleWaterloggedBlock, Enti
             }
             return InteractionResult.FAIL;
         }
+        return InteractionResult.SUCCESS;
     }
 
     @Override

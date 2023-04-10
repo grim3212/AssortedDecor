@@ -2,7 +2,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/table_se_wall"
   },
-  "loader": "assorteddecor:models/colorizer",
+  "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
   }

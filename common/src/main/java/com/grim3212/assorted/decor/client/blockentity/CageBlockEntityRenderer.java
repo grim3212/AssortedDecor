@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.client.blockentity;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.client.DecorClient;
 import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
 import com.grim3212.assorted.decor.common.helpers.CageLogic;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,11 +22,11 @@ public class CageBlockEntityRenderer implements BlockEntityRenderer<CageBlockEnt
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
         CageLogic cageLogic = cage.getCageLogic();
-        ItemStack stack = cage.getItem(0);
+        ItemStack stack = cage.getItemStackStorageHandler().getStackInSlot(0);
         if (!stack.isEmpty()) {
 
             poseStack.translate(0.0D, (double) 0.4F, 0.0D);
-            poseStack.mulPose(Axis.YP.rotationDegrees((float) Mth.lerp((double) partialTicks, cageLogic.getPrevMobRotation(), cageLogic.getMobRotation()) * DecorConfig.Client.cageSpinMod.getValue()));
+            poseStack.mulPose(Axis.YP.rotationDegrees((float) Mth.lerp((double) partialTicks, cageLogic.getPrevMobRotation(), cageLogic.getMobRotation()) * DecorClient.CLIENT_CONFIG.cageSpinMod.get().floatValue()));
             poseStack.translate(0.0D, (double) -0.2F, 0.0D);
 
             Entity cageEntity = cageLogic.getEntity();

@@ -1,7 +1,10 @@
 package com.grim3212.assorted.decor.api.colorizer;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
+import com.grim3212.assorted.decor.client.model.ColorizerClientEffects;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
+import com.grim3212.assorted.lib.core.block.effects.IBlockClientEffects;
+import com.grim3212.assorted.lib.core.block.effects.IBlockEffectSupplier;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -17,11 +20,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
-public interface IColorizer {
+public interface IColorizer extends IBlockEffectSupplier {
 
     default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
-        BlockState state = worldIn.getBlockState(pos);
         BlockEntity te = worldIn.getBlockEntity(pos);
         if (te instanceof ColorizerBlockEntity) {
             ColorizerBlockEntity tileColorizer = (ColorizerBlockEntity) te;
@@ -30,7 +33,7 @@ public interface IColorizer {
             // Can only clear a filled colorizer
             if (storedState != Blocks.AIR.defaultBlockState()) {
 
-                if (DecorConfig.Common.colorizerConsumeBlock.getValue() && !player.getAbilities().instabuild) {
+                if (DecorCommonMod.COMMON_CONFIG.colorizerConsumeBlock.get() && !player.getAbilities().instabuild) {
                     ItemEntity blockDropped = new ItemEntity(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), new ItemStack(tileColorizer.getStoredBlockState().getBlock(), 1));
                     if (!worldIn.isClientSide) {
                         worldIn.addFreshEntity(blockDropped);
@@ -42,7 +45,7 @@ public interface IColorizer {
 
                 // Clear Self
                 if (setColorizer(worldIn, pos, null, player, hand, false)) {
-                    SoundType placeSound = Services.PLATFORM.getSoundType(state, worldIn, pos, player);
+                    SoundType placeSound = Services.LEVEL_PROPERTIES.getSoundType(worldIn, pos, player);
 
                     worldIn.playSound(player, pos, placeSound.getPlaceSound(), SoundSource.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
                     return true;
@@ -60,7 +63,7 @@ public interface IColorizer {
 
             // Remove an item if config allows and we are not resetting
             // colorizer
-            if (DecorConfig.Common.colorizerConsumeBlock.getValue() && toSetState != null && consumeItem) {
+            if (DecorCommonMod.COMMON_CONFIG.colorizerConsumeBlock.get() && toSetState != null && consumeItem) {
                 if (!player.getAbilities().instabuild)
                     player.getItemInHand(hand).shrink(1);
             }
@@ -77,4 +80,11 @@ public interface IColorizer {
         }
         return Blocks.AIR.defaultBlockState();
     }
+
+    @Override
+    default Supplier<IBlockClientEffects> getClientEffects() {
+        return ColorizerClientEffects::new;
+    }
+
+    // TODO: Add landing effects
 }

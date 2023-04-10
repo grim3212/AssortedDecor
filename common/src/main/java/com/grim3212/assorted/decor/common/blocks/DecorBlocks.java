@@ -21,6 +21,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -150,9 +151,10 @@ public class DecorBlocks {
         return () -> new ColorChangingItem(block.get(), new Item.Properties());
     }
 
-    public static Block[] colorizerBlocks() {
-        return new Block[]{COLORIZER.get(), COLORIZER_CHAIR.get(), COLORIZER_TABLE.get(), COLORIZER_COUNTER.get(), COLORIZER_STOOL.get(), COLORIZER_FENCE.get(), COLORIZER_FENCE_GATE.get(), COLORIZER_WALL.get(), COLORIZER_TRAP_DOOR.get(), COLORIZER_DOOR.get(), COLORIZER_SLAB.get(), COLORIZER_VERTICAL_SLAB.get(), COLORIZER_STAIRS.get(), COLORIZER_LAMP_POST.get(), COLORIZER_SLOPE.get(), COLORIZER_SLOPED_ANGLE.get(), COLORIZER_SLOPED_INTERSECTION.get(), COLORIZER_SLOPED_POST.get(),
-                COLORIZER_OBLIQUE_SLOPE.get(), COLORIZER_CORNER.get(), COLORIZER_SLANTED_CORNER.get(), COLORIZER_PYRAMID.get(), COLORIZER_FULL_PYRAMID.get(), COLORIZER_FIREPLACE.get(), COLORIZER_CHIMNEY.get(), COLORIZER_FIRERING.get(), COLORIZER_FIREPIT.get(), COLORIZER_FIREPIT_COVERED.get(), COLORIZER_STOVE.get()};
+    public static List<IRegistryObject<? extends Block>> colorizerBlocks() {
+        return Arrays.asList(COLORIZER, COLORIZER_CHAIR, COLORIZER_TABLE, COLORIZER_COUNTER, COLORIZER_STOOL, COLORIZER_FENCE, COLORIZER_FENCE_GATE, COLORIZER_WALL, COLORIZER_TRAP_DOOR, COLORIZER_DOOR, COLORIZER_SLAB, COLORIZER_VERTICAL_SLAB, COLORIZER_STAIRS, COLORIZER_LAMP_POST, COLORIZER_SLOPE, COLORIZER_SLOPED_ANGLE, COLORIZER_SLOPED_INTERSECTION, COLORIZER_SLOPED_POST,
+                COLORIZER_OBLIQUE_SLOPE, COLORIZER_CORNER, COLORIZER_SLANTED_CORNER, COLORIZER_PYRAMID, COLORIZER_FULL_PYRAMID, COLORIZER_FIREPLACE, COLORIZER_CHIMNEY, COLORIZER_FIRERING, COLORIZER_FIREPIT, COLORIZER_FIREPIT_COVERED, COLORIZER_STOVE
+        );
     }
 
     private static boolean never(BlockState state, BlockGetter getter, BlockPos pos, EntityType<?> type) {

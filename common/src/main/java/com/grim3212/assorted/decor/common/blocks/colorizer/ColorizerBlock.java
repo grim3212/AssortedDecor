@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
-import com.grim3212.assorted.decor.DecorServices;
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
+import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.lib.core.block.ExtraPropertyBlock;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
@@ -51,7 +51,7 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return DecorServices.DECOR.createColorizerBlockEntity(pos, state);
+        return new ColorizerBlockEntity(pos, state);
     }
 
     @Override

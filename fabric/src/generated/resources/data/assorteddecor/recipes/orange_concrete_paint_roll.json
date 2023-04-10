@@ -1,0 +1,21 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller_orange"
+    },
+    {
+      "tag": "c:concrete"
+    }
+  ],
+  "result": {
+    "item": "minecraft:orange_concrete"
+  }
+}

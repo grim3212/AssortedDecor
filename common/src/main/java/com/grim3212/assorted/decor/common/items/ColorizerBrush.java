@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.items;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.lib.core.item.ExtraPropertyItem;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -34,6 +34,6 @@ public class ColorizerBrush extends ExtraPropertyItem {
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return DecorConfig.Common.colorizerBrushCount.getValue();
+        return DecorCommonMod.COMMON_CONFIG.colorizerBrushCount.get();
     }
 }

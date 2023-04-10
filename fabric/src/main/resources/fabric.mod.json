@@ -18,10 +18,10 @@
       "com.grim3212.assorted.decor.AssortedDecorFabric"
     ],
     "client": [
-      "com.grim3212.assorted.decor.client.DecorClientFabric"
+      "com.grim3212.assorted.decor.AssortedDecorFabricClient"
     ],
     "fabric-datagen": [
-      "com.grim3212.assorted.decor.data.AssortedDecorFabricDatagen"
+      "com.grim3212.assorted.decor.AssortedDecorFabricDatagen"
     ]
   },
   "mixins": [

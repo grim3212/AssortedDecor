@@ -1,23 +1,19 @@
 package com.grim3212.assorted.decor.common.blocks.blockentity;
 
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.DecorServices;
 import com.grim3212.assorted.decor.common.helpers.CageLogic;
 import com.grim3212.assorted.decor.common.inventory.CageContainer;
-import com.grim3212.assorted.decor.services.IDecorHelper;
+import com.grim3212.assorted.lib.core.inventory.IInventoryBlockEntity;
+import com.grim3212.assorted.lib.core.inventory.IPlatformInventoryStorageHandler;
+import com.grim3212.assorted.lib.core.inventory.impl.ItemStackStorageHandler;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,29 +24,74 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class CageBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider, Nameable {
+public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntity, MenuProvider, Nameable {
 
     private Entity cachedEntity;
     private Component customName;
-    // Only 1 slot but a list makes it easier to use some of the default methods
-    private NonNullList<ItemStack> storedItems = NonNullList.withSize(1, ItemStack.EMPTY);
 
     private final CageLogic cageLogic = new CageLogic(this);
 
-    public CageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
+    protected IPlatformInventoryStorageHandler platformInventoryStorageHandler;
+    private final ItemStackStorageHandler storageHandler;
 
     public CageBlockEntity(BlockPos pos, BlockState state) {
-        super(DecorBlockEntityTypes.CAGE.get(), pos, state);
+        this(DecorBlockEntityTypes.CAGE.get(), pos, state);
+    }
+
+    public CageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+
+        this.storageHandler = new ItemStackStorageHandler(1) {
+            @Override
+            public int getSlotLimit(int slot) {
+                return 1;
+            }
+
+            @Override
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                return isValidCage(stack) != null;
+            }
+
+            @Override
+            public void onContentsChanged(int slot) {
+                CageBlockEntity.this.setChanged();
+            }
+
+            @Override
+            public boolean stillValid(Player player) {
+                if (CageBlockEntity.this.level.getBlockEntity(CageBlockEntity.this.worldPosition) != CageBlockEntity.this) {
+                    return false;
+                } else {
+                    return player.distanceToSqr((double) CageBlockEntity.this.worldPosition.getX() + 0.5D, (double) CageBlockEntity.this.worldPosition.getY() + 0.5D, (double) CageBlockEntity.this.worldPosition.getZ() + 0.5D) <= 64.0D;
+                }
+            }
+        };
+    }
+
+    @Override
+    public IPlatformInventoryStorageHandler getStorageHandler() {
+        if (this.platformInventoryStorageHandler == null) {
+            this.platformInventoryStorageHandler = this.createStorageHandler();
+        }
+
+        return this.platformInventoryStorageHandler;
+    }
+
+    public IPlatformInventoryStorageHandler createStorageHandler() {
+        return Services.INVENTORY.createStorageInventoryHandler(this.storageHandler);
+    }
+
+    public ItemStackStorageHandler getItemStackStorageHandler() {
+        return this.storageHandler;
     }
 
     @Override
     public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerEntity) {
-        return new CageContainer(windowId, playerInventory, this);
+        return new CageContainer(windowId, playerInventory, this.storageHandler);
     }
 
     public CageLogic getCageLogic() {
@@ -89,89 +130,19 @@ public class CageBlockEntity extends BlockEntity implements WorldlyContainer, Me
     }
 
     @Override
-    public void clearContent() {
-        this.storedItems.clear();
-        this.cachedEntity = null;
-        this.markUpdated();
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.storedItems.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack itemstack : this.storedItems) {
-            if (!itemstack.isEmpty()) {
-                return false;
-            }
+    public void setRemoved() {
+        super.setRemoved();
+        if (this.platformInventoryStorageHandler != null) {
+            this.platformInventoryStorageHandler.invalidate();
         }
-
-        return true;
-    }
-
-    @Override
-    public ItemStack getItem(int index) {
-        return this.storedItems.get(index);
-    }
-
-    @Override
-    public ItemStack removeItem(int index, int count) {
         this.cachedEntity = null;
-        this.markUpdated();
-        return ContainerHelper.removeItem(this.storedItems, index, count);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int index) {
-        this.cachedEntity = null;
-        this.markUpdated();
-        return ContainerHelper.takeItem(this.storedItems, index);
-    }
-
-    @Override
-    public void setItem(int index, ItemStack stack) {
-        this.storedItems.set(index, stack);
-        this.cachedEntity = null;
-        this.markUpdated();
-
-        if (stack.getCount() > this.getMaxStackSize()) {
-            stack.setCount(this.getMaxStackSize());
-        }
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        if (this.level.getBlockEntity(this.worldPosition) != this) {
-            return false;
-        } else {
-            return player.distanceToSqr((double) this.worldPosition.getX() + 0.5D, (double) this.worldPosition.getY() + 0.5D, (double) this.worldPosition.getZ() + 0.5D) <= 64.0D;
-        }
-    }
-
-    private static final int[] SLOT = new int[]{0};
-
-    @Override
-    public int[] getSlotsForFace(Direction dir) {
-        return SLOT;
-    }
-
-    @Override
-    public boolean canPlaceItemThroughFace(int index, ItemStack stack, Direction dir) {
-        return isValidCage(stack) != null;
-    }
-
-    @Override
-    public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction dir) {
-        return true;
     }
 
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        this.storedItems = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(nbt, this.storedItems);
+        if (nbt.contains("Inventory"))
+            this.storageHandler.deserializeNBT(nbt.getCompound("Inventory"));
 
         if (nbt.contains("CustomName", 8)) {
             this.customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
@@ -184,7 +155,7 @@ public class CageBlockEntity extends BlockEntity implements WorldlyContainer, Me
     protected void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
 
-        ContainerHelper.saveAllItems(compound, this.storedItems);
+        compound.put("Inventory", this.storageHandler.serializeNBT());
 
         if (this.customName != null) {
             compound.putString("CustomName", Component.Serializer.toJson(this.customName));
@@ -201,15 +172,17 @@ public class CageBlockEntity extends BlockEntity implements WorldlyContainer, Me
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    private void markUpdated() {
-        this.setChanged();
+    @Override
+    public void setChanged() {
+        this.cachedEntity = null;
+        super.setChanged();
         this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
         this.getCachedEntity();
     }
 
     public Entity getCachedEntity() {
         if (this.cachedEntity == null) {
-            ItemStack stack = this.storedItems.get(0);
+            ItemStack stack = this.storageHandler.getStackInSlot(0);
             if (!stack.isEmpty()) {
                 String tag = isValidCage(stack);
                 if (tag != null) {
@@ -236,16 +209,12 @@ public class CageBlockEntity extends BlockEntity implements WorldlyContainer, Me
     }
 
     public static String isValidCage(ItemStack stack) {
-        if (stack.getItem() instanceof SpawnEggItem) {
+        if (stack.getItem() instanceof SpawnEggItem || NBTHelper.hasTag(stack, "EntityTag")) {
             return "EntityTag";
         }
 
-        for (IDecorHelper.CageItemEntry cageEntry : DecorServices.DECOR.getCageItems()) {
-            // Do the items match
-            if (Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(stack.getItem()).equals(cageEntry.itemId())) {
-                // Does the stack contain the correct Compound tag
-                return NBTHelper.hasTag(stack, cageEntry.entityTag()) ? cageEntry.entityTag() : null;
-            }
+        if (NBTHelper.hasTag(stack, "StoredEntity")) {
+            return "StoredEntity";
         }
         return null;
     }

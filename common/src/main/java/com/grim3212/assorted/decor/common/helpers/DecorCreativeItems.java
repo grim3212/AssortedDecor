@@ -1,39 +1,42 @@
 package com.grim3212.assorted.decor.common.helpers;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.Constants;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.common.blocks.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.decor.common.items.DecorItems;
+import com.grim3212.assorted.lib.core.creative.CreativeTabItems;
+import com.grim3212.assorted.lib.platform.Services;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class DecorCreativeItems {
 
-    public static List<ItemStack> getCreativeItems() {
+    private static List<ItemStack> getCreativeItems() {
         CreativeTabItems items = new CreativeTabItems();
 
-        if (DecorConfig.Common.partColorizerEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.colorizerEnabled.get()) {
             items.add(DecorItems.COLORIZER_BRUSH.get());
-            Arrays.stream(DecorBlocks.colorizerBlocks()).forEach(x -> items.add(x));
+            DecorBlocks.colorizerBlocks().forEach(x -> items.add(x.get()));
         }
 
-        if (DecorConfig.Common.partFluroEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.fluroEnabled.get()) {
             FluroBlock.FLURO_BY_DYE.values().forEach(x -> items.add(x.get()));
             items.add(DecorBlocks.ILLUMINATION_TUBE.get());
             items.add(DecorBlocks.ILLUMINATION_PLATE.get());
         }
 
-        if (DecorConfig.Common.partNeonSignEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.neonSignEnabled.get()) {
             items.add(DecorItems.NEON_SIGN.get());
         }
 
-        if (DecorConfig.Common.partHangeablesEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.hangeablesEnabled.get()) {
             items.add(DecorBlocks.CALENDAR.get());
             items.add(DecorBlocks.WALL_CLOCK.get());
             items.add(DecorItems.WALLPAPER.get());
@@ -41,16 +44,16 @@ public class DecorCreativeItems {
             items.add(DecorItems.IRON_FRAME.get());
         }
 
-        if (DecorConfig.Common.partCageEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.cageEnabled.get()) {
             items.add(DecorBlocks.CAGE.get());
         }
 
-        if (DecorConfig.Common.partPlanterPotEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.planterPotEnabled.get()) {
             items.add(DecorBlocks.PLANTER_POT.get());
             items.add(DecorItems.UNFIRED_PLANTER_POT.get());
         }
 
-        if (DecorConfig.Common.partDecorationsEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.decorationsEnabled.get()) {
             items.add(DecorItems.UNFIRED_CLAY_DECORATION.get());
             items.add(DecorBlocks.CLAY_DECORATION.get());
             items.add(DecorBlocks.BONE_DECORATION.get());
@@ -63,7 +66,7 @@ public class DecorCreativeItems {
             items.add(DecorBlocks.SIDEWALK.get());
         }
 
-        if (DecorConfig.Common.partExtrasEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.extrasEnabled.get()) {
             items.add(DecorItems.CHAIN_LINK.get());
             items.add(DecorBlocks.CHAIN_LINK_FENCE.get());
             items.add(DecorBlocks.CHAIN_LINK_DOOR.get());
@@ -72,7 +75,7 @@ public class DecorCreativeItems {
             items.add(DecorBlocks.STEEL_DOOR.get());
         }
 
-        if (DecorConfig.Common.partRoadwaysEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.roadwaysEnabled.get()) {
             DecorBlocks.ROADWAY_COLORS.values().forEach(x -> items.add(x.get()));
             items.add(DecorBlocks.ROADWAY.get());
             items.add(DecorBlocks.ROADWAY_MANHOLE.get());
@@ -81,7 +84,7 @@ public class DecorCreativeItems {
             items.add(DecorItems.ASPHALT.get());
         }
 
-        if (DecorConfig.Common.partPaintingEnabled.getValue()) {
+        if (DecorCommonMod.COMMON_CONFIG.paintingEnabled.get()) {
             items.add(DecorItems.PAINT_ROLLER.get());
             DecorItems.PAINT_ROLLER_COLORS.values().forEach(x -> items.add(x.get()));
             Arrays.stream(DyeColor.values()).forEach(x -> {
@@ -93,20 +96,8 @@ public class DecorCreativeItems {
         return items.getItems();
     }
 
-    public static class CreativeTabItems {
-        List<ItemStack> items = new ArrayList<>();
-
-        public void add(ItemLike item) {
-            items.add(new ItemStack(item));
-        }
-
-        public void add(ItemStack item) {
-            items.add(item);
-        }
-
-        public List<ItemStack> getItems() {
-            return this.items;
-        }
+    public static void init() {
+        Services.PLATFORM.registerCreativeTab(new ResourceLocation(Constants.MOD_ID, "tab"), Component.translatable("itemGroup." + Constants.MOD_ID), () -> new ItemStack(DecorItems.WALLPAPER.get()), DecorCreativeItems::getCreativeItems);
     }
 
 }

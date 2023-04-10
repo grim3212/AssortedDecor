@@ -1,0 +1,25 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "assorteddecor:illumination_plate"
+    },
+    "X": {
+      "item": "assorteddecor:roadway"
+    }
+  },
+  "pattern": [
+    "M",
+    "X"
+  ],
+  "result": {
+    "item": "assorteddecor:roadway_light"
+  }
+}

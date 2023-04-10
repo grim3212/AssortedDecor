@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "planter_pot"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "pattern": [
+    "X X",
+    "XXX"
+  ],
+  "result": {
+    "item": "assorteddecor:unfired_planter_pot"
+  }
+}

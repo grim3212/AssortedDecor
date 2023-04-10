@@ -1,0 +1,25 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "assorteddecor:lantern_source"
+    },
+    "P": {
+      "tag": "c:bones"
+    }
+  },
+  "pattern": [
+    " P ",
+    "PCP"
+  ],
+  "result": {
+    "item": "assorteddecor:bone_lantern"
+  }
+}

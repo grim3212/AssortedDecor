@@ -10,7 +10,7 @@ import net.minecraft.world.inventory.MenuType;
 public class DecorContainerTypes {
     public static final RegistryProvider<MenuType<?>> MENU_TYPES = RegistryProvider.create(Registries.MENU, Constants.MOD_ID);
 
-    public static final IRegistryObject<MenuType<CageContainer>> CAGE = MENU_TYPES.register("cage", () -> Services.REGISTRY_UTIL.createMenuType((syncId, pInv, buf) -> new CageContainer(syncId, pInv)));
+    public static final IRegistryObject<MenuType<CageContainer>> CAGE = MENU_TYPES.register("cage", () -> Services.PLATFORM.createMenuType(CageContainer::new));
 
     public static void init() {
     }

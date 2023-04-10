@@ -1,0 +1,37 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "values": [
+        "c:ingots/steel"
+      ]
+    },
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "c:ingots/steel"
+    },
+    "W": {
+      "amount": 81000,
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "fluid": "minecraft:water"
+    },
+    "X": {
+      "tag": "c:cobblestone"
+    }
+  },
+  "pattern": [
+    "XIX",
+    "XWX",
+    "XIX"
+  ],
+  "result": {
+    "item": "assorteddecor:fountain"
+  }
+}

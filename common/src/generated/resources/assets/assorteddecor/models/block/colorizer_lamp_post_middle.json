@@ -2,7 +2,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/lamp_post_middle"
   },
-  "loader": "assorteddecor:models/colorizer",
+  "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
   }

@@ -1,0 +1,36 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:dyes/blue"
+    },
+    "D": {
+      "tag": "c:dyes"
+    },
+    "G": {
+      "tag": "c:dyes/green"
+    },
+    "R": {
+      "tag": "c:dyes/red"
+    },
+    "X": {
+      "tag": "c:stone"
+    }
+  },
+  "pattern": [
+    "XRX",
+    "GDB",
+    "XDX"
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:colorizer"
+  }
+}

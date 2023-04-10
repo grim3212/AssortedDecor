@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.crafting;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.lib.platform.Services;
 
 public class DecorConditions {
@@ -20,15 +20,15 @@ public class DecorConditions {
 
 
     public static void init() {
-        Services.CONDITIONS.registerPartCondition(Parts.COLORIZER, () -> DecorConfig.Common.partColorizerEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.NEON_SIGN, () -> DecorConfig.Common.partNeonSignEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.HANGEABLES, () -> DecorConfig.Common.partHangeablesEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.FLURO, () -> DecorConfig.Common.partFluroEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.ROADWAYS, () -> DecorConfig.Common.partRoadwaysEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.PAINTING, () -> DecorConfig.Common.partPaintingEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.DECORATIONS, () -> DecorConfig.Common.partDecorationsEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.CAGE, () -> DecorConfig.Common.partCageEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.PLANTER_POT, () -> DecorConfig.Common.partPlanterPotEnabled.getValue());
-        Services.CONDITIONS.registerPartCondition(Parts.EXTRAS, () -> DecorConfig.Common.partExtrasEnabled.getValue());
+        Services.CONDITIONS.registerPartCondition(Parts.COLORIZER, () -> DecorCommonMod.COMMON_CONFIG.colorizerEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.NEON_SIGN, () -> DecorCommonMod.COMMON_CONFIG.neonSignEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.HANGEABLES, () -> DecorCommonMod.COMMON_CONFIG.hangeablesEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.FLURO, () -> DecorCommonMod.COMMON_CONFIG.fluroEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.ROADWAYS, () -> DecorCommonMod.COMMON_CONFIG.roadwaysEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.PAINTING, () -> DecorCommonMod.COMMON_CONFIG.paintingEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.DECORATIONS, () -> DecorCommonMod.COMMON_CONFIG.decorationsEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.CAGE, () -> DecorCommonMod.COMMON_CONFIG.cageEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.PLANTER_POT, () -> DecorCommonMod.COMMON_CONFIG.planterPotEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.EXTRAS, () -> DecorCommonMod.COMMON_CONFIG.extrasEnabled.get());
     }
 }

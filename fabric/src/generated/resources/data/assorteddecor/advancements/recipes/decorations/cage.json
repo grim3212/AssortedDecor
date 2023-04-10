@@ -1,0 +1,40 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "cage"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_iron_bars": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_bars"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:cage"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_bars",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:cage"
+    ]
+  }
+}

@@ -3,6 +3,8 @@ package com.grim3212.assorted.decor.client.data;
 import com.google.common.collect.Lists;
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.api.util.VerticalSlabType;
+import com.grim3212.assorted.decor.client.model.ColorizerUnbakedModel;
+import com.grim3212.assorted.decor.client.model.obj.ColorizerObjModel;
 import com.grim3212.assorted.decor.common.blocks.*;
 import com.grim3212.assorted.decor.common.blocks.colorizer.*;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerLampPost.LampPart;
@@ -28,8 +30,6 @@ import java.util.stream.Collectors;
 public class DecorBlockstateProvider extends BlockStateProvider {
 
     private final ColorizerModelProvider loaderModels;
-    private static final ResourceLocation COLORIZER_MODEL_LOADER = new ResourceLocation(Constants.MOD_ID, "models/colorizer");
-    private static final ResourceLocation COLORIZER_OBJ_MODEL_LOADER = new ResourceLocation(Constants.MOD_ID, "models/colorizer_obj");
 
     public DecorBlockstateProvider(PackOutput output, ExistingFileHelper exFileHelper, ColorizerModelProvider loader) {
         super(output, Constants.MOD_ID, exFileHelper);
@@ -315,30 +315,30 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizer(Block b, ResourceLocation model) {
-        colorizer(COLORIZER_MODEL_LOADER, b, model, false, false, false, false);
+        colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, false, false, false, false);
     }
 
     private void colorizerSide(Block b, ResourceLocation model) {
-        colorizer(COLORIZER_MODEL_LOADER, b, model, true, false, true, true);
+        colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, true, false, true, true);
     }
 
     private void colorizerRotate(Block b, ResourceLocation model) {
-        colorizer(COLORIZER_MODEL_LOADER, b, model, false, false, true, false);
+        colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, false, false, true, false);
     }
 
     private void colorizerOBJ(Block b, ResourceLocation model) {
-        colorizer(COLORIZER_OBJ_MODEL_LOADER, b, model, true, true, true, false);
+        colorizer(ColorizerObjModel.LOADER_NAME, b, model, true, true, true, false);
     }
 
     private void colorizerOBJSide(Block b, ResourceLocation model) {
-        colorizer(COLORIZER_OBJ_MODEL_LOADER, b, model, true, true, true, true);
+        colorizer(ColorizerObjModel.LOADER_NAME, b, model, true, true, true, true);
     }
 
     private void colorizer(ResourceLocation loader, Block b, ResourceLocation model, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
         String name = name(b);
 
         ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
-        if (loader == COLORIZER_OBJ_MODEL_LOADER) {
+        if (loader.equals(ColorizerObjModel.LOADER_NAME)) {
             colorizerParent = colorizerParent.objModel(model);
         } else {
             colorizerParent = colorizerParent.colorizer(model);
@@ -378,7 +378,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private ColorizerModelBuilder getModelBuilder(String builderName, ResourceLocation model) {
-        return this.loaderModels.getBuilder(builderName).loader(COLORIZER_MODEL_LOADER).colorizer(model).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+        return this.loaderModels.getBuilder(builderName).loader(ColorizerUnbakedModel.LOADER_NAME).colorizer(model).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
     }
 
     private ResourceLocation resource(String name) {

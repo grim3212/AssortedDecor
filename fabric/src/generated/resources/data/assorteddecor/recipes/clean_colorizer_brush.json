@@ -1,0 +1,23 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "amount": 81000,
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "fluid": "minecraft:water"
+    },
+    {
+      "item": "assorteddecor:colorizer_brush"
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:colorizer_brush"
+  }
+}

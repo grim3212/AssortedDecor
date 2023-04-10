@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.api.colorizer;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 
 public enum SlopeType {
     SLANTED_CORNER("slanted_corner"),
@@ -32,7 +32,7 @@ public enum SlopeType {
     public int getNumPieces() {
         // Special override for SlantedAngles
         if (this == SLANTED_CORNER)
-            return DecorConfig.Common.shapeSmoothness.getValue();
+            return DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get();
         else
             return numPieces;
     }

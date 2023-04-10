@@ -1,9 +1,9 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
-import com.grim3212.assorted.decor.DecorServices;
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
-import com.grim3212.assorted.lib.core.block.IBlockExtraProperties;
+import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
+import com.grim3212.assorted.lib.core.block.*;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class ColorizerStairsBlock extends StairBlock implements IColorizer, EntityBlock, IBlockExtraProperties {
+public class ColorizerStairsBlock extends StairBlock implements IColorizer, EntityBlock, IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack {
     public ColorizerStairsBlock() {
         super(DecorBlocks.COLORIZER.get().defaultBlockState(), Block.Properties.of(Material.STONE).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion());
     }
@@ -51,7 +51,7 @@ public class ColorizerStairsBlock extends StairBlock implements IColorizer, Enti
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return DecorServices.DECOR.createColorizerBlockEntity(pos, state);
+        return new ColorizerBlockEntity(pos, state);
     }
 
     @Override

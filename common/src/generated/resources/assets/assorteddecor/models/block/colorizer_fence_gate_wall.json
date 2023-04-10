@@ -2,7 +2,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/fence_gate_wall"
   },
-  "loader": "assorteddecor:models/colorizer",
+  "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
   }

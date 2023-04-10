@@ -1,0 +1,25 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "c:tar"
+    },
+    {
+      "tag": "c:cobblestone"
+    },
+    {
+      "item": "assorteddecor:paint_roller_purple"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "item": "assorteddecor:siding_vertical",
+    "nbt": "{BlockStateTag:{color:\"purple\"}}"
+  }
+}

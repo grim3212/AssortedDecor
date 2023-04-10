@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.api.util;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerSlopeBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerSlopeSideBlock;
@@ -50,8 +50,8 @@ public class DecorUtil {
     public static VoxelShape addAxisAlignedBoxes(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context, int numPieces) {
         VoxelShape endShape = Shapes.empty();
 
-        for (int piece = 0; piece < DecorConfig.Common.shapeSmoothness.getValue(); piece++) {
-            for (int smoothness = 0; smoothness < DecorConfig.Common.shapeSmoothness.getValue(); smoothness++) {
+        for (int piece = 0; piece < DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get(); piece++) {
+            for (int smoothness = 0; smoothness < DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get(); smoothness++) {
                 VoxelShape collision = getCollision(state, piece, smoothness, numPieces);
 
                 if (collision != Shapes.empty()) {
@@ -82,8 +82,8 @@ public class DecorUtil {
         float zeroPieceOffset = (float) (piece - 1) / numPieces;
         float onePieceOffset = (float) piece / numPieces;
 
-        float zeroOffset = (float) smoothness / DecorConfig.Common.shapeSmoothness.getValue();
-        float oneOffset = (float) (smoothness + 1) / DecorConfig.Common.shapeSmoothness.getValue();
+        float zeroOffset = (float) smoothness / DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get();
+        float oneOffset = (float) (smoothness + 1) / DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get();
 
         if (state.getBlock() instanceof ColorizerSlopeBlock) {
             if (state.getBlock() == DecorBlocks.COLORIZER_SLOPE.get()) {

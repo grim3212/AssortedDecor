@@ -18,12 +18,6 @@ dependencies {
 
     modImplementation("com.grim3212.assorted.lib:assortedlib-fabric:$assortedlib_version+$minecraft_version")
 
-    modImplementation "me.zeroeightsix:fiber:$fiber_version"
-    include "me.zeroeightsix:fiber:$fiber_version"
-
-    modImplementation "de.javagl:obj:${javagl_version}"
-    include "de.javagl:obj:${javagl_version}"
-
     implementation project(":common")
 }
 
@@ -35,18 +29,20 @@ loom {
             setConfigName("Fabric Client")
             ideConfigGenerated(true)
             runDir("run")
+            vmArg("-XX:+AllowEnhancedClassRedefinition")
         }
         server {
             server()
             setConfigName("Fabric Server")
             ideConfigGenerated(true)
             runDir("run")
+            vmArg("-XX:+AllowEnhancedClassRedefinition")
         }
         datagenClient {
             inherit client
             name "Fabric Datagen"
             vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${file("src/main/generated")}"
+            vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources/")}"
             vmArg "-Dfabric-api.datagen.modid=${mod_id}"
             runDir "build/datagen"
         }

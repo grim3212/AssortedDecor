@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "neon_sign"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "c:dusts/redstone"
+    },
+    "G": {
+      "tag": "minecraft:planks"
+    },
+    "X": {
+      "tag": "c:obsidian"
+    }
+  },
+  "pattern": [
+    "XXX",
+    "XCX",
+    " G "
+  ],
+  "result": {
+    "count": 3,
+    "item": "assorteddecor:neon_sign"
+  }
+}

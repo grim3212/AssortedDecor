@@ -1,16 +1,15 @@
 package com.grim3212.assorted.decor.common.blocks;
 
 import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
+import com.grim3212.assorted.lib.core.inventory.locking.StorageUtil;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -69,7 +68,7 @@ public class CageBlock extends Block implements EntityBlock {
         if (!state.is(newState.getBlock())) {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof CageBlockEntity cage) {
-                Containers.dropContents(worldIn, pos, cage);
+                StorageUtil.dropContents(worldIn, pos, cage.getItemStackStorageHandler());
                 worldIn.updateNeighbourForOutputSignal(pos, this);
             }
 
@@ -84,7 +83,11 @@ public class CageBlock extends Block implements EntityBlock {
 
     @Override
     public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        return AbstractContainerMenu.getRedstoneSignalFromBlockEntity(worldIn.getBlockEntity(pos));
+        if (worldIn.getBlockEntity(pos) instanceof CageBlockEntity cageBlockEntity) {
+            return StorageUtil.getRedstoneSignalFromContainer(cageBlockEntity.getItemStackStorageHandler());
+        }
+
+        return super.getAnalogOutputSignal(blockState, worldIn, pos);
     }
 
     @Override

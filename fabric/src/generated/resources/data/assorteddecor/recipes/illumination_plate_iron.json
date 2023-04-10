@@ -1,0 +1,30 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:ingots/iron"
+    },
+    "G": {
+      "tag": "c:glass_panes"
+    },
+    "L": {
+      "item": "assorteddecor:illumination_tube"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "ALA",
+    "GGG"
+  ],
+  "result": {
+    "count": 8,
+    "item": "assorteddecor:illumination_plate"
+  }
+}

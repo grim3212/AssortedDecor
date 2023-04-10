@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.events;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.api.DecorTags;
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.common.items.DecorItems;
@@ -29,10 +29,7 @@ public class DecorEvents {
     public static void init() {
         Services.EVENTS.registerEvent(UseBlockEvent.class, (final UseBlockEvent event) -> {
             InteractionResult result = useOnBlock(event.getPlayer(), event.getLevel(), event.getHand(), event.getHitResult());
-            if (result == InteractionResult.SUCCESS) {
-                event.setCanceled(true);
-                event.setResult(result);
-            }
+            event.setResult(result);
         });
     }
 
@@ -53,7 +50,7 @@ public class DecorEvents {
 
         if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {
             if (colorizerAccepted(world, pos, hit)) {
-                if (DecorConfig.Common.colorizerConsumeBlock.getValue()) {
+                if (DecorCommonMod.COMMON_CONFIG.colorizerConsumeBlock.get()) {
                     Block block = hit.getBlock();
                     if ((hit.getDestroyProgress(player, world, pos) != 0.0F || player.isCreative()) && !hit.is(DecorTags.Blocks.BRUSH_DISALLOWED_BLOCKS))
                         world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
@@ -77,7 +74,7 @@ public class DecorEvents {
 
                 colorizerBlock.setColorizer(world, pos, stored, player, hand, false);
 
-                SoundType placeSound = Services.PLATFORM.getSoundType(stored, world, pos, player);
+                SoundType placeSound = Services.LEVEL_PROPERTIES.getSoundType(world, pos, player);
                 world.playSound(player, pos, placeSound.getPlaceSound(), SoundSource.BLOCKS, (placeSound.getVolume() + 1.0F) / 2.0F, placeSound.getPitch() * 0.8F);
                 player.swing(hand);
 

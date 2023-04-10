@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.entity;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.common.items.DecorItems;
 import com.grim3212.assorted.lib.util.DyeHelper;
 import net.minecraft.core.BlockPos;
@@ -76,7 +76,7 @@ public class WallpaperEntity extends HangingEntity {
                 WallpaperEntity entWallpaper = (WallpaperEntity) entities.get(i);
                 this.getEntityData().set(WALLPAPER_ID, entWallpaper.getWallpaperID());
 
-                if (DecorConfig.Common.wallpapersCopyDye.getValue() && !entWallpaper.getBurned()) {
+                if (DecorCommonMod.COMMON_CONFIG.wallpapersCopyDye.get() && !entWallpaper.getBurned()) {
                     this.getEntityData().set(COLOR_RED, entWallpaper.getWallpaperColor()[0]);
                     this.getEntityData().set(COLOR_GREEN, entWallpaper.getWallpaperColor()[1]);
                     this.getEntityData().set(COLOR_BLUE, entWallpaper.getWallpaperColor()[2]);
@@ -129,7 +129,7 @@ public class WallpaperEntity extends HangingEntity {
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.isEmpty()) {
-            if (DecorConfig.Common.dyeWallpapers.getValue()) {
+            if (DecorCommonMod.COMMON_CONFIG.dyeWallpapers.get()) {
                 DyeColor color = DyeHelper.getColor(stack);
                 if (color != null) {
                     dyeWallpaper(color);
@@ -159,7 +159,7 @@ public class WallpaperEntity extends HangingEntity {
     public InteractionResult updateWallpaper() {
         int newWallpaper = this.getWallpaperID() + 1;
 
-        if (newWallpaper >= DecorConfig.Common.numWallpaperOptions.getValue()) {
+        if (newWallpaper >= DecorCommonMod.COMMON_CONFIG.numWallpaperOptions.get()) {
             newWallpaper = 0;
         }
 
@@ -208,7 +208,7 @@ public class WallpaperEntity extends HangingEntity {
 
     @Override
     public void tick() {
-        if (DecorConfig.Common.wallpapersBurn.getValue() && level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
+        if (DecorCommonMod.COMMON_CONFIG.wallpapersBurn.get() && level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
             dyeWallpaper(DyeColor.BLACK, true);
             this.getEntityData().set(BURNT, true);
         }

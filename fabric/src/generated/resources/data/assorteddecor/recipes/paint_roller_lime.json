@@ -1,0 +1,27 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "assorteddecor:paint_roller"
+    },
+    {
+      "base": {
+        "tag": "c:dyes/lime"
+      },
+      "fabric:type": "fabric:difference",
+      "subtracted": {
+        "tag": "assorteddecor:paint_rollers"
+      }
+    }
+  ],
+  "result": {
+    "item": "assorteddecor:paint_roller_lime"
+  }
+}

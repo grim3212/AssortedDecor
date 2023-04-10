@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.client.render.entity;
 
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.client.DecorClient;
 import com.grim3212.assorted.decor.common.entity.WallpaperEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -55,7 +55,7 @@ public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
 
         float maxX = 16.0F;
         float maxY = 16.0F;
-        float maxZ = DecorConfig.Client.wallpaperWidth.getValue();
+        float maxZ = DecorClient.CLIENT_CONFIG.wallpaperWidth.get().floatValue();
 
         float minU = entityIn.getWallpaperID() / 16 / 16.0F;
         float minV = entityIn.getWallpaperID() % 16 / 16.0F;

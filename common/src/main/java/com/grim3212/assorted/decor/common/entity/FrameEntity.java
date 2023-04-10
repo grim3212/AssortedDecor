@@ -1,6 +1,6 @@
 package com.grim3212.assorted.decor.common.entity;
 
-import com.grim3212.assorted.decor.DecorConfig;
+import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.common.items.FrameItem.FrameMaterial;
 import com.grim3212.assorted.lib.util.DyeHelper;
 import net.minecraft.core.BlockPos;
@@ -85,7 +85,7 @@ public abstract class FrameEntity extends HangingEntity {
         if (player.mayUseItemAt(pos, this.direction, itemstack)) {
             if (!itemstack.isEmpty()) {
 
-                if (DecorConfig.Common.dyeFrames.getValue()) {
+                if (DecorCommonMod.COMMON_CONFIG.dyeFrames.get()) {
                     DyeColor color = DyeHelper.getColor(itemstack);
                     if (color != null) {
                         if (dyeFrame(color)) {
@@ -234,7 +234,7 @@ public abstract class FrameEntity extends HangingEntity {
 
     @Override
     public void tick() {
-        if (this.getFrameMaterial() == FrameMaterial.WOOD && DecorConfig.Common.framesBurn.getValue()) {
+        if (this.getFrameMaterial() == FrameMaterial.WOOD && DecorCommonMod.COMMON_CONFIG.framesBurn.get()) {
             if (this.level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
                 dyeFrame(DyeColor.BLACK, true);
             }

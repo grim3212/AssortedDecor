@@ -1,0 +1,14 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "assorteddecor:colorizer"
+  },
+  "result": "assorteddecor:colorizer_corner"
+}

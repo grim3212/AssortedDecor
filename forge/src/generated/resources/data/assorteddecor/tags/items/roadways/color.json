@@ -1,20 +1,20 @@
 {
   "values": [
+    "assorteddecor:roadway_white",
+    "assorteddecor:roadway_magenta",
+    "assorteddecor:roadway_brown",
     "assorteddecor:roadway_cyan",
     "assorteddecor:roadway_black",
-    "assorteddecor:roadway_green",
-    "assorteddecor:roadway_white",
-    "assorteddecor:roadway_light_blue",
-    "assorteddecor:roadway_pink",
-    "assorteddecor:roadway_gray",
-    "assorteddecor:roadway_yellow",
-    "assorteddecor:roadway_orange",
     "assorteddecor:roadway_blue",
-    "assorteddecor:roadway_purple",
     "assorteddecor:roadway_lime",
-    "assorteddecor:roadway_light_gray",
+    "assorteddecor:roadway_pink",
+    "assorteddecor:roadway_light_blue",
+    "assorteddecor:roadway_gray",
+    "assorteddecor:roadway_green",
+    "assorteddecor:roadway_yellow",
     "assorteddecor:roadway_red",
-    "assorteddecor:roadway_brown",
-    "assorteddecor:roadway_magenta"
+    "assorteddecor:roadway_orange",
+    "assorteddecor:roadway_purple",
+    "assorteddecor:roadway_light_gray"
   ]
 }

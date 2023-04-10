@@ -5,14 +5,9 @@ import com.grim3212.assorted.decor.common.blocks.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerVerticalSlabBlock;
-import com.grim3212.assorted.lib.annotations.LoaderImplement;
-import com.grim3212.assorted.lib.mixin.data.AccessorBlockLootSubProvider;
+import com.grim3212.assorted.lib.data.LibBlockLootProvider;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.loot.packs.VanillaBlockLoot;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -23,16 +18,18 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class DecorBlockLoot extends VanillaBlockLoot {
+public class DecorBlockLoot extends LibBlockLootProvider {
 
     private final List<Block> blocks = new ArrayList<>();
 
     public DecorBlockLoot() {
+        super(() -> DecorBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList()));
+
         blocks.add(DecorBlocks.PLANTER_POT.get());
         blocks.add(DecorBlocks.CLAY_DECORATION.get());
         blocks.add(DecorBlocks.BONE_DECORATION.get());
@@ -109,31 +106,6 @@ public class DecorBlockLoot extends VanillaBlockLoot {
 
     }
 
-    @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
-        this.generate();
-        Set<ResourceLocation> set = new HashSet<>();
-        AccessorBlockLootSubProvider provider = ((AccessorBlockLootSubProvider) this);
-
-        for (Block block : getKnownBlocks()) {
-            if (block.isEnabled(provider.assortedlib_getEnabledFeatures())) {
-                ResourceLocation resourcelocation = block.getLootTable();
-                if (resourcelocation != BuiltInLootTables.EMPTY && set.add(resourcelocation)) {
-                    LootTable.Builder loottable$builder = provider.assortedlib_getMap().remove(resourcelocation);
-                    if (loottable$builder == null) {
-                        throw new IllegalStateException(String.format(Locale.ROOT, "Missing loottable '%s' for '%s'", resourcelocation, BuiltInRegistries.BLOCK.getKey(block)));
-                    }
-
-                    biConsumer.accept(resourcelocation, loottable$builder);
-                }
-            }
-        }
-
-        if (!provider.assortedlib_getMap().isEmpty()) {
-            throw new IllegalStateException("Created block loot tables for non-blocks: " + provider.assortedlib_getMap().keySet());
-        }
-    }
-
     private LootTable.Builder createVerticalSlabItemTable(Block b) {
         return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(applyExplosionDecay(b, LootItem.lootTableItem(b).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE)))))));
     }
@@ -143,10 +115,5 @@ public class DecorBlockLoot extends VanillaBlockLoot {
         CopyBlockState.Builder func = CopyBlockState.copyState(b).copy(ColorChangingBlock.COLOR);
         LootPool.Builder pool = LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(entry).when(ExplosionCondition.survivesExplosion()).apply(func);
         return LootTable.lootTable().withPool(pool);
-    }
-
-    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "BlockLootSubProvider")
-    protected Iterable<Block> getKnownBlocks() {
-        return DecorBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
     }
 }
