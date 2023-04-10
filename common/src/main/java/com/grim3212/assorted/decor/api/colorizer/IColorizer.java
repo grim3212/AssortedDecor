@@ -3,8 +3,11 @@ package com.grim3212.assorted.decor.api.colorizer;
 import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.client.model.ColorizerClientEffects;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
+import com.grim3212.assorted.lib.core.block.*;
 import com.grim3212.assorted.lib.core.block.effects.IBlockClientEffects;
 import com.grim3212.assorted.lib.core.block.effects.IBlockEffectSupplier;
+import com.grim3212.assorted.lib.core.block.effects.IBlockLandingEffects;
+import com.grim3212.assorted.lib.core.block.effects.IBlockRunningEffects;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
-public interface IColorizer extends IBlockEffectSupplier {
+public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
 
     default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
         BlockEntity te = worldIn.getBlockEntity(pos);

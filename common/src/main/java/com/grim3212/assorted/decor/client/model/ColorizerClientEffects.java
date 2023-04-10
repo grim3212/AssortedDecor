@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.client.model;
 
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
-import com.grim3212.assorted.lib.core.block.effects.EffectUtils;
+import com.grim3212.assorted.lib.core.block.effects.ClientEffectUtils;
 import com.grim3212.assorted.lib.core.block.effects.IBlockClientEffects;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ public class ColorizerClientEffects implements IBlockClientEffects {
         if (state.getBlock() instanceof IColorizer colorizer) {
             BlockState stored = colorizer.getStoredState(level, pos);
             if (!stored.isAir()) {
-                return EffectUtils.addHitEffects(level, pos, dir, stored, manager);
+                return ClientEffectUtils.addHitEffects(level, pos, dir, stored, manager);
             }
         }
 
@@ -28,7 +28,7 @@ public class ColorizerClientEffects implements IBlockClientEffects {
         if (state.getBlock() instanceof IColorizer colorizer) {
             BlockState stored = colorizer.getStoredState(level, pos);
             if (!stored.isAir()) {
-                EffectUtils.addBlockDestroyEffects(level, pos, stored, manager, level);
+                ClientEffectUtils.addBlockDestroyEffects(level, pos, stored, manager, level);
                 return true;
             }
         }

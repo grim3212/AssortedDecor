@@ -7,6 +7,7 @@ import com.grim3212.assorted.lib.client.model.ItemOverridesExtension;
 import com.grim3212.assorted.lib.client.model.baked.IDataAwareBakedModel;
 import com.grim3212.assorted.lib.client.model.data.IBlockModelData;
 import com.grim3212.assorted.lib.client.model.loaders.context.IModelBakingContext;
+import com.grim3212.assorted.lib.platform.ClientServices;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -138,14 +139,13 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
         }
 
         var cached = this.getCachedModel(blockState);
-        var quads = cached.getQuads(state, side, rand);
-        return quads;
+        return cached.getQuads(state, side, rand);
     }
 
     @Nonnull
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand) {
-        return getQuads(state, side, rand, IBlockModelData.empty(), RenderType.translucent());
+        return getQuads(state, side, rand, IBlockModelData.empty(), RenderType.solid());
     }
 
     @Override
@@ -155,7 +155,18 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
 
     @Override
     public @Nonnull Collection<RenderType> getSupportedRenderTypes(BlockState state, RandomSource rand, IBlockModelData data) {
-        return ImmutableList.of(RenderType.translucent());
+        BlockState blockState = Blocks.AIR.defaultBlockState();
+        if (data.hasProperty(DecorModelProperties.BLOCK_STATE)) {
+            blockState = data.getData(DecorModelProperties.BLOCK_STATE);
+        }
+
+        if (blockState.isAir()) {
+            return ImmutableList.of(RenderType.solid());
+        }
+
+        var cached = this.getCachedModel(blockState);
+        Collection<RenderType> renderTypes = ClientServices.MODELS.getRenderTypesFor(cached, blockState, rand, data);
+        return renderTypes.isEmpty() ? ImmutableList.of(RenderType.solid()) : renderTypes;
     }
 
     @Override
