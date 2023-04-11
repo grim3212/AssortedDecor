@@ -53,5 +53,7 @@ public class DecorBlockTagProvider extends LibBlockTagProvider {
         tagger.apply(DecorTags.Blocks.ROADWAYS_ALL).add(DecorBlocks.ROADWAY_MANHOLE.get());
 
         FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> tagger.apply(DecorTags.Blocks.FLURO).add(x.getValue().get()));
+
+        tagger.apply(DecorTags.Blocks.COLORIZER_ALWAYS_CUTOUT).add(DecorBlocks.COLORIZER_CHIMNEY.get(), DecorBlocks.COLORIZER_FIREPIT_COVERED.get(), DecorBlocks.COLORIZER_STOVE.get());
     }
 }

@@ -2,6 +2,7 @@ package com.grim3212.assorted.decor.client.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.grim3212.assorted.decor.api.DecorTags;
 import com.grim3212.assorted.decor.common.properties.DecorModelProperties;
 import com.grim3212.assorted.lib.client.model.ItemOverridesExtension;
 import com.grim3212.assorted.lib.client.model.baked.IDataAwareBakedModel;
@@ -155,6 +156,11 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
 
     @Override
     public @Nonnull Collection<RenderType> getSupportedRenderTypes(BlockState state, RandomSource rand, IBlockModelData data) {
+        // TODO: Account for the pieces on fireplaces that should only render during cutout
+        if (state.is(DecorTags.Blocks.COLORIZER_ALWAYS_CUTOUT)) {
+            return ImmutableList.of(RenderType.translucent());
+        }
+
         BlockState blockState = Blocks.AIR.defaultBlockState();
         if (data.hasProperty(DecorModelProperties.BLOCK_STATE)) {
             blockState = data.getData(DecorModelProperties.BLOCK_STATE);

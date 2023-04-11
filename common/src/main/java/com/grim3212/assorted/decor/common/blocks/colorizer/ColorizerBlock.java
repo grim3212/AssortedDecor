@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
+import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.lib.core.block.ExtraPropertyBlock;
 import com.grim3212.assorted.lib.core.block.effects.IBlockLandingEffects;
@@ -53,13 +54,23 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
     @Override
     public int getLightBlock(BlockState state, BlockGetter reader, BlockPos pos) {
         BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.getLightBlock(reader, pos) : super.getLightBlock(state, reader, pos);
+
+        if (stored.isAir() || !(state.getBlock() == DecorBlocks.COLORIZER.get() || state.getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get())) {
+            return super.getLightBlock(state, reader, pos);
+        }
+
+        return stored.getLightBlock(reader, pos);
     }
 
     @Override
     public float getShadeBrightness(BlockState state, BlockGetter reader, BlockPos pos) {
         BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.getShadeBrightness(reader, pos) : super.getShadeBrightness(state, reader, pos);
+
+        if (stored.isAir() || !(state.getBlock() == DecorBlocks.COLORIZER.get() || state.getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get())) {
+            return super.getShadeBrightness(state, reader, pos);
+        }
+
+        return stored.getShadeBrightness(reader, pos);
     }
 
     @Override

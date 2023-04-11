@@ -82,18 +82,6 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer, EntityB
     }
 
     @Override
-    public int getLightBlock(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.getLightBlock(reader, pos) : super.getLightBlock(state, reader, pos);
-    }
-
-    @Override
-    public float getShadeBrightness(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.getShadeBrightness(reader, pos) : super.getShadeBrightness(state, reader, pos);
-    }
-
-    @Override
     public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
         ItemStack itemstack = new ItemStack(this);
         NBTHelper.putTag(itemstack, "stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));

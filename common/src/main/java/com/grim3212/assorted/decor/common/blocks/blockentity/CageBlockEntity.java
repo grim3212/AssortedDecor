@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.common.blocks.blockentity;
 
 import com.grim3212.assorted.decor.Constants;
+import com.grim3212.assorted.decor.api.DecorTags;
 import com.grim3212.assorted.decor.common.helpers.CageLogic;
 import com.grim3212.assorted.decor.common.inventory.CageContainer;
 import com.grim3212.assorted.lib.core.inventory.IInventoryBlockEntity;
@@ -209,13 +210,22 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
     }
 
     public static String isValidCage(ItemStack stack) {
-        if (stack.getItem() instanceof SpawnEggItem || NBTHelper.hasTag(stack, "EntityTag")) {
+        if (stack.getItem() instanceof SpawnEggItem) {
             return "EntityTag";
+        }
+
+        if (!stack.is(DecorTags.Items.CAGE_SUPPORTED)) {
+            return null;
         }
 
         if (NBTHelper.hasTag(stack, "StoredEntity")) {
             return "StoredEntity";
         }
+
+        if (NBTHelper.hasTag(stack, "EntityTag")) {
+            return "EntityTag";
+        }
+
         return null;
     }
 }

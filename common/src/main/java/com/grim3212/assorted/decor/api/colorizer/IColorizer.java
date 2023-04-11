@@ -89,5 +89,4 @@ public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlo
         return ColorizerClientEffects::new;
     }
 
-    // TODO: Add landing effects
 }

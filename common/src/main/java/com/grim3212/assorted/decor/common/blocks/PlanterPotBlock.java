@@ -46,7 +46,8 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
             return true;
         }
 
-        int top = state.getValue(TOP);
+        BlockState planterState = world.getBlockState(pos);
+        int top = planterState.getValue(TOP);
         switch (top) {
             case 0:
                 if (plant instanceof FlowerBlock || plant instanceof SaplingBlock || plant instanceof BambooStalkBlock) {
@@ -115,9 +116,6 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (worldIn.isClientSide)
-            return InteractionResult.SUCCESS;
-
         if (player.getItemInHand(hand).isEmpty() || player.getItemInHand(hand).getCount() == 0) {
             int top = worldIn.getBlockState(pos).getValue(TOP);
             if (top == 6) {
