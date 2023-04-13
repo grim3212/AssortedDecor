@@ -4,8 +4,6 @@ import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.lib.core.block.ExtraPropertyBlock;
-import com.grim3212.assorted.lib.core.block.effects.IBlockLandingEffects;
-import com.grim3212.assorted.lib.core.block.effects.IBlockRunningEffects;
 import com.grim3212.assorted.lib.core.block.effects.ServerEffectUtils;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
@@ -29,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, EntityBlock, IBlockLandingEffects, IBlockRunningEffects {
+public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, EntityBlock {
 
     public ColorizerBlock(Properties props) {
         super(props);

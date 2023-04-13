@@ -8,8 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLConstructModEvent;
 
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class AssortedDecorForgeClient {
-
-
+    
     @SubscribeEvent
     public static void initClientSide(final FMLConstructModEvent event) {
         DecorClient.init();

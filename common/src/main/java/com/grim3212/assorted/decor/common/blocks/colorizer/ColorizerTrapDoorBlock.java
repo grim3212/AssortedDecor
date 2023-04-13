@@ -2,9 +2,6 @@ package com.grim3212.assorted.decor.common.blocks.colorizer;
 
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
-import com.grim3212.assorted.lib.core.block.*;
-import com.grim3212.assorted.lib.core.block.effects.IBlockLandingEffects;
-import com.grim3212.assorted.lib.core.block.effects.IBlockRunningEffects;
 import com.grim3212.assorted.lib.core.block.effects.ServerEffectUtils;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
@@ -30,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class ColorizerTrapDoorBlock extends TrapDoorBlock implements IColorizer, EntityBlock, IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects {
+public class ColorizerTrapDoorBlock extends TrapDoorBlock implements IColorizer, EntityBlock {
 
     public ColorizerTrapDoorBlock() {
         super(Block.Properties.of(Material.STONE).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion(), SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundEvents.WOODEN_TRAPDOOR_OPEN);

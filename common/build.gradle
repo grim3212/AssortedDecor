@@ -32,6 +32,9 @@ processResources {
     filesMatching("pack.mcmeta") {
         expand 'mod_name': project.mod_name
     }
+
+    // Exclude datagenerator .cache directory
+    exclude '.cache'
 }
 
 publishing {
