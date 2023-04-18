@@ -27,5 +27,6 @@
   "result": {
     "count": 4,
     "item": "assorteddecor:chain_link"
-  }
+  },
+  "show_notification": true
 }

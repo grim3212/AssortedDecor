@@ -20,7 +20,7 @@ public class AssortedDecorFabricDatagen implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
         pack.addProvider((output, registriesFuture) -> new DecorRecipes(output));
         FabricBlockTagProvider provider = pack.addProvider((output, registriesFuture) -> new FabricBlockTagProvider(output, registriesFuture, new DecorBlockTagProvider(output, registriesFuture)));
-        pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, provider, new DecorItemTagProvider(output, registriesFuture, provider)));
+        pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, provider.contentsGetter(), new DecorItemTagProvider(output, registriesFuture, provider.contentsGetter())));
         pack.addProvider((output, registriesFuture) -> new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(DecorBlockLoot::new, LootContextParamSets.BLOCK))));
     }
 }

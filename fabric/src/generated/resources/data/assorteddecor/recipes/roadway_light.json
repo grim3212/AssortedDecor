@@ -21,5 +21,6 @@
   ],
   "result": {
     "item": "assorteddecor:roadway_light"
-  }
+  },
+  "show_notification": true
 }

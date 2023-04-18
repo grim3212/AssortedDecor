@@ -26,5 +26,6 @@
   "result": {
     "count": 3,
     "item": "assorteddecor:steel_door"
-  }
+  },
+  "show_notification": true
 }

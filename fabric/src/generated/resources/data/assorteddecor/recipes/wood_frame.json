@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:wood_frame"
-  }
+  },
+  "show_notification": true
 }

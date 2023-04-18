@@ -19,5 +19,6 @@
   "result": {
     "count": 4,
     "item": "assorteddecor:colorizer_oblique_slope"
-  }
+  },
+  "show_notification": true
 }

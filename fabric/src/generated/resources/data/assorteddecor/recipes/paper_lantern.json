@@ -21,5 +21,6 @@
   ],
   "result": {
     "item": "assorteddecor:paper_lantern"
-  }
+  },
+  "show_notification": true
 }

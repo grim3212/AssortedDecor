@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:unfired_clay_decoration"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assorteddecor:wall_clock"
-  }
+  },
+  "show_notification": true
 }

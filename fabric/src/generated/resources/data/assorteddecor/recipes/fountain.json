@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assorteddecor:fountain"
-  }
+  },
+  "show_notification": true
 }

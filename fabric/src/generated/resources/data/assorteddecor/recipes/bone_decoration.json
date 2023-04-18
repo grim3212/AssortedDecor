@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:bone_decoration"
-  }
+  },
+  "show_notification": true
 }

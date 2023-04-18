@@ -32,5 +32,6 @@
   "result": {
     "count": 8,
     "item": "assorteddecor:illumination_plate"
-  }
+  },
+  "show_notification": true
 }

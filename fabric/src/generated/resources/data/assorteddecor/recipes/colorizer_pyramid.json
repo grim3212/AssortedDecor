@@ -19,5 +19,6 @@
   "result": {
     "count": 4,
     "item": "assorteddecor:colorizer_pyramid"
-  }
+  },
+  "show_notification": true
 }

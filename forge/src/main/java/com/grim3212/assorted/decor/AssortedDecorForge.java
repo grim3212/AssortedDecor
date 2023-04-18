@@ -45,7 +45,7 @@ public class AssortedDecorForge {
         datagenerator.addProvider(event.includeServer(), new DecorRecipes(packOutput));
         ForgeBlockTagProvider blockTagProvider = new ForgeBlockTagProvider(packOutput, lookupProvider, fileHelper, Constants.MOD_ID, new DecorBlockTagProvider(packOutput, lookupProvider));
         datagenerator.addProvider(event.includeServer(), blockTagProvider);
-        datagenerator.addProvider(event.includeServer(), new ForgeItemTagProvider(packOutput, lookupProvider, blockTagProvider, fileHelper, Constants.MOD_ID, new DecorItemTagProvider(packOutput, lookupProvider, blockTagProvider)));
+        datagenerator.addProvider(event.includeServer(), new ForgeItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), fileHelper, Constants.MOD_ID, new DecorItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter())));
         datagenerator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(DecorBlockLoot::new, LootContextParamSets.BLOCK))));
 
         // Client

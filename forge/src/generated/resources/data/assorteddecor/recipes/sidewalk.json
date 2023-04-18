@@ -19,5 +19,6 @@
   "result": {
     "count": 6,
     "item": "assorteddecor:sidewalk"
-  }
+  },
+  "show_notification": true
 }

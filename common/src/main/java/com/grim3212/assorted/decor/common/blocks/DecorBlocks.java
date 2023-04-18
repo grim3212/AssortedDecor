@@ -9,7 +9,6 @@ import com.grim3212.assorted.lib.registry.IRegistryObject;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
@@ -89,10 +89,10 @@ public class DecorBlocks {
     public static final IRegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(DyeColor.RED));
     public static final IRegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(DyeColor.BLACK));
 
-    public static final IRegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion(), SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN));
-    public static final IRegistryObject<DoorBlock> GLASS_DOOR = register("glass_door", () -> new DoorBlock(Block.Properties.of(Material.GLASS, Blocks.GLASS.defaultMaterialColor()).strength(0.75F, 7.5F).sound(SoundType.GLASS).noOcclusion(), SoundEvents.WOODEN_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_OPEN));
-    public static final IRegistryObject<DoorBlock> STEEL_DOOR = register("steel_door", () -> new DoorBlock(Block.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion(), SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN));
-    public static final IRegistryObject<DoorBlock> CHAIN_LINK_DOOR = register("chain_link_door", () -> new DoorBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion(), SoundEvents.IRON_DOOR_CLOSE, SoundEvents.IRON_DOOR_OPEN));
+    public static final IRegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> GLASS_DOOR = register("glass_door", () -> new DoorBlock(Block.Properties.of(Material.GLASS, Blocks.GLASS.defaultMaterialColor()).strength(0.75F, 7.5F).sound(SoundType.GLASS).noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> STEEL_DOOR = register("steel_door", () -> new DoorBlock(Block.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> CHAIN_LINK_DOOR = register("chain_link_door", () -> new DoorBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
     public static final IRegistryObject<IronBarsBlock> CHAIN_LINK_FENCE = register("chain_link_fence", () -> new IronBarsBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion()));
     public static final IRegistryObject<FountainBlock> FOUNTAIN = register("fountain", () -> new FountainBlock(Block.Properties.of(Material.STONE).strength(1.5F, 10.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
     public static final IRegistryObject<Block> STONE_PATH = register("stone_path", () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));

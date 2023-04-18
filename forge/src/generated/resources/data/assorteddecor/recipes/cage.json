@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:cage"
-  }
+  },
+  "show_notification": true
 }

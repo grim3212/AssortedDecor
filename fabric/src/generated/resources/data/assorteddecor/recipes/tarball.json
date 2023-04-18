@@ -28,5 +28,6 @@
   "result": {
     "count": 16,
     "item": "assorteddecor:tarball"
-  }
+  },
+  "show_notification": true
 }

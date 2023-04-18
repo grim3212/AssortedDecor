@@ -23,5 +23,6 @@
   "result": {
     "count": 4,
     "item": "assorteddecor:colorizer_firering"
-  }
+  },
+  "show_notification": true
 }

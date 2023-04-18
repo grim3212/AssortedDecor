@@ -27,5 +27,6 @@
   ],
   "result": {
     "item": "assorteddecor:roadway_manhole"
-  }
+  },
+  "show_notification": true
 }

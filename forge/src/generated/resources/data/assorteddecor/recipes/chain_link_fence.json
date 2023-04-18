@@ -19,5 +19,6 @@
   "result": {
     "count": 8,
     "item": "assorteddecor:chain_link_fence"
-  }
+  },
+  "show_notification": true
 }

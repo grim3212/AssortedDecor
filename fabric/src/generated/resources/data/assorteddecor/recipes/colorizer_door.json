@@ -20,5 +20,6 @@
   "result": {
     "count": 3,
     "item": "assorteddecor:colorizer_door"
-  }
+  },
+  "show_notification": true
 }

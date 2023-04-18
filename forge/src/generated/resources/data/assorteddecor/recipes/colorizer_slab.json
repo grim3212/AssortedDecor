@@ -18,5 +18,6 @@
   "result": {
     "count": 6,
     "item": "assorteddecor:colorizer_slab"
-  }
+  },
+  "show_notification": true
 }

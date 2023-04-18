@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:calendar"
-  }
+  },
+  "show_notification": true
 }

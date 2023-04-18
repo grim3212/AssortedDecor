@@ -22,5 +22,6 @@
   ],
   "result": {
     "item": "assorteddecor:paint_roller"
-  }
+  },
+  "show_notification": true
 }

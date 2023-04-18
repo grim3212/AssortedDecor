@@ -21,5 +21,6 @@
   ],
   "result": {
     "item": "assorteddecor:iron_lantern"
-  }
+  },
+  "show_notification": true
 }

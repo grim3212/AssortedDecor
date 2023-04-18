@@ -281,7 +281,8 @@ public class NeonSignScreen extends Screen {
                     int l2 = Math.max(i2, j2);
                     Tesselator tessellator = Tesselator.getInstance();
                     BufferBuilder bufferbuilder = tessellator.getBuilder();
-                    RenderSystem.disableTexture();
+                    // TODO: Look into these
+//                    RenderSystem.disableTexture();
                     RenderSystem.enableColorLogicOp();
                     RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
                     bufferbuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
@@ -291,7 +292,7 @@ public class NeonSignScreen extends Screen {
                     bufferbuilder.vertex(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
                     BufferUploader.drawWithShader(bufferbuilder.end());
                     RenderSystem.disableColorLogicOp();
-                    RenderSystem.enableTexture();
+//                    RenderSystem.enableTexture();
                 }
             }
         }

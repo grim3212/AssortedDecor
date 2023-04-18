@@ -19,5 +19,6 @@
   ],
   "result": {
     "item": "assorteddecor:iron_frame"
-  }
+  },
+  "show_notification": true
 }

@@ -22,5 +22,6 @@
   "result": {
     "count": 4,
     "item": "assorteddecor:colorizer_stool"
-  }
+  },
+  "show_notification": true
 }
