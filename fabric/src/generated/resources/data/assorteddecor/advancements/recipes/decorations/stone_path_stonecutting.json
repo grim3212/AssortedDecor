@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:stone_path_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

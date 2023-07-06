@@ -13,6 +13,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
@@ -206,10 +207,11 @@ public class NeonSignScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         Lighting.setupForFlatItems();
-        this.renderBackground(matrixStack);
-        drawCenteredString(matrixStack, this.font, this.title, this.width / 2, 40, 16777215);
+        this.renderBackground(guiGraphics);
+        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 40, 16777215);
+        PoseStack matrixStack = guiGraphics.pose();
         matrixStack.pushPose();
         matrixStack.translate((double) (this.width / 2), 0.0D, 50.0D);
         float f = 93.75F;
@@ -250,12 +252,12 @@ public class NeonSignScreen extends Screen {
                 }
 
                 float f3 = (float) (-this.minecraft.font.width(s) / 2);
-                this.minecraft.font.draw(matrixStack, this.tileSign.getText(i1), f3, (float) (i1 * 10 - this.lines.length * 5), 16777215);
+                guiGraphics.drawString(this.minecraft.font, this.tileSign.getText(i1), (int) f3, i1 * 10 - this.lines.length * 5, 16777215);
                 if (i1 == this.editLine && j >= 0 && flag1) {
                     int j1 = this.minecraft.font.width(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
                     int k1 = j1 - this.minecraft.font.width(s) / 2;
                     if (j >= s.length()) {
-                        this.minecraft.font.draw(matrixStack, "_", (float) k1, (float) l, 16777215);
+                        guiGraphics.drawString(this.minecraft.font, "_", k1, l, 16777215);
                     }
                 }
             }
@@ -269,7 +271,7 @@ public class NeonSignScreen extends Screen {
                 int j3 = this.minecraft.font.width(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
                 int k3 = j3 - this.minecraft.font.width(s1) / 2;
                 if (flag1 && j < s1.length()) {
-                    fill(matrixStack, k3, l - 1, k3 + 1, l + 9, -16777216 | 16777215);
+                    guiGraphics.fill(k3, l - 1, k3 + 1, l + 9, -16777216 | 16777215);
                 }
 
                 if (k != j) {
@@ -301,7 +303,7 @@ public class NeonSignScreen extends Screen {
         Lighting.setupFor3DItems();
         matrixStack.pushPose();
         matrixStack.translate(0, 0, 100);
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
         matrixStack.popPose();
     }
 }

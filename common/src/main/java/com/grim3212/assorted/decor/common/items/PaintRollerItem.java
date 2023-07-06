@@ -18,8 +18,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,15 +58,15 @@ public class PaintRollerItem extends Item {
         if (entity instanceof Sheep) {
             Sheep sheep = (Sheep) entity;
             if (sheep.isAlive() && !sheep.isSheared() && sheep.getColor() != this.dyeColor) {
-                sheep.level.playSound(player, sheep, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
-                if (!player.level.isClientSide) {
+                sheep.level().playSound(player, sheep, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+                if (!player.level().isClientSide) {
                     sheep.setColor(this.dyeColor);
                     player.getItemInHand(hand).hurtAndBreak(1, player, (p) -> {
                         p.broadcastBreakEvent(hand);
                     });
                 }
 
-                return InteractionResult.sidedSuccess(player.level.isClientSide);
+                return InteractionResult.sidedSuccess(player.level().isClientSide);
             }
         }
 

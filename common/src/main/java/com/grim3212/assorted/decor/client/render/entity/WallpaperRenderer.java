@@ -67,7 +67,7 @@ public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
         float green = entityIn.getWallpaperColor()[1] / 255.0f;
         float blue = entityIn.getWallpaperColor()[2] / 255.0f;
 
-        int light = LevelRenderer.getLightColor(entityIn.level, new BlockPos(x, y, z));
+        int light = LevelRenderer.getLightColor(entityIn.level(), new BlockPos(x, y, z));
 
         if (entityIn.getDirection() == Direction.NORTH) {
             builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();

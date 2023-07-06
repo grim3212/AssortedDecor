@@ -26,9 +26,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -133,7 +133,7 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
     }
 
     @Override
-    public @Nonnull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull IBlockModelData extraData, @Nullable RenderType renderType) {
+    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull IBlockModelData extraData, @Nullable RenderType renderType) {
         BlockState blockState = Blocks.AIR.defaultBlockState();
         if (extraData.hasProperty(DecorModelProperties.BLOCK_STATE)) {
             blockState = extraData.getData(DecorModelProperties.BLOCK_STATE);
@@ -143,19 +143,19 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
         return cached.getQuads(state, side, rand);
     }
 
-    @Nonnull
+    @NotNull
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand) {
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand) {
         return getQuads(state, side, rand, IBlockModelData.empty(), RenderType.solid());
     }
 
     @Override
-    public @Nonnull List<BakedQuad> getQuads(ItemStack stack, boolean fabulous, @Nonnull RandomSource rand, @Nullable RenderType renderType) {
+    public @NotNull List<BakedQuad> getQuads(ItemStack stack, boolean fabulous, @NotNull RandomSource rand, @Nullable RenderType renderType) {
         return getQuads(null, null, rand, IBlockModelData.empty(), RenderType.translucent());
     }
 
     @Override
-    public @Nonnull Collection<RenderType> getSupportedRenderTypes(BlockState state, RandomSource rand, IBlockModelData data) {
+    public @NotNull Collection<RenderType> getSupportedRenderTypes(BlockState state, RandomSource rand, IBlockModelData data) {
         // TODO: Account for the pieces on fireplaces that should only render during cutout
         if (state.is(DecorTags.Blocks.COLORIZER_ALWAYS_CUTOUT)) {
             return ImmutableList.of(RenderType.translucent());
@@ -176,7 +176,7 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
     }
 
     @Override
-    public @Nonnull Collection<RenderType> getSupportedRenderTypes(ItemStack stack, boolean fabulous) {
+    public @NotNull Collection<RenderType> getSupportedRenderTypes(ItemStack stack, boolean fabulous) {
         return ImmutableList.of(RenderType.translucent());
     }
 }

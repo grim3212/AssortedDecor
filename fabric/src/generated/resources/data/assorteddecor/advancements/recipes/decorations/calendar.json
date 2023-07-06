@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:calendar"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

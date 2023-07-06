@@ -42,5 +42,6 @@
     "recipes": [
       "assorteddecor:steel_roadway_manhole"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

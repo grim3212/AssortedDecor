@@ -79,7 +79,7 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
             float green = entityIn.getFrameColor()[1] / 255.0f;
             float blue = entityIn.getFrameColor()[2] / 255.0f;
 
-            int light = LevelRenderer.getLightColor(entityIn.level, entityIn.getPos());
+            int light = LevelRenderer.getLightColor(entityIn.level(), entityIn.getPos());
 
             builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
             builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();

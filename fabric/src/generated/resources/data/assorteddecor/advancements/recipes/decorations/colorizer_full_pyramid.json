@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_full_pyramid"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

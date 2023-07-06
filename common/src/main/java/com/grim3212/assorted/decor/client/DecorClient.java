@@ -97,14 +97,14 @@ public class DecorClient {
         ClientServices.CLIENT.registerBlockColor(new BlockColor() {
             @Override
             public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
-                return state.getBlock().defaultMaterialColor().col;
+                return state.getBlock().defaultMapColor().col;
             }
         }, () -> FluroBlock.FLURO_BY_DYE.values().stream().map(x -> x.get()).collect(Collectors.toList()));
 
         ClientServices.CLIENT.registerBlockColor(new BlockColor() {
             @Override
             public int getColor(BlockState state, BlockAndTintGetter worldIn, BlockPos pos, int tint) {
-                return state.getValue(ColorChangingBlock.COLOR).getMaterialColor().col;
+                return state.getValue(ColorChangingBlock.COLOR).getMapColor().col;
             }
         }, () -> Arrays.asList(DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get()));
     }
@@ -147,7 +147,7 @@ public class DecorClient {
             public int getColor(ItemStack stack, int tint) {
                 Block b = Block.byItem(stack.getItem());
                 if (b != Blocks.AIR) {
-                    return b.defaultMaterialColor().col;
+                    return b.defaultMapColor().col;
                 }
                 return 16777215;
             }
@@ -160,7 +160,7 @@ public class DecorClient {
                     CompoundTag blockState = NBTHelper.getTag(stack.getTag(), "BlockStateTag");
                     if (blockState.contains("color")) {
                         DyeColor color = DyeColor.byName(NBTHelper.getString(blockState, "color"), DyeColor.WHITE);
-                        return color.getMaterialColor().col;
+                        return color.getMapColor().col;
                     }
                 }
                 return 16777215;

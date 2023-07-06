@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:light_gray_concrete_powder_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

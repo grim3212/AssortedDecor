@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:light_blue_wool_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

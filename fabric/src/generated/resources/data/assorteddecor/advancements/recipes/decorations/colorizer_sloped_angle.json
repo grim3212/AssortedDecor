@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_sloped_angle"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

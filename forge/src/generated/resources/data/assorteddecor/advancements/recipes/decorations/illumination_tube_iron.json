@@ -45,5 +45,6 @@
     "recipes": [
       "assorteddecor:illumination_tube_iron"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

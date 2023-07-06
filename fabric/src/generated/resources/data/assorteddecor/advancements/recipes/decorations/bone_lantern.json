@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:bone_lantern"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

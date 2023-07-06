@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:roadway"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -47,5 +47,6 @@
     "recipes": [
       "assorteddecor:fluro_white"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

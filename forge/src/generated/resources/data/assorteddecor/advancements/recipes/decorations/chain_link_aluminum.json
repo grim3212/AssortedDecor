@@ -38,5 +38,6 @@
     "recipes": [
       "assorteddecor:chain_link_aluminum"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

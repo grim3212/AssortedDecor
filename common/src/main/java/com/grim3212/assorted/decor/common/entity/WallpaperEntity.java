@@ -24,14 +24,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockCollisions;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -69,7 +69,7 @@ public class WallpaperEntity extends HangingEntity {
         this.pos = pos;
         this.setDirection(direction);
 
-        List<Entity> entities = this.level.getEntities(this, this.fireboundingBox);
+        List<Entity> entities = this.level().getEntities(this, this.fireboundingBox);
 
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i) instanceof WallpaperEntity) {
@@ -164,7 +164,7 @@ public class WallpaperEntity extends HangingEntity {
         }
 
         this.getEntityData().set(WALLPAPER_ID, newWallpaper);
-        if (!this.level.isClientSide)
+        if (!this.level().isClientSide)
             playPlacementSound();
 
         return InteractionResult.SUCCESS;
@@ -173,7 +173,7 @@ public class WallpaperEntity extends HangingEntity {
     public boolean updateWallpaper(int wallpaper) {
         this.getEntityData().set(WALLPAPER_ID, wallpaper);
 
-        if (!this.level.isClientSide)
+        if (!this.level().isClientSide)
             playPlacementSound();
 
         return true;
@@ -193,7 +193,7 @@ public class WallpaperEntity extends HangingEntity {
         this.getEntityData().set(COLOR_GREEN, newgreen);
         this.getEntityData().set(COLOR_BLUE, newblue);
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (burn) {
                 playBurnSound();
             } else {
@@ -208,7 +208,7 @@ public class WallpaperEntity extends HangingEntity {
 
     @Override
     public void tick() {
-        if (DecorCommonMod.COMMON_CONFIG.wallpapersBurn.get() && level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
+        if (DecorCommonMod.COMMON_CONFIG.wallpapersBurn.get() && level().getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getBlock() instanceof BaseFireBlock) && !this.getBurned()) {
             dyeWallpaper(DyeColor.BLACK, true);
             this.getEntityData().set(BURNT, true);
         }
@@ -283,7 +283,7 @@ public class WallpaperEntity extends HangingEntity {
 
     @Override
     public void dropItem(Entity brokenEntity) {
-        if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+        if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
             this.playSound(SoundEvents.WOOL_BREAK, 1.0F, 1.0F);
             if (brokenEntity instanceof Player) {
                 Player playerentity = (Player) brokenEntity;
@@ -314,9 +314,7 @@ public class WallpaperEntity extends HangingEntity {
     };
 
     private Iterable<VoxelShape> getBlockCollisions(@Nullable Entity ent, AABB aabb) {
-        return () -> {
-            return new BlockCollisions(this.level, ent, aabb, true);
-        };
+        return () -> new BlockCollisions<>(this.level(), ent, aabb, true, (pos, shape) -> shape);
     }
 
     @Override
@@ -327,17 +325,17 @@ public class WallpaperEntity extends HangingEntity {
             }
         }
 
-        if (!this.level.getEntityCollisions(this, this.getBoundingBox()).isEmpty()) {
+        if (!this.level().getEntityCollisions(this, this.getBoundingBox()).isEmpty()) {
             return false;
         } else {
             BlockPos blockpos = this.pos.relative(this.direction.getOpposite());
-            BlockState blockstate = this.level.getBlockState(blockpos);
+            BlockState blockstate = this.level().getBlockState(blockpos);
 
-            if (!blockstate.getMaterial().isSolid() && !DiodeBlock.isDiode(blockstate)) {
+            if (!blockstate.isSolid() && !DiodeBlock.isDiode(blockstate)) {
                 return false;
             }
 
-            return this.level.getEntities(this, this.getBoundingBox(), HANGING_ENTITY_EXCLUDING_WALLPAPER).isEmpty();
+            return this.level().getEntities(this, this.getBoundingBox(), HANGING_ENTITY_EXCLUDING_WALLPAPER).isEmpty();
         }
     }
 

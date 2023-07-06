@@ -67,7 +67,7 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
 
         for (int k1 = 0; k1 < 4; ++k1) {
             String s = tileEntityIn.getText(k1).getString();
-            this.font.draw(matrixStackIn, tileEntityIn.getText(k1), -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
+            this.font.drawInBatch(tileEntityIn.getText(k1), (float) -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.POLYGON_OFFSET, 0, combinedLightIn);
         }
 
         // Clear sign render text on both sides
@@ -77,7 +77,7 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
 
             for (int k1 = 0; k1 < 4; ++k1) {
                 String s = tileEntityIn.getText(k1).getString();
-                this.font.draw(matrixStackIn, tileEntityIn.getText(k1), -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215);
+                this.font.drawInBatch(tileEntityIn.getText(k1), (float) -this.font.width(s) / 2, (float) (k1 * 10 - j1), 16777215, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.POLYGON_OFFSET, 0, combinedLightIn);
             }
         }
 

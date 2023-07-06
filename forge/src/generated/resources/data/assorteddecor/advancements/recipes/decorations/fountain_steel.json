@@ -38,5 +38,6 @@
     "recipes": [
       "assorteddecor:fountain_steel"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -1,20 +1,20 @@
 {
   "values": [
-    "assorteddecor:paint_roller_green",
-    "assorteddecor:paint_roller_magenta",
-    "assorteddecor:paint_roller_light_blue",
-    "assorteddecor:paint_roller_black",
-    "assorteddecor:paint_roller_blue",
-    "assorteddecor:paint_roller_orange",
-    "assorteddecor:paint_roller_brown",
-    "assorteddecor:paint_roller_red",
-    "assorteddecor:paint_roller_cyan",
     "assorteddecor:paint_roller_light_gray",
+    "assorteddecor:paint_roller_cyan",
+    "assorteddecor:paint_roller_red",
+    "assorteddecor:paint_roller_light_blue",
+    "assorteddecor:paint_roller_lime",
+    "assorteddecor:paint_roller_blue",
+    "assorteddecor:paint_roller_green",
+    "assorteddecor:paint_roller_gray",
     "assorteddecor:paint_roller_purple",
     "assorteddecor:paint_roller_white",
-    "assorteddecor:paint_roller_gray",
-    "assorteddecor:paint_roller_lime",
     "assorteddecor:paint_roller_yellow",
-    "assorteddecor:paint_roller_pink"
+    "assorteddecor:paint_roller_orange",
+    "assorteddecor:paint_roller_black",
+    "assorteddecor:paint_roller_magenta",
+    "assorteddecor:paint_roller_pink",
+    "assorteddecor:paint_roller_brown"
   ]
 }

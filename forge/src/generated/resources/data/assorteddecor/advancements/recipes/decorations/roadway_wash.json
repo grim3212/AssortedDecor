@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:roadway_wash"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

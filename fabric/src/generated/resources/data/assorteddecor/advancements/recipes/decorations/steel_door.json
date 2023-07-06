@@ -40,5 +40,6 @@
     "recipes": [
       "assorteddecor:steel_door"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

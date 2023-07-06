@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:paint_roller_black"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

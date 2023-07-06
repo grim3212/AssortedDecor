@@ -48,7 +48,7 @@ public class NeonSignBlock extends Block implements SimpleWaterloggedBlock, Enti
     }
 
     @Override
-    public boolean isPossibleToRespawnInThis() {
+    public boolean isPossibleToRespawnInThis(BlockState state) {
         return true;
     }
 

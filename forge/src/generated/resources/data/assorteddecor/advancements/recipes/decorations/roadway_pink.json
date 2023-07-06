@@ -45,5 +45,6 @@
     "recipes": [
       "assorteddecor:roadway_pink"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

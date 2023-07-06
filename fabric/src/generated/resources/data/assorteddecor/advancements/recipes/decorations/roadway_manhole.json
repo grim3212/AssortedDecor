@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:roadway_manhole"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

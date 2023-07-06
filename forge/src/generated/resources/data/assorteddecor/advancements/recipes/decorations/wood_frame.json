@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:wood_frame"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

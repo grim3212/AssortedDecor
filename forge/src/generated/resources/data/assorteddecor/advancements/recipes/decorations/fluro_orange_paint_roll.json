@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:fluro_orange_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

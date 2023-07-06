@@ -45,5 +45,6 @@
     "recipes": [
       "assorteddecor:roadway_lime"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

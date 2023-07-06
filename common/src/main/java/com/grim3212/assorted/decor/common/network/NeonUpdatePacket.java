@@ -41,8 +41,8 @@ public class NeonUpdatePacket {
     }
 
     public static void handle(NeonUpdatePacket packet, Player player) {
-        BlockState state = player.level.getBlockState(packet.pos);
-        BlockEntity te = player.level.getBlockEntity(packet.pos);
+        BlockState state = player.level().getBlockState(packet.pos);
+        BlockEntity te = player.level().getBlockEntity(packet.pos);
 
         if (te instanceof NeonSignBlockEntity) {
             NeonSignBlockEntity neonSign = (NeonSignBlockEntity) te;
@@ -57,7 +57,7 @@ public class NeonUpdatePacket {
             }
 
             neonSign.setChanged();
-            player.level.sendBlockUpdated(packet.pos, state, state, 3);
+            player.level().sendBlockUpdated(packet.pos, state, state, 3);
         }
     }
 }

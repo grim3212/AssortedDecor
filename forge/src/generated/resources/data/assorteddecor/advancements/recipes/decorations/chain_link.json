@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:chain_link"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

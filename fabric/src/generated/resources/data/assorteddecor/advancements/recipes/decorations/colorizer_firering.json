@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_firering"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

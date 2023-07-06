@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:fluro_white_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

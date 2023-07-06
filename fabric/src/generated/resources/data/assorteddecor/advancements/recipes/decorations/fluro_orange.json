@@ -47,5 +47,6 @@
     "recipes": [
       "assorteddecor:fluro_orange"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

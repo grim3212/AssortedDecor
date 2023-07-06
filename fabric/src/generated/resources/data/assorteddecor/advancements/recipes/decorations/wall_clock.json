@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:wall_clock"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

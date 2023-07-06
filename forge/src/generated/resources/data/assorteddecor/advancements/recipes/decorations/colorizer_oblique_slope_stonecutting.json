@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_oblique_slope_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

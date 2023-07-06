@@ -47,5 +47,6 @@
     "recipes": [
       "assorteddecor:colorizer_chimney"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

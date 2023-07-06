@@ -49,5 +49,6 @@
     "recipes": [
       "assorteddecor:illumination_plate"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

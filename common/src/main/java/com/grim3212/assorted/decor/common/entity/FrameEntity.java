@@ -24,7 +24,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -137,7 +137,7 @@ public abstract class FrameEntity extends HangingEntity {
             }
         }
 
-        if (!this.level.isClientSide)
+        if (!this.level().isClientSide)
             playPlacementSound();
 
         return true;
@@ -158,7 +158,7 @@ public abstract class FrameEntity extends HangingEntity {
         this.getEntityData().set(COLOR_BLUE, newblue);
         this.getEntityData().set(BURNT, burn);
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             if (burn) {
                 playBurnSound();
             } else {
@@ -235,7 +235,7 @@ public abstract class FrameEntity extends HangingEntity {
     @Override
     public void tick() {
         if (this.getFrameMaterial() == FrameMaterial.WOOD && DecorCommonMod.COMMON_CONFIG.framesBurn.get()) {
-            if (this.level.getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getMaterial() == Material.FIRE) && !this.getBurned()) {
+            if (this.level().getBlockStates(this.fireboundingBox.expandTowards(-0.001D, -0.001D, -0.001D)).anyMatch((state) -> state.getBlock() instanceof BaseFireBlock) && !this.getBurned()) {
                 dyeFrame(DyeColor.BLACK, true);
             }
         }
@@ -260,7 +260,7 @@ public abstract class FrameEntity extends HangingEntity {
         if (this.isInvulnerableTo(damagesource)) {
             return false;
         }
-        if (!this.isRemoved() && !this.level.isClientSide) {
+        if (!this.isRemoved() && !this.level().isClientSide) {
             if (damagesource.getEntity() instanceof Player) {
                 this.discard();
                 this.markHurt();
@@ -333,7 +333,7 @@ public abstract class FrameEntity extends HangingEntity {
 
     @Override
     public void dropItem(Entity brokenEntity) {
-        if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+        if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
             this.playBreakSound();
             if (brokenEntity instanceof Player) {
                 Player playerentity = (Player) brokenEntity;

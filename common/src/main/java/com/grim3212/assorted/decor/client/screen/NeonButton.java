@@ -2,8 +2,8 @@ package com.grim3212.assorted.decor.client.screen;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -36,7 +36,7 @@ public class NeonButton extends Button {
     }
 
     @Override
-    public void renderWidget(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         if (this.visible) {
             RenderSystem.setShaderTexture(0, NeonSignScreen.NEON_SIGN_GUI_TEXTURE);
             RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -45,7 +45,7 @@ public class NeonButton extends Button {
             RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            this.blit(matrixStack, this.getX(), this.getY(), texX + (changeHoverDir ? 0 : width * (i - 1)), texY + (changeHoverDir ? height * (i - 1) : 0), this.width, this.height);
+            guiGraphics.blit(NeonSignScreen.NEON_SIGN_GUI_TEXTURE, this.getX(), this.getY(), texX + (changeHoverDir ? 0 : width * (i - 1)), texY + (changeHoverDir ? height * (i - 1) : 0), this.width, this.height);
         }
     }
 
@@ -61,8 +61,8 @@ public class NeonButton extends Button {
     }
 
     @Override
-    public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
         if (this.isMouseOver(mouseX, mouseY)) {
             this.hoverCount++;
@@ -72,7 +72,7 @@ public class NeonButton extends Button {
 
         if (this.hoverCount > 30 && !this.getMessage().getString().isEmpty()) {
             Minecraft mc = Minecraft.getInstance();
-            mc.screen.renderTooltip(matrixStack, getMessage(), getX(), getY());
+            guiGraphics.renderTooltip(mc.font, getMessage(), getX(), getY());
         }
     }
 

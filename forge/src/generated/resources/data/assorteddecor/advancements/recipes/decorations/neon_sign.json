@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:neon_sign"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

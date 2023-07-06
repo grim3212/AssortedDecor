@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:fountain"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

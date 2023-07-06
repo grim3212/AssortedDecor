@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:purple_concrete_powder_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

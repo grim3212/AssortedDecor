@@ -19,7 +19,8 @@ import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -31,7 +32,7 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
     public PlanterPotBlock() {
-        super(Properties.of(Material.CLAY).sound(SoundType.GRAVEL).randomTicks().strength(0.5f, 10f).dynamicShape().noOcclusion());
+        super(Properties.of().mapColor(MapColor.CLAY).sound(SoundType.GRAVEL).randomTicks().strength(0.5f, 10f).dynamicShape().noOcclusion());
         this.registerDefaultState(this.stateDefinition.any().setValue(TOP, 0).setValue(DOWN, false));
     }
 
@@ -59,7 +60,7 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
                 }
 
                 if (plant instanceof SugarCaneBlock) {
-                    boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+                    boolean hasWater = (world.getBlockState(pos.east()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.west()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.north()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.south()).getFluidState().is(Fluids.WATER));
                     return hasWater;
                 }
                 break;
@@ -72,7 +73,7 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
                     return false;
                 }
                 if (plant instanceof SugarCaneBlock) {
-                    boolean hasWater = (world.getBlockState(pos.east()).getMaterial() == Material.WATER || world.getBlockState(pos.west()).getMaterial() == Material.WATER || world.getBlockState(pos.north()).getMaterial() == Material.WATER || world.getBlockState(pos.south()).getMaterial() == Material.WATER);
+                    boolean hasWater = (world.getBlockState(pos.east()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.west()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.north()).getFluidState().is(Fluids.WATER) || world.getBlockState(pos.south()).getFluidState().is(Fluids.WATER));
                     return hasWater;
                 }
                 break;

@@ -49,5 +49,6 @@
     "recipes": [
       "assorteddecor:illumination_tube"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -45,5 +45,6 @@
     "recipes": [
       "assorteddecor:roadway_green"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

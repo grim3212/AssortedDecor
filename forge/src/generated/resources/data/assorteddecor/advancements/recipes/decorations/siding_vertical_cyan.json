@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:siding_vertical_cyan"
     ]
-  }
+  },
+  "sends_telemetry_event": true
 }

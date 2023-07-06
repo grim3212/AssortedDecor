@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:unfired_planter_pot"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

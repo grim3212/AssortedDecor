@@ -17,8 +17,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,8 +70,8 @@ public class DecorBlocks {
     public static final IRegistryObject<NeonSignBlock> NEON_SIGN = registerNoItem("neon_sign", () -> new NeonSignStandingBlock());
     public static final IRegistryObject<NeonSignBlock> NEON_SIGN_WALL = registerNoItem("neon_sign_wall", () -> new NeonSignWallBlock());
 
-    public static final IRegistryObject<IlluminationTubeBlock> ILLUMINATION_TUBE = register("illumination_tube", () -> new IlluminationTubeBlock(Block.Properties.of(Material.DECORATION).noCollission().instabreak().lightLevel(state -> 15).sound(SoundType.GLASS)));
-    public static final IRegistryObject<IlluminationPlateBlock> ILLUMINATION_PLATE = register("illumination_plate", () -> new IlluminationPlateBlock(Block.Properties.of(Material.DECORATION).noCollission().strength(0.5F).lightLevel(state -> 15).sound(SoundType.GLASS)));
+    public static final IRegistryObject<IlluminationTubeBlock> ILLUMINATION_TUBE = register("illumination_tube", () -> new IlluminationTubeBlock(Block.Properties.of().pushReaction(PushReaction.DESTROY).isRedstoneConductor((state, getter, pos) -> false).noCollission().instabreak().lightLevel(state -> 15).sound(SoundType.GLASS)));
+    public static final IRegistryObject<IlluminationPlateBlock> ILLUMINATION_PLATE = register("illumination_plate", () -> new IlluminationPlateBlock(Block.Properties.of().pushReaction(PushReaction.DESTROY).isRedstoneConductor((state, getter, pos) -> false).noCollission().strength(0.5F).lightLevel(state -> 15).sound(SoundType.GLASS)));
 
     public static final IRegistryObject<FluroBlock> FLURO_WHITE = register("fluro_white", () -> new FluroBlock(DyeColor.WHITE));
     public static final IRegistryObject<FluroBlock> FLURO_ORANGE = register("fluro_orange", () -> new FluroBlock(DyeColor.ORANGE));
@@ -89,40 +90,40 @@ public class DecorBlocks {
     public static final IRegistryObject<FluroBlock> FLURO_RED = register("fluro_red", () -> new FluroBlock(DyeColor.RED));
     public static final IRegistryObject<FluroBlock> FLURO_BLACK = register("fluro_black", () -> new FluroBlock(DyeColor.BLACK));
 
-    public static final IRegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of(Material.METAL, MaterialColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
-    public static final IRegistryObject<DoorBlock> GLASS_DOOR = register("glass_door", () -> new DoorBlock(Block.Properties.of(Material.GLASS, Blocks.GLASS.defaultMaterialColor()).strength(0.75F, 7.5F).sound(SoundType.GLASS).noOcclusion(), BlockSetType.IRON));
-    public static final IRegistryObject<DoorBlock> STEEL_DOOR = register("steel_door", () -> new DoorBlock(Block.Properties.of(Material.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion(), BlockSetType.IRON));
-    public static final IRegistryObject<DoorBlock> CHAIN_LINK_DOOR = register("chain_link_door", () -> new DoorBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
-    public static final IRegistryObject<IronBarsBlock> CHAIN_LINK_FENCE = register("chain_link_fence", () -> new IronBarsBlock(Block.Properties.of(Material.DECORATION).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion()));
-    public static final IRegistryObject<FountainBlock> FOUNTAIN = register("fountain", () -> new FountainBlock(Block.Properties.of(Material.STONE).strength(1.5F, 10.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
-    public static final IRegistryObject<Block> STONE_PATH = register("stone_path", () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
-    public static final IRegistryObject<Block> DECORATIVE_STONE = register("decorative_stone", () -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<DoorBlock> QUARTZ_DOOR = register("quartz_door", () -> new DoorBlock(Block.Properties.of().mapColor(MapColor.QUARTZ).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> GLASS_DOOR = register("glass_door", () -> new DoorBlock(Block.Properties.of().mapColor(Blocks.GLASS.defaultMapColor()).instrument(NoteBlockInstrument.HAT).strength(0.75F, 7.5F).sound(SoundType.GLASS).noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> STEEL_DOOR = register("steel_door", () -> new DoorBlock(Block.Properties.of().mapColor(MapColor.METAL).strength(1.0F, 10.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<DoorBlock> CHAIN_LINK_DOOR = register("chain_link_door", () -> new DoorBlock(Block.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion(), BlockSetType.IRON));
+    public static final IRegistryObject<IronBarsBlock> CHAIN_LINK_FENCE = register("chain_link_fence", () -> new IronBarsBlock(Block.Properties.of().mapColor(MapColor.METAL).strength(0.5F, 5.0F).sound(SoundType.METAL).noOcclusion()));
+    public static final IRegistryObject<FountainBlock> FOUNTAIN = register("fountain", () -> new FountainBlock(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5F, 10.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<Block> STONE_PATH = register("stone_path", () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<Block> DECORATIVE_STONE = register("decorative_stone", () -> new Block(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(0.5F, 10.0F).requiresCorrectToolForDrops()));
 
-    public static final IRegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).noCollission().strength(1f)));
-    public static final IRegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.of(Material.WOOD).sound(SoundType.WOOD).strength(1f)));
+    public static final IRegistryObject<CalendarBlock> CALENDAR = register("calendar", () -> new CalendarBlock(Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).noCollission().strength(1f)));
+    public static final IRegistryObject<WallClockBlock> WALL_CLOCK = register("wall_clock", () -> new WallClockBlock(Block.Properties.of().mapColor(MapColor.WOOD).ignitedByLava().instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD).strength(1f)));
 
-    public static final IRegistryObject<ClayDecorationBlock> CLAY_DECORATION = register("clay_decoration", () -> new ClayDecorationBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.STONE).noCollission().color(MaterialColor.COLOR_BROWN).instabreak()));
-    public static final IRegistryObject<BoneDecorationBlock> BONE_DECORATION = register("bone_decoration", () -> new BoneDecorationBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.BONE_BLOCK).noCollission().color(MaterialColor.COLOR_LIGHT_GRAY).instabreak()));
+    public static final IRegistryObject<ClayDecorationBlock> CLAY_DECORATION = register("clay_decoration", () -> new ClayDecorationBlock(Block.Properties.of().mapColor(MapColor.COLOR_BROWN).sound(SoundType.STONE).forceSolidOff().noCollission().instabreak()));
+    public static final IRegistryObject<BoneDecorationBlock> BONE_DECORATION = register("bone_decoration", () -> new BoneDecorationBlock(Block.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).sound(SoundType.BONE_BLOCK).forceSolidOff().noCollission().instabreak()));
 
-    public static final IRegistryObject<LanternBlock> PAPER_LANTERN = register("paper_lantern", () -> new LanternBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.WOOL).noCollission().color(MaterialColor.COLOR_RED).strength(0.1F)));
-    public static final IRegistryObject<LanternBlock> BONE_LANTERN = register("bone_lantern", () -> new LanternBlock(Block.Properties.of(Material.DECORATION).sound(SoundType.BONE_BLOCK).noCollission().color(MaterialColor.COLOR_RED).strength(0.1F)));
-    public static final IRegistryObject<LanternBlock> IRON_LANTERN = register("iron_lantern", () -> new LanternBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).noCollission().color(MaterialColor.COLOR_GRAY).strength(0.5F)));
+    public static final IRegistryObject<LanternBlock> PAPER_LANTERN = register("paper_lantern", () -> new LanternBlock(Block.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.WOOL).forceSolidOff().noCollission().strength(0.1F)));
+    public static final IRegistryObject<LanternBlock> BONE_LANTERN = register("bone_lantern", () -> new LanternBlock(Block.Properties.of().mapColor(MapColor.COLOR_RED).sound(SoundType.BONE_BLOCK).forceSolidOff().noCollission().strength(0.1F)));
+    public static final IRegistryObject<LanternBlock> IRON_LANTERN = register("iron_lantern", () -> new LanternBlock(Block.Properties.of().mapColor(MapColor.COLOR_GRAY).sound(SoundType.METAL).forceSolidOff().noCollission().strength(0.5F)));
 
-    public static final IRegistryObject<Block> SIDEWALK = register("sidewalk", () -> new Block(Block.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().friction(0.4F)));
-    public static final IRegistryObject<CageBlock> CAGE = register("cage", () -> new CageBlock(Block.Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.8F, 5.0F).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(DecorBlocks::never).isRedstoneConductor(DecorBlocks::never).isSuffocating(DecorBlocks::never).isViewBlocking(DecorBlocks::never)));
+    public static final IRegistryObject<Block> SIDEWALK = register("sidewalk", () -> new Block(Block.Properties.of().mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().friction(0.4F)));
+    public static final IRegistryObject<CageBlock> CAGE = register("cage", () -> new CageBlock(Block.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).strength(0.8F, 5.0F).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(DecorBlocks::never).isRedstoneConductor(DecorBlocks::never).isSuffocating(DecorBlocks::never).isViewBlocking(DecorBlocks::never)));
 
-    public static final IRegistryObject<ColorChangingBlock> SIDING_VERTICAL = registerColorChanging("siding_vertical", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
-    public static final IRegistryObject<ColorChangingBlock> SIDING_HORIZONTAL = registerColorChanging("siding_horizontal", () -> new ColorChangingBlock(Block.Properties.of(Material.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<ColorChangingBlock> SIDING_VERTICAL = registerColorChanging("siding_vertical", () -> new ColorChangingBlock(Block.Properties.of().mapColor(MapColor.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<ColorChangingBlock> SIDING_HORIZONTAL = registerColorChanging("siding_horizontal", () -> new ColorChangingBlock(Block.Properties.of().mapColor(MapColor.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
 
-    public static final IRegistryObject<RoadwayBlock> ROADWAY = register("roadway", () -> new RoadwayBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()));
-    public static final IRegistryObject<RoadwayManholeBlock> ROADWAY_MANHOLE = register("roadway_manhole", () -> new RoadwayManholeBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.METAL).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
-    public static final IRegistryObject<RoadwayLightBlock> ROADWAY_LIGHT = register("roadway_light", () -> new RoadwayLightBlock(Block.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().lightLevel((b) -> b.getValue(RoadwayLightBlock.ACTIVE) ? 15 : 0)));
+    public static final IRegistryObject<RoadwayBlock> ROADWAY = register("roadway", () -> new RoadwayBlock(Block.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<RoadwayManholeBlock> ROADWAY_MANHOLE = register("roadway_manhole", () -> new RoadwayManholeBlock(Block.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.METAL).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
+    public static final IRegistryObject<RoadwayLightBlock> ROADWAY_LIGHT = register("roadway_light", () -> new RoadwayLightBlock(Block.Properties.of().mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().lightLevel((b) -> b.getValue(RoadwayLightBlock.ACTIVE) ? 15 : 0)));
 
     public static final Map<DyeColor, IRegistryObject<RoadwayColorBlock>> ROADWAY_COLORS = Maps.newHashMap();
 
     static {
-        ROADWAY_COLORS.put(DyeColor.WHITE, register("roadway_white", () -> new RoadwayWhiteBlock(Block.Properties.of(Material.STONE, MaterialColor.SNOW).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops())));
-        Arrays.stream(DyeColor.values()).filter((c) -> c != DyeColor.WHITE).forEach((color) -> ROADWAY_COLORS.put(color, register("roadway_" + color.getName(), () -> new RoadwayColorBlock(color, Block.Properties.of(Material.STONE, color.getMaterialColor()).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()))));
+        ROADWAY_COLORS.put(DyeColor.WHITE, register("roadway_white", () -> new RoadwayWhiteBlock(Block.Properties.of().mapColor(MapColor.SNOW).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops())));
+        Arrays.stream(DyeColor.values()).filter((c) -> c != DyeColor.WHITE).forEach((color) -> ROADWAY_COLORS.put(color, register("roadway_" + color.getName(), () -> new RoadwayColorBlock(color, Block.Properties.of().mapColor(color.getMapColor()).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops()))));
     }
 
     private static <T extends Block> IRegistryObject<T> register(String name, Supplier<? extends T> sup) {

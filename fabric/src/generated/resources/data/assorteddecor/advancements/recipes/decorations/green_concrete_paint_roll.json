@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:green_concrete_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

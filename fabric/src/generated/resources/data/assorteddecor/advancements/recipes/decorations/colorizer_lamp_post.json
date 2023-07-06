@@ -49,5 +49,6 @@
     "recipes": [
       "assorteddecor:colorizer_lamp_post"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

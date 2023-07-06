@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:bone_decoration"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_sloped_angle_stonecutting"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

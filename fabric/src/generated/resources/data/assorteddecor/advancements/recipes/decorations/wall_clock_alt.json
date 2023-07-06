@@ -45,5 +45,6 @@
     "recipes": [
       "assorteddecor:wall_clock_alt"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

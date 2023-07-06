@@ -38,7 +38,7 @@ public class CalendarBlockEntityRenderer implements BlockEntityRenderer<Calendar
         String as[] = s.split(",");
         for (int k = 0; k < as.length; k++) {
             String s1 = as[k];
-            this.font.draw(matrixStackIn, s1, -this.font.width(s1) / 2, k * 10 - as.length * 5, 0);
+            this.font.drawInBatch(s1, (float) -this.font.width(s1) / 2, k * 10 - as.length * 5, 0, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.POLYGON_OFFSET, 0, combinedLightIn);
         }
 
         matrixStackIn.popPose();

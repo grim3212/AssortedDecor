@@ -21,11 +21,11 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, EntityBlock {
 
@@ -34,7 +34,7 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
     }
 
     public ColorizerBlock() {
-        super(Block.Properties.of(Material.STONE).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion().lightLevel((state) -> state.getLightEmission()));
+        super(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion().lightLevel((state) -> state.getLightEmission()));
     }
 
     @Override

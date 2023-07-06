@@ -36,5 +36,6 @@
     "recipes": [
       "assorteddecor:colorizer_firepit"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

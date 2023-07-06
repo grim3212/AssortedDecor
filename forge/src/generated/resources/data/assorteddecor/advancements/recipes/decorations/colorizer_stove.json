@@ -49,5 +49,6 @@
     "recipes": [
       "assorteddecor:colorizer_stove"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

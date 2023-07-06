@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:glass_door"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

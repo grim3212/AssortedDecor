@@ -12,10 +12,10 @@
       "item": "assorteddecor:paint_roller"
     },
     {
+      "fabric:type": "fabric:difference",
       "base": {
         "tag": "c:dyes/brown"
       },
-      "fabric:type": "fabric:difference",
       "subtracted": {
         "tag": "assorteddecor:paint_rollers"
       }

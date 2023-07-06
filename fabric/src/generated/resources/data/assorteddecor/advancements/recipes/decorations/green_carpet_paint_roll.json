@@ -34,5 +34,6 @@
     "recipes": [
       "assorteddecor:green_carpet_paint_roll"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

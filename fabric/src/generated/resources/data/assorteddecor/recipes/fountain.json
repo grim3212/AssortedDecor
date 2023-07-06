@@ -12,8 +12,8 @@
       "tag": "c:ingots/iron"
     },
     "W": {
-      "amount": 81000,
       "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "amount": 81000,
       "fluid": "minecraft:water"
     },
     "X": {
