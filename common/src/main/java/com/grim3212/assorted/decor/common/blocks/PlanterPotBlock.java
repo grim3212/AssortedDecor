@@ -1,12 +1,13 @@
 package com.grim3212.assorted.decor.common.blocks;
 
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerStoolBlock;
 import com.grim3212.assorted.lib.core.block.IPlantSustainable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -20,7 +21,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -31,8 +33,8 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
     public static final IntegerProperty TOP = IntegerProperty.create("top", 0, 6);
     public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
-    public PlanterPotBlock() {
-        super(Properties.of().mapColor(MapColor.CLAY).sound(SoundType.GRAVEL).randomTicks().strength(0.5f, 10f).dynamicShape().noOcclusion());
+    public PlanterPotBlock(Properties props) {
+        super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(TOP, 0).setValue(DOWN, false));
     }
 
@@ -65,7 +67,7 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
                 }
                 break;
             case 1:
-                if (plant instanceof DeadBushBlock || plant instanceof CactusBlock || plant instanceof BambooStalkBlock) {
+                if (plant instanceof DryVegetationBlock || plant instanceof CactusBlock || plant instanceof BambooStalkBlock) {
                     return true;
                 }
                 // Plants that take up the full block space aren't allowed with a stool
@@ -99,25 +101,25 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
+    protected void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
         worldIn.updateNeighborsAt(pos, this);
     }
 
     @Override
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+    protected void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean movedByPiston) {
         worldIn.scheduleTick(pos, this, 10);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
+    protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
         if (isStool(worldIn, pos))
             return ColorizerStoolBlock.POT_STOOL;
         return Shapes.block();
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (player.getItemInHand(hand).isEmpty() || player.getItemInHand(hand).getCount() == 0) {
+    protected InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
+        if (player.getMainHandItem().isEmpty()) {
             int top = worldIn.getBlockState(pos).getValue(TOP);
             if (top == 6) {
                 top = 0;
@@ -141,7 +143,8 @@ public class PlanterPotBlock extends Block implements IPlantSustainable {
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+    protected BlockState updateShape(BlockState stateIn, LevelReader worldIn, ScheduledTickAccess ticks, BlockPos currentPos,
+            Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
         return stateIn.setValue(DOWN, this.isStool(worldIn, currentPos));
     }
 }

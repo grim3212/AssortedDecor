@@ -13,7 +13,8 @@ public class ColorizerSlopeBlock extends ColorizerRotateBlock {
 
     private final SlopeType type;
 
-    public ColorizerSlopeBlock(SlopeType type) {
+    public ColorizerSlopeBlock(SlopeType type, Properties props) {
+        super(props);
         this.type = type;
     }
 

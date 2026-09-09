@@ -5,13 +5,14 @@ import com.grim3212.assorted.decor.common.items.DecorItems;
 import com.grim3212.assorted.lib.util.DyeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,6 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -57,7 +60,6 @@ public class WallpaperEntity extends HangingEntity {
         this.isBlockLeft = false;
         this.isBlockRight = false;
         this.fireboundingBox = new AABB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
-        this.direction = Direction.SOUTH;
     }
 
     public WallpaperEntity(EntityType<? extends WallpaperEntity> type, Level level, BlockPos pos, Direction dir) {
@@ -66,7 +68,6 @@ public class WallpaperEntity extends HangingEntity {
 
     public WallpaperEntity(Level world, BlockPos pos, Direction direction) {
         this(DecorEntityTypes.WALLPAPER.get(), world, pos, direction);
-        this.pos = pos;
         this.setDirection(direction);
 
         List<Entity> entities = this.level().getEntities(this, this.fireboundingBox);
@@ -86,39 +87,40 @@ public class WallpaperEntity extends HangingEntity {
     }
 
     @Override
-    protected void recalculateBoundingBox() {
-        if (this.direction != null) {
-            double d0 = (double) this.pos.getX() + 0.5D;
-            double d1 = (double) this.pos.getY() + 0.5D;
-            double d2 = (double) this.pos.getZ() + 0.5D;
-            double d3 = 0.46875D;
-            double d4 = this.offs(this.getWidth());
-            double d5 = this.offs(this.getHeight());
-            d0 = d0 - (double) this.direction.getStepX() * d3;
-            d2 = d2 - (double) this.direction.getStepZ() * d3;
-            d1 = d1 + d5;
-            Direction direction = this.direction.getCounterClockWise();
-            d0 = d0 + d4 * (double) direction.getStepX();
-            d2 = d2 + d4 * (double) direction.getStepZ();
-            this.setPosRaw(d0, d1, d2);
-            double d6 = (double) this.getWidth();
-            double d7 = (double) this.getHeight();
-            double d8 = (double) this.getWidth();
-            if (this.direction.getAxis() == Direction.Axis.Z) {
-                d8 = 1.0D;
-            } else {
-                d6 = 1.0D;
-            }
-
-            d6 = d6 / 32.0D;
-            d7 = d7 / 32.0D;
-            d8 = d8 / 32.0D;
-            this.setBoundingBox(new AABB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8));
-            d6 = 1.0F;
-            d7 = 1.0F;
-            d8 = 1.0F;
-            this.fireboundingBox = new AABB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8);
+    protected AABB calculateBoundingBox(BlockPos blockPos, Direction facing) {
+        double d0 = (double) blockPos.getX() + 0.5D;
+        double d1 = (double) blockPos.getY() + 0.5D;
+        double d2 = (double) blockPos.getZ() + 0.5D;
+        double d3 = 0.46875D;
+        double d4 = this.offs(this.getWidth());
+        double d5 = this.offs(this.getHeight());
+        d0 = d0 - (double) facing.getStepX() * d3;
+        d2 = d2 - (double) facing.getStepZ() * d3;
+        d1 = d1 + d5;
+        Direction counter = facing.getCounterClockWise();
+        d0 = d0 + d4 * (double) counter.getStepX();
+        d2 = d2 + d4 * (double) counter.getStepZ();
+        double d6 = (double) this.getWidth();
+        double d7 = (double) this.getHeight();
+        double d8 = (double) this.getWidth();
+        if (facing.getAxis() == Direction.Axis.Z) {
+            d8 = 1.0D;
+        } else {
+            d6 = 1.0D;
         }
+
+        d6 = d6 / 32.0D;
+        d7 = d7 / 32.0D;
+        d8 = d8 / 32.0D;
+        return new AABB(d0 - d6, d1 - d7, d2 - d8, d0 + d6, d1 + d7, d2 + d8);
+    }
+
+    @Override
+    protected void recalculateBoundingBox() {
+        super.recalculateBoundingBox();
+
+        Vec3 center = this.getBoundingBox().getCenter();
+        this.fireboundingBox = new AABB(center.x - 1.0D, center.y - 1.0D, center.z - 1.0D, center.x + 1.0D, center.y + 1.0D, center.z + 1.0D);
     }
 
     private double offs(int size) {
@@ -126,7 +128,7 @@ public class WallpaperEntity extends HangingEntity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.isEmpty()) {
             if (DecorCommonMod.COMMON_CONFIG.dyeWallpapers.get()) {
@@ -148,12 +150,13 @@ public class WallpaperEntity extends HangingEntity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.getEntityData().define(WALLPAPER_ID, 0);
-        this.getEntityData().define(COLOR_RED, 255);
-        this.getEntityData().define(COLOR_GREEN, 255);
-        this.getEntityData().define(COLOR_BLUE, 255);
-        this.getEntityData().define(BURNT, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(WALLPAPER_ID, 0);
+        builder.define(COLOR_RED, 255);
+        builder.define(COLOR_GREEN, 255);
+        builder.define(COLOR_BLUE, 255);
+        builder.define(BURNT, false);
     }
 
     public InteractionResult updateWallpaper() {
@@ -164,7 +167,7 @@ public class WallpaperEntity extends HangingEntity {
         }
 
         this.getEntityData().set(WALLPAPER_ID, newWallpaper);
-        if (!this.level().isClientSide)
+        if (!this.level().isClientSide())
             playPlacementSound();
 
         return InteractionResult.SUCCESS;
@@ -173,7 +176,7 @@ public class WallpaperEntity extends HangingEntity {
     public boolean updateWallpaper(int wallpaper) {
         this.getEntityData().set(WALLPAPER_ID, wallpaper);
 
-        if (!this.level().isClientSide)
+        if (!this.level().isClientSide())
             playPlacementSound();
 
         return true;
@@ -193,7 +196,7 @@ public class WallpaperEntity extends HangingEntity {
         this.getEntityData().set(COLOR_GREEN, newgreen);
         this.getEntityData().set(COLOR_BLUE, newblue);
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             if (burn) {
                 playBurnSound();
             } else {
@@ -233,31 +236,30 @@ public class WallpaperEntity extends HangingEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putByte("Facing", (byte) this.direction.get2DDataValue());
-        nbt.putInt("Motive", this.getWallpaperID());
-        nbt.putInt("Red", this.getWallpaperColor()[0]);
-        nbt.putInt("Green", this.getWallpaperColor()[1]);
-        nbt.putInt("Blue", this.getWallpaperColor()[2]);
-        nbt.putBoolean("Burnt", this.getBurned());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("Facing", (byte) this.getDirection().get2DDataValue());
+        output.putInt("Motive", this.getWallpaperID());
+        output.putInt("Red", this.getWallpaperColor()[0]);
+        output.putInt("Green", this.getWallpaperColor()[1]);
+        output.putInt("Blue", this.getWallpaperColor()[2]);
+        output.putBoolean("Burnt", this.getBurned());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        this.direction = Direction.from2DDataValue(nbt.getByte("Facing"));
-        this.getEntityData().set(WALLPAPER_ID, nbt.getInt("Motive"));
-        this.getEntityData().set(COLOR_RED, nbt.getInt("Red"));
-        this.getEntityData().set(COLOR_GREEN, nbt.getInt("Green"));
-        this.getEntityData().set(COLOR_BLUE, nbt.getInt("Blue"));
-        this.getEntityData().set(BURNT, nbt.getBoolean("Burnt"));
-        this.setDirection(this.direction);
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.getEntityData().set(WALLPAPER_ID, input.getIntOr("Motive", 0));
+        this.getEntityData().set(COLOR_RED, input.getIntOr("Red", 255));
+        this.getEntityData().set(COLOR_GREEN, input.getIntOr("Green", 255));
+        this.getEntityData().set(COLOR_BLUE, input.getIntOr("Blue", 255));
+        this.getEntityData().set(BURNT, input.getBooleanOr("Burnt", false));
+        this.setDirection(Direction.from2DDataValue(input.getByteOr("Facing", (byte) 0)));
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
     }
 
     @Override
@@ -271,28 +273,23 @@ public class WallpaperEntity extends HangingEntity {
         return new ItemStack(DecorItems.WALLPAPER.get());
     }
 
-    @Override
     public int getWidth() {
         return 16;
     }
 
-    @Override
     public int getHeight() {
         return 16;
     }
 
     @Override
-    public void dropItem(Entity brokenEntity) {
-        if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    public void dropItem(ServerLevel level, @Nullable Entity brokenEntity) {
+        if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
             this.playSound(SoundEvents.WOOL_BREAK, 1.0F, 1.0F);
-            if (brokenEntity instanceof Player) {
-                Player playerentity = (Player) brokenEntity;
-                if (playerentity.getAbilities().instabuild) {
-                    return;
-                }
+            if (brokenEntity instanceof Player playerentity && playerentity.getAbilities().instabuild) {
+                return;
             }
 
-            this.spawnAtLocation(DecorItems.WALLPAPER.get());
+            this.spawnAtLocation(level, DecorItems.WALLPAPER.get());
         }
     }
 
@@ -317,6 +314,9 @@ public class WallpaperEntity extends HangingEntity {
         return () -> new BlockCollisions<>(this.level(), ent, aabb, true, (pos, shape) -> shape);
     }
 
+    // isSolid() is deprecated with no replacement; HangingEntity.survives() in vanilla asks the same
+    // question of the block behind it, and this override only exists to let wallpapers overlap.
+    @SuppressWarnings("deprecation")
     @Override
     public boolean survives() {
         for (VoxelShape voxelshape : this.getBlockCollisions(this, this.getBoundingBox())) {
@@ -328,7 +328,7 @@ public class WallpaperEntity extends HangingEntity {
         if (!this.level().getEntityCollisions(this, this.getBoundingBox()).isEmpty()) {
             return false;
         } else {
-            BlockPos blockpos = this.pos.relative(this.direction.getOpposite());
+            BlockPos blockpos = this.getPos().relative(this.getDirection().getOpposite());
             BlockState blockstate = this.level().getBlockState(blockpos);
 
             if (!blockstate.isSolid() && !DiodeBlock.isDiode(blockstate)) {
@@ -340,17 +340,7 @@ public class WallpaperEntity extends HangingEntity {
     }
 
     @Override
-    public void moveTo(double x, double y, double z, float yaw, float pitch) {
-        this.setPos(x, y, z);
-    }
-
-    @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        this.setPos(x, y, z);
-    }
-
-    @Override
     public Vec3 trackingPosition() {
-        return Vec3.atLowerCornerOf(this.pos);
+        return Vec3.atLowerCornerOf(this.getPos());
     }
 }

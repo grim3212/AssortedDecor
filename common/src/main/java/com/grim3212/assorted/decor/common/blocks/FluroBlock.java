@@ -5,9 +5,7 @@ import com.grim3212.assorted.decor.api.colorizer.ICanColor;
 import net.minecraft.util.Util;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -35,8 +33,8 @@ public class FluroBlock extends Block implements ICanColor {
 
     private final DyeColor color;
 
-    public FluroBlock(DyeColor color) {
-        super(Block.Properties.of().mapColor(color).instrument(NoteBlockInstrument.HAT).sound(SoundType.GLASS).strength(0.2F, 1.0F).lightLevel(state -> 15).sound(SoundType.GLASS));
+    public FluroBlock(DyeColor color, Properties props) {
+        super(props.mapColor(color));
         this.color = color;
     }
 

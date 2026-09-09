@@ -6,7 +6,9 @@ import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.lib.data.LibBlockTagProvider;
 import com.grim3212.assorted.lib.registry.IRegistryObject;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -22,7 +24,11 @@ public class DecorBlockTagProvider extends LibBlockTagProvider {
     }
 
     @Override
-    public void addCommonTags(Function<TagKey<Block>, IntrinsicTagAppender<Block>> tagger) {
+    public void addCommonTags(Function<TagKey<Block>, TagAppender<Block>> appender) {
+        // The intrinsic tag appender is gone; TagAppender only accepts ResourceKeys. Wrap it back
+        // into something that takes blocks so the tag lists below stay readable.
+        Function<TagKey<Block>, BlockTagger> tagger = (tag) -> new BlockTagger(appender.apply(tag));
+
         tagger.apply(DecorTags.Blocks.BRUSH_DISALLOWED_BLOCKS).add(Blocks.SPAWNER, Blocks.BEDROCK);
 
         tagger.apply(BlockTags.FENCES).add(DecorBlocks.COLORIZER_FENCE.get());
@@ -55,5 +61,21 @@ public class DecorBlockTagProvider extends LibBlockTagProvider {
         FluroBlock.FLURO_BY_DYE.entrySet().stream().forEach((x) -> tagger.apply(DecorTags.Blocks.FLURO).add(x.getValue().get()));
 
         tagger.apply(DecorTags.Blocks.COLORIZER_ALWAYS_CUTOUT).add(DecorBlocks.COLORIZER_CHIMNEY.get(), DecorBlocks.COLORIZER_FIREPIT_COVERED.get(), DecorBlocks.COLORIZER_STOVE.get());
+    }
+
+    private record BlockTagger(TagAppender<Block> appender) {
+
+        BlockTagger add(Block... blocks) {
+            for (Block block : blocks) {
+                this.appender.add(BuiltInRegistries.BLOCK.getResourceKey(block).orElseThrow());
+            }
+
+            return this;
+        }
+
+        BlockTagger addTag(TagKey<Block> tag) {
+            this.appender.addTag(tag);
+            return this;
+        }
     }
 }

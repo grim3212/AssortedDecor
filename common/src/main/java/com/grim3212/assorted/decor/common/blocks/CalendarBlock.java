@@ -1,6 +1,9 @@
 package com.grim3212.assorted.decor.common.blocks;
 
 import com.grim3212.assorted.decor.common.blocks.blockentity.CalendarBlockEntity;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,18 +22,25 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CalendarBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
+	public static final MapCodec<CalendarBlock> CODEC = simpleCodec(CalendarBlock::new);
+
 	protected static final VoxelShape CALENDAR_NORTH_AABB = Block.box(4f, 2.08f, 14.96f, 12f, 14.96f, 16f);
 	protected static final VoxelShape CALENDAR_SOUTH_AABB = Block.box(4f, 2.08f, 0f, 12f, 14.96f, 1.04f);
 	protected static final VoxelShape CALENDAR_WEST_AABB = Block.box(14.96f, 2.08f, 4f, 16f, 14.96f, 12f);
 	protected static final VoxelShape CALENDAR_EAST_AABB = Block.box(0f, 2.08f, 4f, 1.04f, 14.96f, 12f);
 
-	protected CalendarBlock(Properties builder) {
+	public CalendarBlock(Properties builder) {
 		super(builder);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	protected MapCodec<? extends CalendarBlock> codec() {
+		return CODEC;
+	}
+
+	@Override
+	protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		switch (state.getValue(FACING)) {
 			case EAST:
 				return CALENDAR_EAST_AABB;
@@ -67,7 +77,7 @@ public class CalendarBlock extends HorizontalDirectionalBlock implements EntityB
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+	protected boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
 		for (Direction enumfacing : FACING.getPossibleValues()) {
 			if (this.canBlockStay(worldIn, pos, enumfacing)) {
 				return true;
@@ -78,7 +88,7 @@ public class CalendarBlock extends HorizontalDirectionalBlock implements EntityB
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+	protected void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean movedByPiston) {
 		Direction enumfacing = state.getValue(FACING);
 
 		if (!this.canBlockStay(worldIn, pos, enumfacing)) {

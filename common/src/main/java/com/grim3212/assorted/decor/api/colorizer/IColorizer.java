@@ -25,6 +25,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
+// TODO(26.2): a colorizer used to mirror the light dampening and skylight propagation of the block it
+// stores, by overriding getLightBlock(state, reader, pos) / propagatesSkylightDown(state, reader, pos).
+// Both became position independent in 26.2 (BlockState.getLightDampening() / propagatesSkylightDown()),
+// so there is no level or position to look the stored state up from and those overrides had to go. A
+// filled colorizer now dampens light like its own (non occluding) block instead of like its contents.
 public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
 
     default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
@@ -38,7 +43,7 @@ public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlo
 
                 if (DecorCommonMod.COMMON_CONFIG.colorizerConsumeBlock.get() && !player.getAbilities().instabuild) {
                     ItemEntity blockDropped = new ItemEntity(worldIn, (double) pos.getX(), (double) pos.getY(), (double) pos.getZ(), new ItemStack(tileColorizer.getStoredBlockState().getBlock(), 1));
-                    if (!worldIn.isClientSide) {
+                    if (!worldIn.isClientSide()) {
                         worldIn.addFreshEntity(blockDropped);
                         if (!Services.PLATFORM.isFakePlayer(player)) {
                             blockDropped.playerTouch(player);

@@ -6,6 +6,7 @@ import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.lib.data.LibBlockLootProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -27,8 +28,9 @@ public class DecorBlockLoot extends LibBlockLootProvider {
 
     private final List<Block> blocks = new ArrayList<>();
 
-    public DecorBlockLoot() {
-        super(() -> DecorBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList()));
+    // Loot sub providers are handed the registry lookup at construction now.
+    public DecorBlockLoot(HolderLookup.Provider registries) {
+        super(registries, () -> DecorBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList()));
 
         blocks.add(DecorBlocks.PLANTER_POT.get());
         blocks.add(DecorBlocks.CLAY_DECORATION.get());

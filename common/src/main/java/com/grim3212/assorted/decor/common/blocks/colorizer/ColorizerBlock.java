@@ -33,31 +33,10 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
         super(props);
     }
 
-    public ColorizerBlock() {
-        super(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion().lightLevel((state) -> state.getLightEmission()));
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.propagatesSkylightDown(reader, pos) : super.propagatesSkylightDown(state, reader, pos);
-    }
-
     @Override
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
         BlockState stored = this.getStoredState(reader, pos);
         return !stored.isAir() ? stored.getVisualShape(reader, pos, context) : super.getVisualShape(state, reader, pos, context);
-    }
-
-    @Override
-    public int getLightBlock(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-
-        if (stored.isAir() || !(state.getBlock() == DecorBlocks.COLORIZER.get() || state.getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get())) {
-            return super.getLightBlock(state, reader, pos);
-        }
-
-        return stored.getLightBlock(reader, pos);
     }
 
     @Override
@@ -72,7 +51,7 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack itemstack = new ItemStack(this);
         NBTHelper.putTag(itemstack, "stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
         return itemstack;

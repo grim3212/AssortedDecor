@@ -1,5 +1,8 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.util.RandomSource;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -35,7 +38,8 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 		map.put(Direction.DOWN, DOWN);
 	});
 
-	public ColorizerTableBlock() {
+	public ColorizerTableBlock(Properties props) {
+		super(props);
 		this.registerDefaultState(defaultBlockState().setValue(NORTH, false).setValue(SOUTH, false).setValue(WEST, false).setValue(EAST, false).setValue(UP, false).setValue(DOWN, false));
 	}
 
@@ -83,8 +87,9 @@ public class ColorizerTableBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		BlockState superState = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	protected BlockState updateShape(BlockState stateIn, LevelReader worldIn, ScheduledTickAccess ticks, BlockPos currentPos,
+            Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		BlockState superState = super.updateShape(stateIn, worldIn, ticks, currentPos, facing, facingPos, facingState, random);
 		return superState.getBlock() == this ? superState.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, currentPos, facingPos)) : superState;
 	}
 

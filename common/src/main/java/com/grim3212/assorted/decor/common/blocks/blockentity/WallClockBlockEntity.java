@@ -4,6 +4,7 @@ import com.grim3212.assorted.decor.common.blocks.WallClockBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.util.Mth;
+import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,8 +32,9 @@ public class WallClockBlockEntity extends BlockEntity {
         double d0 = 0.0D;
 
         if (getLevel() != null) {
-            float f = getLevel().getTimeOfDay(1.0F);
-            d0 = (double) f;
+            // Time of day is an environment attribute now, SUN_ANGLE in degrees over the whole day
+            float sunAngle = getLevel().environmentAttributes().getValue(EnvironmentAttributes.SUN_ANGLE, this.getBlockPos());
+            d0 = Mth.positiveModulo(sunAngle, 360.0F) / 360.0D;
 
             if (getLevel().dimensionType().hasFixedTime()) {
                 d0 = Math.random();

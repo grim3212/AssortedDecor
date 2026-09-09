@@ -27,7 +27,7 @@ public class WallpaperItem extends Item {
 			WallpaperEntity wallpaper = new WallpaperEntity(worldIn, pos.relative(facing), facing);
 
 			if (wallpaper != null && wallpaper.survives()) {
-				if (!worldIn.isClientSide) {
+				if (!worldIn.isClientSide()) {
 					wallpaper.playPlacementSound();
 					worldIn.addFreshEntity(wallpaper);
 				}

@@ -1,5 +1,8 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.util.RandomSource;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 
 import net.minecraft.world.level.block.Block;
@@ -28,7 +31,8 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 	private static final VoxelShape STOOL_EAST = Block.box(0.0F, 2.88F, 2.88F, 10.08F, 12.96F, 13.12F);
 	private static final VoxelShape COLLISION_STOOL_FLOOR = Block.box(2.88F, 0.0F, 2.88F, 13.12F, 9.6F, 13.12F);
 
-	public ColorizerStoolBlock() {
+	public ColorizerStoolBlock(Properties props) {
+		super(props);
 		this.registerDefaultState(defaultBlockState().setValue(UP, false));
 	}
 
@@ -49,8 +53,9 @@ public class ColorizerStoolBlock extends ColorizerSideBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-		BlockState state = super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	protected BlockState updateShape(BlockState stateIn, LevelReader worldIn, ScheduledTickAccess ticks, BlockPos currentPos,
+            Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		BlockState state = super.updateShape(stateIn, worldIn, ticks, currentPos, facing, facingPos, facingState, random);
 		return state.getBlock() == this ? state.setValue(UP, isPotUp(stateIn, worldIn, currentPos)) : state;
 	}
 

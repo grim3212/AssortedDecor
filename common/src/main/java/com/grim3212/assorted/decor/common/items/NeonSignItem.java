@@ -17,13 +17,13 @@ import org.jetbrains.annotations.Nullable;
 public class NeonSignItem extends StandingAndWallBlockItem {
 
     public NeonSignItem(Item.Properties props) {
-        super(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get(), props, Direction.DOWN);
+        super(DecorBlocks.NEON_SIGN.get(), DecorBlocks.NEON_SIGN_WALL.get(), Direction.DOWN, props);
     }
 
     @Override
     protected boolean updateCustomBlockEntityTag(BlockPos pos, Level worldIn, @Nullable Player player, ItemStack stack, BlockState state) {
         boolean flag = super.updateCustomBlockEntityTag(pos, worldIn, player, stack, state);
-        if (!worldIn.isClientSide && !flag && player != null) {
+        if (!worldIn.isClientSide() && !flag && player != null) {
             ((NeonSignBlockEntity) worldIn.getBlockEntity(pos)).setOwner(player);
             Services.NETWORK.sendTo(player, new NeonOpenPacket(pos));
         }

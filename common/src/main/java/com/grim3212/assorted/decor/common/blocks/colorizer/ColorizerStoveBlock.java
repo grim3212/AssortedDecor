@@ -9,6 +9,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ColorizerStoveBlock extends ColorizerFireplaceBaseBlock {
 
+    public ColorizerStoveBlock(Properties props) {
+    	super(props);
+    }
+
     @Override
     public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, RandomSource rand) {
         if (worldIn.getBlockState(pos).getValue(ACTIVE) && worldIn.getBlockState(pos.above()).getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get()) {

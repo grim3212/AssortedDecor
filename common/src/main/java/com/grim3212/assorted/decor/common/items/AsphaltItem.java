@@ -24,7 +24,7 @@ public class AsphaltItem extends Item {
         if (state.is(LibCommonTags.Blocks.STONE)) {
             context.getItemInHand().shrink(1);
             level.setBlock(pos, DecorBlocks.ROADWAY.get().defaultBlockState(), 3);
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return InteractionResult.SUCCESS;
         }
 
         return super.useOn(context);

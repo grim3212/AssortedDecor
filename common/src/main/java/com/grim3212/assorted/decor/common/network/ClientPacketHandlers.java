@@ -8,14 +8,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ClientPacketHandlers {
     public static void openNeonSignScreen(BlockPos pos) {
-        BlockEntity tileentity = Minecraft.getInstance().player.getCommandSenderWorld().getBlockEntity(pos);
+        BlockEntity tileentity = Minecraft.getInstance().player.level().getBlockEntity(pos);
 
         // Make sure TileEntity exists
         if (!(tileentity instanceof NeonSignBlockEntity)) {
             tileentity = new NeonSignBlockEntity(pos, tileentity.getBlockState());
-            tileentity.setLevel(Minecraft.getInstance().player.getCommandSenderWorld());
+            tileentity.setLevel(Minecraft.getInstance().player.level());
         }
 
-        Minecraft.getInstance().setScreen(new NeonSignScreen((NeonSignBlockEntity) tileentity));
+        Minecraft.getInstance().gui.setScreen(new NeonSignScreen((NeonSignBlockEntity) tileentity));
     }
 }

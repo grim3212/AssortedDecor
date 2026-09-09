@@ -7,9 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.AxeItem;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -33,7 +33,7 @@ public class FrameItem extends Item {
             FrameEntity frame = this.material == FrameMaterial.WOOD ? new WoodFrameEntity(worldIn, pos.relative(facing), facing) : new IronFrameEntity(worldIn, pos.relative(facing), facing);
 
             if (frame != null && frame.survives()) {
-                if (!worldIn.isClientSide) {
+                if (!worldIn.isClientSide()) {
                     frame.playPlacementSound();
                     worldIn.addFreshEntity(frame);
                 }
@@ -58,12 +58,9 @@ public class FrameItem extends Item {
             }
         }
 
-        public Class<? extends Item> effectiveTool() {
-            if (this == WOOD) {
-                return AxeItem.class;
-            } else {
-                return PickaxeItem.class;
-            }
+        public TagKey<Item> effectiveTool() {
+            // AxeItem / PickaxeItem no longer exist, tool type is a vanilla item tag now
+            return this == WOOD ? ItemTags.AXES : ItemTags.PICKAXES;
         }
     }
 }

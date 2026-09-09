@@ -9,7 +9,17 @@ import com.grim3212.assorted.lib.core.inventory.IPlatformInventoryStorageHandler
 import com.grim3212.assorted.lib.core.inventory.impl.ItemStackStorageHandler;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
+import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntitySpawnRequest;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.slf4j.Logger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -27,9 +37,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 
 public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntity, MenuProvider, Nameable {
+
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     private Entity cachedEntity;
     private Component customName;
@@ -140,32 +151,25 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        if (nbt.contains("Inventory"))
-            this.storageHandler.deserializeNBT(nbt.getCompound("Inventory"));
-
-        if (nbt.contains("CustomName", 8)) {
-            this.customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
-        }
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.storageHandler.deserialize(input.childOrEmpty("Inventory"));
+        this.customName = parseCustomNameSafe(input, "CustomName");
 
         this.cachedEntity = null;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
 
-        compound.put("Inventory", this.storageHandler.serializeNBT());
-
-        if (this.customName != null) {
-            compound.putString("CustomName", Component.Serializer.toJson(this.customName));
-        }
+        this.storageHandler.serialize(output.child("Inventory"));
+        output.storeNullable("CustomName", ComponentSerialization.CODEC, this.customName);
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
     }
 
     @Override
@@ -195,17 +199,21 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
     }
 
     private void storeEntity(ItemStack stack, String tag) {
-        if (stack.getItem() instanceof SpawnEggItem spawnEgg) {
-            Entity ent = spawnEgg.getType(stack.getTag()).create(this.level);
-            if (ent != null) {
-                this.cachedEntity = ent;
-                return;
+        if (stack.getItem() instanceof SpawnEggItem) {
+            // Spawn eggs carry their entity in the ENTITY_DATA component now, not in stack NBT
+            EntityType<?> eggType = SpawnEggItem.getType(stack);
+            if (eggType != null) {
+                Entity ent = eggType.create(this.level, EntitySpawnReason.LOAD);
+                if (ent != null) {
+                    this.cachedEntity = ent;
+                    return;
+                }
             }
         }
 
-        Optional<Entity> loadEntity = EntityType.create(NBTHelper.getTag(stack, tag), this.level);
-        if (loadEntity.isPresent()) {
-            this.cachedEntity = loadEntity.get();
+        try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), LOGGER)) {
+            ValueInput storedEntity = TagValueInput.create(reporter, this.level.registryAccess(), NBTHelper.getTag(stack, tag));
+            EntityType.create(storedEntity, this.level, new EntitySpawnRequest(EntitySpawnReason.LOAD, false)).ifPresent((ent) -> this.cachedEntity = ent);
         }
     }
 

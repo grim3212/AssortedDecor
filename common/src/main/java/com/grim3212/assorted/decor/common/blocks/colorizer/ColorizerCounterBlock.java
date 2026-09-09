@@ -9,6 +9,10 @@ import net.minecraft.world.level.BlockGetter;
 
 public class ColorizerCounterBlock extends ColorizerSideBlock {
 
+	public ColorizerCounterBlock(Properties props) {
+		super(props);
+	}
+
 	public static final VoxelShape COUNTER_FLOOR = Block.box(0.0F, 12.96F, 0.0F, 16.0F, 16.0F, 16.0F);
 	public static final VoxelShape COUNTER_CEILING = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 3.04F, 16.0F);
 	public static final VoxelShape COUNTER_NORTH = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 16.0F, 3.04F);

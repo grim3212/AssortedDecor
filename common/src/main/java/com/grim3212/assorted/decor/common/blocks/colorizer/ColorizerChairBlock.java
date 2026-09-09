@@ -10,6 +10,10 @@ import net.minecraft.world.level.BlockGetter;
 
 public class ColorizerChairBlock extends ColorizerRotateBlock {
 
+	public ColorizerChairBlock(Properties props) {
+		super(props);
+	}
+
 	private static final VoxelShape BASE = Block.box(0, 0, 0, 16, 8, 16);
 	private static final VoxelShape EAST = Block.box(12.96F, 0.0F, 0.0F, 16F, 16F, 16F);
 	private static final VoxelShape NORTH = Block.box(0.0F, 0.0F, 0.0F, 16F, 16F, 3.04F);

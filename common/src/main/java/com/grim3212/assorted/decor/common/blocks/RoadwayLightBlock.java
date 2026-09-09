@@ -9,6 +9,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 
 public class RoadwayLightBlock extends Block {
 
@@ -25,8 +27,8 @@ public class RoadwayLightBlock extends Block {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighborPos, boolean flg) {
-		if (!level.isClientSide) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
+		if (!level.isClientSide()) {
 			boolean flag = state.getValue(ACTIVE);
 			if (flag != level.hasNeighborSignal(pos)) {
 				if (flag) {
@@ -40,7 +42,7 @@ public class RoadwayLightBlock extends Block {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (state.getValue(ACTIVE) && !level.hasNeighborSignal(pos)) {
 			level.setBlock(pos, state.cycle(ACTIVE), 2);
 		}

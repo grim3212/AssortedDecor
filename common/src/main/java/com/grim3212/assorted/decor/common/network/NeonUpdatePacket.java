@@ -4,6 +4,7 @@ import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.common.blocks.blockentity.NeonSignBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,7 +27,7 @@ public class NeonUpdatePacket {
 
         MutableComponent[] lines = new MutableComponent[4];
         for (int i = 0; i < 4; i++) {
-            lines[i] = (MutableComponent) buf.readComponent();
+            lines[i] = ComponentSerialization.TRUSTED_CONTEXT_FREE_STREAM_CODEC.decode(buf).copy();
         }
 
         return new NeonUpdatePacket(pos, lines);
@@ -36,7 +37,7 @@ public class NeonUpdatePacket {
         buf.writeBlockPos(this.pos);
 
         for (int i = 0; i < 4; i++) {
-            buf.writeComponent(this.lines[i]);
+            ComponentSerialization.TRUSTED_CONTEXT_FREE_STREAM_CODEC.encode(buf, this.lines[i]);
         }
     }
 

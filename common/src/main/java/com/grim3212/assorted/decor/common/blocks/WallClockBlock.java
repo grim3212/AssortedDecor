@@ -1,6 +1,9 @@
 package com.grim3212.assorted.decor.common.blocks;
 
 import com.grim3212.assorted.decor.common.blocks.blockentity.WallClockBlockEntity;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,15 +25,22 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class WallClockBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
+	public static final MapCodec<WallClockBlock> CODEC = simpleCodec(WallClockBlock::new);
+
 	protected static final VoxelShape CLOCK_NORTH_AABB = Block.box(0f, 0f, 14f, 16f, 16f, 16f);
 	protected static final VoxelShape CLOCK_SOUTH_AABB = Block.box(0f, 0f, 0f, 16f, 16f, 2f);
 	protected static final VoxelShape CLOCK_WEST_AABB = Block.box(14f, 0f, 0f, 16f, 16f, 16f);
 	protected static final VoxelShape CLOCK_EAST_AABB = Block.box(0f, 0f, 0f, 2f, 16f, 16f);
 	public static final IntegerProperty TIME = IntegerProperty.create("time", 0, 63);
 
-	protected WallClockBlock(Properties builder) {
+	public WallClockBlock(Properties builder) {
 		super(builder);
 		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(TIME, 0));
+	}
+
+	@Override
+	protected MapCodec<? extends WallClockBlock> codec() {
+		return CODEC;
 	}
 
 	@Override
@@ -39,7 +49,7 @@ public class WallClockBlock extends HorizontalDirectionalBlock implements Entity
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
+	protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext ctx) {
 		switch (state.getValue(FACING)) {
 			case EAST:
 				return CLOCK_EAST_AABB;
@@ -55,17 +65,17 @@ public class WallClockBlock extends HorizontalDirectionalBlock implements Entity
 	}
 
 	@Override
-	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		if (worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
+	protected boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
+		if (worldIn.getBlockState(pos.west()).isSolidRender()) {
 			return true;
 		}
-		if (worldIn.getBlockState(pos.east()).isSolidRender(worldIn, pos)) {
+		if (worldIn.getBlockState(pos.east()).isSolidRender()) {
 			return true;
 		}
-		if (worldIn.getBlockState(pos.north()).isSolidRender(worldIn, pos)) {
+		if (worldIn.getBlockState(pos.north()).isSolidRender()) {
 			return true;
 		} else {
-			return worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos);
+			return worldIn.getBlockState(pos.south()).isSolidRender();
 		}
 	}
 
@@ -76,16 +86,16 @@ public class WallClockBlock extends HorizontalDirectionalBlock implements Entity
 		Level world = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 
-		if (facing == Direction.NORTH && world.getBlockState(pos.south()).isSolidRender(world, pos)) {
+		if (facing == Direction.NORTH && world.getBlockState(pos.south()).isSolidRender()) {
 			state = state.setValue(FACING, Direction.NORTH);
 		}
-		if (facing == Direction.SOUTH && world.getBlockState(pos.north()).isSolidRender(world, pos)) {
+		if (facing == Direction.SOUTH && world.getBlockState(pos.north()).isSolidRender()) {
 			state = state.setValue(FACING, Direction.SOUTH);
 		}
-		if (facing == Direction.WEST && world.getBlockState(pos.east()).isSolidRender(world, pos)) {
+		if (facing == Direction.WEST && world.getBlockState(pos.east()).isSolidRender()) {
 			state = state.setValue(FACING, Direction.WEST);
 		}
-		if (facing == Direction.EAST && world.getBlockState(pos.west()).isSolidRender(world, pos)) {
+		if (facing == Direction.EAST && world.getBlockState(pos.west()).isSolidRender()) {
 			state = state.setValue(FACING, Direction.EAST);
 		}
 
@@ -93,19 +103,19 @@ public class WallClockBlock extends HorizontalDirectionalBlock implements Entity
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flg) {
+	protected void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, @Nullable Orientation orientation, boolean movedByPiston) {
 		Direction facing = state.getValue(FACING);
 		boolean flag = false;
-		if (facing == Direction.NORTH && worldIn.getBlockState(pos.south()).isSolidRender(worldIn, pos)) {
+		if (facing == Direction.NORTH && worldIn.getBlockState(pos.south()).isSolidRender()) {
 			flag = true;
 		}
-		if (facing == Direction.SOUTH && worldIn.getBlockState(pos.north()).isSolidRender(worldIn, pos)) {
+		if (facing == Direction.SOUTH && worldIn.getBlockState(pos.north()).isSolidRender()) {
 			flag = true;
 		}
-		if (facing == Direction.WEST && worldIn.getBlockState(pos.east()).isSolidRender(worldIn, pos)) {
+		if (facing == Direction.WEST && worldIn.getBlockState(pos.east()).isSolidRender()) {
 			flag = true;
 		}
-		if (facing == Direction.EAST && worldIn.getBlockState(pos.west()).isSolidRender(worldIn, pos)) {
+		if (facing == Direction.EAST && worldIn.getBlockState(pos.west()).isSolidRender()) {
 			flag = true;
 		}
 		if (!flag) {

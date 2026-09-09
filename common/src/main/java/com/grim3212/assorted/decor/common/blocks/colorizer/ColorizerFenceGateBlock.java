@@ -26,19 +26,13 @@ import org.jetbrains.annotations.Nullable;
 
 public class ColorizerFenceGateBlock extends FenceGateBlock implements IColorizer, EntityBlock {
 
-    public ColorizerFenceGateBlock() {
-        super(Block.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5f, 12.0f).sound(SoundType.STONE).dynamicShape().noOcclusion(), WoodType.OAK);
+    public ColorizerFenceGateBlock(Properties props) {
+        super(WoodType.OAK, props);
     }
 
     /// ===============================================
     /// ======== DEFAULT COLORIZER STUFF BELOW ========
     /// ===============================================
-    @Override
-    public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-        return !stored.isAir() ? stored.propagatesSkylightDown(reader, pos) : super.propagatesSkylightDown(state, reader, pos);
-    }
-
     @Override
     public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context) {
         BlockState stored = this.getStoredState(reader, pos);
@@ -46,7 +40,7 @@ public class ColorizerFenceGateBlock extends FenceGateBlock implements IColorize
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack itemstack = new ItemStack(this);
         NBTHelper.putTag(itemstack, "stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
         return itemstack;
@@ -84,7 +78,7 @@ public class ColorizerFenceGateBlock extends FenceGateBlock implements IColorize
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter blockGetter, BlockPos pos, Player player) {
-        return super.getCloneItemStack(blockGetter, pos, state);
+        return blockGetter instanceof LevelReader levelReader ? this.getCloneItemStack(levelReader, pos, state, true) : new ItemStack(this);
     }
 
     @Override

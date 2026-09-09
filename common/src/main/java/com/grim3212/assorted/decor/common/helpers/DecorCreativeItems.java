@@ -8,8 +8,11 @@ import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.decor.common.items.DecorItems;
 import com.grim3212.assorted.lib.core.creative.CreativeTabItems;
 import com.grim3212.assorted.lib.registry.IRegistryObject;
+import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DyeColor;
@@ -22,10 +25,19 @@ public class DecorCreativeItems {
 
     public static final RegistryProvider<CreativeModeTab> CREATIVE_TABS = RegistryProvider.create(Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
+    public static final ResourceKey<CreativeModeTab> CREATIVE_TAB_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, Identifier.fromNamespaceAndPath(Constants.MOD_ID, "tab"));
+
+    // CreativeModeTab.Output is protected in 26.2 vanilla, so a display items generator cannot be
+    // written against the plain game jar. The tab is registered empty and filled through the
+    // library's modifyCreativeTab hook instead, which both loaders already implement on top of
+    // their own creative tab events.
+    // CreativeModeTab.builder(Row, int) is deprecated by NeoForge's patches only; the vanilla jar
+    // this module compiles against has no other builder. See PORTING-26.2.md.
+    @SuppressWarnings("deprecation")
     public static final IRegistryObject CREATIVE_TAB = CREATIVE_TABS.register("tab", () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
             .title(Component.translatable("itemGroup." + Constants.MOD_ID))
             .icon(() -> new ItemStack(DecorItems.WALLPAPER.get()))
-            .displayItems((props, output) -> output.acceptAll(DecorCreativeItems.getCreativeItems())).build());
+            .build());
 
 
     private static List<ItemStack> getCreativeItems() {
@@ -107,6 +119,7 @@ public class DecorCreativeItems {
     }
 
     public static void init() {
+        Services.PLATFORM.modifyCreativeTab(CREATIVE_TAB_KEY, DecorCreativeItems::getCreativeItems);
     }
 
 }

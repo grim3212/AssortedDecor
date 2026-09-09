@@ -1,5 +1,7 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import com.google.common.collect.Maps;
 import com.grim3212.assorted.decor.api.util.DecorUtil;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
@@ -30,7 +32,8 @@ public class ColorizerFireplaceBlock extends ColorizerFireplaceBaseBlock {
         map.put(Direction.WEST, WEST);
     });
 
-    public ColorizerFireplaceBlock() {
+    public ColorizerFireplaceBlock(Properties props) {
+        super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false).setValue(EAST, false).setValue(WEST, false).setValue(SOUTH, false).setValue(NORTH, false));
     }
 
@@ -62,8 +65,9 @@ public class ColorizerFireplaceBlock extends ColorizerFireplaceBaseBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? stateIn.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, facingPos)) : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+    protected BlockState updateShape(BlockState stateIn, LevelReader worldIn, ScheduledTickAccess ticks, BlockPos currentPos,
+            Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+        return facing.getAxis().getPlane() == Direction.Plane.HORIZONTAL ? stateIn.setValue(FACING_TO_PROPERTY_MAP.get(facing), this.canConnectTo(worldIn, facingPos)) : super.updateShape(stateIn, worldIn, ticks, currentPos, facing, facingPos, facingState, random);
     }
 
     public boolean canConnectTo(BlockGetter worldIn, BlockPos pos) {

@@ -4,6 +4,8 @@ import com.grim3212.assorted.decor.api.colorizer.ICanColor;
 import com.grim3212.assorted.lib.annotations.LoaderImplement;
 import com.grim3212.assorted.lib.util.DyeHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -13,7 +15,9 @@ import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemInstance;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -31,26 +35,26 @@ public class PaintRollerItem extends Item {
         this.dyeColor = color;
     }
 
-    @Override
-    public boolean hasCraftingRemainingItem() {
-        return true;
-    }
+    /**
+     * Item.Properties#craftRemainder only takes a fixed ItemStackTemplate, which cannot express
+     * "the same roller, one point more worn". Both loaders still ask the item per stack, and both
+     * now expect an ItemStackTemplate back, so the wear rides along as a component patch.
+     */
+    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IItemExtension")
+    public ItemStackTemplate getCraftingRemainder(ItemInstance stack) {
+        int damage = stack.getOrDefault(DataComponents.DAMAGE, 0) + 1;
+        int maxDamage = stack.getOrDefault(DataComponents.MAX_DAMAGE, 0);
 
-    public boolean hasCraftingRemainingItem(ItemStack stack) {
-        return hasCraftingRemainingItem();
-    }
+        if (maxDamage > 0 && damage >= maxDamage) {
+            return new ItemStackTemplate(DecorItems.PAINT_ROLLER.get());
+        }
 
-    @LoaderImplement(loader = LoaderImplement.Loader.FORGE, value = "IForgeItem")
-    public ItemStack getCraftingRemainingItem(ItemStack stack) {
-        ItemStack copy = stack.copy();
-
-        copy.setDamageValue(copy.getDamageValue() + 1);
-        return copy.getDamageValue() >= copy.getMaxDamage() ? new ItemStack(DecorItems.PAINT_ROLLER.get()) : copy;
+        return new ItemStackTemplate(stack.typeHolder(), 1, DataComponentPatch.builder().set(DataComponents.DAMAGE, damage).build());
     }
 
     @LoaderImplement(loader = LoaderImplement.Loader.FABRIC, value = "FabricItem")
-    public ItemStack getRecipeRemainder(ItemStack stack) {
-        return hasCraftingRemainingItem() ? getCraftingRemainingItem(stack) : ItemStack.EMPTY;
+    public ItemStackTemplate getCraftingRemainder(ItemStack stack) {
+        return this.getCraftingRemainder((ItemInstance) stack);
     }
 
     @Override
@@ -59,14 +63,12 @@ public class PaintRollerItem extends Item {
             Sheep sheep = (Sheep) entity;
             if (sheep.isAlive() && !sheep.isSheared() && sheep.getColor() != this.dyeColor) {
                 sheep.level().playSound(player, sheep, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
-                if (!player.level().isClientSide) {
+                if (!player.level().isClientSide()) {
                     sheep.setColor(this.dyeColor);
-                    player.getItemInHand(hand).hurtAndBreak(1, player, (p) -> {
-                        p.broadcastBreakEvent(hand);
-                    });
+                    player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
                 }
 
-                return InteractionResult.sidedSuccess(player.level().isClientSide);
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -84,11 +86,9 @@ public class PaintRollerItem extends Item {
 
         if (block instanceof ICanColor canColor) {
             if (canColor.currentColor(state) != this.dyeColor) {
-                player.getItemInHand(hand).hurtAndBreak(1, player, (p) -> {
-                    p.broadcastBreakEvent(hand);
-                });
+                player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
                 level.setBlock(pos, canColor.stateForColor(state, this.dyeColor), 3);
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -96,11 +96,9 @@ public class PaintRollerItem extends Item {
         if (match != null) {
             Optional<DyeColor> curColor = match.entrySet().stream().filter(entry -> block.equals(entry.getValue())).map(Map.Entry::getKey).findFirst();
             if (curColor.isPresent() && curColor.get() != this.dyeColor) {
-                player.getItemInHand(hand).hurtAndBreak(1, player, (p) -> {
-                    p.broadcastBreakEvent(hand);
-                });
+                player.getItemInHand(hand).hurtAndBreak(1, player, hand.asEquipmentSlot());
                 level.setBlock(pos, match.getOrDefault(this.dyeColor, block).defaultBlockState(), 3);
-                return InteractionResult.sidedSuccess(level.isClientSide());
+                return InteractionResult.SUCCESS;
             }
         }
 

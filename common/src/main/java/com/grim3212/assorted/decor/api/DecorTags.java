@@ -1,7 +1,7 @@
 package com.grim3212.assorted.decor.api;
 
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.lib.platform.Services;
+import com.grim3212.assorted.lib.util.LibCommonTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
@@ -42,7 +42,7 @@ public class DecorTags {
         }
 
         private static TagKey<Item> commonTag(String name) {
-            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Services.PLATFORM.getCommonTagPrefix(), name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(LibCommonTags.COMMON_NAMESPACE, name));
         }
     }
 }

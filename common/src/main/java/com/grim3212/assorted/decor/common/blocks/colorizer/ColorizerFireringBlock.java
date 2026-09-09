@@ -9,6 +9,10 @@ import net.minecraft.world.level.BlockGetter;
 
 public class ColorizerFireringBlock extends ColorizerFireplaceBaseBlock {
 
+	public ColorizerFireringBlock(Properties props) {
+		super(props);
+	}
+
 	protected static final VoxelShape FIRERING = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 6.4F, 16.0F);
 
 	@Override

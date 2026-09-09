@@ -5,13 +5,14 @@ import com.grim3212.assorted.decor.common.items.FrameItem.FrameMaterial;
 import com.grim3212.assorted.lib.util.DyeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +26,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class FrameEntity extends HangingEntity {
 
@@ -44,8 +48,7 @@ public abstract class FrameEntity extends HangingEntity {
     }
 
     public FrameEntity(EntityType<? extends FrameEntity> type, Level world, BlockPos pos, Direction direction) {
-        this(type, world);
-        this.pos = pos;
+        super(type, world, pos);
 
         for (int i = 0; i < FrameType.VALUES.length; i++) {
             FrameType tryFrame = FrameType.VALUES[i];
@@ -64,25 +67,27 @@ public abstract class FrameEntity extends HangingEntity {
     public abstract FrameMaterial getFrameMaterial();
 
     @Override
-    protected void defineSynchedData() {
-        this.getEntityData().define(FRAME_ID, 1);
-        this.getEntityData().define(COLOR_RED, 255);
-        this.getEntityData().define(COLOR_GREEN, 255);
-        this.getEntityData().define(COLOR_BLUE, 255);
-        this.getEntityData().define(BURNT, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FRAME_ID, 1);
+        builder.define(COLOR_RED, 255);
+        builder.define(COLOR_GREEN, 255);
+        builder.define(COLOR_BLUE, 255);
+        builder.define(BURNT, false);
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> dataAccessor) {
+        super.onSyncedDataUpdated(dataAccessor);
         if (FRAME_ID.equals(dataAccessor)) {
             this.recalculateBoundingBox();
         }
     }
 
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (player.mayUseItemAt(pos, this.direction, itemstack)) {
+        if (player.mayUseItemAt(this.getPos(), this.getDirection(), itemstack)) {
             if (!itemstack.isEmpty()) {
 
                 if (DecorCommonMod.COMMON_CONFIG.dyeFrames.get()) {
@@ -116,7 +121,7 @@ public abstract class FrameEntity extends HangingEntity {
             for (int i = 0; i < FrameType.VALUES.length; i++) {
                 FrameType tryFrame = FrameType.VALUES[i];
                 this.getEntityData().set(FRAME_ID, tryFrame.id);
-                setDirection(this.direction);
+                setDirection(this.getDirection());
                 if (survives()) {
                     if (foundOld) {
                         // The next valid frame we stop looking for the next
@@ -137,7 +142,7 @@ public abstract class FrameEntity extends HangingEntity {
             }
         }
 
-        if (!this.level().isClientSide)
+        if (!this.level().isClientSide())
             playPlacementSound();
 
         return true;
@@ -158,7 +163,7 @@ public abstract class FrameEntity extends HangingEntity {
         this.getEntityData().set(COLOR_BLUE, newblue);
         this.getEntityData().set(BURNT, burn);
 
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             if (burn) {
                 playBurnSound();
             } else {
@@ -184,48 +189,56 @@ public abstract class FrameEntity extends HangingEntity {
     }
 
     @Override
-    protected void recalculateBoundingBox() {
-        if (this.direction != null) {
-            double x = (double) this.pos.getX() + 0.5D;
-            double y = (double) this.pos.getY() + 0.5D;
-            double z = (double) this.pos.getZ() + 0.5D;
-            double widthOffset = this.offs(this.getWidth());
-            double heightOffset = this.offs(this.getHeight());
-            x = x - (double) this.direction.getStepX() * 0.46875D;
-            z = z - (double) this.direction.getStepZ() * 0.46875D;
-            y = y + heightOffset;
-            Direction enumfacing = this.direction.getCounterClockWise();
-            x = x + widthOffset * (double) enumfacing.getStepX();
-            z = z + widthOffset * (double) enumfacing.getStepZ();
-            this.setPosRaw(x, y, z);
-            double width = (double) this.getWidth();
-            double height = (double) this.getHeight();
-            double depth = (double) this.getWidth();
+    protected AABB calculateBoundingBox(BlockPos blockPos, Direction facing) {
+        double x = (double) blockPos.getX() + 0.5D;
+        double y = (double) blockPos.getY() + 0.5D;
+        double z = (double) blockPos.getZ() + 0.5D;
+        double widthOffset = this.offs(this.getWidth());
+        double heightOffset = this.offs(this.getHeight());
+        x = x - (double) facing.getStepX() * 0.46875D;
+        z = z - (double) facing.getStepZ() * 0.46875D;
+        y = y + heightOffset;
+        Direction enumfacing = facing.getCounterClockWise();
+        x = x + widthOffset * (double) enumfacing.getStepX();
+        z = z + widthOffset * (double) enumfacing.getStepZ();
+        double width = (double) this.getWidth();
+        double height = (double) this.getHeight();
+        double depth = (double) this.getWidth();
 
-            if (this.direction.getAxis() == Direction.Axis.Z) {
-                depth = 1.0D;
-            } else {
-                width = 1.0D;
-            }
-
-            width = width / 32.0D;
-            height = height / 32.0D;
-            depth = depth / 32.0D;
-
-            this.setBoundingBox(new AABB(x - width, y - height, z - depth, x + width, y + height, z + depth));
-
-            if (this.direction.getAxis() == Direction.Axis.Z) {
-                width += 0.1F;
-                height += 0.1F;
-                depth = 1.0F;
-            } else {
-                width = 1.0F;
-                height += 0.1F;
-                depth += 0.1F;
-            }
-            this.fireboundingBox = new AABB(x - width, y - height, z - depth, x + width, y + height, z + depth);
+        if (facing.getAxis() == Direction.Axis.Z) {
+            depth = 1.0D;
+        } else {
+            width = 1.0D;
         }
 
+        width = width / 32.0D;
+        height = height / 32.0D;
+        depth = depth / 32.0D;
+
+        return new AABB(x - width, y - height, z - depth, x + width, y + height, z + depth);
+    }
+
+    @Override
+    protected void recalculateBoundingBox() {
+        super.recalculateBoundingBox();
+
+        AABB box = this.getBoundingBox();
+        Vec3 center = box.getCenter();
+        double width = box.getXsize() / 2.0D;
+        double height = box.getYsize() / 2.0D;
+        double depth = box.getZsize() / 2.0D;
+
+        if (this.getDirection().getAxis() == Direction.Axis.Z) {
+            width += 0.1D;
+            height += 0.1D;
+            depth = 1.0D;
+        } else {
+            width = 1.0D;
+            height += 0.1D;
+            depth += 0.1D;
+        }
+
+        this.fireboundingBox = new AABB(center.x - width, center.y - height, center.z - depth, center.x + width, center.y + height, center.z + depth);
     }
 
     private double offs(int size) {
@@ -239,6 +252,8 @@ public abstract class FrameEntity extends HangingEntity {
                 dyeFrame(DyeColor.BLACK, true);
             }
         }
+
+        super.tick();
     }
 
     public FrameType getCurrentFrame() {
@@ -247,33 +262,30 @@ public abstract class FrameEntity extends HangingEntity {
 
     @Override
     public boolean canCollideWith(Entity ent) {
-        return ent instanceof Player && this.canBeCollidedWith();
+        return ent instanceof Player && this.canBeCollidedWith(ent);
     }
 
     @Override
-    public boolean canBeCollidedWith() {
+    public boolean canBeCollidedWith(@Nullable Entity other) {
         return getCurrentFrame().isCollidable;
     }
 
     @Override
-    public boolean hurt(DamageSource damagesource, float damage) {
-        if (this.isInvulnerableTo(damagesource)) {
+    public boolean hurtClient(DamageSource damagesource) {
+        return !this.isInvulnerableToBase(damagesource);
+    }
+
+    @Override
+    public boolean hurtServer(ServerLevel level, DamageSource damagesource, float damage) {
+        if (this.isInvulnerableToBase(damagesource)) {
             return false;
         }
-        if (!this.isRemoved() && !this.level().isClientSide) {
-            if (damagesource.getEntity() instanceof Player) {
-                this.discard();
-                this.markHurt();
-                this.dropItem(damagesource.getEntity());
-                return true;
-            }
 
-            if (damage > this.resistance) {
-                this.discard();
-                this.markHurt();
-                this.dropItem(damagesource.getEntity());
-                return true;
-            }
+        if (!this.isRemoved() && (damagesource.getEntity() instanceof Player || damage > this.resistance)) {
+            this.discard();
+            this.markHurt();
+            this.dropItem(level, damagesource.getEntity());
+            return true;
         }
 
         return false;
@@ -296,53 +308,47 @@ public abstract class FrameEntity extends HangingEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.addAdditionalSaveData(nbttagcompound);
-        nbttagcompound.putByte("Facing", (byte) this.direction.get2DDataValue());
-        nbttagcompound.putInt("Motive", this.getFrameID());
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putByte("Facing", (byte) this.getDirection().get2DDataValue());
+        output.putInt("Motive", this.getFrameID());
         int[] color = getFrameColor();
-        nbttagcompound.putInt("Red", color[0]);
-        nbttagcompound.putInt("Green", color[1]);
-        nbttagcompound.putInt("Blue", color[2]);
-        nbttagcompound.putInt("Material", this.getFrameMaterial().ordinal());
-        nbttagcompound.putBoolean("Burnt", getBurned());
+        output.putInt("Red", color[0]);
+        output.putInt("Green", color[1]);
+        output.putInt("Blue", color[2]);
+        output.putInt("Material", this.getFrameMaterial().ordinal());
+        output.putBoolean("Burnt", getBurned());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag nbttagcompound) {
-        super.readAdditionalSaveData(nbttagcompound);
-        this.direction = Direction.from2DDataValue(nbttagcompound.getByte("Facing"));
-        this.getEntityData().set(COLOR_RED, nbttagcompound.getInt("Red"));
-        this.getEntityData().set(COLOR_GREEN, nbttagcompound.getInt("Green"));
-        this.getEntityData().set(COLOR_BLUE, nbttagcompound.getInt("Blue"));
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.getEntityData().set(COLOR_RED, input.getIntOr("Red", 255));
+        this.getEntityData().set(COLOR_GREEN, input.getIntOr("Green", 255));
+        this.getEntityData().set(COLOR_BLUE, input.getIntOr("Blue", 255));
         setResistance(this.getFrameMaterial());
-        this.getEntityData().set(FRAME_ID, nbttagcompound.getInt("Motive"));
-        this.getEntityData().set(BURNT, nbttagcompound.getBoolean("Burnt"));
-        this.setDirection(this.direction);
+        this.getEntityData().set(FRAME_ID, input.getIntOr("Motive", 1));
+        this.getEntityData().set(BURNT, input.getBooleanOr("Burnt", false));
+        this.setDirection(Direction.from2DDataValue(input.getByteOr("Facing", (byte) 0)));
     }
 
-    @Override
     public int getWidth() {
         return this.getCurrentFrame().sizeX;
     }
 
-    @Override
     public int getHeight() {
         return this.getCurrentFrame().sizeY;
     }
 
     @Override
-    public void dropItem(Entity brokenEntity) {
-        if (this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+    public void dropItem(ServerLevel level, @Nullable Entity brokenEntity) {
+        if (level.getGameRules().get(GameRules.ENTITY_DROPS)) {
             this.playBreakSound();
-            if (brokenEntity instanceof Player) {
-                Player playerentity = (Player) brokenEntity;
-                if (playerentity.getAbilities().instabuild) {
-                    return;
-                }
+            if (brokenEntity instanceof Player playerentity && playerentity.getAbilities().instabuild) {
+                return;
             }
 
-            this.spawnAtLocation(this.getFrameMaterial().getFrameItem());
+            this.spawnAtLocation(level, this.getFrameMaterial().getFrameItem());
         }
     }
 
@@ -368,23 +374,13 @@ public abstract class FrameEntity extends HangingEntity {
     }
 
     @Override
-    public void moveTo(double x, double y, double z, float yaw, float pitch) {
-        this.setPos(x, y, z);
-    }
-
-    @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
-        this.setPos(x, y, z);
-    }
-
-    @Override
     public Vec3 trackingPosition() {
-        return Vec3.atLowerCornerOf(this.pos);
+        return Vec3.atLowerCornerOf(this.getPos());
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.direction.get3DDataValue(), this.getPos());
+    public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, this.getDirection().get3DDataValue(), this.getPos());
     }
 
     @Override

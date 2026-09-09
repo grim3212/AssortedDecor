@@ -7,15 +7,16 @@ import com.grim3212.assorted.lib.core.block.IBlockEntityWithModelData;
 import com.grim3212.assorted.lib.platform.ClientServices;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 
 public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWithModelData {
@@ -27,23 +28,23 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        this.storedBlockState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("stored_state"));
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        this.storedBlockState = input.read("stored_state", BlockState.CODEC).orElse(Blocks.AIR.defaultBlockState());
     }
 
     @Override
-    protected void saveAdditional(CompoundTag cmp) {
-        super.saveAdditional(cmp);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
         if (Services.PLATFORM.getRegistry(Registries.BLOCK).contains(this.storedBlockState.getBlock()))
-            cmp.put("stored_state", NbtUtils.writeBlockState(this.storedBlockState));
+            output.store("stored_state", BlockState.CODEC, this.storedBlockState);
         else
-            cmp.put("stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
+            output.store("stored_state", BlockState.CODEC, Blocks.AIR.defaultBlockState());
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
         if (level != null) {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             level.getLightEngine().checkBlock(getBlockPos());
-            if (!level.isClientSide) {
-                level.blockUpdated(worldPosition, getBlockState().getBlock());
+            if (!level.isClientSide()) {
+                level.updateNeighborsAt(worldPosition, getBlockState().getBlock(), null);
             } else {
                 ClientServices.MODELS.requestModelDataRefresh(this);
             }

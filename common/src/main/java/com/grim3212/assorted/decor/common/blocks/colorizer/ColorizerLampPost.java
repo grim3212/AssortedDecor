@@ -1,5 +1,8 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.util.RandomSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -32,12 +35,13 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
     private static final VoxelShape MIDDLE = Block.box(6F, 0.0F, 6F, 10F, 16F, 10F);
     private static final VoxelShape BOTTOM = Block.box(6F, 0.0F, 6F, 10F, 16F, 10F);
 
-    public ColorizerLampPost() {
+    public ColorizerLampPost(Properties props) {
+        super(props);
         this.registerDefaultState(this.stateDefinition.any().setValue(PART, LampPart.BOTTOM).setValue(WATERLOGGED, false));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         if (state.getValue(PART) == LampPart.TOP) {
             return TOP;
         } else if (state.getValue(PART) == LampPart.MIDDLE) {
@@ -65,16 +69,17 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
+    protected BlockState updateShape(BlockState stateIn, LevelReader worldIn, ScheduledTickAccess ticks, BlockPos currentPos,
+            Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
         if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            ticks.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
 
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(stateIn, worldIn, ticks, currentPos, facing, facingPos, facingState, random);
     }
 
     @Override
-    public FluidState getFluidState(BlockState state) {
+    protected FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -103,8 +108,8 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
     }
 
     @Override
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
-        super.playerWillDestroy(worldIn, pos, state, player);
+    public BlockState playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+        BlockState destroyed = super.playerWillDestroy(worldIn, pos, state, player);
 
         if (state.getValue(PART) == LampPart.BOTTOM) {
             worldIn.removeBlock(pos.above(), false);
@@ -116,6 +121,8 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
             worldIn.removeBlock(pos.below(), false);
             worldIn.removeBlock(pos.below(2), false);
         }
+
+        return destroyed;
     }
 
     @Override

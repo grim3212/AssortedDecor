@@ -26,7 +26,7 @@ public class NeonChangeModePacket {
     }
 
     public static void handle(NeonChangeModePacket packet, Player player) {
-        BlockEntity te = player.getCommandSenderWorld().getBlockEntity(packet.pos);
+        BlockEntity te = player.level().getBlockEntity(packet.pos);
         if (te instanceof NeonSignBlockEntity) {
             ((NeonSignBlockEntity) te).mode = packet.mode;
         }

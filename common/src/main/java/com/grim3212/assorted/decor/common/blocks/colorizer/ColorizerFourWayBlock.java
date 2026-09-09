@@ -37,7 +37,8 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 	protected final VoxelShape[] shapes;
 	private final Object2IntMap<BlockState> stateMap = new Object2IntOpenHashMap<>();
 
-	public ColorizerFourWayBlock(float nodeWidth, float extensionWidth, float nodeHeight, float extensionHeight, float collisionY) {
+	public ColorizerFourWayBlock(float nodeWidth, float extensionWidth, float nodeHeight, float extensionHeight, float collisionY, Properties props) {
+		super(props);
 		this.collisionShapes = this.makeShapes(nodeWidth, extensionWidth, collisionY, 0.0F, collisionY);
 		this.shapes = this.makeShapes(nodeWidth, extensionWidth, nodeHeight, 0.0F, extensionHeight);
 
@@ -69,17 +70,17 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return !state.getValue(WATERLOGGED);
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return this.shapes[this.getIndex(state)];
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	protected VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return this.collisionShapes[this.getIndex(state)];
 	}
 
@@ -88,7 +89,7 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 	}
 
 	protected int getIndex(BlockState state) {
-		return this.stateMap.computeIntIfAbsent(state, (mapState) -> {
+		return this.stateMap.computeIfAbsent(state, (BlockState mapState) -> {
 			int i = 0;
 			if (mapState.getValue(NORTH)) {
 				i |= getMask(Direction.NORTH);
@@ -111,17 +112,17 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 	}
 
 	@Override
-	public FluidState getFluidState(BlockState state) {
+	protected FluidState getFluidState(BlockState state) {
 		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type) {
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return false;
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
+	protected BlockState rotate(BlockState state, Rotation rot) {
 		switch (rot) {
 		case CLOCKWISE_180:
 			return state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
@@ -135,7 +136,7 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 	}
 
 	@Override
-	public BlockState mirror(BlockState state, Mirror mirrorIn) {
+	protected BlockState mirror(BlockState state, Mirror mirrorIn) {
 		switch (mirrorIn) {
 		case LEFT_RIGHT:
 			return state.setValue(NORTH, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(NORTH));

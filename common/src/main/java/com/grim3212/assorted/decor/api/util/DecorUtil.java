@@ -24,9 +24,9 @@ public class DecorUtil {
 
     public static void produceSmoke(Level world, BlockPos pos, double xMod, double yMod, double zMod, int amount, boolean makelarge) {
         for (int i = 0; i < amount; i++) {
-            double xVar = (world.random.nextDouble() - 0.5D) / 5.0D;
-            double yVar = (world.random.nextDouble() - 0.5D) / 5.0D;
-            double zVar = (world.random.nextDouble() - 0.5D) / 5.0D;
+            double xVar = (world.getRandom().nextDouble() - 0.5D) / 5.0D;
+            double yVar = (world.getRandom().nextDouble() - 0.5D) / 5.0D;
+            double zVar = (world.getRandom().nextDouble() - 0.5D) / 5.0D;
             world.addParticle(makelarge ? ParticleTypes.LARGE_SMOKE : ParticleTypes.SMOKE, pos.getX() + xMod + xVar, pos.getY() + yMod + yVar, pos.getZ() + zMod + zVar, 0.0D, 0.0D, 0.0D);
         }
     }

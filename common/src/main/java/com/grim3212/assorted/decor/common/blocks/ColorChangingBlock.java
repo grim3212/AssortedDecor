@@ -1,12 +1,13 @@
 package com.grim3212.assorted.decor.common.blocks;
 
 import com.grim3212.assorted.decor.api.colorizer.ICanColor;
-import com.grim3212.assorted.lib.util.NBTHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.item.component.BlockItemStateProperties;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -37,15 +38,22 @@ public class ColorChangingBlock extends Block implements ICanColor {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         return getColorStack(new ItemStack(this), state.getValue(COLOR));
     }
 
     public static ItemStack getColorStack(ItemStack stack, DyeColor color) {
         ItemStack copy = stack.copy();
-        CompoundTag blockStateTag = new CompoundTag();
-        NBTHelper.putString(blockStateTag, "color", color.getName());
-        NBTHelper.putTag(copy, "BlockStateTag", blockStateTag);
+        // The BlockStateTag NBT is the BLOCK_STATE data component now
+        copy.set(DataComponents.BLOCK_STATE, copy.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).with(COLOR, color));
         return copy;
+    }
+
+    /**
+     * The same colour, as a component patch. Datagen cannot build ItemStacks - an item's default
+     * components are only bound during a resource reload - so recipe results carry a patch instead.
+     */
+    public static DataComponentPatch getColorPatch(DyeColor color) {
+        return DataComponentPatch.builder().set(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY.with(COLOR, color)).build();
     }
 }

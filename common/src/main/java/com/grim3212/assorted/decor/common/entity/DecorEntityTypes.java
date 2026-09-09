@@ -5,6 +5,7 @@ import com.grim3212.assorted.lib.registry.IRegistryObject;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,7 +19,9 @@ public class DecorEntityTypes {
     public static final IRegistryObject<EntityType<IronFrameEntity>> IRON_FRAME = register("iron_frame", EntityType.Builder.<IronFrameEntity>of(IronFrameEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).clientTrackingRange(250).updateInterval(2147483647));
 
     private static <T extends Entity> IRegistryObject<EntityType<T>> register(final String name, final EntityType.Builder<T> builder) {
-        return ENTITIES.register(name, () -> builder.build(Identifier.fromNamespaceAndPath(Constants.MOD_ID, name).toString()));
+        // Entity types are built against their own registry key now, not a raw string
+        final ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
+        return ENTITIES.register(name, () -> builder.build(key));
     }
 
     public static void init() {

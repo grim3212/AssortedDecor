@@ -45,7 +45,7 @@ public class DecorEvents {
         }
 
         BlockPos pos = hitResult.getBlockPos();
-        BlockState stored = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), NBTHelper.getTag(stack, "stored_state"));
+        BlockState stored = NbtUtils.readBlockState(BuiltInRegistries.BLOCK, NBTHelper.getTag(stack, "stored_state"));
         BlockState hit = world.getBlockState(pos);
 
         if (stored.getBlock() == Blocks.AIR || (player.isCrouching() && player.isCreative())) {

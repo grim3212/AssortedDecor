@@ -14,8 +14,8 @@ public class ColorizerFirepitBlock extends ColorizerFireplaceBaseBlock {
 
 	private final boolean covered;
 
-	public ColorizerFirepitBlock(boolean covered) {
-		super();
+	public ColorizerFirepitBlock(boolean covered, Properties props) {
+		super(props);
 		this.covered = covered;
 	}
 

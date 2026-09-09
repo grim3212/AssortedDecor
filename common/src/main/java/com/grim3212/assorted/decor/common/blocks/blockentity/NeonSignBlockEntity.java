@@ -4,16 +4,21 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.*;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.LevelBasedPermissionSet;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -44,10 +49,10 @@ public class NeonSignBlockEntity extends BlockEntity {
         this.signText[line] = signText;
     }
 
-    @Override
-    public boolean onlyOpCanSetNbt() {
-        return true;
-    }
+    // TODO(26.2): BlockEntity.onlyOpCanSetNbt() is gone. Whether a block entity's custom data is
+    // op only is now decided by BlockEntityTypes.OP_ONLY_CUSTOM_DATA, a package private Set in vanilla
+    // with no registration hook, so a modded block entity cannot opt in any more. Neon sign NBT can
+    // therefore be set from an item without gamemaster permissions.
 
     public void setOwner(Entity newOwner) {
         this.owner = newOwner.getUUID();
@@ -60,11 +65,8 @@ public class NeonSignBlockEntity extends BlockEntity {
     public boolean executeCommand(Player playerIn) {
         for (Component itextcomponent : this.signText) {
             Style style = itextcomponent == null ? null : itextcomponent.getStyle();
-            if (style != null && style.getClickEvent() != null) {
-                ClickEvent clickevent = style.getClickEvent();
-                if (clickevent.getAction() == ClickEvent.Action.RUN_COMMAND) {
-                    playerIn.getServer().getCommands().performPrefixedCommand(this.getCommandSource((ServerPlayer) playerIn), clickevent.getValue());
-                }
+            if (style != null && style.getClickEvent() instanceof ClickEvent.RunCommand command) {
+                this.level.getServer().getCommands().performPrefixedCommand(this.getCommandSource((ServerPlayer) playerIn), command.command());
             }
         }
 
@@ -72,48 +74,53 @@ public class NeonSignBlockEntity extends BlockEntity {
     }
 
     public CommandSourceStack getCommandSource(@Nullable ServerPlayer playerIn) {
-        String s = playerIn == null ? "Sign" : playerIn.getName().getString();
-        Component itextcomponent = (Component) (playerIn == null ? Component.literal("Sign") : playerIn.getDisplayName());
-        return new CommandSourceStack(CommandSource.NULL, Vec3.atCenterOf(this.worldPosition), Vec2.ZERO, (ServerLevel) this.level, 2, s, itextcomponent, this.level.getServer(), playerIn);
+        String s = playerIn == null ? "Sign" : playerIn.getPlainTextName();
+        Component itextcomponent = playerIn == null ? Component.literal("Sign") : playerIn.getDisplayName();
+        return new CommandSourceStack(CommandSource.NULL, Vec3.atCenterOf(this.worldPosition), Vec2.ZERO, (ServerLevel) this.level, LevelBasedPermissionSet.GAMEMASTER, s, itextcomponent, this.level.getServer(), playerIn);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.putInt("Mode", mode);
-        compound.putUUID("Owner", owner);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        output.putInt("Mode", this.mode);
+        output.storeNullable("Owner", UUIDUtil.CODEC, this.owner);
 
         for (int i = 0; i < 4; ++i) {
-            String s = MutableComponent.Serializer.toJson(this.signText[i]);
-            compound.putString("Text" + (i + 1), s);
+            output.store("Text" + (i + 1), ComponentSerialization.CODEC, this.signText[i]);
         }
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
 
-        this.mode = nbt.getInt("Mode");
-        this.owner = nbt.getUUID("Owner");
+        this.mode = input.getIntOr("Mode", 0);
+        this.owner = input.read("Owner", UUIDUtil.CODEC).orElse(null);
 
         for (int i = 0; i < 4; ++i) {
-            String s = nbt.getString("Text" + (i + 1));
-            MutableComponent itextcomponent = MutableComponent.Serializer.fromJson(s.isEmpty() ? "\"\"" : s);
-            if (this.level instanceof ServerLevel) {
-                try {
-                    this.signText[i] = ComponentUtils.updateForEntity(this.getCommandSource((ServerPlayer) null), itextcomponent, (Entity) null, 0);
-                } catch (CommandSyntaxException commandsyntaxexception) {
-                    this.signText[i] = itextcomponent;
-                }
-            } else {
-                this.signText[i] = itextcomponent;
+            Component itextcomponent = input.read("Text" + (i + 1), ComponentSerialization.CODEC).orElse(EMPTY);
+            this.signText[i] = this.resolveLine(itextcomponent);
+        }
+    }
+
+    /**
+     * Selectors and scores in a line are resolved against the sign itself, exactly like a vanilla sign does
+     */
+    private MutableComponent resolveLine(Component line) {
+        if (this.level instanceof ServerLevel) {
+            try {
+                return ComponentUtils.resolve(ResolutionContext.create(this.getCommandSource(null)), line).copy();
+            } catch (CommandSyntaxException commandsyntaxexception) {
+                // fall through to the unresolved line
             }
         }
+
+        return line.copy();
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
     }
 
     @Override
