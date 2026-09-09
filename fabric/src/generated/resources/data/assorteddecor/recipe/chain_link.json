@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "#c:nuggets/iron",
+    "X": "#c:ingots/iron"
+  },
+  "pattern": [
+    " N ",
+    "NXN",
+    " N "
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:chain_link"
+  }
+}

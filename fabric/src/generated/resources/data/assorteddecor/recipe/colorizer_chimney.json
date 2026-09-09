@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "X": "assorteddecor:colorizer"
+  },
+  "pattern": [
+    "X X",
+    "X X",
+    "XIX"
+  ],
+  "result": {
+    "count": 6,
+    "id": "assorteddecor:colorizer_chimney"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "assorteddecor:paint_roller_gray",
+    "#c:concrete_powder"
+  ],
+  "result": {
+    "id": "minecraft:gray_concrete_powder"
+  }
+}

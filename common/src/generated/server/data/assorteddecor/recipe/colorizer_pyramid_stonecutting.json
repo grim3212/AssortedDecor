@@ -1,0 +1,13 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:stonecutting",
+  "ingredient": "assorteddecor:colorizer",
+  "result": {
+    "id": "assorteddecor:colorizer_pyramid"
+  }
+}

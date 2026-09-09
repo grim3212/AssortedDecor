@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:tar",
+    "#c:cobblestone",
+    "assorteddecor:paint_roller_cyan"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "color": "cyan"
+      }
+    },
+    "count": 4,
+    "id": "assorteddecor:siding_vertical"
+  }
+}

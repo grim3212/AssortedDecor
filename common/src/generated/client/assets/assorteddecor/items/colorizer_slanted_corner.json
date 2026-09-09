@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "assorteddecor:block/colorizer_slanted_corner",
+    "tints": [
+      {
+        "type": "assorteddecor:colorizer"
+      }
+    ]
+  }
+}

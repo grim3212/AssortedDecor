@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:tar",
+    "#minecraft:planks",
+    "assorteddecor:paint_roller_orange"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "color": "orange"
+      }
+    },
+    "count": 4,
+    "id": "assorteddecor:siding_horizontal"
+  }
+}

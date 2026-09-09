@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "assorteddecor:colorizer",
+  "result": {
+    "id": "assorteddecor:colorizer_corner"
+  }
+}

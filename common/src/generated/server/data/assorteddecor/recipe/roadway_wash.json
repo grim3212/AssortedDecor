@@ -1,0 +1,19 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#assorteddecor:roadways/color",
+    {
+      "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
+      "fluid": "minecraft:water"
+    }
+  ],
+  "result": {
+    "id": "assorteddecor:roadway"
+  }
+}

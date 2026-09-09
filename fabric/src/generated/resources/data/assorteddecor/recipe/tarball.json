@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:gravel",
+    "W": {
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "amount": 81000,
+      "fluid": "minecraft:water"
+    },
+    "X": "#minecraft:coals"
+  },
+  "pattern": [
+    "X",
+    "G",
+    "W"
+  ],
+  "result": {
+    "count": 16,
+    "id": "assorteddecor:tarball"
+  }
+}

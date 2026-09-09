@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#c:dusts/redstone",
+    "G": "#minecraft:planks",
+    "X": "#c:obsidian"
+  },
+  "pattern": [
+    "XXX",
+    "XCX",
+    " G "
+  ],
+  "result": {
+    "count": 3,
+    "id": "assorteddecor:neon_sign"
+  }
+}

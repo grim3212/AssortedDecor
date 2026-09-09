@@ -18,9 +18,13 @@ public class AssortedDecorFabricDatagen implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
-        pack.addProvider((output, registriesFuture) -> new DecorRecipes(output));
+
+        // Recipe providers are not data providers any more - the Runner owns the output.
+        pack.addProvider((output, registriesFuture) -> new DecorRecipes.Runner(output, registriesFuture));
         FabricBlockTagProvider provider = pack.addProvider((output, registriesFuture) -> new FabricBlockTagProvider(output, registriesFuture, new DecorBlockTagProvider(output, registriesFuture)));
         pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, provider.contentsGetter(), new DecorItemTagProvider(output, registriesFuture, provider.contentsGetter())));
-        pack.addProvider((output, registriesFuture) -> new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(DecorBlockLoot::new, LootContextParamSets.BLOCK))));
+        // LootTableProvider takes the registries future now; it needs a HolderLookup to resolve the
+        // entries it writes.
+        pack.addProvider((output, registriesFuture) -> new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(DecorBlockLoot::new, LootContextParamSets.BLOCK)), registriesFuture));
     }
 }

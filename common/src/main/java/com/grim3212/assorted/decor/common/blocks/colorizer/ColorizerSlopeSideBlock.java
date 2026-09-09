@@ -18,6 +18,18 @@ public class ColorizerSlopeSideBlock extends ColorizerSideBlock {
         this.type = type;
     }
 
+    /**
+     * The shape family this block belongs to.
+     * <p>
+     * {@code DecorUtil} used to tell these blocks apart by comparing them against
+     * {@code DecorBlocks.COLORIZER_*.get()}. That is a registry read, and the shapes are baked
+     * during block construction now, so it ran while {@code DecorBlocks}' static initialiser was
+     * still going and saw a null entry. The type is instance state and needs no registry.
+     */
+    public SlopeType getSlopeType() {
+        return this.type;
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return DecorUtil.addAxisAlignedBoxes(state, worldIn, pos, context, this.type.getNumPieces());

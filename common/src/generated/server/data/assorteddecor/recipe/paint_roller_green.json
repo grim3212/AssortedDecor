@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "assorteddecor:paint_roller",
+    {
+      "neoforge:ingredient_type": "neoforge:difference",
+      "base": "#c:dyes/green",
+      "subtracted": "#assorteddecor:paint_rollers"
+    }
+  ],
+  "result": {
+    "id": "assorteddecor:paint_roller_green"
+  }
+}

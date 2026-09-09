@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "R": "#c:rods/wooden",
+    "S": "#c:string",
+    "X": "assorteddecor:colorizer"
+  },
+  "pattern": [
+    " SX",
+    " RS",
+    "R  "
+  ],
+  "result": {
+    "id": "assorteddecor:colorizer_brush"
+  }
+}

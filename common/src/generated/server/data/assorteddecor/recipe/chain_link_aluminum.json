@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:item_tag_populated",
+      "tag": "c:ingots/aluminum"
+    },
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": "#c:nuggets/aluminum",
+    "X": "#c:ingots/aluminum"
+  },
+  "pattern": [
+    " N ",
+    "NXN",
+    " N "
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:chain_link"
+  }
+}

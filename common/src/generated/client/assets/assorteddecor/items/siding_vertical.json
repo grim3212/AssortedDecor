@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "assorteddecor:block/siding_vertical",
+    "tints": [
+      {
+        "type": "assorteddecor:siding"
+      }
+    ]
+  }
+}

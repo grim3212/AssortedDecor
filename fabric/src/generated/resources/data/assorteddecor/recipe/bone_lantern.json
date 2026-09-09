@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#assorteddecor:lantern_source",
+    "P": "#c:bones"
+  },
+  "pattern": [
+    " P ",
+    "PCP"
+  ],
+  "result": {
+    "id": "assorteddecor:bone_lantern"
+  }
+}

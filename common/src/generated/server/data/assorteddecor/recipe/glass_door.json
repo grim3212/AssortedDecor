@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "extras"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": "#c:glass"
+  },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "count": 3,
+    "id": "assorteddecor:glass_door"
+  }
+}

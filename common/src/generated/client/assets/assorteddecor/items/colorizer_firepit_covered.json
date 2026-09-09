@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "assorteddecor:block/colorizer_firepit_covered",
+    "tints": [
+      {
+        "type": "assorteddecor:colorizer"
+      }
+    ]
+  }
+}

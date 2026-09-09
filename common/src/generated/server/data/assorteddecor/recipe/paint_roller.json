@@ -1,0 +1,21 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": "#c:rods/wooden",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "WWW",
+    " S ",
+    " S "
+  ],
+  "result": {
+    "id": "assorteddecor:paint_roller"
+  }
+}

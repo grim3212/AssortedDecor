@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": "#c:gravel",
+    "W": {
+      "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
+      "fluid": "minecraft:water"
+    },
+    "X": "#minecraft:coals"
+  },
+  "pattern": [
+    "X",
+    "G",
+    "W"
+  ],
+  "result": {
+    "count": 16,
+    "id": "assorteddecor:tarball"
+  }
+}

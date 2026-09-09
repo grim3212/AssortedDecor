@@ -1,0 +1,95 @@
+package com.grim3212.assorted.decor;
+
+import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
+import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
+import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
+import com.grim3212.assorted.decor.common.blocks.blockentity.DecorBlockEntityTypes;
+import com.grim3212.assorted.decor.data.DecorBlockLoot;
+import com.grim3212.assorted.decor.data.DecorBlockTagProvider;
+import com.grim3212.assorted.decor.data.DecorItemTagProvider;
+import com.grim3212.assorted.decor.data.DecorRecipes;
+import com.grim3212.assorted.lib.data.ForgeBlockTagProvider;
+import com.grim3212.assorted.lib.data.ForgeItemTagProvider;
+import com.grim3212.assorted.lib.inventory.ForgePlatformInventoryStorageHandlerUnsided;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+@Mod(Constants.MOD_ID)
+public class AssortedDecorNeoForge {
+
+    /**
+     * {@code FMLJavaModLoadingContext} is gone; the mod event bus and the mod container are injected
+     * into the {@code @Mod} constructor instead.
+     */
+    public AssortedDecorNeoForge(IEventBus modBus, ModContainer modContainer) {
+        modBus.addListener(this::gatherServerData);
+        modBus.addListener(this::gatherClientData);
+        modBus.addListener(this::registerCapabilities);
+
+        DecorCommonMod.init();
+    }
+
+    /**
+     * {@code ExistingFileHelper} was removed from datagen, the event owns the provider list now
+     * ({@code addProvider}), and the include flags are gone because the server and client halves are
+     * separate events. Getting the split wrong is quiet: the wrong event runs and reports
+     * "All providers took: 0 ms" with a successful build.
+     */
+    private void gatherServerData(final GatherDataEvent.Server event) {
+        PackOutput packOutput = event.getGenerator().getPackOutput();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+        // Recipe providers are not data providers any more - the Runner owns the output.
+        event.addProvider(new DecorRecipes.Runner(packOutput, lookupProvider));
+        ForgeBlockTagProvider blockTagProvider = event.addProvider(new ForgeBlockTagProvider(packOutput, lookupProvider, Constants.MOD_ID, new DecorBlockTagProvider(packOutput, lookupProvider)));
+        event.addProvider(new ForgeItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), Constants.MOD_ID, new DecorItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter())));
+        event.addProvider(new LootTableProvider(packOutput, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(DecorBlockLoot::new, LootContextParamSets.BLOCK)), lookupProvider));
+    }
+
+    /**
+     * The colorizer models used to need a second provider of their own, because Forge's
+     * {@code BlockStateProvider} could only emit {@code BlockModelBuilder}s and a custom loader block
+     * had to come from a {@code ModelProvider} with its own builder type. A custom loader is written
+     * by a {@code ModelTemplate} now, so {@code ColorizerModelProvider} is gone and
+     * {@link DecorBlockstateProvider} writes those models itself.
+     */
+    private void gatherClientData(final GatherDataEvent.Client event) {
+        PackOutput packOutput = event.getGenerator().getPackOutput();
+
+        event.addProvider(new DecorBlockstateProvider(packOutput));
+        event.addProvider(new DecorItemModelProvider(packOutput));
+    }
+
+    /**
+     * This used to be a mixin on {@link CageBlockEntity} overriding {@code getCapability}. Block
+     * entities do not answer capability lookups themselves any more - a capability is registered per
+     * {@link BlockEntityType} from {@link RegisterCapabilitiesEvent} - so the mixin was deleted and
+     * the registration lives here, mirroring what the Fabric side does with {@code ItemStorage.SIDED}.
+     * <p>
+     * {@code ForgeCapabilities.ITEM_HANDLER} and the deprecated {@code IItemHandler} it was typed with
+     * are replaced by {@code Capabilities.Item.BLOCK}, a transactional
+     * {@code ResourceHandler<ItemResource>}; the library's unsided handler already exposes one. The
+     * cage ignores the side, exactly as the {@code LazyOptional} it used to hand back did.
+     */
+    private void registerCapabilities(final RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(Capabilities.Item.BLOCK, DecorBlockEntityTypes.CAGE.get(), (blockEntity, side) -> {
+            if (blockEntity.isRemoved()) {
+                return null;
+            }
+            return ((ForgePlatformInventoryStorageHandlerUnsided) blockEntity.getStorageHandler()).getCapability();
+        });
+    }
+}

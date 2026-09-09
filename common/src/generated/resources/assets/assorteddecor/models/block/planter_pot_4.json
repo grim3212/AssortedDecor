@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_top",
-  "textures": {
-    "particle": "assorteddecor:block/planter_pot",
-    "side": "assorteddecor:block/planter_pot",
-    "top": "minecraft:block/farmland"
-  }
-}

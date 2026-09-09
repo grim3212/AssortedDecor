@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "#assorteddecor:lantern_source",
+    "P": "#c:ingots/iron"
+  },
+  "pattern": [
+    " P ",
+    "PCP"
+  ],
+  "result": {
+    "id": "assorteddecor:iron_lantern"
+  }
+}

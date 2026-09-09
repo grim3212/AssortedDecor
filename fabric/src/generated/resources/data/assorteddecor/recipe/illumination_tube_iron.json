@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:ingots/iron",
+    "G": "#c:glass",
+    "L": "#c:dusts/glowstone"
+  },
+  "pattern": [
+    " A ",
+    "GLG",
+    " A "
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:illumination_tube"
+  }
+}

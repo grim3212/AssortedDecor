@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#assorteddecor:roadways/color",
+    {
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "amount": 81000,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "result": {
+    "id": "assorteddecor:roadway"
+  }
+}

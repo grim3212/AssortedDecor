@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:clay_decoration"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_unfired_clay_decoration": {
+      "conditions": {
+        "items": [
+          {
+            "items": "assorteddecor:unfired_clay_decoration"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_unfired_clay_decoration"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:clay_decoration"
+    ]
+  }
+}

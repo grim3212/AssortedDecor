@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "assorteddecor:illumination_plate",
+    "X": "assorteddecor:roadway"
+  },
+  "pattern": [
+    "M",
+    "X"
+  ],
+  "result": {
+    "id": "assorteddecor:roadway_light"
+  }
+}

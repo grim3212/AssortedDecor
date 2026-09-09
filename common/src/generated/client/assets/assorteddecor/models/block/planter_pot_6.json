@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_top",
+  "textures": {
+    "side": "assorteddecor:block/planter_pot",
+    "top": "minecraft:block/soul_sand"
+  }
+}

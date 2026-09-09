@@ -1,0 +1,14 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "type": "minecraft:smelting",
+  "experience": 0.35,
+  "ingredient": "#c:tar",
+  "result": {
+    "id": "assorteddecor:asphalt"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "W": {
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
+      "amount": 81000,
+      "fluid": "minecraft:water"
+    },
+    "X": "#c:cobblestone"
+  },
+  "pattern": [
+    "XIX",
+    "XWX",
+    "XIX"
+  ],
+  "result": {
+    "id": "assorteddecor:fountain"
+  }
+}

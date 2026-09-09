@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": "#c:dyes/black",
+    "G": "#c:glass",
+    "L": "assorteddecor:illumination_tube"
+  },
+  "pattern": [
+    "GAG",
+    "ALA",
+    "GAG"
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:fluro_black"
+  }
+}

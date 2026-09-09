@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "#minecraft:planks",
+    "G": "#c:ingots/gold",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "#G#",
+    "GRG",
+    "#G#"
+  ],
+  "result": {
+    "id": "assorteddecor:wall_clock"
+  }
+}

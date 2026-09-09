@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "assorteddecor:block/colorizer_oblique_slope",
+    "tints": [
+      {
+        "type": "assorteddecor:colorizer"
+      }
+    ]
+  }
+}

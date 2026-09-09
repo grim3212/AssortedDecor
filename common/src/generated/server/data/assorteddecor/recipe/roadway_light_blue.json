@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "assorteddecor:roadway",
+    "assorteddecor:paint_roller_light_blue"
+  ],
+  "result": {
+    "id": "assorteddecor:roadway_light_blue"
+  }
+}

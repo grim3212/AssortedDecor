@@ -1,0 +1,20 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": "#c:ingots/iron",
+    "X": "assorteddecor:roadway"
+  },
+  "pattern": [
+    "M",
+    "X"
+  ],
+  "result": {
+    "id": "assorteddecor:roadway_manhole"
+  }
+}

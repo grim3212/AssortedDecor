@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": "#c:dyes/blue",
+    "D": "#c:dyes",
+    "G": "#c:dyes/green",
+    "R": "#c:dyes/red",
+    "X": "#c:stone"
+  },
+  "pattern": [
+    "XRX",
+    "GDB",
+    "XDX"
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:colorizer"
+  }
+}

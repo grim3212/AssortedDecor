@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#c:tar",
+    "#minecraft:planks",
+    "assorteddecor:paint_roller_brown"
+  ],
+  "result": {
+    "components": {
+      "minecraft:block_state": {
+        "color": "brown"
+      }
+    },
+    "count": 4,
+    "id": "assorteddecor:siding_horizontal"
+  }
+}

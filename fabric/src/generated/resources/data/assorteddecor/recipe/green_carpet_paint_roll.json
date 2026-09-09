@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "assorteddecor:paint_roller_green",
+    "#c:carpet"
+  ],
+  "result": {
+    "id": "minecraft:green_carpet"
+  }
+}

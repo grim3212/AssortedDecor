@@ -1,8 +1,0 @@
-{
-  "parent": "assorteddecor:block/color_cube_bottom_top",
-  "textures": {
-    "bottom": "assorteddecor:block/siding_top_bottom",
-    "side": "assorteddecor:block/siding_vertical",
-    "top": "assorteddecor:block/siding_top_bottom"
-  }
-}

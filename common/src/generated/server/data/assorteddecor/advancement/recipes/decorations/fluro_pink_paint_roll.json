@@ -1,0 +1,38 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fluro": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#assorteddecor:fluro"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:fluro_pink_paint_roll"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_fluro"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:fluro_pink_paint_roll"
+    ]
+  }
+}

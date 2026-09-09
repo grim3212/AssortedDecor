@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "#c:ingots/iron",
+    "W": {
+      "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
+      "fluid": "minecraft:water"
+    },
+    "X": "#c:cobblestone"
+  },
+  "pattern": [
+    "XIX",
+    "XWX",
+    "XIX"
+  ],
+  "result": {
+    "id": "assorteddecor:fountain"
+  }
+}

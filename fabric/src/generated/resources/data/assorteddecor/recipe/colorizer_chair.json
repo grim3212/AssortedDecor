@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": "assorteddecor:colorizer"
+  },
+  "pattern": [
+    "X  ",
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "count": 4,
+    "id": "assorteddecor:colorizer_chair"
+  }
+}

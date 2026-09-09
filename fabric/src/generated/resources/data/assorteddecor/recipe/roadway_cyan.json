@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "assorteddecor:roadway",
+    "assorteddecor:paint_roller_cyan"
+  ],
+  "result": {
+    "id": "assorteddecor:roadway_cyan"
+  }
+}

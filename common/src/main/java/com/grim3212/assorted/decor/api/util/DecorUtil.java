@@ -2,6 +2,7 @@ package com.grim3212.assorted.decor.api.util;
 
 import com.grim3212.assorted.decor.DecorCommonMod;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
+import com.grim3212.assorted.decor.api.colorizer.SlopeType;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerSlopeBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerSlopeSideBlock;
 import com.grim3212.assorted.lib.util.NBTHelper;
@@ -76,6 +77,27 @@ public class DecorUtil {
      * @param numPieces  The number of pieces that this Slope has
      * @return A new AxisAlignedBB at this smoothness level
      */
+    /**
+     * The slope family of the block in {@code state}, or null if it is not a slope.
+     * <p>
+     * Replaces the {@code state.getBlock() == DecorBlocks.COLORIZER_*.get()} comparisons this method
+     * used to make. Those read the registry, and since block shapes are baked at construction the
+     * reads happened while {@code DecorBlocks}' static initialiser was still running - the entry
+     * came back null and took the whole game down at registration. The slope type is carried on the
+     * block instance, so asking it directly has no ordering hazard.
+     */
+    private static SlopeType slopeType(BlockState state) {
+        if (state.getBlock() instanceof ColorizerSlopeBlock slope) {
+            return slope.getSlopeType();
+        }
+
+        if (state.getBlock() instanceof ColorizerSlopeSideBlock slope) {
+            return slope.getSlopeType();
+        }
+
+        return null;
+    }
+
     public static VoxelShape getCollision(BlockState state, int piece, int smoothness, int numPieces) {
         piece++;
 
@@ -86,7 +108,7 @@ public class DecorUtil {
         float oneOffset = (float) (smoothness + 1) / DecorCommonMod.COMMON_CONFIG.shapeSmoothness.get();
 
         if (state.getBlock() instanceof ColorizerSlopeBlock) {
-            if (state.getBlock() == DecorBlocks.COLORIZER_SLOPE.get()) {
+            if (slopeType(state) == SlopeType.SLOPE) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case EAST:
@@ -114,7 +136,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_ANGLE.get()) {
+            } else if (slopeType(state) == SlopeType.SLOPED_ANGLE) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case NORTH:
@@ -142,7 +164,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_SLANTED_CORNER.get()) {
+            } else if (slopeType(state) == SlopeType.SLANTED_CORNER) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case EAST:
@@ -170,7 +192,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get()) {
+            } else if (slopeType(state) == SlopeType.OBLIQUE_SLOPE) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case EAST:
@@ -255,7 +277,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get()) {
+            } else if (slopeType(state) == SlopeType.SLOPED_INTERSECTION) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case EAST:
@@ -323,7 +345,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_CORNER.get()) {
+            } else if (slopeType(state) == SlopeType.CORNER) {
                 if (state.getValue(ColorizerSlopeBlock.HALF) == Half.BOTTOM) {
                     switch (state.getValue(ColorizerSlopeBlock.FACING)) {
                         case EAST:
@@ -353,7 +375,7 @@ public class DecorUtil {
                 }
             }
         } else if (state.getBlock() instanceof ColorizerSlopeSideBlock) {
-            if (state.getBlock() == DecorBlocks.COLORIZER_PYRAMID.get()) {
+            if (slopeType(state) == SlopeType.PYRAMID) {
                 if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
                     return Shapes.create(new AABB(zeroOffset * 0.5F, 1.0F - oneOffset * 0.68F, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
                 } else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
@@ -372,7 +394,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_FULL_PYRAMID.get()) {
+            } else if (slopeType(state) == SlopeType.FULL_PYRAMID) {
                 if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.CEILING) {
                     return Shapes.create(new AABB(zeroOffset * 0.5F, 1.0F - oneOffset, zeroOffset * 0.5F, 1.0F - zeroOffset * 0.5F, 1.0F, 1.0F - zeroOffset * 0.5F));
                 } else if (state.getValue(ColorizerSlopeSideBlock.FACE) == AttachFace.FLOOR) {
@@ -391,7 +413,7 @@ public class DecorUtil {
                             return Shapes.empty();
                     }
                 }
-            } else if (state.getBlock() == DecorBlocks.COLORIZER_SLOPED_POST.get()) {
+            } else if (slopeType(state) == SlopeType.SLOPED_POST) {
                 return Shapes.block();
             }
 
