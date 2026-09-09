@@ -1,6 +1,5 @@
 package com.grim3212.assorted.decor.client.model.obj;
 
-import com.google.common.base.Charsets;
 import joptsimple.internal.Strings;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ObjTokenizer implements AutoCloseable {
     private final BufferedReader lineReader;
 
     public ObjTokenizer(InputStream inputStream) {
-        this.lineReader = new BufferedReader(new InputStreamReader(inputStream, Charsets.UTF_8));
+        this.lineReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
     }
 
     @Nullable

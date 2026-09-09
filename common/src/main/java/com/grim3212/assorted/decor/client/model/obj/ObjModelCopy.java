@@ -13,13 +13,13 @@ import com.grim3212.assorted.lib.client.model.vertices.QuadBakingVertexConsumer;
 import com.grim3212.assorted.lib.client.texture.UnitTextureAtlasSprite;
 import com.mojang.math.Transformation;
 import joptsimple.internal.Strings;
-import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
+import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ModelDebugName;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -315,11 +315,11 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
     // End Changes
 
     @Override
-    protected void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
+    protected void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, ModelState modelTransform, Identifier modelLocation) {
         for (var entry : deprecationWarnings.entrySet())
             LOGGER.warn("Model \"" + modelLocation + "\" is using the deprecated \"" + entry.getKey() + "\" field in its OBJ model instead of \"" + entry.getValue() + "\". This field will be removed in 1.20.");
 
-        parts.values().stream().forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
+        parts.values().stream().forEach(part -> part.addQuads(owner, modelBuilder, bakery, modelTransform, modelLocation));
     }
 
     private Pair<BakedQuad, Direction> makeQuad(int[][] indices, int tintIndex, Vector4f colorTint, Vector4f ambientColor, TextureAtlasSprite texture, Transformation transform) {
@@ -341,22 +341,22 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
             faceNormal = abs;
         }
 
-        var quad = new BakedQuad[1];
-        var quadBaker = new QuadBakingVertexConsumer(q -> quad[0] = q);
+        var quadBaker = new QuadBakingVertexConsumer.Buffered();
 
         quadBaker.setTexture(texture);
         quadBaker.setTintIndex(tintIndex);
 
-        int uv2 = 0;
+        // A quad carries a light emission level rather than packed lightmap coordinates now; the
+        // emission is combined with the position's own light when the quad is submitted.
         if (emissiveAmbient) {
             int fakeLight = (int) ((ambientColor.x() + ambientColor.y() + ambientColor.z()) * 15 / 3.0f);
-            uv2 = LightTexture.pack(fakeLight, fakeLight);
-            quadBaker.setHasAmbientOcclusion(fakeLight == 0 && shadeQuads);
+            quadBaker.setLightEmission(fakeLight);
+            quadBaker.setShade(fakeLight == 0 && shadeQuads);
         } else {
-            quadBaker.setHasAmbientOcclusion(shadeQuads);
+            quadBaker.setShade(shadeQuads);
         }
 
-        boolean hasTransform = !transform.equals(Transformation.identity());
+        boolean hasTransform = !transform.equals(Transformation.IDENTITY);
         // The incoming transform is referenced on the center of the block, but our
         // coords are referenced on the corner
         Transformation transformation = hasTransform ? TransformUtil.blockCenterToCorner(transform) : transform;
@@ -377,18 +377,22 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
                 TransformUtil.transformNormal(transformation, normal);
             }
             Vector4f tintedColor = new Vector4f(color.x() * colorTint.x(), color.y() * colorTint.y(), color.z() * colorTint.z(), color.w() * colorTint.w());
-            quadBaker.vertex(position.x(), position.y(), position.z());
-            quadBaker.color(tintedColor.x(), tintedColor.y(), tintedColor.z(), tintedColor.w());
-            quadBaker.uv(texture.getU(texCoord.x * 16), texture.getV((flipV ? 1 - texCoord.y : texCoord.y) * 16));
-            quadBaker.uv2(uv2);
-            quadBaker.normal(normal.x(), normal.y(), normal.z());
+            // A baked quad is positions and uvs only: colour, light and normal are supplied when the
+            // geometry is submitted, so the consumer accepts and ignores them. There is no
+            // endVertex() any more either - a vertex ends when the next one begins.
+            quadBaker.addVertex(position.x(), position.y(), position.z());
+            quadBaker.setColor(tintedColor.x(), tintedColor.y(), tintedColor.z(), tintedColor.w());
+            // getU/getV take a 0-1 offset in 26.2, not a 0-16 model coordinate.
+            quadBaker.setUv(texture.getU(texCoord.x), texture.getV(flipV ? 1 - texCoord.y : texCoord.y));
+            quadBaker.setNormal(normal.x(), normal.y(), normal.z());
             if (i == 0) {
-                quadBaker.setDirection(Direction.getNearest(normal.x(), normal.y(), normal.z()));
+                quadBaker.setDirection(Direction.getApproximateNearest(normal.x(), normal.y(), normal.z()));
             }
-            quadBaker.endVertex();
             pos[i] = position;
             norm[i] = normal;
         }
+
+        BakedQuad quad = quadBaker.getQuad();
 
         Direction cull = null;
         if (automaticCulling) {
@@ -419,7 +423,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
             }
         }
 
-        return Pair.of(quad[0], cull);
+        return Pair.of(quad, cull);
     }
 
     public CompositeModelRenderable bakeRenderable(IModelBakingContext configuration) {
@@ -447,7 +451,9 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
             return name;
         }
 
-        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
+        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, ModelState modelTransform, Identifier modelLocation) {
+            ModelDebugName debugName = modelLocation::toString;
+
             for (ModelMesh mesh : meshes) {
                 ObjMaterialLibrary.Material mat = mesh.mat;
                 if (mat == null)
@@ -455,13 +461,13 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
 
                 TextureAtlasSprite texture = getTexture();
                 if (texture == null)
-                    texture = spriteGetter.apply(UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, owner));
+                    texture = bakery.materials().get(UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, owner), debugName).sprite();
 
                 int tintIndex = mat.diffuseTintIndex;
                 Vector4f colorTint = mat.diffuseColor;
 
                 for (int[][] face : mesh.faces) {
-                    Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.getRotation());
+                    Pair<BakedQuad, Direction> quad = makeQuad(face, tintIndex, colorTint, mat.ambientColor, texture, modelTransform.transformation());
                     if (quad.getRight() == null)
                         modelBuilder.addUnculledFace(quad.getLeft());
                     else
@@ -480,12 +486,12 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
 
                 Identifier textureLocation = getTexture().contents().name();
                 if (textureLocation == null)
-                    textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
+                    textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).sprite();
 
                 final List<BakedQuad> quads = new ArrayList<>();
 
                 for (var face : mesh.faces) {
-                    var pair = makeQuad(face, tintIndex, colorTint, mat.ambientColor, UnitTextureAtlasSprite.INSTANCE, Transformation.identity());
+                    var pair = makeQuad(face, tintIndex, colorTint, mat.ambientColor, UnitTextureAtlasSprite.INSTANCE, Transformation.IDENTITY);
                     quads.add(pair.getLeft());
                 }
 
@@ -512,10 +518,10 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
         }
 
         @Override
-        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
-            super.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation);
+        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, ModelState modelTransform, Identifier modelLocation) {
+            super.addQuads(owner, modelBuilder, bakery, modelTransform, modelLocation);
 
-            parts.values().stream().forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
+            parts.values().stream().forEach(part -> part.addQuads(owner, modelBuilder, bakery, modelTransform, modelLocation));
         }
 
         @Override

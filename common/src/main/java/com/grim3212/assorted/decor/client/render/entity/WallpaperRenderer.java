@@ -6,187 +6,150 @@ import com.grim3212.assorted.decor.common.entity.WallpaperEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.Mth;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 
-public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
+/**
+ * Like {@link FrameRenderer}, the wallpaper's quads are loose geometry with no typed submit call, so
+ * they are handed to {@link SubmitNodeCollector#submitCustomGeometry}. The four
+ * {@code if (direction == ...)} arms the 1.20.1 version carried emitted byte identical vertices - the
+ * facing only ever mattered through the yaw rotation applied before the geometry - so they are
+ * collapsed here. The one arm that genuinely differed, the top edge on a NORTH facing wallpaper, is
+ * kept.
+ */
+public class WallpaperRenderer extends EntityRenderer<WallpaperEntity, WallpaperRenderer.WallpaperRenderState> {
 
     private static final Identifier wallpaperTexture = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/wallpapers.png");
+
+    private static final float MAX_UV = 0.0625F;
+    private static final float SIDE_UV = 0.00195313F;
 
     public WallpaperRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void render(WallpaperEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-        matrixStackIn.pushPose();
-
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityYaw));
-        matrixStackIn.scale(0.03125F, 0.03125F, 0.03125F);
-        renderWallpaper(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-
-        matrixStackIn.popPose();
-    }
-
-    public void renderWallpaper(WallpaperEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        VertexConsumer builder = bufferIn.getBuffer(RenderType.entitySolid(wallpaperTexture));
-        PoseStack.Pose matrixstack$entry = matrixStackIn.last();
-        Matrix4f matrix4f = matrixstack$entry.pose();
-        Matrix3f matrix3f = matrixstack$entry.normal();
-
-        int x = Mth.floor(entityIn.getPos().getX());
-        int y = Mth.floor(entityIn.getPos().getY());
-        int z = Mth.floor(entityIn.getPos().getZ());
-
-        float minX = -16.0F;
-        float minY = -16.0F;
-        float minZ = 0.0F;
-
-        float maxX = 16.0F;
-        float maxY = 16.0F;
-        float maxZ = DecorClient.CLIENT_CONFIG.wallpaperWidth.get().floatValue();
-
-        float minU = entityIn.getWallpaperID() / 16 / 16.0F;
-        float minV = entityIn.getWallpaperID() % 16 / 16.0F;
-
-        float maxUV = 0.0625F;
-        float sideUV = 0.00195313F;
-
-        float red = entityIn.getWallpaperColor()[0] / 255.0f;
-        float green = entityIn.getWallpaperColor()[1] / 255.0f;
-        float blue = entityIn.getWallpaperColor()[2] / 255.0f;
-
-        int light = LevelRenderer.getLightColor(entityIn.level(), new BlockPos(x, y, z));
-
-        if (entityIn.getDirection() == Direction.NORTH) {
-            builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-        } else if (entityIn.getDirection() == Direction.SOUTH) {
-            builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-        } else if (entityIn.getDirection() == Direction.WEST) {
-            builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-        } else if (entityIn.getDirection() == Direction.EAST) {
-            builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-        }
-
-        if (!entityIn.isBlockLeft) {
-            if (entityIn.getDirection() == Direction.NORTH) {
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.SOUTH) {
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.WEST) {
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.EAST) {
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV - sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1.0F, 0.0F, 0.0F).endVertex();
-            }
-        }
-        if (!entityIn.isBlockUp) {
-            if (entityIn.getDirection() == Direction.NORTH) {
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.SOUTH) {
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.WEST) {
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.EAST) {
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, maxY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
-            }
-        }
-        if (!entityIn.isBlockRight) {
-            if (entityIn.getDirection() == Direction.NORTH) {
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.SOUTH) {
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.WEST) {
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.EAST) {
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, minZ).color(red, green, blue, 255).uv(minU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, maxY, maxZ).color(red, green, blue, 255).uv(minU + sideUV, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 1.0F, 0.0F, 0.0F).endVertex();
-            }
-        }
-        if (!entityIn.isBlockDown) {
-            if (entityIn.getDirection() == Direction.NORTH) {
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.SOUTH) {
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.WEST) {
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            } else if (entityIn.getDirection() == Direction.EAST) {
-                builder.vertex(matrix4f, minX, minY, maxZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, minX, minY, minZ).color(red, green, blue, 255).uv(minU + maxUV, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, minZ).color(red, green, blue, 255).uv(minU, minV + maxUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-                builder.vertex(matrix4f, maxX, minY, maxZ).color(red, green, blue, 255).uv(minU, minV + maxUV - sideUV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            }
-        }
+    public WallpaperRenderState createRenderState() {
+        return new WallpaperRenderState();
     }
 
     @Override
-    public Identifier getTextureLocation(WallpaperEntity entity) {
-        return wallpaperTexture;
+    public void extractRenderState(WallpaperEntity entity, WallpaperRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+
+        state.direction = entity.getDirection();
+        state.blockUp = entity.isBlockUp;
+        state.blockDown = entity.isBlockDown;
+        state.blockLeft = entity.isBlockLeft;
+        state.blockRight = entity.isBlockRight;
+
+        state.minU = entity.getWallpaperID() / 16 / 16.0F;
+        state.minV = entity.getWallpaperID() % 16 / 16.0F;
+
+        int[] color = entity.getWallpaperColor();
+        state.color = ARGB.color(color[0], color[1], color[2]);
+        // The wallpaper is lit from the block it is stuck to rather than from its own light probe,
+        // which is what LevelRenderer#getLightColor used to answer.
+        state.wallpaperLightCoords = LightCoordsUtil.getLightCoords(entity.level(), entity.getPos());
+    }
+
+    @Override
+    public void submit(WallpaperRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+        super.submit(state, poseStack, submitNodeCollector, camera);
+
+        if (!state.direction.getAxis().isHorizontal()) {
+            return;
+        }
+
+        poseStack.pushPose();
+
+        poseStack.mulPose(Axis.YP.rotationDegrees(180 - state.direction.get2DDataValue() * 90));
+        poseStack.scale(0.03125F, 0.03125F, 0.03125F);
+        submitWallpaper(state, poseStack, submitNodeCollector);
+
+        poseStack.popPose();
+    }
+
+    private void submitWallpaper(WallpaperRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(wallpaperTexture), (pose, buffer) -> {
+            float minX = -16.0F;
+            float minY = -16.0F;
+            float minZ = 0.0F;
+
+            float maxX = 16.0F;
+            float maxY = 16.0F;
+            float maxZ = DecorClient.CLIENT_CONFIG.wallpaperWidth.get().floatValue();
+
+            float minU = state.minU;
+            float minV = state.minV;
+
+            int color = state.color;
+            int light = state.wallpaperLightCoords;
+
+            vertex(pose, buffer, minX, minY, minZ, color, minU + MAX_UV, minV + MAX_UV, light, 0.0F, 0.0F, 1.0F);
+            vertex(pose, buffer, minX, maxY, minZ, color, minU + MAX_UV, minV, light, 0.0F, 0.0F, 1.0F);
+            vertex(pose, buffer, maxX, maxY, minZ, color, minU, minV, light, 0.0F, 0.0F, 1.0F);
+            vertex(pose, buffer, maxX, minY, minZ, color, minU, minV + MAX_UV, light, 0.0F, 0.0F, 1.0F);
+
+            if (!state.blockLeft) {
+                vertex(pose, buffer, minX, maxY, maxZ, color, minU + MAX_UV, minV, light, -1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, minX, maxY, minZ, color, minU + MAX_UV, minV, light, -1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, minX, minY, minZ, color, minU + MAX_UV - SIDE_UV, minV + MAX_UV, light, -1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, minX, minY, maxZ, color, minU + MAX_UV - SIDE_UV, minV + MAX_UV, light, -1.0F, 0.0F, 0.0F);
+            }
+
+            if (!state.blockUp) {
+                if (state.direction == Direction.NORTH) {
+                    vertex(pose, buffer, minX, maxY, minZ, color, minU + MAX_UV, minV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, minX, maxY, maxZ, color, minU + MAX_UV, minV + SIDE_UV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, maxX, maxY, maxZ, color, minU, minV + SIDE_UV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, maxX, maxY, minZ, color, minU, minV, light, 0.0F, 1.0F, 0.0F);
+                } else {
+                    vertex(pose, buffer, maxX, maxY, maxZ, color, minU, minV + SIDE_UV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, maxX, maxY, minZ, color, minU, minV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, minX, maxY, minZ, color, minU + MAX_UV, minV, light, 0.0F, 1.0F, 0.0F);
+                    vertex(pose, buffer, minX, maxY, maxZ, color, minU + MAX_UV, minV + SIDE_UV, light, 0.0F, 1.0F, 0.0F);
+                }
+            }
+
+            if (!state.blockRight) {
+                vertex(pose, buffer, maxX, minY, maxZ, color, minU + SIDE_UV, minV + MAX_UV, light, 1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, maxX, minY, minZ, color, minU, minV + MAX_UV, light, 1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, maxX, maxY, minZ, color, minU, minV, light, 1.0F, 0.0F, 0.0F);
+                vertex(pose, buffer, maxX, maxY, maxZ, color, minU + SIDE_UV, minV, light, 1.0F, 0.0F, 0.0F);
+            }
+
+            if (!state.blockDown) {
+                vertex(pose, buffer, minX, minY, maxZ, color, minU + MAX_UV, minV + MAX_UV - SIDE_UV, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, minX, minY, minZ, color, minU + MAX_UV, minV + MAX_UV, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, maxX, minY, minZ, color, minU, minV + MAX_UV, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, maxX, minY, maxZ, color, minU, minV + MAX_UV - SIDE_UV, light, 0.0F, -1.0F, 0.0F);
+            }
+        });
+    }
+
+    private static void vertex(PoseStack.Pose pose, VertexConsumer buffer, float x, float y, float z, int color, float u, float v, int lightCoords, float nx, float ny, float nz) {
+        buffer.addVertex(pose, x, y, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lightCoords).setNormal(pose, nx, ny, nz);
+    }
+
+    public static class WallpaperRenderState extends EntityRenderState {
+        public Direction direction = Direction.NORTH;
+        public boolean blockUp;
+        public boolean blockDown;
+        public boolean blockLeft;
+        public boolean blockRight;
+        public float minU;
+        public float minV;
+        public int color = -1;
+        public int wallpaperLightCoords;
     }
 }

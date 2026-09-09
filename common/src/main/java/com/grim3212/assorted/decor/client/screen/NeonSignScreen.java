@@ -1,49 +1,60 @@
 package com.grim3212.assorted.decor.client.screen;
 
 import com.grim3212.assorted.decor.Constants;
-import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRenderer;
-import com.grim3212.assorted.decor.common.blocks.NeonSignStandingBlock;
 import com.grim3212.assorted.decor.common.blocks.blockentity.NeonSignBlockEntity;
 import com.grim3212.assorted.decor.common.network.NeonChangeModePacket;
 import com.grim3212.assorted.decor.common.network.NeonUpdatePacket;
 import com.grim3212.assorted.lib.platform.Services;
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.TextCursorUtils;
 import net.minecraft.client.gui.font.TextFieldHelper;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.WoodType;
-import org.joml.Matrix4f;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Util;
 
 import java.util.stream.IntStream;
 
+/**
+ * Rebuilt on the retained-mode GUI, following vanilla's {@code AbstractSignEditScreen}: the screen
+ * records elements into a {@link GuiGraphicsExtractor} from {@code extractRenderState} instead of
+ * drawing from {@code render}, and the cursor and selection are drawn by
+ * {@link TextCursorUtils} / {@link GuiGraphicsExtractor#textHighlight} rather than by a hand-built
+ * {@code BufferBuilder} with a logic-op blend.
+ * <p>
+ * TODO(26.2): the 3D preview of the sign itself is gone.
+ *  What it used to do: build a {@code SignRenderer.SignModel}, pick the board texture for the current
+ *  {@link NeonSignBlockEntity#mode} off the {@code Sheets.SIGN_SHEET} atlas and render it into the
+ *  screen through the {@code MultiBufferSource} behind {@code GuiGraphics#pose()}, with the editable
+ *  text drawn on top of it in the same 3D pose.
+ *  Why it cannot be expressed: {@code SignRenderer}, {@code Sheets.SIGN_SHEET} and
+ *  {@code Material#buffer} were all deleted, and a screen has no {@code MultiBufferSource} to write
+ *  into any more. Vanilla solved the same problem by dropping the model and blitting a flat
+ *  {@code textures/gui/signs/<wood>.png} instead (see {@code SignEditScreen}); doing that here needs a
+ *  new 24x26 GUI texture per neon sign mode, which the mod does not ship - the existing
+ *  {@code textures/model/neon_sign*.png} are 64x32 entity-model sheets with a different layout. The
+ *  text is laid out on its own until such a texture exists.
+ */
 public class NeonSignScreen extends Screen {
-    private SignRenderer.SignModel signModel;
+
+    private static final int LINE_HEIGHT = 10;
+    private static final int TEXT_COLOR = -1;
+
     /**
      * Reference to the sign object.
      */
     private final NeonSignBlockEntity tileSign;
     /**
-     * Counts the number of screen updates.
-     */
-    private int updateCounter;
-    /**
      * The index of the line that is being edited.
      */
     private int editLine;
+
+    private long cursorBlinkStartTime;
 
     private final int bgWidth = 176;
     private final int bgHeight = 208;
@@ -64,6 +75,8 @@ public class NeonSignScreen extends Screen {
     public void init() {
         int x = (width - bgWidth) / 2;
         int y = (height - bgHeight) / 2;
+
+        this.cursorBlinkStartTime = Util.getMillis();
 
         this.textInputUtil = new TextFieldHelper(() -> {
             return this.lines[this.editLine];
@@ -122,8 +135,6 @@ public class NeonSignScreen extends Screen {
             NeonSignScreen.this.tileSign.mode = 2;
             Services.NETWORK.sendToServer(new NeonChangeModePacket(2, NeonSignScreen.this.tileSign.getBlockPos()));
         }));
-
-        this.signModel = SignRenderer.createSignModel(this.minecraft.getEntityModels(), WoodType.OAK);
     }
 
     private void addSignText(int id) {
@@ -133,7 +144,7 @@ public class NeonSignScreen extends Screen {
 
     private void close() {
         this.tileSign.setChanged();
-        this.minecraft.setScreen((Screen) null);
+        this.minecraft.gui.setScreen(null);
     }
 
     @Override
@@ -149,7 +160,6 @@ public class NeonSignScreen extends Screen {
 
     @Override
     public void tick() {
-        ++this.updateCounter;
         if (!this.tileSign.getType().isValid(this.tileSign.getBlockState())) {
             this.close();
         }
@@ -182,128 +192,85 @@ public class NeonSignScreen extends Screen {
             case 22:
                 return ChatFormatting.RESET;
         }
-        return ChatFormatting.getById(buttonId - 1);
+        // ChatFormatting lost its numeric ids; the sixteen colours are still the first sixteen
+        // constants, declared in the order those ids used.
+        return buttonId >= 1 && buttonId <= 16 ? ChatFormatting.values()[buttonId - 1] : ChatFormatting.RESET;
     }
 
     @Override
-    public boolean charTyped(char codePoint, int modifiers) {
-        this.textInputUtil.charTyped(codePoint);
+    public boolean charTyped(CharacterEvent event) {
+        this.textInputUtil.charTyped(event);
         return true;
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == 265) {
+    public boolean keyPressed(KeyEvent event) {
+        if (event.isUp()) {
             this.editLine = this.editLine - 1 & 3;
             this.textInputUtil.setCursorToEnd();
             return true;
-        } else if (keyCode != 264 && keyCode != 257 && keyCode != 335) {
-            return this.textInputUtil.keyPressed(keyCode) ? true : super.keyPressed(keyCode, scanCode, modifiers);
-        } else {
+        } else if (event.isDown() || event.isConfirmation()) {
             this.editLine = this.editLine + 1 & 3;
             this.textInputUtil.setCursorToEnd();
             return true;
+        } else {
+            return this.textInputUtil.keyPressed(event) ? true : super.keyPressed(event);
         }
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        Lighting.setupForFlatItems();
-        this.renderBackground(guiGraphics);
-        guiGraphics.drawCenteredString(this.font, this.title, this.width / 2, 40, 16777215);
-        PoseStack matrixStack = guiGraphics.pose();
-        matrixStack.pushPose();
-        matrixStack.translate((double) (this.width / 2), 0.0D, 50.0D);
-        float f = 93.75F;
-        matrixStack.scale(f, -f, f);
-        matrixStack.translate(0.0D, -1.3125D, 0.0D);
-        BlockState blockstate = this.tileSign.getBlockState();
-        boolean flag = blockstate.getBlock() instanceof NeonSignStandingBlock;
-        if (!flag) {
-            matrixStack.translate(0.0D, -0.3125D, 0.0D);
-        }
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTicks);
 
-        boolean flag1 = this.updateCounter / 6 % 2 == 0;
-        float f1 = 0.6666667F;
-        matrixStack.pushPose();
-        matrixStack.scale(f1, -f1, -f1);
-        MultiBufferSource.BufferSource irendertypebuffer$impl = this.minecraft.renderBuffers().bufferSource();
-        Material rendermaterial = new Material(Sheets.SIGN_SHEET, NeonSignBlockEntityRenderer.getSignTexture(tileSign.mode));
-        VertexConsumer ivertexbuilder = rendermaterial.buffer(irendertypebuffer$impl, this.signModel::renderType);
-        this.signModel.root.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
-        if (flag) {
-            this.signModel.stick.render(matrixStack, ivertexbuilder, 15728880, OverlayTexture.NO_OVERLAY);
-        }
+        graphics.centeredText(this.font, this.title, this.width / 2, 40, -1);
+        this.extractSignText(graphics);
+    }
 
-        matrixStack.popPose();
-        float f2 = 0.010416667F;
-        matrixStack.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
-        matrixStack.scale(f2, -f2, f2);
-        int j = this.textInputUtil.getCursorPos();
-        int k = this.textInputUtil.getSelectionPos();
-        int l = this.editLine * 10 - this.lines.length * 5;
-        Matrix4f matrix4f = matrixStack.last().pose();
+    private void extractSignText(GuiGraphicsExtractor graphics) {
+        // Anchored to the same panel the buttons are laid out against, so the text keeps its place
+        // above them at any window size.
+        int originX = this.width / 2;
+        int originY = (this.height - this.bgHeight) / 2 + 80;
 
-        for (int i1 = 0; i1 < this.lines.length; ++i1) {
-            String s = this.lines[i1];
-            if (s != null) {
-                if (this.font.isBidirectional()) {
-                    s = this.font.bidirectionalShaping(s);
-                }
+        boolean showCursor = TextCursorUtils.isCursorVisible(Util.getMillis() - this.cursorBlinkStartTime);
+        int cursorPos = this.textInputUtil.getCursorPos();
+        int selectionPos = this.textInputUtil.getSelectionPos();
+        int signMidpoint = 4 * LINE_HEIGHT / 2;
+        int cursorY = originY + this.editLine * LINE_HEIGHT - signMidpoint;
 
-                float f3 = (float) (-this.minecraft.font.width(s) / 2);
-                guiGraphics.drawString(this.minecraft.font, this.tileSign.getText(i1), (int) f3, i1 * 10 - this.lines.length * 5, 16777215);
-                if (i1 == this.editLine && j >= 0 && flag1) {
-                    int j1 = this.minecraft.font.width(s.substring(0, Math.max(Math.min(j, s.length()), 0)));
-                    int k1 = j1 - this.minecraft.font.width(s) / 2;
-                    if (j >= s.length()) {
-                        guiGraphics.drawString(this.minecraft.font, "_", k1, l, 16777215);
-                    }
+        for (int i = 0; i < this.lines.length; i++) {
+            String line = this.lines[i];
+            if (line == null) {
+                continue;
+            }
+
+            if (this.font.isBidirectional()) {
+                line = this.font.bidirectionalShaping(line);
+            }
+
+            int x = originX - this.font.width(line) / 2;
+            graphics.text(this.font, line, x, originY + i * LINE_HEIGHT - signMidpoint, TEXT_COLOR, false);
+
+            if (i != this.editLine || cursorPos < 0) {
+                continue;
+            }
+
+            int cursorX = originX + this.font.width(line.substring(0, Math.max(Math.min(cursorPos, line.length()), 0))) - this.font.width(line) / 2;
+            if (showCursor) {
+                if (cursorPos >= line.length()) {
+                    TextCursorUtils.extractAppendCursor(graphics, this.font, cursorX, cursorY, TEXT_COLOR, false);
+                } else {
+                    TextCursorUtils.extractInsertCursor(graphics, cursorX, cursorY, ARGB.opaque(TEXT_COLOR), LINE_HEIGHT);
                 }
             }
-        }
 
-        irendertypebuffer$impl.endBatch();
-
-        for (int i3 = 0; i3 < this.lines.length; ++i3) {
-            String s1 = this.lines[i3];
-            if (s1 != null && i3 == this.editLine && j >= 0) {
-                int j3 = this.minecraft.font.width(s1.substring(0, Math.max(Math.min(j, s1.length()), 0)));
-                int k3 = j3 - this.minecraft.font.width(s1) / 2;
-                if (flag1 && j < s1.length()) {
-                    guiGraphics.fill(k3, l - 1, k3 + 1, l + 9, -16777216 | 16777215);
-                }
-
-                if (k != j) {
-                    int l3 = Math.min(j, k);
-                    int l1 = Math.max(j, k);
-                    int i2 = this.minecraft.font.width(s1.substring(0, l3)) - this.minecraft.font.width(s1) / 2;
-                    int j2 = this.minecraft.font.width(s1.substring(0, l1)) - this.minecraft.font.width(s1) / 2;
-                    int k2 = Math.min(i2, j2);
-                    int l2 = Math.max(i2, j2);
-                    Tesselator tessellator = Tesselator.getInstance();
-                    BufferBuilder bufferbuilder = tessellator.getBuilder();
-                    // TODO: Look into these
-//                    RenderSystem.disableTexture();
-                    RenderSystem.enableColorLogicOp();
-                    RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-                    bufferbuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-                    bufferbuilder.vertex(matrix4f, (float) k2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
-                    bufferbuilder.vertex(matrix4f, (float) l2, (float) (l + 9), 0.0F).color(0, 0, 255, 255).endVertex();
-                    bufferbuilder.vertex(matrix4f, (float) l2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
-                    bufferbuilder.vertex(matrix4f, (float) k2, (float) l, 0.0F).color(0, 0, 255, 255).endVertex();
-                    BufferUploader.drawWithShader(bufferbuilder.end());
-                    RenderSystem.disableColorLogicOp();
-//                    RenderSystem.enableTexture();
-                }
+            if (selectionPos != cursorPos) {
+                int startIndex = Math.min(cursorPos, selectionPos);
+                int endIndex = Math.max(cursorPos, selectionPos);
+                int startPosX = originX + this.font.width(line.substring(0, startIndex)) - this.font.width(line) / 2;
+                int endPosX = originX + this.font.width(line.substring(0, endIndex)) - this.font.width(line) / 2;
+                graphics.textHighlight(Math.min(startPosX, endPosX), cursorY, Math.max(startPosX, endPosX), cursorY + LINE_HEIGHT, true);
             }
         }
-
-        matrixStack.popPose();
-        Lighting.setupFor3DItems();
-        matrixStack.pushPose();
-        matrixStack.translate(0, 0, 100);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        matrixStack.popPose();
     }
 }

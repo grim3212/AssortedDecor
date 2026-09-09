@@ -2,13 +2,19 @@ package com.grim3212.assorted.decor.client.screen;
 
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.common.inventory.CageContainer;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
+/**
+ * The GUI went retained-mode in 26.x: screens no longer draw, they record elements into a
+ * {@link GuiGraphicsExtractor} that {@code GuiRenderer} plays back later. So {@code renderBg} is
+ * replaced by {@code extractBackground}, and the {@code render} override that used to sequence
+ * background/contents/tooltip by hand is gone - the base screen already does that.
+ */
 public class CageScreen extends AbstractContainerScreen<CageContainer> {
 
     private static final Identifier CAGE_GUI_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/container/cage.png");
@@ -18,18 +24,11 @@ public class CageScreen extends AbstractContainerScreen<CageContainer> {
     }
 
     @Override
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(guiGraphics);
-        super.render(guiGraphics, mouseX, mouseY, partialTicks);
-        this.renderTooltip(guiGraphics, mouseX, mouseY);
-    }
+    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
+        super.extractBackground(graphics, mouseX, mouseY, partialTicks);
 
-    @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int x, int y) {
-        RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, CAGE_GUI_TEXTURE);
         int i = this.leftPos;
         int j = this.topPos;
-        guiGraphics.blit(CAGE_GUI_TEXTURE, i, j, 0, 0, this.imageWidth, this.imageHeight);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, CAGE_GUI_TEXTURE, i, j, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
     }
 }

@@ -7,17 +7,26 @@ import com.grim3212.assorted.decor.common.items.FrameItem.FrameMaterial;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.LightCoordsUtil;
 
-public class FrameRenderer extends EntityRenderer<FrameEntity> {
+/**
+ * Loose geometry like this has no typed submit call, so it goes through
+ * {@link SubmitNodeCollector#submitCustomGeometry} - the one place a raw {@link VertexConsumer} is
+ * still handed out. Everything the draw needs is read off the entity into a
+ * {@link FrameRenderState} first; the submit lambda runs later, with no entity and no level to look
+ * anything up in.
+ */
+public class FrameRenderer extends EntityRenderer<FrameEntity, FrameRenderer.FrameRenderState> {
 
     private static final Identifier framesTexture = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/frames.png");
 
@@ -26,97 +35,121 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
     }
 
     @Override
-    public void render(FrameEntity entityIn, float entityInYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        matrixStackIn.pushPose();
-
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F - entityInYaw));
-        renderBeams(entityIn, entityInYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-
-        matrixStackIn.popPose();
-    }
-
-    private void renderBeams(FrameEntity entityIn, float entityInYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
-        FrameType frame = entityIn.getCurrentFrame();
-
-        VertexConsumer builder = bufferIn.getBuffer(RenderType.entitySolid(framesTexture));
-        PoseStack.Pose matrixstack$entry = matrixStackIn.last();
-        Matrix4f matrix4f = matrixstack$entry.pose();
-        Matrix3f matrix3f = matrixstack$entry.normal();
-
-        matrixStackIn.scale(frame.sizeX / 256.0F + 0.001F, frame.sizeY / 256.0F + 0.001F, 0.0625F);
-
-        float xPos = -8.0F;
-        float yPos = -8.0F;
-
-        int[] planks = frame.planks;
-        FrameRender[] renderFrames = FrameRender.values();
-
-        for (int i = 0; i < planks.length; i++) {
-            int currentPlank = planks[i];
-            float zFront = renderFrames[currentPlank].zFront;
-            float zBack = renderFrames[currentPlank].zBack;
-
-            int mod = entityIn.getFrameMaterial() == FrameMaterial.WOOD ? 0 : 1;
-
-            float u1 = 0.5F * mod;
-            float u2 = 0.5F * (mod + renderFrames[currentPlank].texSize);
-            float u3 = 0.5F * (mod + 0.5F);
-
-            if (!frame.isCollidable) {
-                u3 = 0.5F * (mod + 1.0F);
-            }
-
-            float sizeX = frame.sizeX / 16.0F;
-            float sizeY = frame.sizeY / 16.0F;
-            float f1 = (float) Math.sqrt(Math.pow((renderFrames[currentPlank].x2 - renderFrames[currentPlank].x1) * sizeX, 2.0D) + Math.pow((renderFrames[currentPlank].y2 - renderFrames[currentPlank].y1) * sizeY, 2.0D));
-            float f2 = (float) Math.sqrt(Math.pow((renderFrames[currentPlank].x4 - renderFrames[currentPlank].x3) * sizeX, 2.0D) + Math.pow((renderFrames[currentPlank].y4 - renderFrames[currentPlank].y3) * sizeY, 2.0D));
-            float f3 = (f2 - f1) / (f2 * 2.0F);
-            float v1 = f2 / 32.0F;
-            float v2 = f3 * v1;
-            float v3 = (1.0F - f3) * v1;
-
-            float red = entityIn.getFrameColor()[0] / 255.0f;
-            float green = entityIn.getFrameColor()[1] / 255.0f;
-            float blue = entityIn.getFrameColor()[2] / 255.0f;
-
-            int light = LevelRenderer.getLightColor(entityIn.level(), entityIn.getPos());
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u2, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u2, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, -1.0F).endVertex();
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u2, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u2, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, v3).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v2).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 0.0F, 1.0F).endVertex();
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u3, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u3, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x2, yPos + renderFrames[currentPlank].y2, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u1, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zFront).color(red, green, blue, 255).uv(u3, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x3, yPos + renderFrames[currentPlank].y3, zBack).color(red, green, blue, 255).uv(u1, v1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zFront).color(red, green, blue, 255).uv(u3, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zFront).color(red, green, blue, 255).uv(u3, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x4, yPos + renderFrames[currentPlank].y4, zBack).color(red, green, blue, 255).uv(u1, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-            builder.vertex(matrix4f, xPos + renderFrames[currentPlank].x1, yPos + renderFrames[currentPlank].y1, zBack).color(red, green, blue, 255).uv(u1, v1 / 3.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
-
-        }
+    public FrameRenderState createRenderState() {
+        return new FrameRenderState();
     }
 
     @Override
-    public Identifier getTextureLocation(FrameEntity entity) {
-        return framesTexture;
+    public void extractRenderState(FrameEntity entity, FrameRenderState state, float partialTicks) {
+        super.extractRenderState(entity, state, partialTicks);
+
+        state.frame = entity.getCurrentFrame();
+        state.direction = entity.getDirection();
+        state.wood = entity.getFrameMaterial() == FrameMaterial.WOOD;
+
+        int[] color = entity.getFrameColor();
+        state.color = ARGB.color(color[0], color[1], color[2]);
+        // The frame is lit from the block it hangs on rather than from its own light probe, which is
+        // what LevelRenderer#getLightColor used to answer.
+        state.frameLightCoords = LightCoordsUtil.getLightCoords(entity.level(), entity.getPos());
+    }
+
+    @Override
+    public void submit(FrameRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+        poseStack.pushPose();
+
+        poseStack.mulPose(Axis.YP.rotationDegrees(180 - state.direction.get2DDataValue() * 90));
+        submitBeams(state, poseStack, submitNodeCollector);
+
+        poseStack.popPose();
+
+        super.submit(state, poseStack, submitNodeCollector, camera);
+    }
+
+    private void submitBeams(FrameRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        FrameType frame = state.frame;
+
+        poseStack.pushPose();
+        poseStack.scale(frame.sizeX / 256.0F + 0.001F, frame.sizeY / 256.0F + 0.001F, 0.0625F);
+
+        submitNodeCollector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(framesTexture), (pose, buffer) -> {
+            float xPos = -8.0F;
+            float yPos = -8.0F;
+
+            int[] planks = frame.planks;
+            FrameRender[] renderFrames = FrameRender.values();
+            int color = state.color;
+            int light = state.frameLightCoords;
+
+            for (int i = 0; i < planks.length; i++) {
+                FrameRender plank = renderFrames[planks[i]];
+                float zFront = plank.zFront;
+                float zBack = plank.zBack;
+
+                int mod = state.wood ? 0 : 1;
+
+                float u1 = 0.5F * mod;
+                float u2 = 0.5F * (mod + plank.texSize);
+                float u3 = 0.5F * (mod + 0.5F);
+
+                if (!frame.isCollidable) {
+                    u3 = 0.5F * (mod + 1.0F);
+                }
+
+                float sizeX = frame.sizeX / 16.0F;
+                float sizeY = frame.sizeY / 16.0F;
+                float f1 = (float) Math.sqrt(Math.pow((plank.x2 - plank.x1) * sizeX, 2.0D) + Math.pow((plank.y2 - plank.y1) * sizeY, 2.0D));
+                float f2 = (float) Math.sqrt(Math.pow((plank.x4 - plank.x3) * sizeX, 2.0D) + Math.pow((plank.y4 - plank.y3) * sizeY, 2.0D));
+                float f3 = (f2 - f1) / (f2 * 2.0F);
+                float v1 = f2 / 32.0F;
+                float v2 = f3 * v1;
+                float v3 = (1.0F - f3) * v1;
+
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zFront, color, u1, v2, light, 0.0F, 0.0F, -1.0F);
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zFront, color, u1, v3, light, 0.0F, 0.0F, -1.0F);
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zFront, color, u2, v1, light, 0.0F, 0.0F, -1.0F);
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zFront, color, u2, 0F, light, 0.0F, 0.0F, -1.0F);
+
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zBack, color, u2, 0F, light, 0.0F, 0.0F, 1.0F);
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zBack, color, u2, v1, light, 0.0F, 0.0F, 1.0F);
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zBack, color, u1, v3, light, 0.0F, 0.0F, 1.0F);
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zBack, color, u1, v2, light, 0.0F, 0.0F, 1.0F);
+
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zFront, color, u3, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zFront, color, u3, v1, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zBack, color, u1, v1, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zBack, color, u1, 0F, light, 0.0F, -1.0F, 0.0F);
+
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zFront, color, u3, v1 / 3.0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zFront, color, u3, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x2, yPos + plank.y2, zBack, color, u1, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zBack, color, u1, v1 / 3.0F, light, 0.0F, -1.0F, 0.0F);
+
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zFront, color, u3, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zFront, color, u3, v1, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x3, yPos + plank.y3, zBack, color, u1, v1, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zBack, color, u1, 0F, light, 0.0F, -1.0F, 0.0F);
+
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zFront, color, u3, v1 / 3.0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zFront, color, u3, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x4, yPos + plank.y4, zBack, color, u1, 0F, light, 0.0F, -1.0F, 0.0F);
+                vertex(pose, buffer, xPos + plank.x1, yPos + plank.y1, zBack, color, u1, v1 / 3.0F, light, 0.0F, -1.0F, 0.0F);
+            }
+        });
+
+        poseStack.popPose();
+    }
+
+    private static void vertex(PoseStack.Pose pose, VertexConsumer buffer, float x, float y, float z, int color, float u, float v, int lightCoords, float nx, float ny, float nz) {
+        buffer.addVertex(pose, x, y, z).setColor(color).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lightCoords).setNormal(pose, nx, ny, nz);
+    }
+
+    public static class FrameRenderState extends EntityRenderState {
+        public FrameType frame = FrameType.VALUES[0];
+        public Direction direction = Direction.NORTH;
+        public boolean wood = true;
+        public int color = -1;
+        public int frameLightCoords;
     }
 
     private static enum FrameRender {

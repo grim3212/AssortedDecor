@@ -10,11 +10,9 @@ import com.grim3212.assorted.lib.client.model.loaders.IModelSpecification;
 import com.grim3212.assorted.lib.client.model.loaders.IModelSpecificationLoader;
 import com.grim3212.assorted.lib.client.model.loaders.context.IModelBakingContext;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.sprite.Material;
-import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
+import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -23,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.Map;
-import java.util.function.Function;
 
 public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel> {
 
@@ -36,8 +33,8 @@ public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel>
     }
 
     @Override
-    public BakedModel bake(IModelBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, Identifier modelLocation) {
-        return new ColorizerObjBakedModel(context, unbakedColorizer, baker, spriteGetter, modelState, modelLocation);
+    public BlockStateModel bake(IModelBakingContext context, ModelBaker baker, ModelState modelState, Identifier modelLocation) {
+        return new ColorizerObjBakedModel(context, unbakedColorizer, baker, modelState, modelLocation);
     }
 
     public static class Loader implements IModelSpecificationLoader<ColorizerObjModel> {
