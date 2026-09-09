@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_purple",
-    "#c:concrete_powder"
+    "#c:concrete_powders"
   ],
   "result": {
     "id": "minecraft:purple_concrete_powder"

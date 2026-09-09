@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_green",
-    "#c:concrete"
+    "#c:concretes"
   ],
   "result": {
     "id": "minecraft:green_concrete"

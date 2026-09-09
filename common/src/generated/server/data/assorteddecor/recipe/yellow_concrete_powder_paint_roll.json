@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_yellow",
-    "#c:concrete_powder"
+    "#c:concrete_powders"
   ],
   "result": {
     "id": "minecraft:yellow_concrete_powder"

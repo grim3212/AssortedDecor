@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "R": "#c:rods/wooden",
-    "S": "#c:string",
+    "S": "#c:strings",
     "X": "assorteddecor:colorizer"
   },
   "pattern": [

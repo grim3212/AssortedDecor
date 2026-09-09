@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "A": "#c:ingots/iron",
-    "G": "#c:glass",
+    "G": "#c:glass_blocks",
     "L": "#c:dusts/glowstone"
   },
   "pattern": [

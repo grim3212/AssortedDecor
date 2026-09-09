@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "G": "#c:gravel",
+    "G": "#c:gravels",
     "W": {
       "fabric:type": "assortedlib:stored_fluid_ingredient",
       "amount": 81000,

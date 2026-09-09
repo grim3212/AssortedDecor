@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_pink",
-    "#c:concrete"
+    "#c:concretes"
   ],
   "result": {
     "id": "minecraft:pink_concrete"

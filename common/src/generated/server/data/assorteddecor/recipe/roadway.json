@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "A": "assorteddecor:asphalt",
-    "X": "#c:stone"
+    "X": "#c:stones"
   },
   "pattern": [
     "A",

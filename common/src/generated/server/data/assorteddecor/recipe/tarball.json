@@ -7,7 +7,7 @@
   ],
   "type": "minecraft:crafting_shaped",
   "key": {
-    "G": "#c:gravel",
+    "G": "#c:gravels",
     "W": {
       "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
       "fluid": "minecraft:water"

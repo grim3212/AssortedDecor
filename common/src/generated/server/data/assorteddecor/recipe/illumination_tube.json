@@ -12,7 +12,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "A": "#c:ingots/aluminum",
-    "G": "#c:glass",
+    "G": "#c:glass_blocks",
     "L": "#c:dusts/glowstone"
   },
   "pattern": [

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "X": "#c:glass"
+    "X": "#c:glass_blocks"
   },
   "pattern": [
     "XX",

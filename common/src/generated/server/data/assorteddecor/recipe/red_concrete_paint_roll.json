@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_red",
-    "#c:concrete"
+    "#c:concretes"
   ],
   "result": {
     "id": "minecraft:red_concrete"

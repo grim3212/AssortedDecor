@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_light_blue",
-    "#c:concrete"
+    "#c:concretes"
   ],
   "result": {
     "id": "minecraft:light_blue_concrete"

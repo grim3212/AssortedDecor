@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "#c:tar",
-    "#c:cobblestone",
+    "#c:cobblestones",
     "assorteddecor:paint_roller_red"
   ],
   "result": {

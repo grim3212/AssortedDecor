@@ -11,7 +11,7 @@
     "D": "#c:dyes",
     "G": "#c:dyes/green",
     "R": "#c:dyes/red",
-    "X": "#c:stone"
+    "X": "#c:stones"
   },
   "pattern": [
     "XRX",

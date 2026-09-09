@@ -12,7 +12,7 @@
       "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
       "fluid": "minecraft:water"
     },
-    "X": "#c:cobblestone"
+    "X": "#c:cobblestones"
   },
   "pattern": [
     "XIX",
