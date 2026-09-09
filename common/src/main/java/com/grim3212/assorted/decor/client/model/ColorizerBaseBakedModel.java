@@ -19,9 +19,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A colorizer takes its geometry from a fixed shape and its texture from whatever block state has
@@ -37,26 +37,21 @@ import java.util.Map;
  * model no longer picks a {@code RenderType} at all - the chunk layer is derived per quad from
  * {@code BakedQuad.MaterialInfo#layer()}.
  * <p>
- * TODO(26.2): reached through a model json loader, this class collapses to its unseeded output.
- *  What it used to do: a custom model loader returned a whole {@code BakedModel}, so the colorizer
- *  could pick a different set of quads per draw from the block entity's model data.
- *  Why it is at risk: {@code UnbakedGeometry#bake} has to return a {@code QuadCollection}, so
- *  AssortedLib's {@code ForgeModelGeometryToSpecificationPlatformDelegator} (and the Fabric
- *  equivalent) flatten whatever a specification bakes into a single quad collection at bake time,
- *  with empty model data - which for a colorizer means the "no stored block" texture, everywhere.
- *  The per position behaviour only survives if the baked model reaches the blockstate layer intact,
- *  which in 26.2 means a {@code CustomUnbakedBlockStateModel} registered from the blockstate json
- *  (NeoForge's {@code RegisterBlockStateModels} / Fabric's own registry) rather than a model json
- *  loader. AssortedLib's {@code ForgeBakedModelDelegate} / {@code FabricBakedModelDelegate} already
- *  route {@link #collectParts(RandomSource, IBlockModelData, List)} correctly once the model gets
- *  there, so what is missing is the blockstate side entry point, in the library and in the mod's
- *  generated blockstate json - not this class.
- *  <p>
- *  Note also that the {@link ModelBaker} is held past baking, as it was in 1.20.1, because a stored
- *  block state is only known at render time and there is no bounded set of them to bake eagerly. On
- *  the flattening path above that never matters - the model is collected from immediately after it is
- *  baked - but a blockstate side wrapper would bake children long after the model manager has moved
- *  on, and that is the thing to check first if the colorizers misbehave once one exists.
+ * <b>This model only survives if it is reached from the blockstate side.</b> A model json loader can
+ * only contribute geometry - {@code UnbakedGeometry#bake} returns a {@code QuadCollection} - so
+ * AssortedLib's {@code ForgeModelGeometryToSpecificationPlatformDelegator} and its Fabric equivalent
+ * flatten whatever a specification bakes, once, against empty model data. For a colorizer that means
+ * the "no stored block" texture everywhere. The blockstate json therefore names
+ * {@code assortedlib:specification} instead of a plain variant, which bakes this model whole and
+ * hands it to {@code ForgeBakedModelDelegate} / {@code FabricBakedModelDelegate}; those route
+ * {@link #collectParts(RandomSource, IBlockModelData, List)} with the block entity's data. The item
+ * side reaches the same instance through {@code ColorizerItemModel}, passing the stack's stored state
+ * as model data.
+ * <p>
+ * The {@link ModelBaker} is deliberately held past baking, as it was in 1.20.1: a stored block state
+ * is only known while rendering and there is no bounded set of them to bake eagerly. It stays usable
+ * because the bakery's resolved models and atlas preparations live as long as the baked models do -
+ * a resource reload rebuilds both together.
  */
 public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel {
 
@@ -83,35 +78,38 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
         this.particle = particleMaterial != null ? bakery.materials().get(particleMaterial, this.debugName) : bakery.materials().reportMissingReference("particle", this.debugName);
     }
 
-    protected final Map<BlockState, BlockStateModel> cache = new HashMap<>();
-    protected BlockStateModel EMPTY;
+    /**
+     * Concurrent because it is filled during rendering, not during baking: the stored states are only
+     * known once chunks are being built, and section compilation runs on several threads at once.
+     */
+    protected final Map<BlockState, BlockStateModel> cache = new ConcurrentHashMap<>();
+    protected volatile BlockStateModel EMPTY;
 
     public BlockStateModel getCachedModel(BlockState blockState) {
         if (blockState == null || blockState == Blocks.AIR.defaultBlockState()) {
-            if (EMPTY == null) {
-                EMPTY = generateModel(textures(DEFAULT_TEXTURE));
+            BlockStateModel empty = EMPTY;
+            if (empty == null) {
+                EMPTY = empty = generateModel(textures(DEFAULT_TEXTURE));
             }
-            return EMPTY;
+            return empty;
         }
 
-        if (!this.cache.containsKey(blockState)) {
+        return this.cache.computeIfAbsent(blockState, state -> {
             String texture;
-            if (blockState.getBlock() == Blocks.GRASS_BLOCK) {
+            if (state.getBlock() == Blocks.GRASS_BLOCK) {
                 texture = "minecraft:block/grass_block_top";
-            } else if (blockState.getBlock() == Blocks.PODZOL) {
+            } else if (state.getBlock() == Blocks.PODZOL) {
                 texture = "minecraft:block/dirt_podzol_top";
-            } else if (blockState.getBlock() == Blocks.MYCELIUM) {
+            } else if (state.getBlock() == Blocks.MYCELIUM) {
                 texture = "minecraft:block/mycelium_top";
             } else {
                 // BlockModelShaper is gone; the particle sprite of a block state is answered by the
                 // baked block state models the ModelManager holds.
-                texture = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(blockState).sprite().contents().name().toString();
+                texture = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(state).sprite().contents().name().toString();
             }
 
-            this.cache.put(blockState, generateModel(textures(texture)));
-        }
-
-        return this.cache.get(blockState);
+            return generateModel(textures(texture));
+        });
     }
 
     /**

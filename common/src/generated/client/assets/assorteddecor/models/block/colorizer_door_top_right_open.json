@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/door_top_right_open",
   "colorizer": {
     "parent": "assorteddecor:block/door_top_right_open"
   },

@@ -2,6 +2,7 @@
   "multipart": [
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace"
       },
       "when": {
@@ -13,6 +14,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_n",
         "uvlock": true,
         "y": 90
@@ -26,6 +28,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_n",
         "uvlock": true,
         "y": 270
@@ -39,6 +42,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_n",
         "uvlock": true,
         "y": 180
@@ -52,6 +56,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_n",
         "uvlock": true
       },
@@ -64,6 +69,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ne",
         "uvlock": true
       },
@@ -76,6 +82,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ne",
         "uvlock": true,
         "y": 180
@@ -89,6 +96,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ne",
         "uvlock": true,
         "y": 270
@@ -102,6 +110,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ne",
         "uvlock": true,
         "y": 90
@@ -115,6 +124,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -127,6 +137,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -139,6 +150,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -151,6 +163,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -163,6 +176,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -175,6 +189,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },
@@ -187,6 +202,7 @@
     },
     {
       "apply": {
+        "type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fireplace_ns",
         "uvlock": true
       },

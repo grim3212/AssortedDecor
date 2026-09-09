@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/trapdoor_bottom",
   "colorizer": {
     "parent": "assorteddecor:block/trapdoor_bottom"
   },

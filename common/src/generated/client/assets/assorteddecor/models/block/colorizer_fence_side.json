@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/fence_side",
   "colorizer": {
     "parent": "assorteddecor:block/fence_side"
   },

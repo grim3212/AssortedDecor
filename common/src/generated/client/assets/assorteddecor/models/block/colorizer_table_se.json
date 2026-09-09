@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/table_se",
   "colorizer": {
     "parent": "assorteddecor:block/table_se"
   },

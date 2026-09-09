@@ -1,41 +1,49 @@
 {
   "variants": {
     "facing=east,half=bottom": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "y": 90
     },
     "facing=east,half=top": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "x": 180,
       "y": 270
     },
     "facing=north,half=bottom": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope"
     },
     "facing=north,half=top": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "x": 180,
       "y": 180
     },
     "facing=south,half=bottom": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "y": 180
     },
     "facing=south,half=top": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "x": 180
     },
     "facing=west,half=bottom": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "y": 270
     },
     "facing=west,half=top": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_slope",
       "uvlock": true,
       "x": 180,

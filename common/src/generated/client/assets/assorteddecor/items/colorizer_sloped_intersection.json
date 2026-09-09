@@ -1,6 +1,6 @@
 {
   "model": {
-    "type": "minecraft:model",
+    "type": "assorteddecor:colorizer",
     "model": "assorteddecor:block/colorizer_sloped_intersection",
     "tints": [
       {

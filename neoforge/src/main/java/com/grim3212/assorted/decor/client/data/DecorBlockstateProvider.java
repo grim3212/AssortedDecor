@@ -4,6 +4,8 @@ import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.api.util.VerticalSlabType;
 import com.grim3212.assorted.decor.client.color.BlockMapColorItemTintSource;
 import com.grim3212.assorted.decor.client.color.ColorizerItemTintSource;
+import com.grim3212.assorted.decor.client.model.ColorizerItemModel;
+import com.grim3212.assorted.lib.client.data.SpecificationBlockStateModelBuilder;
 import com.grim3212.assorted.decor.client.color.SidingItemTintSource;
 import com.grim3212.assorted.decor.common.blocks.BoneDecorationBlock;
 import com.grim3212.assorted.decor.common.blocks.ClayDecorationBlock;
@@ -643,7 +645,7 @@ public class DecorBlockstateProvider extends ModelProvider {
      */
     private Identifier colorizer(BlockModelGenerators blockModels, Block b, Identifier parent) {
         Identifier model = colorizerModel(blockModels, "block/" + name(b), parent, builder -> {});
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, colorizerVariant(model)));
         colorizerItem(blockModels, b, model);
         return model;
     }
@@ -696,7 +698,7 @@ public class DecorBlockstateProvider extends ModelProvider {
         Identifier model = colorizerModel(blockModels, "block/" + name(b), resource("block/chimney"),
                 builder -> builder.addTexture("top", resource("block/chimney_top")));
 
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(b, colorizerVariant(model)));
         colorizerItem(blockModels, b, model);
     }
 
@@ -803,8 +805,8 @@ public class DecorBlockstateProvider extends ModelProvider {
 
     private void colorizerFence(BlockModelGenerators blockModels) {
         Block b = DecorBlocks.COLORIZER_FENCE.get();
-        MultiVariant post = BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_fence_post", resource("block/fence_post"), builder -> {}));
-        MultiVariant side = BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_fence_side", resource("block/fence_side"), builder -> {}));
+        MultiVariant post = colorizerVariant(colorizerModel(blockModels, "block/colorizer_fence_post", resource("block/fence_post"), builder -> {}));
+        MultiVariant side = colorizerVariant(colorizerModel(blockModels, "block/colorizer_fence_side", resource("block/fence_side"), builder -> {}));
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createFence(b, post, side));
 
@@ -819,17 +821,17 @@ public class DecorBlockstateProvider extends ModelProvider {
         Identifier openWall = colorizerModel(blockModels, "block/colorizer_fence_gate_wall_open", resource("block/fence_gate_wall_open"), builder -> {});
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createFenceGate(b,
-                BlockModelGenerators.plainVariant(open), BlockModelGenerators.plainVariant(closed),
-                BlockModelGenerators.plainVariant(openWall), BlockModelGenerators.plainVariant(closedWall), true));
+                colorizerVariant(open), colorizerVariant(closed),
+                colorizerVariant(openWall), colorizerVariant(closedWall), true));
 
         colorizerItem(blockModels, b, closed);
     }
 
     private void colorizerWall(BlockModelGenerators blockModels) {
         Block b = DecorBlocks.COLORIZER_WALL.get();
-        MultiVariant post = BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_wall_post", resource("block/wall_post"), builder -> {}));
-        MultiVariant lowSide = BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_wall_side", resource("block/wall_side"), builder -> {}));
-        MultiVariant tallSide = BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_wall_side_tall", resource("block/wall_side_tall"), builder -> {}));
+        MultiVariant post = colorizerVariant(colorizerModel(blockModels, "block/colorizer_wall_post", resource("block/wall_post"), builder -> {}));
+        MultiVariant lowSide = colorizerVariant(colorizerModel(blockModels, "block/colorizer_wall_side", resource("block/wall_side"), builder -> {}));
+        MultiVariant tallSide = colorizerVariant(colorizerModel(blockModels, "block/colorizer_wall_side_tall", resource("block/wall_side_tall"), builder -> {}));
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createWall(b, post, lowSide, tallSide));
 
@@ -843,7 +845,7 @@ public class DecorBlockstateProvider extends ModelProvider {
         Identifier open = colorizerModel(blockModels, "block/colorizer_trapdoor_open", resource("block/trapdoor_open"), builder -> {});
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createOrientableTrapdoor(b,
-                BlockModelGenerators.plainVariant(top), BlockModelGenerators.plainVariant(bottom), BlockModelGenerators.plainVariant(open)));
+                colorizerVariant(top), colorizerVariant(bottom), colorizerVariant(open)));
 
         colorizerItem(blockModels, b, bottom);
     }
@@ -866,7 +868,7 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     private MultiVariant colorizerDoorPart(BlockModelGenerators blockModels, String part) {
-        return BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/colorizer_" + part, resource("block/" + part), builder -> {}));
+        return colorizerVariant(colorizerModel(blockModels, "block/colorizer_" + part, resource("block/" + part), builder -> {}));
     }
 
     private void colorizerStairs(BlockModelGenerators blockModels) {
@@ -876,7 +878,7 @@ public class DecorBlockstateProvider extends ModelProvider {
         Identifier outer = colorizerModel(blockModels, "block/colorizer_outer_stairs", resource("block/outer_stairs"), builder -> {});
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createStairs(b,
-                BlockModelGenerators.plainVariant(inner), BlockModelGenerators.plainVariant(straight), BlockModelGenerators.plainVariant(outer)));
+                colorizerVariant(inner), colorizerVariant(straight), colorizerVariant(outer)));
 
         colorizerItem(blockModels, b, straight);
     }
@@ -887,8 +889,8 @@ public class DecorBlockstateProvider extends ModelProvider {
         Identifier top = colorizerModel(blockModels, "block/colorizer_slab_top", resource("block/slab_top"), builder -> {});
 
         blockModels.blockStateOutput.accept(BlockModelGenerators.createSlab(b,
-                BlockModelGenerators.plainVariant(bottom), BlockModelGenerators.plainVariant(top),
-                BlockModelGenerators.plainVariant(resource("block/colorizer"))));
+                colorizerVariant(bottom), colorizerVariant(top),
+                colorizerVariant(resource("block/colorizer"))));
 
         colorizerItem(blockModels, b, bottom);
     }
@@ -901,7 +903,7 @@ public class DecorBlockstateProvider extends ModelProvider {
     private void colorizerVerticalSlab(BlockModelGenerators blockModels) {
         Block b = DecorBlocks.COLORIZER_VERTICAL_SLAB.get();
         Identifier slab = colorizerModel(blockModels, "block/colorizer_vertical_slab", resource("block/vertical_slab"), builder -> {});
-        MultiVariant north = BlockModelGenerators.plainVariant(slab);
+        MultiVariant north = colorizerVariant(slab);
 
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(b)
                 .with(PropertyDispatch.initial(ColorizerVerticalSlabBlock.TYPE).generate(type -> switch (type) {
@@ -909,7 +911,7 @@ public class DecorBlockstateProvider extends ModelProvider {
                     case SOUTH -> north.with(BlockModelGenerators.Y_ROT_180);
                     case WEST -> north.with(BlockModelGenerators.Y_ROT_270);
                     case EAST -> north.with(BlockModelGenerators.Y_ROT_90);
-                    case VerticalSlabType.DOUBLE -> BlockModelGenerators.plainVariant(resource("block/colorizer"));
+                    case VerticalSlabType.DOUBLE -> colorizerVariant(resource("block/colorizer"));
                 })));
 
         colorizerItem(blockModels, b, slab);
@@ -923,7 +925,7 @@ public class DecorBlockstateProvider extends ModelProvider {
                 builder -> builder.addTexture("lamp", Identifier.withDefaultNamespace("block/glowstone")));
 
         blockModels.blockStateOutput.accept(MultiVariantGenerator.dispatch(b)
-                .with(PropertyDispatch.initial(ColorizerLampPost.PART).generate(part -> BlockModelGenerators.plainVariant(switch (part) {
+                .with(PropertyDispatch.initial(ColorizerLampPost.PART).generate(part -> colorizerVariant(switch (part) {
                     case LampPart.BOTTOM -> bottom;
                     case LampPart.MIDDLE -> middle;
                     case LampPart.TOP -> top;
@@ -969,7 +971,7 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     private MultiVariant fireplacePart(BlockModelGenerators blockModels, String name, String parent) {
-        return BlockModelGenerators.plainVariant(colorizerModel(blockModels, "block/" + name, resource("block/" + parent),
+        return colorizerVariant(colorizerModel(blockModels, "block/" + name, resource("block/" + parent),
                 builder -> builder.addTexture("wood", Identifier.withDefaultNamespace("block/oak_planks"))));
     }
 
@@ -1020,8 +1022,31 @@ public class DecorBlockstateProvider extends ModelProvider {
      * are a list in its item model json now, and a source's position in that list is the tint index it
      * answers for. Index 0 is the index every colorizer shape stamps on its faces.
      */
+    /**
+     * A colorizer's own {@link MultiVariant}, drawn through
+     * {@link SpecificationBlockStateModelBuilder} rather than as a plain variant.
+     * <p>
+     * This is what makes a placed colorizer show the block it has absorbed. A plain variant bakes the
+     * model json, and a model json can only contribute geometry - so the colorizer's model
+     * specification would be baked once, against no block entity, and every colorizer in the world
+     * would draw its empty state. Routed through the specification type instead, the colorizer's own
+     * {@code BlockStateModel} survives to the blockstate layer, which is the only layer that still
+     * sees the level and the position. Mutators ({@code xRot}, {@code yRot}, uv lock) work on it
+     * exactly as they do on a plain variant.
+     */
+    private static MultiVariant colorizerVariant(Identifier model) {
+        return SpecificationBlockStateModelBuilder.specificationVariant(model);
+    }
+
+    /**
+     * The item model for a colorizer block. {@code registerSimpleTintedItemModel} would emit a
+     * {@code minecraft:model}, which bakes one static quad collection and so has the same "always
+     * draws its empty state" problem the block side had; {@link ColorizerItemModel} reads the stack's
+     * stored block instead. The tint source stays - it is what colours a stored grass block or leaf.
+     */
     private void colorizerItem(BlockModelGenerators blockModels, Block b, Identifier model) {
-        blockModels.registerSimpleTintedItemModel(b, model, new ColorizerItemTintSource());
+        blockModels.itemModelOutput.accept(b.asItem(),
+                new ColorizerItemModel.Unbaked(model, List.of(new ColorizerItemTintSource())));
     }
 
     private Identifier colorizerModel(BlockModelGenerators blockModels, String path, Identifier parent, Consumer<ColorizerModelBuilder> extra) {
@@ -1041,8 +1066,19 @@ public class DecorBlockstateProvider extends ModelProvider {
         return defaultPerspectiveFlipped(builder).build().create(resource(path), colorizerParticle(), blockModels.modelOutput);
     }
 
+    /**
+     * The shape template is named <em>twice</em>: once inside the {@code colorizer} object, which is
+     * what the loader retextures and bakes, and once as the model json's own {@code parent}.
+     * <p>
+     * The second one is not redundant. A 26.2 model inherits its {@code display} block, gui light and
+     * ambient occlusion along the {@code parent} chain and nowhere else, and those templates are where
+     * the colorizers' inventory transforms live - without the parent link every colorizer item sat in
+     * the inventory with default block transforms instead of the pose the shape was drawn for. The
+     * geometry still comes from the loader: a child's own geometry wins over its parent's.
+     */
     private static ExtendedModelTemplateBuilder colorizerBuilder(Identifier parent, Consumer<ColorizerModelBuilder> extra) {
         return ExtendedModelTemplateBuilder.builder()
+                .parent(parent)
                 .requiredTextureSlot(TextureSlot.PARTICLE)
                 .customLoader(ColorizerModelBuilder::begin, loader -> extra.accept(loader.colorizer(parent)));
     }
@@ -1122,7 +1158,7 @@ public class DecorBlockstateProvider extends ModelProvider {
      * {@link com.mojang.math.Quadrant} only has four values.
      */
     private static MultiVariant variant(Identifier model, int xRot, int yRot, boolean uvLock) {
-        MultiVariant variant = BlockModelGenerators.plainVariant(model).with(xRot(xRot)).with(yRot(yRot));
+        MultiVariant variant = colorizerVariant(model).with(xRot(xRot)).with(yRot(yRot));
         return uvLock ? variant.with(BlockModelGenerators.UV_LOCK) : variant;
     }
 

@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/firering",
   "colorizer": {
     "parent": "assorteddecor:block/firering",
     "textures": {

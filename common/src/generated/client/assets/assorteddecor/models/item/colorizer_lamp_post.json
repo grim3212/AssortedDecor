@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:item/lamp_post_inventory",
   "colorizer": {
     "parent": "assorteddecor:item/lamp_post_inventory",
     "textures": {

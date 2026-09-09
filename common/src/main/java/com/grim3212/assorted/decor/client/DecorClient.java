@@ -6,6 +6,7 @@ import com.grim3212.assorted.decor.client.blockentity.NeonSignBlockEntityRendere
 import com.grim3212.assorted.decor.client.color.BlockMapColorItemTintSource;
 import com.grim3212.assorted.decor.client.color.ColorizerItemTintSource;
 import com.grim3212.assorted.decor.client.color.SidingItemTintSource;
+import com.grim3212.assorted.decor.client.model.ColorizerItemModel;
 import com.grim3212.assorted.decor.client.model.ColorizerUnbakedModel;
 import com.grim3212.assorted.decor.client.model.obj.ColorizerObjModel;
 import com.grim3212.assorted.decor.client.render.entity.FrameRenderer;
@@ -60,6 +61,10 @@ public class DecorClient {
 
         ClientServices.CLIENT.registerModelLoader(ColorizerUnbakedModel.LOADER_NAME, ColorizerUnbakedModel.Loader.INSTANCE);
         ClientServices.CLIENT.registerModelLoader(ColorizerObjModel.LOADER_NAME, ColorizerObjModel.Loader.INSTANCE);
+
+        // The item half of the colorizer. A model json loader only produces geometry, so it cannot
+        // vary an item with the block the stack has stored; this is the type that can.
+        ClientServices.CLIENT.registerItemModelType(ColorizerItemModel.ID, ColorizerItemModel.Unbaked.MAP_CODEC);
 
         registerBlockColors();
         registerItemTintSources();

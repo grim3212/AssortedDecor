@@ -1,6 +1,7 @@
 {
   "variants": {
     "": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer"
     }
   }

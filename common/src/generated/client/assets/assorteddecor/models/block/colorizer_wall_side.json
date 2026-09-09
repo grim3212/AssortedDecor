@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/wall_side",
   "colorizer": {
     "parent": "assorteddecor:block/wall_side"
   },

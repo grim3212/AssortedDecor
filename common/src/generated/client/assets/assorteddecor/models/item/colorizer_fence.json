@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:item/fence_inventory",
   "colorizer": {
     "parent": "assorteddecor:item/fence_inventory"
   },

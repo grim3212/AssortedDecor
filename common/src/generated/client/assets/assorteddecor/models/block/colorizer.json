@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/tinted_cube",
   "colorizer": {
     "parent": "assorteddecor:block/tinted_cube"
   },

@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/slab",
   "colorizer": {
     "parent": "assorteddecor:block/slab"
   },

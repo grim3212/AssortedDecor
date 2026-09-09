@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:item/door",
   "colorizer": {
     "parent": "assorteddecor:item/door"
   },

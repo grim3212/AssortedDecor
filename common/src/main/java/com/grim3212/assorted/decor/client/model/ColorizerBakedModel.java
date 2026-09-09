@@ -53,17 +53,9 @@ public class ColorizerBakedModel extends ColorizerBaseBakedModel<ColorizerUnbake
         return new SingleVariant(new SimpleModelWrapper(quads, ambientOcclusion, particle));
     }
 
-    // TODO(26.2): the item override list that used to live here is gone.
-    //  What it did: ColorizerItemOverrideList extended ItemOverrides and, from
-    //  resolve(BakedModel, ItemStack, ClientLevel, LivingEntity, int), read the "stored_state" tag off
-    //  the stack and handed back getCachedModel(storedState) so a colorizer item in an inventory or in
-    //  hand showed the block it had absorbed.
-    //  Why it cannot be expressed: ItemOverrides and ItemOverride were deleted. Item variation is
-    //  data-driven through net.minecraft.client.renderer.item.ItemModel - an item's json names one
-    //  ItemModel.Unbaked type and the branching implementations (SelectItemModel, ConditionalItemModel,
-    //  RangeSelectItemModel) choose between *pre-baked children* using codec registered properties -
-    //  so there is no hook that can bake a new model for a stack while it is being drawn, and a
-    //  colorizer's variants are unbounded (one per block in the game). The item therefore renders its
-    //  static model until an ItemModel type that can bake per stack exists, or the set of stored
-    //  states is enumerated into the item json.
+    // The item override list that used to live here is now
+    // com.grim3212.assorted.decor.client.model.ColorizerItemModel: ItemOverrides was deleted, and an
+    // item's model is a codec registered ItemModel type whose update() is handed the ItemStack. It
+    // reads the same "stored_state" tag and reaches this same cache, so an item and a placed block of
+    // the same colorizer draw identically.
 }

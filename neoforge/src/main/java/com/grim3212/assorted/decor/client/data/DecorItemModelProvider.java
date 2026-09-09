@@ -2,11 +2,11 @@ package com.grim3212.assorted.decor.client.data;
 
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.client.color.ColorizerItemTintSource;
+import com.grim3212.assorted.decor.client.model.ColorizerItemModel;
 import com.grim3212.assorted.decor.common.items.DecorItems;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
@@ -18,6 +18,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -86,10 +87,12 @@ public class DecorItemModelProvider extends ModelProvider {
     private void colorizerBrush(ItemModelGenerators itemModels) {
         Item item = DecorItems.COLORIZER_BRUSH.get();
         ModelTemplate template = DecorBlockstateProvider.colorizerTemplate(
-                resource("item/brush"), builder -> builder.addTexture("handle", resource("item/brush_handle")));
+                resource("item/brush"), builder -> builder.addTexture("handle", resource("block/brush_handle")));
 
         Identifier model = template.create(modelId("item/" + name(item)), DecorBlockstateProvider.colorizerParticle(), itemModels.modelOutput);
-        itemModels.itemModelOutput.accept(item, ItemModelUtils.tintedModel(model, new ColorizerItemTintSource()));
+        // ItemModelUtils#tintedModel would emit a minecraft:model, which bakes the colorizer's
+        // geometry once with no stored block and so always draws an empty brush.
+        itemModels.itemModelOutput.accept(item, new ColorizerItemModel.Unbaked(model, List.of(new ColorizerItemTintSource())));
     }
 
     private void generatedItem(ItemModelGenerators itemModels, Item item) {

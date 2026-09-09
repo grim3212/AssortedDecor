@@ -12,6 +12,7 @@ import com.grim3212.assorted.lib.client.model.loaders.context.IModelBakingContex
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.resources.model.ModelBaker;
+import net.minecraft.client.resources.model.ResolvableModel;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.GsonHelper;
 
@@ -30,6 +31,18 @@ public class ColorizerUnbakedModel implements IModelSpecification<ColorizerUnbak
     @Override
     public BlockStateModel bake(IModelBakingContext context, ModelBaker baker, ModelState modelState, Identifier modelLocation) {
         return new ColorizerBakedModel(context, this.unbakedColorizer, baker, modelState, modelLocation);
+    }
+
+    /**
+     * The colorized shape is looked up with {@code baker.getModel(parent)} in
+     * {@link ColorizerBakedModel}, so it has to be marked here. Nothing else pulls those template
+     * models in - they are not the json {@code parent} of anything and no blockstate names them
+     * directly - so without this the bakery never discovers them and every colorizer block bakes to
+     * the missing model.
+     */
+    @Override
+    public void resolveDependencies(ResolvableModel.Resolver resolver) {
+        resolver.markDependency(this.unbakedColorizer.parent());
     }
 
     /**

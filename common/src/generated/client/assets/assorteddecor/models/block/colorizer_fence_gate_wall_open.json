@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/fence_gate_wall_open",
   "colorizer": {
     "parent": "assorteddecor:block/fence_gate_wall_open"
   },

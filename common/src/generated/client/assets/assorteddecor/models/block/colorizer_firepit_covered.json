@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/firepit_covered",
   "colorizer": {
     "parent": "assorteddecor:block/firepit_covered",
     "textures": {

@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/lamp_post_top",
   "colorizer": {
     "parent": "assorteddecor:block/lamp_post_top",
     "textures": {

@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/stove",
   "colorizer": {
     "parent": "assorteddecor:block/stove",
     "textures": {

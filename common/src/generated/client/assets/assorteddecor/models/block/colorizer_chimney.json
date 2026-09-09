@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/chimney",
   "colorizer": {
     "parent": "assorteddecor:block/chimney",
     "textures": {

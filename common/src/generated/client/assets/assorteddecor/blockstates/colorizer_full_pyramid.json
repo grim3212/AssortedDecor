@@ -1,54 +1,66 @@
 {
   "variants": {
     "face=ceiling,facing=east": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 180,
       "y": 270
     },
     "face=ceiling,facing=north": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 180,
       "y": 180
     },
     "face=ceiling,facing=south": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 180
     },
     "face=ceiling,facing=west": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 180,
       "y": 90
     },
     "face=floor,facing=east": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "y": 90
     },
     "face=floor,facing=north": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid"
     },
     "face=floor,facing=south": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "y": 180
     },
     "face=floor,facing=west": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "y": 270
     },
     "face=wall,facing=east": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 90,
       "y": 90
     },
     "face=wall,facing=north": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 90
     },
     "face=wall,facing=south": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 90,
       "y": 180
     },
     "face=wall,facing=west": {
+      "type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_full_pyramid",
       "x": 90,
       "y": 270

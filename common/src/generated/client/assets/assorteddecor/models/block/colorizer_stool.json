@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/stool",
   "colorizer": {
     "parent": "assorteddecor:block/stool"
   },

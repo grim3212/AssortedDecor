@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/lamp_post_bottom",
   "colorizer": {
     "parent": "assorteddecor:block/lamp_post_bottom"
   },

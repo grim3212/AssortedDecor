@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/fireplace_ne",
   "colorizer": {
     "parent": "assorteddecor:block/fireplace_ne",
     "textures": {

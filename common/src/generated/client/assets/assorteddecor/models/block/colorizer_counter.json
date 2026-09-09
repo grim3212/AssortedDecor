@@ -1,4 +1,5 @@
 {
+  "parent": "assorteddecor:block/counter",
   "colorizer": {
     "parent": "assorteddecor:block/counter"
   },
