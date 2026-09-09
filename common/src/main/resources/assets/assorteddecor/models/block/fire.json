@@ -1,6 +1,7 @@
 {
   "render_type": "minecraft:cutout",
   "textures": {
+    "particle": "assorteddecor:block/fire_1",
     "fire": "assorteddecor:block/fire_1"
   },
   "elements": [
