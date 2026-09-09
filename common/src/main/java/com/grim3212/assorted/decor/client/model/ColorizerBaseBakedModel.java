@@ -10,18 +10,18 @@ import com.grim3212.assorted.lib.client.model.data.IBlockModelData;
 import com.grim3212.assorted.lib.client.model.loaders.context.IModelBakingContext;
 import com.grim3212.assorted.lib.platform.ClientServices;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.resources.model.cuboid.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -40,11 +40,11 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
     protected final ModelBaker bakery;
     protected final Function<Material, TextureAtlasSprite> spriteGetter;
     protected final ModelState transform;
-    protected final ResourceLocation name;
+    protected final Identifier name;
     protected final IModelBakingContext context;
     protected final ItemOverridesExtension itemOverrideList;
 
-    public ColorizerBaseBakedModel(IModelBakingContext context, T model, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ResourceLocation name) {
+    public ColorizerBaseBakedModel(IModelBakingContext context, T model, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, Identifier name) {
         this.context = context;
         this.model = model;
         this.bakery = bakery;

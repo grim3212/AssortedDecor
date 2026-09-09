@@ -12,7 +12,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +72,7 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
     }
 
     public void setStoredBlockState(String registryName) {
-        this.setStoredBlockState(Services.PLATFORM.getRegistry(Registries.BLOCK).getValue(new ResourceLocation(registryName)).orElseGet(() -> Blocks.AIR).defaultBlockState());
+        this.setStoredBlockState(Services.PLATFORM.getRegistry(Registries.BLOCK).getValue(Identifier.parse(registryName)).orElseGet(() -> Blocks.AIR).defaultBlockState());
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.items.DecorItems;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
@@ -68,7 +68,7 @@ public class DecorItemModelProvider extends ItemModelProvider {
         return ForgeRegistries.ITEMS.getKey(i).getPath();
     }
 
-    private ResourceLocation prefix(String name) {
-        return new ResourceLocation(Constants.MOD_ID, name);
+    private Identifier prefix(String name) {
+        return Identifier.fromNamespaceAndPath(Constants.MOD_ID, name);
     }
 }

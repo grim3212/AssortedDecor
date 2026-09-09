@@ -21,9 +21,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import org.joml.Matrix4f;
@@ -50,7 +50,7 @@ public class NeonSignScreen extends Screen {
     private TextFieldHelper textInputUtil;
     private final String[] lines;
 
-    public static final ResourceLocation NEON_SIGN_GUI_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/screen/neon_sign.png");
+    public static final Identifier NEON_SIGN_GUI_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/screen/neon_sign.png");
 
     public NeonSignScreen(NeonSignBlockEntity teSign) {
         super(Component.translatable("sign.edit"));

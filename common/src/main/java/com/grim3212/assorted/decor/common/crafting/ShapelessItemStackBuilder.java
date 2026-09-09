@@ -8,11 +8,11 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
-import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.triggers.RecipeUnlockedTrigger;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,31 +87,31 @@ public class ShapelessItemStackBuilder {
         this.save(recipe, getDefaultRecipeId(this.getResult().getItem()));
     }
 
-    public ResourceLocation getDefaultRecipeId(ItemLike item) {
+    public Identifier getDefaultRecipeId(ItemLike item) {
         return Services.PLATFORM.getRegistry(Registries.ITEM).getRegistryName(item.asItem());
     }
 
-    public void save(Consumer<FinishedRecipe> consumer, ResourceLocation location) {
+    public void save(Consumer<FinishedRecipe> consumer, Identifier location) {
         this.ensureValid(location);
-        this.advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location)).rewards(AdvancementRewards.Builder.recipe(location)).requirements(RequirementsStrategy.OR);
-        consumer.accept(new ShapelessItemStackBuilder.Result(location, this.result, this.group == null ? "" : this.group, this.ingredients, this.advancement, new ResourceLocation(location.getNamespace(), "recipes/" + this.category.getFolderName() + "/" + location.getPath())));
+        this.advancement.parent(Identifier.parse("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(location)).rewards(AdvancementRewards.Builder.recipe(location)).requirements(RequirementsStrategy.OR);
+        consumer.accept(new ShapelessItemStackBuilder.Result(location, this.result, this.group == null ? "" : this.group, this.ingredients, this.advancement, Identifier.fromNamespaceAndPath(location.getNamespace(), "recipes/" + this.category.getFolderName() + "/" + location.getPath())));
     }
 
-    private void ensureValid(ResourceLocation location) {
+    private void ensureValid(Identifier location) {
         if (this.advancement.getCriteria().isEmpty()) {
             throw new IllegalStateException("No way of obtaining recipe " + location);
         }
     }
 
     public static class Result implements FinishedRecipe {
-        private final ResourceLocation id;
+        private final Identifier id;
         private final ItemStack result;
         private final String group;
         private final List<Ingredient> ingredients;
         private final Advancement.Builder advancement;
-        private final ResourceLocation advancementId;
+        private final Identifier advancementId;
 
-        public Result(ResourceLocation location, ItemStack result, String group, List<Ingredient> ingredients, Advancement.Builder advancements, ResourceLocation advancementId) {
+        public Result(Identifier location, ItemStack result, String group, List<Ingredient> ingredients, Advancement.Builder advancements, Identifier advancementId) {
             this.id = location;
             this.result = result;
             this.group = group;
@@ -146,7 +146,7 @@ public class ShapelessItemStackBuilder {
             return RecipeSerializer.SHAPELESS_RECIPE;
         }
 
-        public ResourceLocation getId() {
+        public Identifier getId() {
             return this.id;
         }
 
@@ -156,7 +156,7 @@ public class ShapelessItemStackBuilder {
         }
 
         @Nullable
-        public ResourceLocation getAdvancementId() {
+        public Identifier getAdvancementId() {
             return this.advancementId;
         }
     }

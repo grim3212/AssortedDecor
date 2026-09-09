@@ -3,7 +3,7 @@ package com.grim3212.assorted.decor.api;
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.lib.platform.Services;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +19,7 @@ public class DecorTags {
         public static final TagKey<Block> COLORIZER_ALWAYS_CUTOUT = decorTag("colorizer_always_cutout");
 
         private static TagKey<Block> decorTag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
         }
     }
 
@@ -38,11 +38,11 @@ public class DecorTags {
         public static final TagKey<Item> TAR = commonTag("tar");
 
         private static TagKey<Item> decorTag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Constants.MOD_ID, name));
         }
 
         private static TagKey<Item> commonTag(String name) {
-            return TagKey.create(Registries.ITEM, new ResourceLocation(Services.PLATFORM.getCommonTagPrefix(), name));
+            return TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(Services.PLATFORM.getCommonTagPrefix(), name));
         }
     }
 }

@@ -14,14 +14,14 @@ import com.grim3212.assorted.lib.client.texture.UnitTextureAtlasSprite;
 import com.mojang.math.Transformation;
 import joptsimple.internal.Strings;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,7 +43,7 @@ import java.util.stream.Stream;
  * <p>
  * Supports positions, texture coordinates, normals and colors. The
  * {@link ObjMaterialLibrary material library} has support for numerous
- * features, including support for {@link ResourceLocation} textures
+ * features, including support for {@link Identifier} textures
  * (non-standard).
  */
 public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
@@ -68,7 +68,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
     @Nullable
     public final String mtlOverride;
 
-    public final ResourceLocation modelLocation;
+    public final Identifier modelLocation;
 
     // Start Changes
     private TextureAtlasSprite texture;
@@ -116,9 +116,9 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
         if (materialLibraryOverrideLocation != null) {
             String lib = materialLibraryOverrideLocation;
             if (lib.contains(":"))
-                mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(Identifier.parse(lib));
             else
-                mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(Identifier.fromNamespaceAndPath(modelDomain, modelPath + lib));
         }
 
         String[] line;
@@ -131,9 +131,9 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
 
                     String lib = line[1];
                     if (lib.contains(":"))
-                        mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(new ResourceLocation(lib));
+                        mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(Identifier.parse(lib));
                     else
-                        mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(new ResourceLocation(modelDomain, modelPath + lib));
+                        mtllib = ColorizerObjModel.Loader.INSTANCE.loadMaterialLibrary(Identifier.fromNamespaceAndPath(modelDomain, modelPath + lib));
                     break;
                 }
 
@@ -315,7 +315,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
     // End Changes
 
     @Override
-    protected void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+    protected void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
         for (var entry : deprecationWarnings.entrySet())
             LOGGER.warn("Model \"" + modelLocation + "\" is using the deprecated \"" + entry.getKey() + "\" field in its OBJ model instead of \"" + entry.getValue() + "\". This field will be removed in 1.20.");
 
@@ -447,7 +447,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
             return name;
         }
 
-        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
             for (ModelMesh mesh : meshes) {
                 ObjMaterialLibrary.Material mat = mesh.mat;
                 if (mat == null)
@@ -478,7 +478,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
                 int tintIndex = mat.diffuseTintIndex;
                 Vector4f colorTint = mat.diffuseColor;
 
-                ResourceLocation textureLocation = getTexture().contents().name();
+                Identifier textureLocation = getTexture().contents().name();
                 if (textureLocation == null)
                     textureLocation = UnbakedGeometryHelper.resolveDirtyMaterial(mat.diffuseColorMap, configuration).texture();
 
@@ -489,13 +489,13 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
                     quads.add(pair.getLeft());
                 }
 
-                ResourceLocation texturePath = new ResourceLocation(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
+                Identifier texturePath = Identifier.fromNamespaceAndPath(textureLocation.getNamespace(), "textures/" + textureLocation.getPath() + ".png");
 
                 builder.addMesh(texturePath, quads);
             }
         }
 
-        public Collection<Material> getTextures(IModelBakingContext owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+        public Collection<Material> getTextures(IModelBakingContext owner, Function<Identifier, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
             return meshes.stream().flatMap(mesh -> mesh.mat != null ? Stream.of(UnbakedGeometryHelper.resolveDirtyMaterial(mesh.mat.diffuseColorMap, owner)) : Stream.of()).collect(Collectors.toSet());
         }
 
@@ -512,7 +512,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
         }
 
         @Override
-        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ResourceLocation modelLocation) {
+        public void addQuads(IModelBakingContext owner, IModelBuilder<?> modelBuilder, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, Identifier modelLocation) {
             super.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation);
 
             parts.values().stream().forEach(part -> part.addQuads(owner, modelBuilder, bakery, spriteGetter, modelTransform, modelLocation));
@@ -530,7 +530,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
         }
 
         @Override
-        public Collection<Material> getTextures(IModelBakingContext owner, Function<ResourceLocation, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
+        public Collection<Material> getTextures(IModelBakingContext owner, Function<Identifier, UnbakedModel> modelGetter, Set<com.mojang.datafixers.util.Pair<String, String>> missingTextureErrors) {
             Set<Material> combined = Sets.newHashSet();
             combined.addAll(super.getTextures(owner, modelGetter, missingTextureErrors));
             for (ModelObject part : parts.values())
@@ -559,7 +559,7 @@ public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
         }
     }
 
-    public record ModelSettings(@NotNull ResourceLocation modelLocation, boolean automaticCulling, boolean shadeQuads,
+    public record ModelSettings(@NotNull Identifier modelLocation, boolean automaticCulling, boolean shadeQuads,
                                 boolean flipV, boolean emissiveAmbient, @Nullable String mtlOverride) {
     }
 }

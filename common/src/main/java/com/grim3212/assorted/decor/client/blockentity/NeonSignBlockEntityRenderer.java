@@ -13,8 +13,8 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,10 +22,10 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 
 public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSignBlockEntity> {
 
-    public static final ResourceLocation NEON_SIGN_TEXTURE = new ResourceLocation(Constants.MOD_ID, "model/neon_sign");
-    public static final ResourceLocation NEON_SIGN_CLEAR_TEXTURE = new ResourceLocation(Constants.MOD_ID, "model/neon_sign_clear");
-    public static final ResourceLocation NEON_SIGN_WHITE_TEXTURE = new ResourceLocation(Constants.MOD_ID, "model/neon_sign_white");
-    public static final ResourceLocation VANILLA_SIGN = new ResourceLocation("entity/signs/oak");
+    public static final Identifier NEON_SIGN_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "model/neon_sign");
+    public static final Identifier NEON_SIGN_CLEAR_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "model/neon_sign_clear");
+    public static final Identifier NEON_SIGN_WHITE_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "model/neon_sign_white");
+    public static final Identifier VANILLA_SIGN = Identifier.parse("entity/signs/oak");
 
     private final SignRenderer.SignModel model;
     private final Font font;
@@ -84,7 +84,7 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
         matrixStackIn.popPose();
     }
 
-    public static ResourceLocation getSignTexture(int mode) {
+    public static Identifier getSignTexture(int mode) {
         switch (mode) {
             case 0:
                 return NEON_SIGN_TEXTURE;

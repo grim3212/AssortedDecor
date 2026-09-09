@@ -3,7 +3,7 @@ package com.grim3212.assorted.decor.common.blocks.colorizer;
 import com.google.common.collect.Maps;
 import com.grim3212.assorted.decor.api.util.DecorUtil;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;

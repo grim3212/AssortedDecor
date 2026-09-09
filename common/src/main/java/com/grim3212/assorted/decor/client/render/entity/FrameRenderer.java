@@ -9,17 +9,17 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class FrameRenderer extends EntityRenderer<FrameEntity> {
 
-    private static final ResourceLocation framesTexture = new ResourceLocation(Constants.MOD_ID, "textures/entity/frames.png");
+    private static final Identifier framesTexture = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/frames.png");
 
     public FrameRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -115,7 +115,7 @@ public class FrameRenderer extends EntityRenderer<FrameEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(FrameEntity entity) {
+    public Identifier getTextureLocation(FrameEntity entity) {
         return framesTexture;
     }
 

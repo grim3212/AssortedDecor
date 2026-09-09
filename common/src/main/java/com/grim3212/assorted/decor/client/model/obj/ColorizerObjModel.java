@@ -12,10 +12,10 @@ import com.grim3212.assorted.lib.client.model.loaders.context.IModelBakingContex
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
@@ -27,7 +27,7 @@ import java.util.function.Function;
 
 public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel> {
 
-    public static final ResourceLocation LOADER_NAME = new ResourceLocation(Constants.MOD_ID, "colorizer_obj");
+    public static final Identifier LOADER_NAME = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "colorizer_obj");
 
     private ObjModelCopy unbakedColorizer;
 
@@ -36,7 +36,7 @@ public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel>
     }
 
     @Override
-    public BakedModel bake(IModelBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation) {
+    public BakedModel bake(IModelBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, Identifier modelLocation) {
         return new ColorizerObjBakedModel(context, unbakedColorizer, baker, spriteGetter, modelState, modelLocation);
     }
 
@@ -44,7 +44,7 @@ public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel>
         public static Loader INSTANCE = new Loader();
 
         private final Map<ObjModelCopy.ModelSettings, ColorizerObjModel> modelCache = Maps.newConcurrentMap();
-        private final Map<ResourceLocation, ObjMaterialLibrary> materialCache = Maps.newConcurrentMap();
+        private final Map<Identifier, ObjMaterialLibrary> materialCache = Maps.newConcurrentMap();
 
         private ResourceManager manager;
 
@@ -94,7 +94,7 @@ public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel>
                 deprecationWarningsBuilder.put("materialLibraryOverride", "mtl_override");
             }
 
-            return loadModel(new ObjModelCopy.ModelSettings(new ResourceLocation(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
+            return loadModel(new ObjModelCopy.ModelSettings(Identifier.parse(modelLocation), automaticCulling, shadeQuads, flipV, emissiveAmbient, mtlOverride), deprecationWarningsBuilder.build());
         }
 
         public ColorizerObjModel loadModel(ObjModelCopy.ModelSettings settings) {
@@ -130,11 +130,11 @@ public class ColorizerObjModel implements IModelSpecification<ColorizerObjModel>
             });
         }
 
-        public ObjMaterialLibrary loadMaterialLibrary(ResourceLocation materialLocation) {
+        public ObjMaterialLibrary loadMaterialLibrary(Identifier materialLocation) {
             return loadMaterialLibrary(materialLocation, null);
         }
 
-        public ObjMaterialLibrary loadMaterialLibrary(ResourceLocation materialLocation, @Nullable ResourceManager resourceManager) {
+        public ObjMaterialLibrary loadMaterialLibrary(Identifier materialLocation, @Nullable ResourceManager resourceManager) {
             return materialCache.computeIfAbsent(materialLocation, (location) -> {
                 Resource resource = resourceManager != null ? resourceManager.getResource(location).orElseThrow() : manager.getResource(location).orElseThrow();
                 try (ObjTokenizer rdr = new ObjTokenizer(resource.open())) {

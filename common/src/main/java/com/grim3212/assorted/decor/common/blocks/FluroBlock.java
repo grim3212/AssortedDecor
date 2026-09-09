@@ -2,7 +2,7 @@ package com.grim3212.assorted.decor.common.blocks;
 
 import com.google.common.collect.Maps;
 import com.grim3212.assorted.decor.api.colorizer.ICanColor;
-import net.minecraft.Util;
+import net.minecraft.util.Util;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;

@@ -10,7 +10,7 @@ import com.grim3212.assorted.decor.common.blocks.colorizer.*;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerLampPost.LampPart;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
@@ -74,8 +74,8 @@ public class DecorBlockstateProvider extends BlockStateProvider {
         });
         itemModels().withExistingParent(name(DecorBlocks.ROADWAY_MANHOLE.get()), prefix("block/roadway_manhole_closed"));
 
-        particleOnly(DecorBlocks.NEON_SIGN.get(), new ResourceLocation("block/obsidian"));
-        particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), new ResourceLocation("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
+        particleOnly(DecorBlocks.NEON_SIGN.get(), Identifier.parse("block/obsidian"));
+        particleOnly(DecorBlocks.NEON_SIGN_WALL.get(), Identifier.parse("block/obsidian"), DecorBlocks.NEON_SIGN.getId().toString());
 
         Function<BlockState, ModelFile> modelFunc = (state) -> {
             return state.getValue(IlluminationTubeBlock.FACING).getAxis().isVertical() ? models().getBuilder(prefix("block/illuminuation_tube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/template_torch"))).texture("torch", prefix("block/illumination_tube"))
@@ -114,9 +114,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
         paneBlock(DecorBlocks.CHAIN_LINK_FENCE.get(), resource("block/chain_link_door_bottom"), resource("block/chain_link_door_bottom"));
 
-        colorizer(DecorBlocks.COLORIZER.get(), new ResourceLocation(Constants.MOD_ID, "block/tinted_cube"));
-        colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), new ResourceLocation(Constants.MOD_ID, "block/chair"));
-        colorizerSide(DecorBlocks.COLORIZER_COUNTER.get(), new ResourceLocation(Constants.MOD_ID, "block/counter"));
+        colorizer(DecorBlocks.COLORIZER.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/tinted_cube"));
+        colorizerRotate(DecorBlocks.COLORIZER_CHAIR.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/chair"));
+        colorizerSide(DecorBlocks.COLORIZER_COUNTER.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/counter"));
         colorizerTable();
         colorizerStool();
         colorizerFence();
@@ -129,19 +129,19 @@ public class DecorBlockstateProvider extends BlockStateProvider {
         colorizerVerticalSlab();
         colorizerLampPost();
 
-        getModelBuilder(prefix("item/colorizer_brush"), new ResourceLocation(Constants.MOD_ID, "item/brush")).addTexture("handle", new ResourceLocation(Constants.MOD_ID, "item/brush_handle"));
+        getModelBuilder(prefix("item/colorizer_brush"), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/brush")).addTexture("handle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/brush_handle"));
 
-        colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), new ResourceLocation(Constants.MOD_ID, "models/block/slope.obj"));
-        colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), new ResourceLocation(Constants.MOD_ID, "models/block/sloped_angle.obj"));
-        colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), new ResourceLocation(Constants.MOD_ID, "models/block/sloped_intersection.obj"));
-        colorizerOBJ(DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get(), new ResourceLocation(Constants.MOD_ID, "models/block/oblique_slope.obj"));
-        colorizerOBJ(DecorBlocks.COLORIZER_CORNER.get(), new ResourceLocation(Constants.MOD_ID, "models/block/corner.obj"));
-        colorizerOBJ(DecorBlocks.COLORIZER_SLANTED_CORNER.get(), new ResourceLocation(Constants.MOD_ID, "models/block/slanted_corner.obj"));
-        colorizerOBJSide(DecorBlocks.COLORIZER_PYRAMID.get(), new ResourceLocation(Constants.MOD_ID, "models/block/pyramid.obj"));
-        colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), new ResourceLocation(Constants.MOD_ID, "models/block/full_pyramid.obj"));
-        colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), new ResourceLocation(Constants.MOD_ID, "models/block/sloped_post.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_SLOPE.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/slope.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_ANGLE.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/sloped_angle.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_SLOPED_INTERSECTION.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/sloped_intersection.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_OBLIQUE_SLOPE.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/oblique_slope.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_CORNER.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/corner.obj"));
+        colorizerOBJ(DecorBlocks.COLORIZER_SLANTED_CORNER.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/slanted_corner.obj"));
+        colorizerOBJSide(DecorBlocks.COLORIZER_PYRAMID.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/pyramid.obj"));
+        colorizerOBJSide(DecorBlocks.COLORIZER_FULL_PYRAMID.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/full_pyramid.obj"));
+        colorizerOBJSide(DecorBlocks.COLORIZER_SLOPED_POST.get(), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "models/block/sloped_post.obj"));
 
-        ColorizerModelBuilder chimneyModel = getModelBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get()), new ResourceLocation(Constants.MOD_ID, "block/chimney")).addTexture("top", new ResourceLocation(Constants.MOD_ID, "block/chimney_top"));
+        ColorizerModelBuilder chimneyModel = getModelBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get()), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/chimney")).addTexture("top", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/chimney_top"));
         getVariantBuilder(DecorBlocks.COLORIZER_CHIMNEY.get()).partialState().setModels(new ConfiguredModel(chimneyModel));
         itemModels().getBuilder(name(DecorBlocks.COLORIZER_CHIMNEY.get())).parent(chimneyModel);
 
@@ -183,11 +183,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
     private void fountain() {
         String name = name(DecorBlocks.FOUNTAIN.get());
-        getVariantBuilder(DecorBlocks.FOUNTAIN.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeBottomTop(name, new ResourceLocation("block/furnace_side"), new ResourceLocation("block/furnace_top"), resource("block/fountain_top"))).build());
+        getVariantBuilder(DecorBlocks.FOUNTAIN.get()).partialState().setModels(ConfiguredModel.builder().modelFile(models().cubeBottomTop(name, Identifier.parse("block/furnace_side"), Identifier.parse("block/furnace_top"), resource("block/fountain_top"))).build());
         itemModels().withExistingParent(name, prefix("block/" + name));
     }
 
-    private BlockModelBuilder roadwayModel(String name, ResourceLocation top) {
+    private BlockModelBuilder roadwayModel(String name, Identifier top) {
         return models().cubeBottomTop(name, resource("block/roadways/roadway_side"), resource("block/roadways/roadway_bottom"), top);
     }
 
@@ -204,12 +204,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private BlockModelBuilder crossModel(String name, String texture) {
-        return models().cross(name, new ResourceLocation(texture));
+        return models().cross(name, Identifier.parse(texture));
     }
 
     private void cross(Block b) {
         String s = name(b);
-        ResourceLocation texture = blockTexture(b);
+        Identifier texture = blockTexture(b);
 
         getVariantBuilder(b).partialState().setModels(new ConfiguredModel(models().cross(s, texture)));
         itemModels().withExistingParent(s, "item/generated").texture("layer0", texture);
@@ -279,7 +279,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void extraModels() {
-        BlockModelBuilder model = this.models().getBuilder(prefix("block/tinted_cube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer")).texture("stored", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+        BlockModelBuilder model = this.models().getBuilder(prefix("block/tinted_cube")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer")).texture("stored", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer"));
         model.element().from(0, 0, 0).to(16, 16, 16).allFaces((dir, face) -> {
             face.texture("#stored").cullface(dir).tintindex(0);
         });
@@ -297,11 +297,11 @@ public class DecorBlockstateProvider extends BlockStateProvider {
         color_cube_bottom_top.texture("particle", "#side").texture("down", "#bottom").texture("up", "#top").texture("north", "#side").texture("south", "#side").texture("west", "#side").texture("east", "#side");
     }
 
-    private void particleOnly(Block b, ResourceLocation particle) {
+    private void particleOnly(Block b, Identifier particle) {
         particleOnly(b, particle, name(b));
     }
 
-    private void particleOnly(Block b, ResourceLocation particle, String modelOverride) {
+    private void particleOnly(Block b, Identifier particle, String modelOverride) {
         ModelFile f = models().getBuilder(modelOverride).texture("particle", particle);
         simpleBlock(b, f);
     }
@@ -314,30 +314,30 @@ public class DecorBlockstateProvider extends BlockStateProvider {
         return ForgeRegistries.BLOCKS.getKey(i).getPath();
     }
 
-    private void colorizer(Block b, ResourceLocation model) {
+    private void colorizer(Block b, Identifier model) {
         colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, false, false, false, false);
     }
 
-    private void colorizerSide(Block b, ResourceLocation model) {
+    private void colorizerSide(Block b, Identifier model) {
         colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, true, false, true, true);
     }
 
-    private void colorizerRotate(Block b, ResourceLocation model) {
+    private void colorizerRotate(Block b, Identifier model) {
         colorizer(ColorizerUnbakedModel.LOADER_NAME, b, model, false, false, true, false);
     }
 
-    private void colorizerOBJ(Block b, ResourceLocation model) {
+    private void colorizerOBJ(Block b, Identifier model) {
         colorizer(ColorizerObjModel.LOADER_NAME, b, model, true, true, true, false);
     }
 
-    private void colorizerOBJSide(Block b, ResourceLocation model) {
+    private void colorizerOBJSide(Block b, Identifier model) {
         colorizer(ColorizerObjModel.LOADER_NAME, b, model, true, true, true, true);
     }
 
-    private void colorizer(ResourceLocation loader, Block b, ResourceLocation model, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
+    private void colorizer(Identifier loader, Block b, Identifier model, boolean defaultPerspective, boolean defaultPerspectiveFlipped, boolean rotate, boolean side) {
         String name = name(b);
 
-        ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+        ColorizerModelBuilder colorizerParent = this.loaderModels.getBuilder(name).loader(loader).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer"));
         if (loader.equals(ColorizerObjModel.LOADER_NAME)) {
             colorizerParent = colorizerParent.objModel(model);
         } else {
@@ -373,16 +373,16 @@ public class DecorBlockstateProvider extends BlockStateProvider {
         return numTrue;
     }
 
-    private ConfiguredModel getModel(String builderName, ResourceLocation model) {
+    private ConfiguredModel getModel(String builderName, Identifier model) {
         return new ConfiguredModel(getModelBuilder(builderName, model));
     }
 
-    private ColorizerModelBuilder getModelBuilder(String builderName, ResourceLocation model) {
-        return this.loaderModels.getBuilder(builderName).loader(ColorizerUnbakedModel.LOADER_NAME).colorizer(model).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+    private ColorizerModelBuilder getModelBuilder(String builderName, Identifier model) {
+        return this.loaderModels.getBuilder(builderName).loader(ColorizerUnbakedModel.LOADER_NAME).colorizer(model).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer"));
     }
 
-    private ResourceLocation resource(String name) {
-        return new ResourceLocation(Constants.MOD_ID, name);
+    private Identifier resource(String name) {
+        return Identifier.fromNamespaceAndPath(Constants.MOD_ID, name);
     }
 
     private void customLoaderState(Block block, ConfiguredModel model) {
@@ -415,15 +415,15 @@ public class DecorBlockstateProvider extends BlockStateProvider {
 
     private void colorizerStool() {
         String name = name(DecorBlocks.COLORIZER_STOOL.get());
-        ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", new ResourceLocation(Constants.MOD_ID, "block/stool"));
-        ConfiguredModel colorizerStoolUpModel = getModel("colorizer_stool_up", new ResourceLocation(Constants.MOD_ID, "block/stool_up"));
+        ConfiguredModel colorizerStoolModel = getModel("colorizer_stool", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/stool"));
+        ConfiguredModel colorizerStoolUpModel = getModel("colorizer_stool_up", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/stool_up"));
         getVariantBuilder(DecorBlocks.COLORIZER_STOOL.get()).forAllStatesExcept(state -> ConfiguredModel.builder().modelFile(state.getValue(ColorizerStoolBlock.UP) ? colorizerStoolUpModel.model : colorizerStoolModel.model).rotationX(state.getValue(BlockStateProperties.ATTACH_FACE).ordinal() * 90).rotationY((((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) + (state.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build(),
                 BlockStateProperties.WATERLOGGED);
         itemModels().getBuilder(name).parent(colorizerStoolModel.model);
     }
 
     private void calendar() {
-        BlockModelBuilder calendarModel = this.models().getBuilder(prefix("block/calendar")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/calendar")).texture("all", new ResourceLocation(Constants.MOD_ID, "block/calendar"));
+        BlockModelBuilder calendarModel = this.models().getBuilder(prefix("block/calendar")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/calendar")).texture("all", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/calendar"));
 
         calendarModel.element().from(4, 2, 0).to(12, 15, 1).allFaces((dir, face) -> {
             switch (dir) {
@@ -453,7 +453,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void wallClock() {
-        BlockModelBuilder defaultWallClockModel = this.models().getBuilder(prefix("block/wall_clock")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation("block/oak_planks")).texture("back", new ResourceLocation("block/oak_planks")).texture("side", new ResourceLocation("block/oak_planks"));
+        BlockModelBuilder defaultWallClockModel = this.models().getBuilder(prefix("block/wall_clock")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", Identifier.parse("block/oak_planks")).texture("back", Identifier.parse("block/oak_planks")).texture("side", Identifier.parse("block/oak_planks"));
 
         defaultWallClockModel.element().from(0, 0, 0).to(2, 16, 16).allFaces((dir, face) -> {
             switch (dir) {
@@ -489,7 +489,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void pot() {
-        BlockModelBuilder potModel = this.models().getBuilder(prefix("block/planter_pot_down")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/planter_pot")).texture("side", new ResourceLocation(Constants.MOD_ID, "block/planter_pot"));
+        BlockModelBuilder potModel = this.models().getBuilder(prefix("block/planter_pot_down")).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block"))).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/planter_pot")).texture("side", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/planter_pot"));
 
         potModel.element().from(3, 0, 3).to(13, 16, 13).allFaces((dir, face) -> {
             switch (dir) {
@@ -519,7 +519,7 @@ public class DecorBlockstateProvider extends BlockStateProvider {
             if (down) {
                 newModel = this.models().getBuilder(prefix("block/planter_pot_down_" + top)).parent(this.models().getExistingFile(potModel.getLocation())).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
             } else {
-                newModel = this.models().getBuilder(prefix("block/planter_pot_" + top)).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/cube_top"))).texture("particle", new ResourceLocation(Constants.MOD_ID, "block/planter_pot")).texture("side", new ResourceLocation(Constants.MOD_ID, "block/planter_pot")).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
+                newModel = this.models().getBuilder(prefix("block/planter_pot_" + top)).parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/cube_top"))).texture("particle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/planter_pot")).texture("side", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/planter_pot")).texture("top", mcLoc(ModelProvider.BLOCK_FOLDER + "/" + textures[top]));
             }
 
             return ConfiguredModel.builder().modelFile(models().getExistingFile(newModel.getLocation())).build();
@@ -531,12 +531,12 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     private void colorizerTable() {
         String name = name(DecorBlocks.COLORIZER_TABLE.get());
 
-        ConfiguredModel colorizerCounterModel = getModel("colorizer_counter", new ResourceLocation(Constants.MOD_ID, "block/counter"));
-        ConfiguredModel colorizerTableNModel = getModel("colorizer_table_n", new ResourceLocation(Constants.MOD_ID, "block/table_n"));
-        ConfiguredModel colorizerTableSEModel = getModel("colorizer_table_se", new ResourceLocation(Constants.MOD_ID, "block/table_se"));
-        ConfiguredModel colorizerTableNWallModel = getModel("colorizer_table_n_wall", new ResourceLocation(Constants.MOD_ID, "block/table_n_wall"));
-        ConfiguredModel colorizerTableSEWallModel = getModel("colorizer_table_se_wall", new ResourceLocation(Constants.MOD_ID, "block/table_se_wall"));
-        ConfiguredModel colorizerTableModel = getModel("colorizer_table", new ResourceLocation(Constants.MOD_ID, "block/table"));
+        ConfiguredModel colorizerCounterModel = getModel("colorizer_counter", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/counter"));
+        ConfiguredModel colorizerTableNModel = getModel("colorizer_table_n", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/table_n"));
+        ConfiguredModel colorizerTableSEModel = getModel("colorizer_table_se", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/table_se"));
+        ConfiguredModel colorizerTableNWallModel = getModel("colorizer_table_n_wall", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/table_n_wall"));
+        ConfiguredModel colorizerTableSEWallModel = getModel("colorizer_table_se_wall", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/table_se_wall"));
+        ConfiguredModel colorizerTableModel = getModel("colorizer_table", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/table"));
 
         getVariantBuilder(DecorBlocks.COLORIZER_TABLE.get()).forAllStatesExcept(state -> {
             boolean east = state.getValue(ColorizerTableBlock.EAST);
@@ -609,10 +609,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizerFenceGate() {
-        ConfiguredModel colorizerFenceGateModel = getModel("colorizer_fence_gate", new ResourceLocation(Constants.MOD_ID, "block/fence_gate"));
-        ConfiguredModel colorizerFenceGateOpenModel = getModel("colorizer_fence_gate_open", new ResourceLocation(Constants.MOD_ID, "block/fence_gate_open"));
-        ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", new ResourceLocation(Constants.MOD_ID, "block/fence_gate_wall"));
-        ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", new ResourceLocation(Constants.MOD_ID, "block/fence_gate_wall_open"));
+        ConfiguredModel colorizerFenceGateModel = getModel("colorizer_fence_gate", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_gate"));
+        ConfiguredModel colorizerFenceGateOpenModel = getModel("colorizer_fence_gate_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_gate_open"));
+        ConfiguredModel colorizerFenceGateWallModel = getModel("colorizer_fence_gate_wall", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_gate_wall"));
+        ConfiguredModel colorizerFenceGateWallOpenModel = getModel("colorizer_fence_gate_wall_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_gate_wall_open"));
 
         fenceGateBlock(DecorBlocks.COLORIZER_FENCE_GATE.get(), colorizerFenceGateModel.model, colorizerFenceGateOpenModel.model, colorizerFenceGateWallModel.model, colorizerFenceGateWallOpenModel.model);
 
@@ -620,73 +620,73 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizerFence() {
-        ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", new ResourceLocation(Constants.MOD_ID, "block/fence_post"));
-        ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", new ResourceLocation(Constants.MOD_ID, "block/fence_side"));
+        ConfiguredModel colorizerFencePostModel = getModel("colorizer_fence_post", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_post"));
+        ConfiguredModel colorizerFenceSideModel = getModel("colorizer_fence_side", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fence_side"));
 
 
         MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_FENCE.get()).part().modelFile(colorizerFencePostModel.model).addModel().end();
         fourWayMultipart(builder, colorizerFenceSideModel.model);
 
-        getModel(prefix("item/colorizer_fence"), new ResourceLocation(Constants.MOD_ID, "item/fence_inventory"));
+        getModel(prefix("item/colorizer_fence"), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/fence_inventory"));
     }
 
     private void colorizerWall() {
-        ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", new ResourceLocation(Constants.MOD_ID, "block/wall_post"));
-        ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", new ResourceLocation(Constants.MOD_ID, "block/wall_side"));
-        ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", new ResourceLocation(Constants.MOD_ID, "block/wall_side_tall"));
+        ConfiguredModel colorizerWallPostModel = getModel("colorizer_wall_post", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/wall_post"));
+        ConfiguredModel colorizerWallSideModel = getModel("colorizer_wall_side", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/wall_side"));
+        ConfiguredModel colorizerWallSideTallModel = getModel("colorizer_wall_side_tall", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/wall_side_tall"));
 
         wallBlock(DecorBlocks.COLORIZER_WALL.get(), colorizerWallPostModel.model, colorizerWallSideModel.model, colorizerWallSideTallModel.model);
 
-        getModel(prefix("item/colorizer_wall"), new ResourceLocation(Constants.MOD_ID, "item/wall_inventory"));
+        getModel(prefix("item/colorizer_wall"), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/wall_inventory"));
     }
 
     private void colorizerTrapDoor() {
-        ConfiguredModel colorizerTrapdoorBottomModel = getModel("colorizer_trapdoor_bottom", new ResourceLocation(Constants.MOD_ID, "block/trapdoor_bottom"));
-        ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", new ResourceLocation(Constants.MOD_ID, "block/trapdoor_open"));
-        ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", new ResourceLocation(Constants.MOD_ID, "block/trapdoor_top"));
+        ConfiguredModel colorizerTrapdoorBottomModel = getModel("colorizer_trapdoor_bottom", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/trapdoor_bottom"));
+        ConfiguredModel colorizerTrapdoorOpenModel = getModel("colorizer_trapdoor_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/trapdoor_open"));
+        ConfiguredModel colorizerTrapdoorTopModel = getModel("colorizer_trapdoor_top", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/trapdoor_top"));
 
         trapdoorBlock(DecorBlocks.COLORIZER_TRAP_DOOR.get(), colorizerTrapdoorBottomModel.model, colorizerTrapdoorTopModel.model, colorizerTrapdoorOpenModel.model, true);
         itemModels().getBuilder(prefix("item/colorizer_trap_door")).parent(colorizerTrapdoorBottomModel.model);
     }
 
     private void colorizerDoor() {
-        ConfiguredModel colorizerDoorBottomLeftModel = getModel("colorizer_door_bottom_left", new ResourceLocation(Constants.MOD_ID, "block/door_bottom_left"));
-        ConfiguredModel colorizerDoorBottomRightModel = getModel("colorizer_door_bottom_right", new ResourceLocation(Constants.MOD_ID, "block/door_bottom_right"));
-        ConfiguredModel colorizerDoorBottomLeftOpenModel = getModel("colorizer_door_bottom_left_open", new ResourceLocation(Constants.MOD_ID, "block/door_bottom_left_open"));
-        ConfiguredModel colorizerDoorBottomRightOpenModel = getModel("colorizer_door_bottom_right_open", new ResourceLocation(Constants.MOD_ID, "block/door_bottom_right_open"));
-        ConfiguredModel colorizerDoorTopLeftModel = getModel("colorizer_door_top_left", new ResourceLocation(Constants.MOD_ID, "block/door_top_left"));
-        ConfiguredModel colorizerDoorTopRightModel = getModel("colorizer_door_top_right", new ResourceLocation(Constants.MOD_ID, "block/door_top_right"));
-        ConfiguredModel colorizerDoorTopLeftOpenModel = getModel("colorizer_door_top_left_open", new ResourceLocation(Constants.MOD_ID, "block/door_top_left_open"));
-        ConfiguredModel colorizerDoorTopRightOpenModel = getModel("colorizer_door_top_right_open", new ResourceLocation(Constants.MOD_ID, "block/door_top_right_open"));
+        ConfiguredModel colorizerDoorBottomLeftModel = getModel("colorizer_door_bottom_left", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_bottom_left"));
+        ConfiguredModel colorizerDoorBottomRightModel = getModel("colorizer_door_bottom_right", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_bottom_right"));
+        ConfiguredModel colorizerDoorBottomLeftOpenModel = getModel("colorizer_door_bottom_left_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_bottom_left_open"));
+        ConfiguredModel colorizerDoorBottomRightOpenModel = getModel("colorizer_door_bottom_right_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_bottom_right_open"));
+        ConfiguredModel colorizerDoorTopLeftModel = getModel("colorizer_door_top_left", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_top_left"));
+        ConfiguredModel colorizerDoorTopRightModel = getModel("colorizer_door_top_right", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_top_right"));
+        ConfiguredModel colorizerDoorTopLeftOpenModel = getModel("colorizer_door_top_left_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_top_left_open"));
+        ConfiguredModel colorizerDoorTopRightOpenModel = getModel("colorizer_door_top_right_open", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/door_top_right_open"));
 
         doorBlock(DecorBlocks.COLORIZER_DOOR.get(), colorizerDoorBottomLeftModel.model, colorizerDoorBottomLeftOpenModel.model, colorizerDoorBottomRightModel.model, colorizerDoorBottomRightOpenModel.model, colorizerDoorTopLeftModel.model, colorizerDoorTopLeftOpenModel.model, colorizerDoorTopRightModel.model, colorizerDoorTopRightOpenModel.model);
-        getModel(prefix("item/colorizer_door"), new ResourceLocation(Constants.MOD_ID, "item/door"));
+        getModel(prefix("item/colorizer_door"), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/door"));
     }
 
     private void colorizerStairs() {
-        ConfiguredModel colorizerStairsModel = getModel("colorizer_stairs", new ResourceLocation(Constants.MOD_ID, "block/stairs"));
-        ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", new ResourceLocation(Constants.MOD_ID, "block/inner_stairs"));
-        ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", new ResourceLocation(Constants.MOD_ID, "block/outer_stairs"));
+        ConfiguredModel colorizerStairsModel = getModel("colorizer_stairs", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/stairs"));
+        ConfiguredModel colorizerInnerStairsModel = getModel("colorizer_inner_stairs", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/inner_stairs"));
+        ConfiguredModel colorizerOuterStairsModel = getModel("colorizer_outer_stairs", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/outer_stairs"));
 
         stairsBlock(DecorBlocks.COLORIZER_STAIRS.get(), colorizerStairsModel.model, colorizerInnerStairsModel.model, colorizerOuterStairsModel.model);
         itemModels().getBuilder(prefix("item/colorizer_stairs")).parent(colorizerStairsModel.model);
     }
 
     private void colorizerSlab() {
-        ConfiguredModel colorizerSlabModel = getModel("colorizer_slab", new ResourceLocation(Constants.MOD_ID, "block/slab"));
-        ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", new ResourceLocation(Constants.MOD_ID, "block/slab_top"));
-        ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+        ConfiguredModel colorizerSlabModel = getModel("colorizer_slab", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/slab"));
+        ConfiguredModel colorizerSlabTopModel = getModel("colorizer_slab_top", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/slab_top"));
+        ModelFile colorizerModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer"));
 
         slabBlock(DecorBlocks.COLORIZER_SLAB.get(), colorizerSlabModel.model, colorizerSlabTopModel.model, colorizerModel);
         itemModels().getBuilder(prefix("item/colorizer_slab")).parent(colorizerSlabModel.model);
     }
 
     private void colorizerVerticalSlab() {
-        ConfiguredModel slabNorthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_north", new ResourceLocation(Constants.MOD_ID, "block/vertical_slab")));
-        ConfiguredModel slabSouthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_south", new ResourceLocation(Constants.MOD_ID, "block/vertical_slab")), 0, 180, false);
-        ConfiguredModel slabWestModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_west", new ResourceLocation(Constants.MOD_ID, "block/vertical_slab")), 0, 270, false);
-        ConfiguredModel slabEastModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_east", new ResourceLocation(Constants.MOD_ID, "block/vertical_slab")), 0, 90, false);
-        ModelFile colorizerModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/colorizer"));
+        ConfiguredModel slabNorthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_north", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/vertical_slab")));
+        ConfiguredModel slabSouthModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_south", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/vertical_slab")), 0, 180, false);
+        ConfiguredModel slabWestModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_west", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/vertical_slab")), 0, 270, false);
+        ConfiguredModel slabEastModel = new ConfiguredModel(getModelBuilder("colorizer_vertical_slab_east", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/vertical_slab")), 0, 90, false);
+        ModelFile colorizerModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/colorizer"));
 
         getVariantBuilder(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.NORTH).addModels(slabNorthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.SOUTH).addModels(slabSouthModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.WEST).addModels(slabWestModel).partialState().with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.EAST).addModels(slabEastModel).partialState()
                 .with(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE).addModels(new ConfiguredModel(colorizerModel));
@@ -695,21 +695,21 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizerLampPost() {
-        ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", new ResourceLocation(Constants.MOD_ID, "block/lamp_post_bottom"));
-        ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", new ResourceLocation(Constants.MOD_ID, "block/lamp_post_middle"));
-        ColorizerModelBuilder colorizerLampPostTopModel = getModelBuilder("colorizer_lamp_post_top", new ResourceLocation(Constants.MOD_ID, "block/lamp_post_top")).addTexture("lamp", new ResourceLocation("block/glowstone"));
+        ConfiguredModel colorizerLampPostBottomModel = getModel("colorizer_lamp_post_bottom", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/lamp_post_bottom"));
+        ConfiguredModel colorizerLampPostMiddleModel = getModel("colorizer_lamp_post_middle", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/lamp_post_middle"));
+        ColorizerModelBuilder colorizerLampPostTopModel = getModelBuilder("colorizer_lamp_post_top", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/lamp_post_top")).addTexture("lamp", Identifier.parse("block/glowstone"));
 
         getVariantBuilder(DecorBlocks.COLORIZER_LAMP_POST.get()).partialState().with(ColorizerLampPost.PART, LampPart.BOTTOM).addModels(colorizerLampPostBottomModel).partialState().with(ColorizerLampPost.PART, LampPart.MIDDLE).addModels(colorizerLampPostMiddleModel).partialState().with(ColorizerLampPost.PART, LampPart.TOP).addModels(new ConfiguredModel(colorizerLampPostTopModel));
 
-        getModelBuilder(prefix("item/colorizer_lamp_post"), new ResourceLocation(Constants.MOD_ID, "item/lamp_post_inventory")).addTexture("lamp", new ResourceLocation("block/glowstone"));
+        getModelBuilder(prefix("item/colorizer_lamp_post"), Identifier.fromNamespaceAndPath(Constants.MOD_ID, "item/lamp_post_inventory")).addTexture("lamp", Identifier.parse("block/glowstone"));
     }
 
     private void colorizerFireplace() {
-        ColorizerModelBuilder colorizerFireplaceModel = getModelBuilder("colorizer_fireplace", new ResourceLocation(Constants.MOD_ID, "block/fireplace")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ColorizerModelBuilder colorizerFireplaceNModel = getModelBuilder("colorizer_fireplace_n", new ResourceLocation(Constants.MOD_ID, "block/fireplace_n")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ColorizerModelBuilder colorizerFireplaceNEModel = getModelBuilder("colorizer_fireplace_ne", new ResourceLocation(Constants.MOD_ID, "block/fireplace_ne")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ColorizerModelBuilder colorizerFireplaceNSModel = getModelBuilder("colorizer_fireplace_ns", new ResourceLocation(Constants.MOD_ID, "block/fireplace_ns")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ModelFile fireModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/fire"));
+        ColorizerModelBuilder colorizerFireplaceModel = getModelBuilder("colorizer_fireplace", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fireplace")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ColorizerModelBuilder colorizerFireplaceNModel = getModelBuilder("colorizer_fireplace_n", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fireplace_n")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ColorizerModelBuilder colorizerFireplaceNEModel = getModelBuilder("colorizer_fireplace_ne", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fireplace_ne")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ColorizerModelBuilder colorizerFireplaceNSModel = getModelBuilder("colorizer_fireplace_ns", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fireplace_ns")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ModelFile fireModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fire"));
 
         MultiPartBlockStateBuilder builder = getMultipartBuilder(DecorBlocks.COLORIZER_FIREPLACE.get()).part().modelFile(colorizerFireplaceModel).addModel().condition(ColorizerFireplaceBlock.EAST, false).condition(ColorizerFireplaceBlock.WEST, false).condition(ColorizerFireplaceBlock.SOUTH, false).condition(ColorizerFireplaceBlock.NORTH, false).end();
 
@@ -736,9 +736,9 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizerFirepit() {
-        ColorizerModelBuilder colorizerFirepitModel = getModelBuilder("colorizer_firepit", new ResourceLocation(Constants.MOD_ID, "block/firepit")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ColorizerModelBuilder colorizerFirepitCoveredModel = getModelBuilder("colorizer_firepit_covered", new ResourceLocation(Constants.MOD_ID, "block/firepit_covered")).addTexture("wood", new ResourceLocation("block/oak_planks")).addTexture("net", new ResourceLocation(Constants.MOD_ID, "block/net"));
-        ModelFile fireModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/fire_high"));
+        ColorizerModelBuilder colorizerFirepitModel = getModelBuilder("colorizer_firepit", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/firepit")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ColorizerModelBuilder colorizerFirepitCoveredModel = getModelBuilder("colorizer_firepit_covered", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/firepit_covered")).addTexture("wood", Identifier.parse("block/oak_planks")).addTexture("net", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/net"));
+        ModelFile fireModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fire_high"));
 
         getMultipartBuilder(DecorBlocks.COLORIZER_FIREPIT.get()).part().modelFile(colorizerFirepitModel).addModel().end().part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
         itemModels().getBuilder(prefix("item/colorizer_firepit")).parent(colorizerFirepitModel);
@@ -748,10 +748,10 @@ public class DecorBlockstateProvider extends BlockStateProvider {
     }
 
     private void colorizerFireringStove() {
-        ColorizerModelBuilder colorizerFireringModel = getModelBuilder("colorizer_firering", new ResourceLocation(Constants.MOD_ID, "block/firering")).addTexture("wood", new ResourceLocation("block/oak_planks"));
-        ColorizerModelBuilder colorizerStoveModel = getModelBuilder("colorizer_stove", new ResourceLocation(Constants.MOD_ID, "block/stove")).addTexture("wood", new ResourceLocation("block/oak_planks")).addTexture("net", new ResourceLocation(Constants.MOD_ID, "block/net"));
-        ModelFile fireModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/fire"));
-        ModelFile fireHighModel = models().getExistingFile(new ResourceLocation(Constants.MOD_ID, "block/fire_high"));
+        ColorizerModelBuilder colorizerFireringModel = getModelBuilder("colorizer_firering", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/firering")).addTexture("wood", Identifier.parse("block/oak_planks"));
+        ColorizerModelBuilder colorizerStoveModel = getModelBuilder("colorizer_stove", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/stove")).addTexture("wood", Identifier.parse("block/oak_planks")).addTexture("net", Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/net"));
+        ModelFile fireModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fire"));
+        ModelFile fireHighModel = models().getExistingFile(Identifier.fromNamespaceAndPath(Constants.MOD_ID, "block/fire_high"));
 
         getMultipartBuilder(DecorBlocks.COLORIZER_FIRERING.get()).part().modelFile(colorizerFireringModel).addModel().end().part().modelFile(fireModel).addModel().condition(ColorizerFireplaceBaseBlock.ACTIVE, true).end();
         itemModels().getBuilder(prefix("item/colorizer_firering")).parent(colorizerFireringModel);

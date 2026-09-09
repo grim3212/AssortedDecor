@@ -6,7 +6,7 @@ import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.FluroBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.lib.data.LibBlockLootProvider;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;

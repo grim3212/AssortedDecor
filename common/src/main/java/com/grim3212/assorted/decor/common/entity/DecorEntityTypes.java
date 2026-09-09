@@ -4,7 +4,7 @@ import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.lib.registry.IRegistryObject;
 import com.grim3212.assorted.lib.registry.RegistryProvider;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,7 +18,7 @@ public class DecorEntityTypes {
     public static final IRegistryObject<EntityType<IronFrameEntity>> IRON_FRAME = register("iron_frame", EntityType.Builder.<IronFrameEntity>of(IronFrameEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).clientTrackingRange(250).updateInterval(2147483647));
 
     private static <T extends Entity> IRegistryObject<EntityType<T>> register(final String name, final EntityType.Builder<T> builder) {
-        return ENTITIES.register(name, () -> builder.build(new ResourceLocation(Constants.MOD_ID, name).toString()));
+        return ENTITIES.register(name, () -> builder.build(Identifier.fromNamespaceAndPath(Constants.MOD_ID, name).toString()));
     }
 
     public static void init() {

@@ -5,38 +5,38 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ColorizerModelBuilder extends ModelBuilder<ColorizerModelBuilder> {
 
-	private ResourceLocation loader;
-	private ResourceLocation model;
-	private ResourceLocation colorizer;
-	private Map<String, ResourceLocation> textures;
+	private Identifier loader;
+	private Identifier model;
+	private Identifier colorizer;
+	private Map<String, Identifier> textures;
 
-	protected ColorizerModelBuilder(ResourceLocation outputLocation, ExistingFileHelper existingFileHelper) {
+	protected ColorizerModelBuilder(Identifier outputLocation, ExistingFileHelper existingFileHelper) {
 		super(outputLocation, existingFileHelper);
 		this.textures = Maps.newConcurrentMap();
 	}
 
-	public ColorizerModelBuilder loader(ResourceLocation loader) {
+	public ColorizerModelBuilder loader(Identifier loader) {
 		this.loader = loader;
 		return this;
 	}
 
-	public ColorizerModelBuilder objModel(ResourceLocation model) {
+	public ColorizerModelBuilder objModel(Identifier model) {
 		this.model = model;
 		return this;
 	}
 
-	public ColorizerModelBuilder colorizer(ResourceLocation colorizer) {
+	public ColorizerModelBuilder colorizer(Identifier colorizer) {
 		this.colorizer = colorizer;
 		return this;
 	}
 
-	public ColorizerModelBuilder addTexture(String name, ResourceLocation texture) {
+	public ColorizerModelBuilder addTexture(String name, Identifier texture) {
 		this.textures.put(name, texture);
 		return this;
 	}

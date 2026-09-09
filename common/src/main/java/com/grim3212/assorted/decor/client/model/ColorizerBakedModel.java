@@ -10,12 +10,12 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.client.resources.model.ModelBaker;
-import net.minecraft.client.resources.model.ModelState;
+import net.minecraft.client.renderer.block.dispatch.ModelState;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Function;
 
 public class ColorizerBakedModel extends ColorizerBaseBakedModel<BlockModel> {
-    public ColorizerBakedModel(IModelBakingContext context, BlockModel unbakedColorizer, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, ResourceLocation name) {
+    public ColorizerBakedModel(IModelBakingContext context, BlockModel unbakedColorizer, ModelBaker bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState transform, Identifier name) {
         super(context, unbakedColorizer, bakery, spriteGetter, transform, name);
     }
 

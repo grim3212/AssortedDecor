@@ -8,20 +8,20 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
 
-    private static final ResourceLocation wallpaperTexture = new ResourceLocation(Constants.MOD_ID, "textures/entity/wallpapers.png");
+    private static final Identifier wallpaperTexture = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/entity/wallpapers.png");
 
     public WallpaperRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -186,7 +186,7 @@ public class WallpaperRenderer extends EntityRenderer<WallpaperEntity> {
     }
 
     @Override
-    public ResourceLocation getTextureLocation(WallpaperEntity entity) {
+    public Identifier getTextureLocation(WallpaperEntity entity) {
         return wallpaperTexture;
     }
 }

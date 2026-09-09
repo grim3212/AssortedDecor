@@ -6,12 +6,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class CageScreen extends AbstractContainerScreen<CageContainer> {
 
-    private static final ResourceLocation CAGE_GUI_TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/container/cage.png");
+    private static final Identifier CAGE_GUI_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/container/cage.png");
 
     public CageScreen(CageContainer screenContainer, Inventory inv, Component titleIn) {
         super(screenContainer, inv, titleIn);
