@@ -7,12 +7,21 @@ import com.grim3212.assorted.decor.common.blocks.blockentity.NeonSignBlockEntity
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.StandingSignBlock;
@@ -22,21 +31,19 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * TODO(26.2): the sign board itself is no longer drawn here, only its text.
- *  What this used to do: build a {@code SignRenderer.SignModel} out of the entity model set, pick one
- *  of the three {@code textures/model/neon_sign*.png} sprites off the {@code Sheets.SIGN_SHEET} atlas
- *  according to {@link NeonSignBlockEntity#mode} and render the board plus the stick before drawing
- *  the text on top.
- *  Why it cannot be expressed: 26.2 deleted {@code SignRenderer} outright. Its replacement,
- *  {@code AbstractSignRenderer}, only submits text - vanilla signs render their board from an ordinary
- *  <em>block model</em> now, and {@code Sheets.SIGN_SHEET}, {@code Material#buffer} and
- *  {@code SignRenderer.SignModel} are all gone with it. Restoring the board therefore needs a
- *  {@code models/block/neon_sign.json} with real geometry (the mod currently ships one carrying only a
- *  particle texture), which is a datagen change rather than a renderer one. Note also that {@code mode}
- *  lives in the block entity's NBT rather than in the block state, and a block model is chosen per
- *  block state, so the three board textures cannot be selected from the model json either - the mode
- *  would have to become a block state property, or the board be submitted here as custom geometry
- *  against a mod-owned atlas.
+ * Draws a neon sign: the board, its post, and the four lines of text.
+ * <p>
+ * The board used to come from {@code SignRenderer.SignModel}, which 26.2 deleted along with
+ * {@code SignRenderer} itself - a vanilla sign renders its board from an ordinary <em>block model</em>
+ * now and its renderer only submits text. That does not work for a neon sign: which of the three
+ * board textures it uses is {@link NeonSignBlockEntity#mode}, which lives in the block entity's NBT
+ * rather than in the block state, and a block model is chosen per block state. So the board stays
+ * here, as an equivalent {@link ModelPart} submitted against the texture the mode selects.
+ * <p>
+ * The mesh is the vanilla 1.20.1 sign mesh, value for value, so the sign keeps its proportions and
+ * the existing 64x32 textures still line up. It is baked straight out of a {@link LayerDefinition}
+ * rather than registered as a model layer: nothing else needs to look it up, and an entity model
+ * layer would have to be registered through both loaders for no gain.
  */
 public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSignBlockEntity, NeonSignBlockEntityRenderer.NeonSignRenderState> {
 
@@ -48,10 +55,33 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
     private static final int TEXT_COLOR = -1;
     private static final int LINE_COUNT = 4;
 
+    /**
+     * The scale the 1.20.1 renderer drew the board at. Y and Z are negated because a sign mesh is
+     * modelled upside down and facing away, exactly as vanilla did it.
+     */
+    private static final float BOARD_SCALE = 0.6666667F;
+
     private final Font font;
+    private final ModelPart board;
+    private final ModelPart stick;
 
     public NeonSignBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
         this.font = context.font();
+
+        ModelPart root = createSignLayer().bakeRoot();
+        this.board = root.getChild("sign");
+        this.stick = root.getChild("stick");
+    }
+
+    /**
+     * The vanilla sign mesh: a 24x12x2 board and a 2x14x2 post on a 64x32 sheet.
+     */
+    private static LayerDefinition createSignLayer() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("sign", CubeListBuilder.create().texOffs(0, 0).addBox(-12.0F, -14.0F, -1.0F, 24.0F, 12.0F, 2.0F), PartPose.ZERO);
+        root.addOrReplaceChild("stick", CubeListBuilder.create().texOffs(0, 14).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 14.0F, 2.0F), PartPose.ZERO);
+        return LayerDefinition.create(mesh, 64, 32);
     }
 
     @Override
@@ -73,6 +103,7 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
         }
 
         state.doubleSided = blockEntity.mode == 2 && !state.wall;
+        state.boardTexture = signTextureFile(blockEntity.mode);
 
         for (int line = 0; line < LINE_COUNT; line++) {
             state.lines[line] = blockEntity.getText(line).getVisualOrderText();
@@ -89,6 +120,8 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
             poseStack.translate(0.0D, -0.3125D, -0.4375D);
         }
 
+        submitBoard(state, poseStack, submitNodeCollector);
+
         float f2 = 0.010416667F;
         poseStack.translate(0.0D, (double) 0.33333334F, (double) 0.046666667F);
         poseStack.scale(f2, -f2, f2);
@@ -100,6 +133,27 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
             poseStack.translate(0.0D, 0.0D, -9.0D);
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
             submitText(state, poseStack, submitNodeCollector);
+        }
+
+        poseStack.popPose();
+    }
+
+    /**
+     * The board is drawn straight off its texture file rather than through an atlas sprite: the three
+     * mode textures are 64x32 entity sheets, and the sign atlas they used to be looked up on
+     * ({@code Sheets.SIGN_SHEET}) no longer exists.
+     */
+    private void submitBoard(NeonSignRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector) {
+        RenderType renderType = RenderTypes.entityCutout(state.boardTexture);
+
+        poseStack.pushPose();
+        poseStack.scale(BOARD_SCALE, -BOARD_SCALE, -BOARD_SCALE);
+
+        submitNodeCollector.submitModelPart(this.board, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null);
+        // A wall sign has nothing to stand on, so its post is left off, as it was in 1.20.1 through
+        // SignModel#stick's visible flag.
+        if (state.standing) {
+            submitNodeCollector.submitModelPart(this.stick, poseStack, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null);
         }
 
         poseStack.popPose();
@@ -130,11 +184,21 @@ public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSign
         }
     }
 
+    /**
+     * The same choice as {@link #getSignTexture(int)}, as the path of a texture file - what a
+     * {@link RenderType} wants, as opposed to the sprite name an atlas material wanted.
+     */
+    private static Identifier signTextureFile(int mode) {
+        Identifier sprite = getSignTexture(mode);
+        return sprite.withPath(path -> "textures/" + path + ".png");
+    }
+
     public static class NeonSignRenderState extends BlockEntityRenderState {
         public boolean standing;
         public boolean wall;
         public boolean doubleSided;
         public float yRot;
+        public Identifier boardTexture = NEON_SIGN_TEXTURE;
         public final FormattedCharSequence[] lines = new FormattedCharSequence[LINE_COUNT];
         public final float[] lineOffsets = new float[LINE_COUNT];
     }
