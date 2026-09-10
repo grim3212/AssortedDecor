@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class ColorizerFireplaceBaseBlock extends ColorizerBlock {
@@ -32,12 +33,29 @@ public class ColorizerFireplaceBaseBlock extends ColorizerBlock {
         builder.add(ACTIVE);
     }
 
+    // ACTIVE from `state`, never level.getBlockState(pos): LightEngine#hasDifferentLightProperties
+    // compares old against new at the same position, so reading the world returns the same value for
+    // both and no checkBlock is queued. The super call is the stored block, which does need the pos.
     @Override
     public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        if (world.getBlockState(pos).getBlock() == this && world.getBlockState(pos).getValue(ACTIVE)) {
+        if (state.getBlock() == this && state.getValue(ACTIVE)) {
             return 15;
         }
         return super.getLightEmission(state, world, pos);
+    }
+
+    // Lighting only - the collision shape stays a full cube. BlockModelLighter#prepareQuadShape lights
+    // every flat quad in a full-collision-shape block from the neighbour it faces, which rendered the
+    // interior ceiling of the fireplace and the stove black against the ground.
+    @Override
+    protected boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
+        return false;
+    }
+
+    // Vanilla derives this from isCollisionShapeFullBlock; pinned so mobs keep pathing around.
+    @Override
+    protected boolean isPathfindable(BlockState state, PathComputationType type) {
+        return false;
     }
 
     @Override
