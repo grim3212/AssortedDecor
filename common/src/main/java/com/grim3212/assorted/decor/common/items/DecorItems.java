@@ -33,7 +33,7 @@ public class DecorItems {
     public static final IRegistryObject<Item> PAINT_ROLLER = register("paint_roller", props -> new Item(props.stacksTo(1)));
     public static final IRegistryObject<Item> CHAIN_LINK = register("chain_link", props -> new Item(props));
 
-    public static final Map<DyeColor, IRegistryObject<PaintRollerItem>> PAINT_ROLLER_COLORS = Maps.newHashMap();
+    public static final Map<DyeColor, IRegistryObject<PaintRollerItem>> PAINT_ROLLER_COLORS = Maps.newEnumMap(DyeColor.class);
 
     static {
         Arrays.stream(DyeColor.values()).forEach((color) -> PAINT_ROLLER_COLORS.put(color, register("paint_roller_" + color.getName(), props -> new PaintRollerItem(color, props))));

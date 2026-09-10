@@ -121,7 +121,7 @@ public class DecorBlocks {
     public static final IRegistryObject<RoadwayManholeBlock> ROADWAY_MANHOLE = register("roadway_manhole", props -> new RoadwayManholeBlock(props.mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.METAL).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));
     public static final IRegistryObject<RoadwayLightBlock> ROADWAY_LIGHT = register("roadway_light", props -> new RoadwayLightBlock(props.mapColor(MapColor.COLOR_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().lightLevel((b) -> b.getValue(RoadwayLightBlock.ACTIVE) ? 15 : 0)));
 
-    public static final Map<DyeColor, IRegistryObject<RoadwayColorBlock>> ROADWAY_COLORS = Maps.newHashMap();
+    public static final Map<DyeColor, IRegistryObject<RoadwayColorBlock>> ROADWAY_COLORS = Maps.newEnumMap(DyeColor.class);
 
     static {
         ROADWAY_COLORS.put(DyeColor.WHITE, register("roadway_white", props -> new RoadwayWhiteBlock(props.mapColor(MapColor.SNOW).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops())));
