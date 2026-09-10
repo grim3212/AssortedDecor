@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:paint_roller_dyes_a_sheep",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

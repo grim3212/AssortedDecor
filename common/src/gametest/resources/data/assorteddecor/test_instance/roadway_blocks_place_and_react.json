@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:roadway_blocks_place_and_react",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

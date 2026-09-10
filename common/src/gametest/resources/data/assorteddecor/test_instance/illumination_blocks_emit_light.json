@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:illumination_blocks_emit_light",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 100,
+  "setup_ticks": 0,
+  "required": true
+}

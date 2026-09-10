@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:colorizer_shapes_take_texture",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}
