@@ -83,10 +83,11 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
      * known once chunks are being built, and section compilation runs on several threads at once.
      */
     protected final Map<BlockState, BlockStateModel> cache = new ConcurrentHashMap<>();
+    protected final Map<BlockState, Material.Baked> particleCache = new ConcurrentHashMap<>();
     protected volatile BlockStateModel EMPTY;
 
     public BlockStateModel getCachedModel(BlockState blockState) {
-        if (blockState == null || blockState == Blocks.AIR.defaultBlockState()) {
+        if (isEmpty(blockState)) {
             BlockStateModel empty = EMPTY;
             if (empty == null) {
                 EMPTY = empty = generateModel(textures(DEFAULT_TEXTURE));
@@ -94,22 +95,36 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
             return empty;
         }
 
-        return this.cache.computeIfAbsent(blockState, state -> {
-            String texture;
-            if (state.getBlock() == Blocks.GRASS_BLOCK) {
-                texture = "minecraft:block/grass_block_top";
-            } else if (state.getBlock() == Blocks.PODZOL) {
-                texture = "minecraft:block/dirt_podzol_top";
-            } else if (state.getBlock() == Blocks.MYCELIUM) {
-                texture = "minecraft:block/mycelium_top";
-            } else {
-                // BlockModelShaper is gone; the particle sprite of a block state is answered by the
-                // baked block state models the ModelManager holds.
-                texture = Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(state).sprite().contents().name().toString();
-            }
+        return this.cache.computeIfAbsent(blockState, state -> generateModel(textures(storedTexture(state))));
+    }
 
-            return generateModel(textures(texture));
-        });
+    // Resolved from the stored texture rather than read off the cached model: only the json colorizer
+    // bakes it into a "particle" slot, the OBJ one pushes the sprite straight onto the geometry.
+    public Material.Baked getCachedParticle(BlockState blockState) {
+        if (isEmpty(blockState)) {
+            return this.particle;
+        }
+
+        return this.particleCache.computeIfAbsent(blockState, state -> this.bakery.materials().get(new Material(Identifier.parse(storedTexture(state))), this.debugName));
+    }
+
+    private static boolean isEmpty(BlockState blockState) {
+        return blockState == null || blockState == Blocks.AIR.defaultBlockState();
+    }
+
+    // Grass, podzol and mycelium are special cased: their particle sprite is the side texture, not the
+    // top one that reads as the block's colour.
+    private static String storedTexture(BlockState state) {
+        if (state.getBlock() == Blocks.GRASS_BLOCK) {
+            return "minecraft:block/grass_block_top";
+        } else if (state.getBlock() == Blocks.PODZOL) {
+            return "minecraft:block/dirt_podzol_top";
+        } else if (state.getBlock() == Blocks.MYCELIUM) {
+            return "minecraft:block/mycelium_top";
+        }
+
+        // BlockModelShaper is gone; the particle sprite is answered by the ModelManager's baked models.
+        return Minecraft.getInstance().getModelManager().getBlockStateModelSet().getParticleMaterial(state).sprite().contents().name().toString();
     }
 
     /**
@@ -126,12 +141,22 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
 
     @Override
     public void collectParts(@NotNull RandomSource random, @NotNull IBlockModelData extraData, @NotNull List<BlockStateModelPart> output) {
-        BlockState blockState = Blocks.AIR.defaultBlockState();
+        collectCachedParts(this.getCachedModel(storedState(extraData)), random, output);
+    }
+
+    // Break and hit particles read the sprite, not the geometry; without this they show the model
+    // json's own particle slot - the unset colorizer texture - whatever the block entity has stored.
+    @Override
+    public Material.Baked particleMaterial(@NotNull IBlockModelData extraData) {
+        return this.getCachedParticle(storedState(extraData));
+    }
+
+    private static BlockState storedState(IBlockModelData extraData) {
         if (extraData.hasProperty(DecorModelProperties.BLOCK_STATE)) {
-            blockState = extraData.getData(DecorModelProperties.BLOCK_STATE);
+            return extraData.getData(DecorModelProperties.BLOCK_STATE);
         }
 
-        collectCachedParts(this.getCachedModel(blockState), random, output);
+        return Blocks.AIR.defaultBlockState();
     }
 
     // Deprecated by NeoForge in favour of a level/pos aware overload that only exists in its patched
