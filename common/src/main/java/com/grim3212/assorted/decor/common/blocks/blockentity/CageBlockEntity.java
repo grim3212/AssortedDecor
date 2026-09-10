@@ -7,6 +7,7 @@ import com.grim3212.assorted.decor.common.inventory.CageContainer;
 import com.grim3212.assorted.lib.core.inventory.IInventoryBlockEntity;
 import com.grim3212.assorted.lib.core.inventory.IPlatformInventoryStorageHandler;
 import com.grim3212.assorted.lib.core.inventory.impl.ItemStackStorageHandler;
+import com.grim3212.assorted.lib.core.inventory.locking.StorageUtil;
 import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import com.mojang.logging.LogUtils;
@@ -165,6 +166,22 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
 
         this.storageHandler.serialize(output.child("Inventory"));
         output.storeNullable("CustomName", ComponentSerialization.CODEC, this.customName);
+    }
+
+    /**
+     * Drops the caged stack when the block goes away.
+     * <p>
+     * The block used to do this from {@code onRemove}, but that split in two in 26.x: by the time
+     * the block's {@code affectNeighborsAfterRemoval} runs the block entity has already been
+     * removed from the chunk, so anything that needs it has to happen here instead.
+     */
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+
+        if (this.level != null) {
+            StorageUtil.dropContents(this.level, pos, this.storageHandler);
+        }
     }
 
     @Override

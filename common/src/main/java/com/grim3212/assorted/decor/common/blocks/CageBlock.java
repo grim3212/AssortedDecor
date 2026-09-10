@@ -64,13 +64,13 @@ public class CageBlock extends Block implements EntityBlock {
 
     }
 
+    /**
+     * {@code onRemove} split in two: the block entity is already gone by the time this runs, so
+     * dropping the caged stack moved onto {@link CageBlockEntity#preRemoveSideEffects}.
+     */
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        BlockEntity tileentity = level.getBlockEntity(pos);
-        if (tileentity instanceof CageBlockEntity cage) {
-            StorageUtil.dropContents(level, pos, cage.getItemStackStorageHandler());
-            level.updateNeighbourForOutputSignal(pos, this);
-        }
+        level.updateNeighbourForOutputSignal(pos, this);
     }
 
     @Override
