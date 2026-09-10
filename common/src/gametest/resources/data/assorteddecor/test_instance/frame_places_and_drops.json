@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:frame_places_and_drops",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 40,
+  "setup_ticks": 0,
+  "required": true
+}
