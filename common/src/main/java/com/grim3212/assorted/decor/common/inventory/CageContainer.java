@@ -2,7 +2,6 @@ package com.grim3212.assorted.decor.common.inventory;
 
 import com.grim3212.assorted.lib.core.inventory.IItemStorageHandler;
 import com.grim3212.assorted.lib.core.inventory.impl.ItemStackStorageHandler;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -13,7 +12,7 @@ public class CageContainer extends AbstractContainerMenu {
 
     private final IItemStorageHandler cageInventory;
 
-    protected CageContainer(int id, Inventory playerInventory, FriendlyByteBuf byteBuf) {
+    protected CageContainer(int id, Inventory playerInventory) {
         this(id, playerInventory, new ItemStackStorageHandler(1));
     }
 

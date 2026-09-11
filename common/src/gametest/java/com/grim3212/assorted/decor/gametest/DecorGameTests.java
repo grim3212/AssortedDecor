@@ -20,6 +20,7 @@ public final class DecorGameTests {
         PaintTests.register(out);
         LightTests.register(out);
         EntityDecorationTests.register(out);
+        MenuTests.register(out);
         BlockDecorationTests.register(out);
         AssetTests.register(out);
     }
