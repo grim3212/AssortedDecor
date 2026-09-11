@@ -1,5 +1,10 @@
 package com.grim3212.assorted.decor.common.blocks.blockentity;
 
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.DataComponentGetter;
 import com.grim3212.assorted.decor.common.properties.DecorModelProperties;
 import com.grim3212.assorted.lib.client.model.data.IBlockModelData;
 import com.grim3212.assorted.lib.client.model.data.IModelDataBuilder;
@@ -50,6 +55,21 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    /**
+     * A colorizer placed from an item takes the block the item carries as {@code stored_state} in its
+     * custom data. {@code BlockItem#place} hands the stack's components over here before
+     * {@code setPlacedBy}, and reading {@code custom_data} marks it used, so it is not also kept on
+     * the block entity.
+     */
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter components) {
+        super.applyImplicitComponents(components);
+        CompoundTag data = components.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        if (data.contains("stored_state")) {
+            this.setStoredBlockState(NbtUtils.readBlockState(BuiltInRegistries.BLOCK, data.getCompoundOrEmpty("stored_state")));
+        }
     }
 
     public BlockState getStoredBlockState() {

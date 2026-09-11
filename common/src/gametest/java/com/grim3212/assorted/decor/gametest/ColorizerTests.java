@@ -1,5 +1,11 @@
 package com.grim3212.assorted.decor.gametest;
 
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.core.component.DataComponents;
+import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerLampPost;
+import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerDoorBlock;
+import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerBlock;
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
@@ -47,6 +53,8 @@ final class ColorizerTests {
         out.accept("colorizer_shapes_take_texture", ColorizerTests::colorizerShapesTakeTexture);
         out.accept("breaking_a_colorizer_does_not_crash", ColorizerTests::breakingAColorizerDoesNotCrash);
         out.accept("fire_colorizers_light_up", ColorizerTests::fireColorizersLightUp);
+        out.accept("colorizers_placed_from_an_item_keep_their_block", ColorizerTests::colorizersPlacedFromAnItemKeepTheirBlock);
+        out.accept("door_and_lamp_post_clear_every_part", ColorizerTests::doorAndLampPostClearEveryPart);
     }
 
     /**
@@ -235,5 +243,75 @@ final class ColorizerTests {
                             "a lit " + BuiltInRegistries.BLOCK.getKey(level.getBlockState(helper.absolutePos(rel)).getBlock()).getPath() + " did not claim to emit light");
                 }))
                 .thenSucceed();
+    }
+
+    /**
+     * A colorizer placed from an item that carries a stored block keeps it, on every part. Nothing in
+     * play writes one onto a stack - pick-block writes air - but a command or another mod can, and
+     * the item model already draws it. The door and lamp post place their upper parts themselves,
+     * after the part the item placed has taken the block.
+     */
+    private static void colorizersPlacedFromAnItemKeepTheirBlock(GameTestHelper helper) {
+        ServerPlayer player = (ServerPlayer) helper.makeMockServerPlayer(GameType.CREATIVE);
+        BlockState gold = Blocks.GOLD_BLOCK.defaultBlockState();
+        BlockPos plain = new BlockPos(2, 1, 2);
+        BlockPos door = new BlockPos(4, 1, 2);
+        BlockPos lamp = new BlockPos(6, 1, 2);
+
+        placeFromItem(helper, player, DecorBlocks.COLORIZER.get(), plain, gold);
+        placeFromItem(helper, player, DecorBlocks.COLORIZER_DOOR.get(), door, gold);
+        placeFromItem(helper, player, DecorBlocks.COLORIZER_LAMP_POST.get(), lamp, gold);
+
+        for (BlockPos part : List.of(plain.above(), door.above(), door.above(2), lamp.above(), lamp.above(2), lamp.above(3))) {
+            ColorizerBlockEntity colorizer = helper.getBlockEntity(part, ColorizerBlockEntity.class);
+            helper.assertTrue(colorizer.getStoredBlockState() == gold, "the colorizer at " + part + " placed from an item holding gold stores " + colorizer.getStoredBlockState());
+        }
+        helper.assertTrue(helper.getBlockEntity(plain.above(), ColorizerBlockEntity.class).components().get(DataComponents.CUSTOM_DATA) == null,
+                "the stored block was also kept on the colorizer as custom data");
+        helper.succeed();
+    }
+
+    /** Places {@code block} on top of a stone floor at {@code floor}, from an item holding {@code stored}. */
+    private static void placeFromItem(GameTestHelper helper, ServerPlayer player, Block block, BlockPos floor, BlockState stored) {
+        helper.setBlock(floor, Blocks.STONE);
+        ItemStack stack = new ItemStack(block);
+        NBTHelper.putTag(stack, "stored_state", NbtUtils.writeBlockState(stored));
+        player.setItemInHand(InteractionHand.MAIN_HAND, stack);
+        InteractionResult result = rightClick(player, helper.getLevel(), stack, helper.absolutePos(floor));
+        helper.assertTrue(result.consumesAction(), "placing " + BuiltInRegistries.BLOCK.getKey(block) + " came back as " + result);
+    }
+
+    /**
+     * Clearing a door or a lamp post from any part empties every part and says it did. Both used to
+     * empty everything and then answer false, because their own clearColorizer asked the parts
+     * setColorizer had already emptied a second time.
+     */
+    private static void doorAndLampPostClearEveryPart(GameTestHelper helper) {
+        ServerLevel level = helper.getLevel();
+        Player player = helper.makeMockPlayer(GameType.CREATIVE);
+        player.getAbilities().instabuild = true;
+        BlockState gold = Blocks.GOLD_BLOCK.defaultBlockState();
+
+        BlockPos door = new BlockPos(2, 1, 4);
+        ColorizerDoorBlock doorBlock = DecorBlocks.COLORIZER_DOOR.get();
+        helper.setBlock(door, doorBlock.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER));
+        helper.setBlock(door.above(), doorBlock.defaultBlockState().setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
+        helper.assertTrue(doorBlock.setColorizer(level, helper.absolutePos(door), gold, player, InteractionHand.MAIN_HAND, false), "a colorizer door refused a block");
+        helper.assertTrue(doorBlock.clearColorizer(level, helper.absolutePos(door.above()), player, InteractionHand.MAIN_HAND), "clearing a filled colorizer door answered false");
+        for (BlockPos part : List.of(door, door.above())) {
+            helper.assertTrue(doorBlock.getStoredState(level, helper.absolutePos(part)).isAir(), "the door part at " + part + " still stores a block after clearing");
+        }
+
+        BlockPos lamp = new BlockPos(6, 1, 4);
+        ColorizerBlock lampBlock = DecorBlocks.COLORIZER_LAMP_POST.get();
+        helper.setBlock(lamp, lampBlock.defaultBlockState().setValue(ColorizerLampPost.PART, ColorizerLampPost.LampPart.BOTTOM));
+        helper.setBlock(lamp.above(), lampBlock.defaultBlockState().setValue(ColorizerLampPost.PART, ColorizerLampPost.LampPart.MIDDLE));
+        helper.setBlock(lamp.above(2), lampBlock.defaultBlockState().setValue(ColorizerLampPost.PART, ColorizerLampPost.LampPart.TOP));
+        helper.assertTrue(lampBlock.setColorizer(level, helper.absolutePos(lamp), gold, player, InteractionHand.MAIN_HAND, false), "a colorizer lamp post refused a block");
+        helper.assertTrue(lampBlock.clearColorizer(level, helper.absolutePos(lamp.above()), player, InteractionHand.MAIN_HAND), "clearing a filled colorizer lamp post answered false");
+        for (BlockPos part : List.of(lamp, lamp.above(), lamp.above(2))) {
+            helper.assertTrue(lampBlock.getStoredState(level, helper.absolutePos(part)).isAir(), "the lamp post part at " + part + " still stores a block after clearing");
+        }
+        helper.succeed();
     }
 }

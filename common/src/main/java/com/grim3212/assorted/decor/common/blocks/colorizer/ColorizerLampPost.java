@@ -87,6 +87,9 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         worldIn.setBlock(pos.above(), state.setValue(PART, LampPart.MIDDLE), 3);
         worldIn.setBlock(pos.above(2), state.setValue(PART, LampPart.TOP), 3);
+        // The bottom has already taken the stored block of the item it was placed from.
+        this.copyStoredState(worldIn, pos, pos.above());
+        this.copyStoredState(worldIn, pos, pos.above(2));
 
         worldIn.getLightEngine().checkBlock(pos.above(2));
     }
@@ -125,23 +128,7 @@ public class ColorizerLampPost extends ColorizerBlock implements SimpleWaterlogg
         return destroyed;
     }
 
-    @Override
-    public boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
-        if (super.clearColorizer(worldIn, pos, player, hand)) {
-            BlockState state = worldIn.getBlockState(pos);
-
-            if (state.getValue(PART) == LampPart.BOTTOM) {
-                return super.clearColorizer(worldIn, pos.above(), player, hand) && super.clearColorizer(worldIn, pos.above(2), player, hand);
-            } else if (state.getValue(PART) == LampPart.MIDDLE) {
-                return super.clearColorizer(worldIn, pos.below(), player, hand) && super.clearColorizer(worldIn, pos.above(), player, hand);
-            } else if (state.getValue(PART) == LampPart.TOP) {
-                return super.clearColorizer(worldIn, pos.below(), player, hand) && super.clearColorizer(worldIn, pos.below(2), player, hand);
-            }
-        }
-
-        return false;
-    }
-
+    // IColorizer#clearColorizer clears through this as well, so it empties every part and needs no override.
     @Override
     public boolean setColorizer(Level worldIn, BlockPos pos, BlockState toSetState, Player player, InteractionHand hand, boolean consumeItem) {
         if (super.setColorizer(worldIn, pos, toSetState, player, hand, consumeItem)) {

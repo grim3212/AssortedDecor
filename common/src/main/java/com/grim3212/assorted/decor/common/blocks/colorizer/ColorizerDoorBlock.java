@@ -32,20 +32,7 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer, EntityB
         super(BlockSetType.POLISHED_BLACKSTONE, props);
     }
 
-    @Override
-    public boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
-        if (IColorizer.super.clearColorizer(worldIn, pos, player, hand)) {
-            BlockState state = worldIn.getBlockState(pos);
-
-            if (state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
-                return IColorizer.super.clearColorizer(worldIn, pos.above(), player, hand);
-            }
-            return IColorizer.super.clearColorizer(worldIn, pos.below(), player, hand);
-        }
-
-        return false;
-    }
-
+    // IColorizer#clearColorizer clears through this as well, so it empties every part and needs no override.
     @Override
     public boolean setColorizer(Level worldIn, BlockPos pos, BlockState toSetState, Player player, InteractionHand hand, boolean consumeItem) {
         if (IColorizer.super.setColorizer(worldIn, pos, toSetState, player, hand, consumeItem)) {
@@ -58,6 +45,16 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer, EntityB
         }
 
         return false;
+    }
+
+    /**
+     * Vanilla places the upper half here, after the lower half has taken the stored block of the item
+     * it was placed from, so the upper half is given the same block.
+     */
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        this.copyStoredState(level, pos, pos.above());
     }
 
     /// ===============================================

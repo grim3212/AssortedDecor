@@ -81,6 +81,17 @@ public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlo
         return false;
     }
 
+    /**
+     * Gives the colorizer at {@code to} the block stored at {@code from}. For a block that places its
+     * other parts itself in {@code setPlacedBy}, after the part the item placed has taken the item's
+     * stored block.
+     */
+    default void copyStoredState(Level level, BlockPos from, BlockPos to) {
+        if (level.getBlockEntity(from) instanceof ColorizerBlockEntity source && level.getBlockEntity(to) instanceof ColorizerBlockEntity target) {
+            target.setStoredBlockState(source.getStoredBlockState());
+        }
+    }
+
     default BlockState getStoredState(BlockGetter worldIn, BlockPos pos) {
         BlockEntity te = worldIn.getBlockEntity(pos);
         if (te instanceof ColorizerBlockEntity) {
