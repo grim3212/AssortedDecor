@@ -3,6 +3,12 @@ package com.grim3212.assorted.decor.gametest;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.FileToIdConverter;
+import net.minecraft.server.MinecraftServer;
+import com.grim3212.assorted.lib.platform.Services;
+import java.io.BufferedReader;
+import java.io.IOException;
 import com.grim3212.assorted.decor.Constants;
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
 import com.grim3212.assorted.decor.api.util.DateHandler;
@@ -121,6 +127,7 @@ public final class DecorGameTests {
         out.accept("decoration_blocks_place", DecorGameTests::decorationBlocksPlace);
         out.accept("neon_sign_text_survives_reload", DecorGameTests::neonSignTextSurvivesReload);
         out.accept("mod_assets_are_complete", DecorGameTests::modAssetsAreComplete);
+        out.accept("every_recipe_loads_or_is_conditioned_off", DecorGameTests::everyRecipeLoadsOrIsConditionedOff);
     }
 
     private static final BlockPos MAIN = new BlockPos(4, 1, 4);
@@ -1014,5 +1021,36 @@ public final class DecorGameTests {
 
     private static BlockHitResult hitSide(BlockPos pos, Direction face) {
         return new BlockHitResult(Vec3.atCenterOf(pos).relative(face, 0.5D), face, pos, false);
+    }
+    /**
+     * Every recipe file this mod ships either loaded, or carries this loader's load conditions and was
+     * skipped by them. A file with neither failed to parse. On Fabric that was every conditional
+     * recipe for a while: Fabric's datagen wrote them without conditions, and the NeoForge copy that
+     * shadowed it carries a key Fabric ignores - so only this loader's own key counts.
+     */
+    private static void everyRecipeLoadsOrIsConditionedOff(GameTestHelper helper) {
+        MinecraftServer server = helper.getLevel().getServer();
+        FileToIdConverter recipes = FileToIdConverter.json("recipe");
+        String conditionsKey = Services.PLATFORM.getPlatformName().equals("Fabric") ? "fabric:load_conditions" : "neoforge:conditions";
+        List<String> failed = new ArrayList<>();
+
+        recipes.listMatchingResources(server.getResourceManager()).forEach((file, resource) -> {
+            Identifier id = recipes.fileToId(file);
+            if (!id.getNamespace().equals(Constants.MOD_ID) || server.getRecipeManager().byKey(ResourceKey.create(Registries.RECIPE, id)).isPresent()) {
+                return;
+            }
+
+            try (BufferedReader reader = resource.openAsReader()) {
+                JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+                if (!json.has(conditionsKey)) {
+                    failed.add(id.toString());
+                }
+            } catch (IOException e) {
+                failed.add(id + " (" + e.getMessage() + ")");
+            }
+        });
+
+        helper.assertTrue(failed.isEmpty(), failed.size() + " recipes failed to load without being conditioned off: " + String.join(", ", failed.subList(0, Math.min(10, failed.size()))));
+        helper.succeed();
     }
 }
