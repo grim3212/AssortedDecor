@@ -2,6 +2,7 @@ package com.grim3212.assorted.decor.gametest;
 
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
+import com.grim3212.assorted.decor.common.items.DecorItems;
 import com.grim3212.assorted.lib.util.NBTHelper;
 import net.fabricmc.fabric.api.client.gametest.v1.FabricClientGameTest;
 import net.fabricmc.fabric.api.client.gametest.v1.context.ClientGameTestContext;
@@ -11,18 +12,24 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.List;
+
 /**
- * How a colorizer is drawn, as an item and as a placed block, which a headless server cannot see.
- * Run with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a failure. Each check
- * compares the particle, which the item and block paths both take from the same model data.
+ * How a colorizer is drawn, as an item and as a placed block, and the brush's tooltip as Fabric
+ * builds it: what a headless server cannot see. Run with {@code ./gradlew :fabric:runClientGameTest};
+ * it exits non-zero on a failure. Each drawing check compares the particle, which the item and block
+ * paths both take from the same model data.
  */
 public class DecorClientGameTests implements FabricClientGameTest {
 
@@ -47,6 +54,16 @@ public class DecorClientGameTests implements FabricClientGameTest {
                 Identifier emptyParticle = itemParticle(client, new ItemStack(DecorBlocks.COLORIZER.get()));
                 if (GOLD.equals(emptyParticle)) {
                     throw new AssertionError("an empty colorizer item throws gold particles");
+                }
+
+                // Fabric only adds component tooltip lines on the client.
+                ItemStack brush = new ItemStack(DecorItems.COLORIZER_BRUSH.get());
+                NBTHelper.putTag(brush, "stored_state", NbtUtils.writeBlockState(Blocks.GOLD_BLOCK.defaultBlockState()));
+                List<String> brushTooltip = brush.getTooltipLines(Item.TooltipContext.of(client.level), client.player, TooltipFlag.NORMAL).stream()
+                        .map(line -> line.getContents() instanceof TranslatableContents translatable ? translatable.getKey() : line.getString())
+                        .toList();
+                if (!brushTooltip.contains("tooltip.colorizer_brush.stored")) {
+                    throw new AssertionError("a brush holding gold has the tooltip " + brushTooltip);
                 }
             });
 
