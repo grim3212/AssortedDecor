@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_light_gray",
-    "#c:carpet"
+    "#minecraft:wool_carpets"
   ],
   "result": {
     "id": "minecraft:light_gray_carpet"

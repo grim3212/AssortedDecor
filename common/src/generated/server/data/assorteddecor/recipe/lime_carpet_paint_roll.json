@@ -8,7 +8,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:paint_roller_lime",
-    "#c:carpet"
+    "#minecraft:wool_carpets"
   ],
   "result": {
     "id": "minecraft:lime_carpet"
