@@ -2,24 +2,29 @@
   "variants": {
     "type=double": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer"
     },
     "type=east": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_vertical_slab",
       "y": 90
     },
     "type=north": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_vertical_slab"
     },
     "type=south": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_vertical_slab",
       "y": 180
     },
     "type=west": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_vertical_slab",
       "y": 270
     }

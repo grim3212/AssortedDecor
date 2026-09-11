@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.client.model.ColorizerUnbakedModel;
 import net.minecraft.resources.Identifier;
+import com.grim3212.assorted.lib.client.data.LibCustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +32,7 @@ import java.util.Map;
  * The OBJ half of the 1.20.1 builder lives in {@link ColorizerObjModelBuilder}: it is a different
  * loader id reading a different key, and a {@link CustomLoaderBuilder} carries exactly one loader id.
  */
-public class ColorizerModelBuilder extends CustomLoaderBuilder {
+public class ColorizerModelBuilder extends LibCustomLoaderBuilder {
 
     public static ColorizerModelBuilder begin() {
         return new ColorizerModelBuilder();

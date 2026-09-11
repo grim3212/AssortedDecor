@@ -6,6 +6,7 @@
       "wood": "minecraft:block/oak_planks"
     }
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

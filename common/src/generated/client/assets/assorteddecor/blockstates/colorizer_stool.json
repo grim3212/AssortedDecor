@@ -2,130 +2,154 @@
   "variants": {
     "face=ceiling,facing=east,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180,
       "y": 270
     },
     "face=ceiling,facing=east,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 180,
       "y": 270
     },
     "face=ceiling,facing=north,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180,
       "y": 180
     },
     "face=ceiling,facing=north,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 180,
       "y": 180
     },
     "face=ceiling,facing=south,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180
     },
     "face=ceiling,facing=south,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 180
     },
     "face=ceiling,facing=west,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 180,
       "y": 90
     },
     "face=ceiling,facing=west,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 180,
       "y": 90
     },
     "face=floor,facing=east,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "y": 90
     },
     "face=floor,facing=east,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "y": 90
     },
     "face=floor,facing=north,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool"
     },
     "face=floor,facing=north,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up"
     },
     "face=floor,facing=south,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "y": 180
     },
     "face=floor,facing=south,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "y": 180
     },
     "face=floor,facing=west,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "y": 270
     },
     "face=floor,facing=west,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "y": 270
     },
     "face=wall,facing=east,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 90,
       "y": 90
     },
     "face=wall,facing=east,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 90,
       "y": 90
     },
     "face=wall,facing=north,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 90
     },
     "face=wall,facing=north,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 90
     },
     "face=wall,facing=south,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 90,
       "y": 180
     },
     "face=wall,facing=south,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 90,
       "y": 180
     },
     "face=wall,facing=west,up=false": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool",
       "x": 90,
       "y": 270
     },
     "face=wall,facing=west,up=true": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_stool_up",
       "x": 90,
       "y": 270

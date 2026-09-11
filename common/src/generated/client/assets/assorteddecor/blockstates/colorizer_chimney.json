@@ -2,6 +2,7 @@
   "variants": {
     "": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_chimney"
     }
   }

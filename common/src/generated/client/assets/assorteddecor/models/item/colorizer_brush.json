@@ -6,6 +6,7 @@
       "handle": "assorteddecor:block/brush_handle"
     }
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

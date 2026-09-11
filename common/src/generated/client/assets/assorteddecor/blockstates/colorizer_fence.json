@@ -3,12 +3,14 @@
     {
       "apply": {
         "type": "assortedlib:specification",
+        "fabric:type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fence_post"
       }
     },
     {
       "apply": {
         "type": "assortedlib:specification",
+        "fabric:type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fence_side",
         "uvlock": true
       },
@@ -19,6 +21,7 @@
     {
       "apply": {
         "type": "assortedlib:specification",
+        "fabric:type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fence_side",
         "uvlock": true,
         "y": 90
@@ -30,6 +33,7 @@
     {
       "apply": {
         "type": "assortedlib:specification",
+        "fabric:type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fence_side",
         "uvlock": true,
         "y": 180
@@ -41,6 +45,7 @@
     {
       "apply": {
         "type": "assortedlib:specification",
+        "fabric:type": "assortedlib:specification",
         "model": "assorteddecor:block/colorizer_fence_side",
         "uvlock": true,
         "y": 270

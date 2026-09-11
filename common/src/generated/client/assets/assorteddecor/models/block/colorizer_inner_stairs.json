@@ -3,6 +3,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/inner_stairs"
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

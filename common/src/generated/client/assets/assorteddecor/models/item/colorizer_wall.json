@@ -3,6 +3,7 @@
   "colorizer": {
     "parent": "assorteddecor:item/wall_inventory"
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

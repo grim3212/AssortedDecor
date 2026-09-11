@@ -77,6 +77,7 @@
       ]
     }
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"

@@ -2,14 +2,17 @@
   "variants": {
     "part=bottom": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_lamp_post_bottom"
     },
     "part=middle": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_lamp_post_middle"
     },
     "part=top": {
       "type": "assortedlib:specification",
+      "fabric:type": "assortedlib:specification",
       "model": "assorteddecor:block/colorizer_lamp_post_top"
     }
   }

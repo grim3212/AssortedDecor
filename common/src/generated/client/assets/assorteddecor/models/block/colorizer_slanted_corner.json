@@ -73,6 +73,7 @@
       ]
     }
   },
+  "fabric:type": "assorteddecor:colorizer_obj",
   "loader": "assorteddecor:colorizer_obj",
   "model": "assorteddecor:models/block/slanted_corner.obj",
   "textures": {

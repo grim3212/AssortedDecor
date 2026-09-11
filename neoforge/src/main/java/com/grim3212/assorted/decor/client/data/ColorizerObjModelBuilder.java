@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.JsonObject;
 import com.grim3212.assorted.decor.client.model.obj.ColorizerObjModel;
 import net.minecraft.resources.Identifier;
+import com.grim3212.assorted.lib.client.data.LibCustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
  * {@link net.minecraft.client.data.models.model.ModelTemplate} writes from its
  * {@link net.minecraft.client.data.models.model.TextureMapping}.
  */
-public class ColorizerObjModelBuilder extends CustomLoaderBuilder {
+public class ColorizerObjModelBuilder extends LibCustomLoaderBuilder {
 
     public static ColorizerObjModelBuilder begin() {
         return new ColorizerObjModelBuilder();

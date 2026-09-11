@@ -3,6 +3,7 @@
   "colorizer": {
     "parent": "assorteddecor:block/door_top_right_open"
   },
+  "fabric:type": "assorteddecor:colorizer",
   "loader": "assorteddecor:colorizer",
   "textures": {
     "particle": "assorteddecor:block/colorizer"
