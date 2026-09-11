@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.gametest;
 
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
+import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.decor.common.items.DecorItems;
 import com.grim3212.assorted.lib.util.NBTHelper;
@@ -15,10 +16,12 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,10 +29,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 
 /**
- * How a colorizer is drawn, as an item and as a placed block, and the brush's tooltip as Fabric
- * builds it: what a headless server cannot see. Run with {@code ./gradlew :fabric:runClientGameTest};
- * it exits non-zero on a failure. Each drawing check compares the particle, which the item and block
- * paths both take from the same model data.
+ * How a colorizer is drawn, as an item and as a placed block, the brush's tooltip as Fabric builds
+ * it, and that a caged mob survives render state extraction: what a headless server cannot see. Run
+ * with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a failure. Each drawing
+ * check compares the particle, which the item and block paths both take from the same model data.
  */
 public class DecorClientGameTests implements FabricClientGameTest {
 
@@ -88,6 +91,34 @@ public class DecorClientGameTests implements FabricClientGameTest {
             if (!GOLD.equals(placedParticle)) {
                 throw new AssertionError("a placed colorizer holding gold breaks into " + placedParticle + " particles, not " + GOLD);
             }
+
+            // A caged mob is built on the client and drawn without ever being added to the level, so
+            // it is never given an entity id there - Level#getNextEntityId answers 0 off the server.
+            // Extracting a living entity's render state reads the id for its head slot whether or not
+            // anything is worn, and Entity#getId throws on 0, so an unmarked mob crashes the client
+            // the moment the cage is stocked. Only a client can see this: on a server the mob is
+            // handed a real id.
+            BlockPos cagePos = world.getServer().computeOnServer(server -> {
+                ServerLevel level = server.overworld();
+                BlockPos at = server.getPlayerList().getPlayers().get(0).blockPosition().above(4);
+                level.setBlockAndUpdate(at, DecorBlocks.CAGE.get().defaultBlockState());
+                ((CageBlockEntity) level.getBlockEntity(at)).getItemStackStorageHandler()
+                        .setStackInSlot(0, new ItemStack(Items.PIG_SPAWN_EGG));
+                return at;
+            });
+            context.waitFor(client -> client.level != null
+                    && client.level.getBlockEntity(cagePos) instanceof CageBlockEntity cage
+                    && cage.getItemStackStorageHandler().getStackInSlot(0).is(Items.PIG_SPAWN_EGG));
+
+            context.runOnClient(client -> {
+                Entity caged = ((CageBlockEntity) client.level.getBlockEntity(cagePos)).getCachedEntity();
+                if (caged == null) {
+                    throw new AssertionError("a stocked cage built no mob on the client");
+                }
+                // The call the cage's renderer makes; it threw ReportedException before the mob was
+                // marked as a display entity.
+                client.getEntityRenderDispatcher().extractEntity(caged, 0.0F);
+            });
         }
     }
 

@@ -57,6 +57,11 @@ final class EntityDecorationTests {
 
         Entity caged = cage.getCachedEntity();
         helper.assertTrue(caged != null && caged.getType() == EntityTypes.PIG, "cage did not build a pig out of the spawn egg");
+        // The display mob is never added to a level, so it has to carry a spawner's display id: on a
+        // client level every entity is built with id 0, and Entity#getId throws on that. Rendering
+        // reaches it for every living entity, so an unmarked mob crashes the client (see
+        // CageBlockEntity#storeEntity).
+        helper.assertValueEqual(caged.getId(), -1, "the caged mob's entity id, which marks it as a display entity,");
         helper.assertTrue(level.getBlockState(pos).getAnalogOutputSignal(level, pos, Direction.UP) > 0,
                 "a stocked cage gave a comparator nothing to read");
 

@@ -33,6 +33,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -212,6 +214,13 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
         return this.cachedEntity;
     }
 
+    /**
+     * Builds the caged mob. It is only ever drawn, never added to a level, so it has to be marked as
+     * a display entity the way a spawner marks its own: {@link Level#getNextEntityId()} answers 0 on
+     * the client, and {@link Entity#getId()} now throws on an id of 0 rather than returning it. The
+     * renderer reaches that through {@code ItemModelResolver#updateForLiving}, which every living
+     * entity's render state extraction calls for the head slot whether or not anything is worn.
+     */
     private void storeEntity(ItemStack stack, String tag) {
         if (stack.getItem() instanceof SpawnEggItem) {
             // Spawn eggs carry their entity in the ENTITY_DATA component now, not in stack NBT
@@ -219,7 +228,7 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
             if (eggType != null) {
                 Entity ent = eggType.create(this.level, EntitySpawnReason.LOAD);
                 if (ent != null) {
-                    this.cachedEntity = ent;
+                    this.cachedEntity = BaseSpawner.SET_DISPLAY_ENTITY_ID.process(ent);
                     return;
                 }
             }
@@ -227,7 +236,7 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
 
         try (ProblemReporter.ScopedCollector reporter = new ProblemReporter.ScopedCollector(this.problemPath(), LOGGER)) {
             ValueInput storedEntity = TagValueInput.create(reporter, this.level.registryAccess(), NBTHelper.getTag(stack, tag));
-            EntityType.create(storedEntity, this.level, new EntitySpawnRequest(EntitySpawnReason.LOAD, false)).ifPresent((ent) -> this.cachedEntity = ent);
+            this.cachedEntity = EntityType.loadEntityRecursive(storedEntity, this.level, new EntitySpawnRequest(EntitySpawnReason.LOAD, false), BaseSpawner.SET_DISPLAY_ENTITY_ID);
         }
     }
 
