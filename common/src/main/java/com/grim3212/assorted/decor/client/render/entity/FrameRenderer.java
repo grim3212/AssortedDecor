@@ -20,11 +20,9 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
 
 /**
- * Loose geometry like this has no typed submit call, so it goes through
- * {@link SubmitNodeCollector#submitCustomGeometry} - the one place a raw {@link VertexConsumer} is
- * still handed out. Everything the draw needs is read off the entity into a
- * {@link FrameRenderState} first; the submit lambda runs later, with no entity and no level to look
- * anything up in.
+ * Draws a frame through {@link SubmitNodeCollector#submitCustomGeometry}, as loose geometry has no
+ * typed submit call. The submit runs later without the entity, so everything is read into a
+ * {@link FrameRenderState} first.
  */
 public class FrameRenderer extends EntityRenderer<FrameEntity, FrameRenderer.FrameRenderState> {
 

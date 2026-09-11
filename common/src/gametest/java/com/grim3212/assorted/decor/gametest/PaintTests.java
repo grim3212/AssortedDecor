@@ -63,14 +63,9 @@ final class PaintTests {
     }
 
     /**
-     * A dyed siding item places as that colour. The colour used to be a {@code BlockStateTag} in
-     * stack NBT and is {@code DataComponents.BLOCK_STATE} now, which vanilla's {@code BlockItem}
-     * applies for us - so this checks the component the mod writes is the one placement reads.
-     * <p>
-     * Both sidings, in two different colours, so neither the block nor the colour can come out
-     * right by accident. They do share {@code ColorChangingItem} and {@code ColorChangingBlock},
-     * but only the horizontal one was ever placed here, and "it is the same code path" is exactly
-     * the argument that leaves a real gap sitting unnoticed.
+     * A dyed siding item places as that colour: the {@code DataComponents.BLOCK_STATE} the mod
+     * writes is what {@code BlockItem} applies. Both sidings, in two colours, so neither can pass
+     * by accident.
      */
     private static void sidingItemKeepsColor(GameTestHelper helper) {
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);

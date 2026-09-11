@@ -20,16 +20,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * What a headless server cannot see: how a colorizer is drawn, as an item and as a placed block.
- * <p>
- * Runs in a real client through Fabric's client gametest API - {@code ./gradlew :fabric:runClientGameTest}
- * - which exits non-zero on a failure. Fabric only, as NeoForge has no client gametest. The code
- * under test is mostly common - AssortedLib's {@code DataAwareItemModel} and this mod's colorizer
- * model - and Fabric is the loader that read every colorizer json as a static model for as long as
- * the generated jsons carried only NeoForge's keys.
- * <p>
- * Each check reads the particle, because it is the one answer both the item and the block path give
- * back that a test can compare, and it comes off the same model data the quads do.
+ * How a colorizer is drawn, as an item and as a placed block, which a headless server cannot see.
+ * Run with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a failure. Each check
+ * compares the particle, which the item and block paths both take from the same model data.
  */
 public class DecorClientGameTests implements FabricClientGameTest {
 

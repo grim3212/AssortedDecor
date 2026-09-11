@@ -16,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
@@ -118,11 +117,8 @@ final class DecorTestSupport {
     }
 
     /**
-     * Puts a colorizer down ready to be filled. Three shapes need more than a bare
-     * {@code setBlock}: a door only accepts a stored block when both of its halves are there, a
-     * lamp post only when all three of its parts are, and a side attached shape ({@code table},
-     * {@code counter}, {@code stool}, the pyramids) is placed against a wall by default and has
-     * nothing to hold onto in mid air.
+     * Puts a colorizer down ready to be filled. A door needs both halves and a lamp post all three
+     * parts before it takes a block, and the side-attached shapes need a wall to hang on.
      */
     static void placeShape(GameTestHelper helper, BlockPos rel, BlockState state) {
         if (state.hasProperty(BlockStateProperties.ATTACH_FACE)) {
@@ -142,22 +138,9 @@ final class DecorTestSupport {
     }
 
     /**
-     * The light level the block at {@code rel} declares for itself, in the state and position it is
-     * actually in.
-     * <p>
-     * This is what every light assertion in this file asks, rather than
-     * {@code level.getBrightness(LightLayer.BLOCK, pos)}. Brightness is the light engine's view of
-     * the whole world at a position, and any light source in a neighbouring test box raises it.
-     * Tests in a batch run at the same time, so a neighbour is lit at the moment this one measures;
-     * {@code StructureGridSpawner} spaces boxes a fixed 5 and 6 apart with no way to ask for more,
-     * and block light of 15 carries much further than that. An equality on brightness is therefore
-     * only ever true by luck of the layout, which is what made {@code roadway_light_follows_redstone}
-     * fail on one loader and pass on the next run with the same code.
-     * <p>
-     * {@code BlockGetter#getLightEmission} asks the block instead: NeoForge patches it, and the
-     * library mixes into it on Fabric, so on both loaders an {@code IBlockLightEmission} block - the
-     * colorizers - answers for its own state and position, and a plain {@code lightLevel} block
-     * answers from its properties. Nothing outside the block can change the answer.
+     * The light the block at {@code rel} declares for its own state and position. Tests assert this
+     * rather than the light engine's brightness, which light from concurrently running neighbouring
+     * test boxes raises.
      */
     static int lightEmission(GameTestHelper helper, BlockPos rel) {
         return helper.getLevel().getLightEmission(helper.absolutePos(rel));

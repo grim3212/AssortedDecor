@@ -69,29 +69,8 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 /**
- * Forge's {@code BlockStateProvider}, its {@code ModelFile} / {@code ConfiguredModel} builders and the
- * {@code ExistingFileHelper} / {@code ForgeRegistries} it leaned on are all gone. Block states and
- * block models come from vanilla's {@link ModelProvider} now, which hands a
- * {@link BlockModelGenerators} to {@link #registerModels}; a block state is a
- * {@link MultiVariantGenerator} or {@link MultiPartGenerator} built from {@link PropertyDispatch}es
- * rather than a per state lambda, and an item model is a {@code ClientItem} written to
- * {@code assets/assorteddecor/items/} that names the geometry to draw rather than a
- * {@code models/item/*.json} with a {@code parent}.
- * <p>
- * The colorizer models used to belong to a second provider ({@code ColorizerModelProvider}) because a
- * Forge {@code BlockStateProvider} could only emit {@code BlockModelBuilder}s and a custom loader
- * needed its own builder type. A custom loader is written by a {@link ModelTemplate} now (see
- * {@link ColorizerModelBuilder}), so that provider is deleted and this class writes those models
- * itself.
- * <p>
- * <b>{@code render_type} is not written, and there is nothing to replace it with.</b> The chunk layer
- * a quad draws in is derived while baking from the transparency of the sprite it uses, with
- * {@code Material#forceTranslucent} as the only override, so the cutout and translucent blocks in this
- * mod select their layer from their own textures.
- * <p>
- * The item half of this provider is {@link DecorItemModelProvider}; because one {@link ModelProvider}
- * writes both halves, the two are kept apart by narrowing what each claims to know about. This one
- * owns every block plus every block item.
+ * Block states and block models, the colorizer loader models included. This owns every block and
+ * block item; {@link DecorItemModelProvider} owns the rest, so the two never write the same file.
  */
 public class DecorBlockstateProvider extends ModelProvider {
 
@@ -119,15 +98,8 @@ public class DecorBlockstateProvider extends ModelProvider {
             .build();
 
     /**
-     * The 1.20.1 provider built a three step parent chain for the tinted full cubes:
-     * {@code color_cube} carried the elements and referenced {@code #down} / {@code #up} / ... ,
-     * {@code color_cube_all} pointed all six of those at {@code #all}, and {@code color_cube_bottom_top}
-     * pointed them at {@code #side} / {@code #top} / {@code #bottom}. A {@link ModelTemplate} writes a
-     * {@code textures} block of {@link Material}s and a {@link Material} is an {@link Identifier}, so
-     * it cannot emit the {@code "#all"} slot-to-slot references the middle two models were made of.
-     * The two leaves are therefore spelled out directly instead, which is where the elements were
-     * always going to end up anyway; {@code block/color_cube*} are no longer generated and nothing
-     * outside this provider ever referenced them.
+     * The tinted full cubes, one template per texture layout: a {@link ModelTemplate} cannot write
+     * the {@code "#all"} slot-to-slot references a shared parent would need.
      */
     private static final ModelTemplate COLOR_CUBE_ALL = ExtendedModelTemplateBuilder.builder()
             .parent(MC_BLOCK)
@@ -344,14 +316,7 @@ public class DecorBlockstateProvider extends ModelProvider {
 
     // ------------------------------------------------------------------ plain blocks
 
-    /**
-     * A plain roadway: one cube model, plus the blockstate and item model pointing at it.
-     * <p>
-     * The blockstate and item halves were missing, which datagen catches rather than shipping -
-     * {@code ModelProvider} fails the run with "Missing blockstate definitions for: ..." listing
-     * every block it was never given one for. The white, light and manhole variants below always
-     * emitted theirs; only this shared helper did not.
-     */
+    /** A plain roadway: one cube model, plus the blockstate and item model pointing at it. */
     private void roadway(BlockModelGenerators blockModels, Block b) {
         String name = name(b);
         Identifier model = roadwayModel(blockModels, name, texture("block/roadways/" + name));
@@ -438,10 +403,8 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * The sixteen fluro blocks share one model and are told apart by
-     * {@link BlockMapColorItemTintSource} / the block tint source registered in {@code DecorClient}.
-     * The 1.20.1 provider emitted an extra per colour model whose only content was a {@code parent}
-     * pointing at the shared one; that indirection is dropped.
+     * The sixteen fluro blocks share one model and are told apart by tint: {@link
+     * BlockMapColorItemTintSource} and the block tint source registered in {@code DecorClient}.
      */
     private void fluro(BlockModelGenerators blockModels) {
         Identifier model = COLOR_CUBE_ALL.create(resource("block/fluro"), new TextureMapping()
@@ -456,15 +419,9 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * Both neon signs draw nothing but a particle - the board itself is submitted by
-     * {@code NeonSignBlockEntityRenderer} - and the wall form shares the standing form's model, as it
-     * did in 1.20.1.
-     * <p>
-     * Neither block registers an item of its own; the sign is placed by {@code DecorItems.NEON_SIGN},
-     * a {@code StandingAndWallBlockItem}. That makes it a {@link BlockItem}, so it belongs to this
-     * provider rather than to {@link DecorItemModelProvider} - both would otherwise write
-     * {@code items/neon_sign.json}, this one pointing at the particle-only block model and that one at
-     * the flat sprite. It is a flat sprite, as it was in 1.20.1.
+     * Both neon signs draw only a particle; {@code NeonSignBlockEntityRenderer} submits the board.
+     * The item, {@code DecorItems.NEON_SIGN}, is a {@link BlockItem}, so its flat sprite is written
+     * here and not by {@link DecorItemModelProvider}.
      */
     private void neonSigns(BlockModelGenerators blockModels) {
         Identifier model = ModelTemplates.PARTICLE_ONLY.create(resource("block/" + name(DecorBlocks.NEON_SIGN.get())),
@@ -480,13 +437,8 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * The tube is a torch: a standing model for the vertical facings and a wall model for the
-     * horizontal ones. The 1.20.1 provider's {@code rotationY(((int) toYRot() + 90) % 360)} is
-     * {@link BlockModelGenerators#ROTATION_TORCH} value for value, which is how vanilla's own wall
-     * torches are oriented, so the rotation is spelled that way here.
-     * <p>
-     * The two models were named {@code block/illuminuation_tube[_wall]} in 1.20.1 - a typo. They are
-     * generated at the spelling the block actually has; nothing referenced the old names.
+     * The tube is a torch: a standing model for the vertical facings and a wall model, turned by
+     * {@link BlockModelGenerators#ROTATION_TORCH}, for the horizontal ones.
      */
     private void illuminationTube(BlockModelGenerators blockModels) {
         Block b = DecorBlocks.ILLUMINATION_TUBE.get();
@@ -535,11 +487,9 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * A lantern drawn as two crossed quads, with a flat item sprite over the same texture.
-     * <p>
-     * Vanilla's {@code createCrossBlock} takes a {@code PlantType} and registers a
-     * {@code PlantType}-specific item model, so the two halves are spelled out instead. The 1.20.1
-     * version also declared {@code cutout}; the layer comes from the texture now.
+     * A lantern drawn as two crossed quads, with a flat item sprite over the same texture. Spelled
+     * out because vanilla's {@code createCrossBlock} writes a {@code PlantType}-specific item
+     * model.
      */
     private void cross(BlockModelGenerators blockModels, Block b) {
         Material tex = texture("block/" + name(b));
@@ -715,15 +665,10 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * The table, whose model is chosen from six connection flags plus the face it is attached to and
-     * the direction it faces - eight properties, three more than a {@link PropertyDispatch} can carry.
-     * The 1.20.1 provider used Forge's {@code forAllStatesExcept}, so the port keeps that shape through
-     * {@link #forEachState}, and the branch logic is copied across unchanged.
-     * <p>
-     * <b>The Y rotations are normalised.</b> Several branches added to an already reduced angle and
-     * produced 360, 450 or 540; the 1.20.1 output contains 62 such variants and {@code BlockModelRotation}
-     * indexed straight off {@code y / 90}, so those states rendered at the wrong angle. A
-     * {@link com.mojang.math.Quadrant} only has four values, so they now normalise to 0, 90 and 180.
+     * The table, chosen from six connection flags plus its attached face and facing: eight
+     * properties, more than a {@link PropertyDispatch} can carry, so it goes through {@link
+     * #forEachState}. Y rotations are normalised to a {@link com.mojang.math.Quadrant}, since some
+     * branches sum past 360.
      */
     private void colorizerTable(BlockModelGenerators blockModels, Identifier counterModel) {
         Block b = DecorBlocks.COLORIZER_TABLE.get();
@@ -1023,26 +968,19 @@ public class DecorBlockstateProvider extends ModelProvider {
      * answers for. Index 0 is the index every colorizer shape stamps on its faces.
      */
     /**
-     * A colorizer's own {@link MultiVariant}, drawn through
-     * {@link SpecificationBlockStateModelBuilder} rather than as a plain variant.
-     * <p>
-     * This is what makes a placed colorizer show the block it has absorbed. A plain variant bakes the
-     * model json, and a model json can only contribute geometry - so the colorizer's model
-     * specification would be baked once, against no block entity, and every colorizer in the world
-     * would draw its empty state. Routed through the specification type instead, the colorizer's own
-     * {@code BlockStateModel} survives to the blockstate layer, which is the only layer that still
-     * sees the level and the position. Mutators ({@code xRot}, {@code yRot}, uv lock) work on it
-     * exactly as they do on a plain variant.
+     * A colorizer's {@link MultiVariant}, written through {@link
+     * SpecificationBlockStateModelBuilder} so the colorizer's own {@code BlockStateModel} reaches
+     * the blockstate layer, the only one that sees the block entity. A plain variant bakes once,
+     * and every colorizer would draw its empty state.
      */
     private static MultiVariant colorizerVariant(Identifier model) {
         return SpecificationBlockStateModelBuilder.specificationVariant(model);
     }
 
     /**
-     * The item model for a colorizer block. {@code registerSimpleTintedItemModel} would emit a
-     * {@code minecraft:model}, which bakes one static quad collection and so has the same "always
-     * draws its empty state" problem the block side had; {@link ColorizerItemModel} reads the stack's
-     * stored block instead. The tint source stays - it is what colours a stored grass block or leaf.
+     * The item model for a colorizer block: a {@link ColorizerItemModel}, which reads the stack's
+     * stored block where a {@code minecraft:model} would always draw the empty state. The tint
+     * colours a stored grass or leaf block.
      */
     private void colorizerItem(BlockModelGenerators blockModels, Block b, Identifier model) {
         blockModels.itemModelOutput.accept(b.asItem(),
@@ -1067,14 +1005,9 @@ public class DecorBlockstateProvider extends ModelProvider {
     }
 
     /**
-     * The shape template is named <em>twice</em>: once inside the {@code colorizer} object, which is
-     * what the loader retextures and bakes, and once as the model json's own {@code parent}.
-     * <p>
-     * The second one is not redundant. A 26.2 model inherits its {@code display} block, gui light and
-     * ambient occlusion along the {@code parent} chain and nowhere else, and those templates are where
-     * the colorizers' inventory transforms live - without the parent link every colorizer item sat in
-     * the inventory with default block transforms instead of the pose the shape was drawn for. The
-     * geometry still comes from the loader: a child's own geometry wins over its parent's.
+     * The shape template is named twice: inside the {@code colorizer} object, which the loader
+     * bakes, and as the json's own {@code parent}, the only way the item inherits the template's
+     * display transforms. The loader's geometry still wins over the parent's.
      */
     private static ExtendedModelTemplateBuilder colorizerBuilder(Identifier parent, Consumer<ColorizerModelBuilder> extra) {
         return ExtendedModelTemplateBuilder.builder()

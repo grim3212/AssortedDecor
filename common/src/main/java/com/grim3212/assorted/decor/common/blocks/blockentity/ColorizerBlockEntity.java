@@ -58,10 +58,8 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
     }
 
     /**
-     * A colorizer placed from an item takes the block the item carries as {@code stored_state} in its
-     * custom data. {@code BlockItem#place} hands the stack's components over here before
-     * {@code setPlacedBy}, and reading {@code custom_data} marks it used, so it is not also kept on
-     * the block entity.
+     * Takes the {@code stored_state} from the placing item's custom data. Reading it marks it used,
+     * so it is not also kept on the block entity.
      */
     @Override
     protected void applyImplicitComponents(DataComponentGetter components) {

@@ -31,12 +31,9 @@ public class DecorCommonConfig {
     public final Supplier<Integer> numWallpaperOptions;
 
     public DecorCommonConfig() {
-        // NEEDED_AT_REGISTRATION, not NOT_SYNCED: `colorizer.shapeSmoothness` is read while blocks
-        // are being constructed. A block's state cache bakes its collision and occlusion shapes at
-        // construction (BlockStateBase#initCache calls getShape unless the block is dynamicShape),
-        // and the slope blocks' getShape reads that option. A plain common config is not loaded
-        // until after RegisterEvent, so this died with "Cannot get config value before config is
-        // loaded" - compiling perfectly happily.
+        // NEEDED_AT_REGISTRATION: colorizer.shapeSmoothness is read while blocks bake their shapes
+        // at
+        // construction, before a NOT_SYNCED config is loaded.
         final IConfigurationBuilder builder = Services.CONFIG.createBuilder(ConfigurationType.NEEDED_AT_REGISTRATION, Constants.MOD_ID + "-common");
 
         colorizerEnabled = builder.defineBoolean("parts.colorizerEnabled", true, "Set this to true if Colorizer blocks and items should be craftable and visible in the creative tab");

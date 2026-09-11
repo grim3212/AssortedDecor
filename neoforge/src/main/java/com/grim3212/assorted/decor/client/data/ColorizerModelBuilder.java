@@ -7,30 +7,15 @@ import com.grim3212.assorted.decor.client.model.ColorizerUnbakedModel;
 import net.minecraft.resources.Identifier;
 import com.grim3212.assorted.lib.client.data.LibCustomLoaderBuilder;
 import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuilder;
-import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
 /**
- * Writes the {@code assorteddecor:colorizer} loader block into a colorizer model json.
- * <p>
- * Forge's {@code ModelBuilder} / {@code ModelProvider} pair is gone, so this is no longer a builder
- * hanging off a second {@code ModelProvider} owning its own model map - which is why
- * {@code ColorizerModelProvider} was deleted along with it. {@link CustomLoaderBuilder} is still the
- * hook, but it plugs into {@link ExtendedModelTemplateBuilder#customLoader} and contributes to the
- * json a {@link net.minecraft.client.data.models.model.ModelTemplate} emits, so it is constructed
- * with the loader id plus whether the loader tolerates inline vanilla elements (it does not - it
- * replaces the geometry outright) and it has to be able to deep copy itself, because a
- * {@code ModelTemplate} is immutable.
- * <p>
- * The {@code loader} key and the shape of the {@code colorizer} object are unchanged;
- * {@code UnbakedModelParser} still reads {@code loader}, the {@code Identifier} it names is still what
- * the model loader registry is keyed by, and {@link ColorizerUnbakedModel.Loader} still reads a
- * {@code parent} plus a {@code textures} map out of {@code colorizer}.
- * <p>
- * The OBJ half of the 1.20.1 builder lives in {@link ColorizerObjModelBuilder}: it is a different
- * loader id reading a different key, and a {@link CustomLoaderBuilder} carries exactly one loader id.
+ * Writes the {@code assorteddecor:colorizer} loader block into a colorizer model json: a
+ * {@code parent} plus a {@code textures} map inside {@code colorizer}, read by
+ * {@link ColorizerUnbakedModel.Loader}. The loader replaces the geometry, so it takes no inline
+ * elements. The OBJ loader is {@link ColorizerObjModelBuilder}.
  */
 public class ColorizerModelBuilder extends LibCustomLoaderBuilder {
 

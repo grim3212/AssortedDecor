@@ -24,34 +24,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A colorizer takes its geometry from a fixed shape and its texture from whatever block state has
- * been stored in the block entity, so one baked colorizer owns a cache of models keyed by that
- * stored state.
- * <p>
- * The base type is {@link IDataAwareBakedModel} - a {@code BlockStateModel} that additionally sees
- * the block entity's model data - because {@code BakedModel} is gone and the vanilla replacement,
- * {@link BlockStateModel#collectParts(RandomSource, List)}, receives no level, position or model
- * data. Everything the 1.20.1 version answered about how to <em>draw</em> the model went with it:
- * ambient occlusion, gui light and the particle sprite are properties of the individual
- * {@linkplain BlockStateModelPart parts} now, item transforms belong to the item pipeline, and a
- * model no longer picks a {@code RenderType} at all - the chunk layer is derived per quad from
- * {@code BakedQuad.MaterialInfo#layer()}.
- * <p>
- * <b>This model only survives if it is reached from the blockstate side.</b> A model json loader can
- * only contribute geometry - {@code UnbakedGeometry#bake} returns a {@code QuadCollection} - so
- * AssortedLib's {@code ForgeModelGeometryToSpecificationPlatformDelegator} and its Fabric equivalent
- * flatten whatever a specification bakes, once, against empty model data. For a colorizer that means
- * the "no stored block" texture everywhere. The blockstate json therefore names
- * {@code assortedlib:specification} instead of a plain variant, which bakes this model whole and
- * hands it to {@code ForgeBakedModelDelegate} / {@code FabricBakedModelDelegate}; those route
- * {@link #collectParts(RandomSource, IBlockModelData, List)} with the block entity's data. The item
- * side reaches the same instance through {@code ColorizerItemModel}, passing the stack's stored state
- * as model data.
- * <p>
- * The {@link ModelBaker} is deliberately held past baking, as it was in 1.20.1: a stored block state
- * is only known while rendering and there is no bounded set of them to bake eagerly. It stays usable
- * because the bakery's resolved models and atlas preparations live as long as the baked models do -
- * a resource reload rebuilds both together.
+ * A colorizer: a fixed shape textured with the block state stored in its block entity, so each
+ * baked colorizer caches one model per stored state.
+ * <p> It only works when reached from the blockstate side. A model json loader contributes geometry
+ * baked once against empty model data, so the blockstate names {@code assortedlib:specification},
+ * which keeps this model whole and passes the block entity's data to {@link
+ * #collectParts(RandomSource, IBlockModelData, List)}. Items reach it through {@code
+ * ColorizerItemModel}, with the stack's stored state as the model data.
+ * <p> The {@link ModelBaker} is held past baking because stored states are only known while
+ * rendering; a resource reload rebuilds it together with the baked models.
  */
 public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel {
 
@@ -128,10 +109,9 @@ public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel
     }
 
     /**
-     * The texture slot overrides for a stored block texture. The slot is named {@code stored}, not
-     * {@code #stored}: a leading {@code #} marks a <em>reference</em> to another slot and
-     * {@link net.minecraft.client.resources.model.sprite.TextureSlots#getMaterial} strips it before
-     * looking a slot up, so a slot declared as {@code #stored} would never be found.
+     * Texture overrides for a stored block texture. The slot is {@code stored}, not {@code
+     * #stored}: a leading {@code #} marks a reference and is stripped before lookup, so it would
+     * never be found.
      */
     private static ImmutableMap<String, String> textures(String texture) {
         return ImmutableMap.of("particle", texture, "stored", texture);

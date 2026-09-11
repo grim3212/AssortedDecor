@@ -5,20 +5,9 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * Automated in-world checks for AssortedDecor.
- * <p>
- * The bodies live in common because the behaviour they check is common; each loader module only
- * registers them into {@code Registries.TEST_FUNCTION} through its own hook, and
- * {@code data/assorteddecor/test_instance/*.json} pairs each one with the shared {@code test_box}
- * structure.
- * <p>
- * This mod is mostly a rendering mod, and a headless gametest sees none of that. What these tests
- * cover is the server side state underneath it: the block a colorizer stores, the colour a paint
- * roller writes into a block state, the light a fireplace emits, the entities frames and wallpapers
- * really are. Anything that needs eyes is checked by hand.
- * <p>
- * The tests themselves are split by feature into the {@code *Tests} classes in this package,
- * with shared helpers in {@code DecorTestSupport}; this only lists them.
+ * Automated in-world checks for AssortedDecor: the server-side state under the rendering (stored
+ * blocks, painted colours, light, frame and wallpaper entities). The tests live in the
+ * {@code *Tests} classes; this only lists them.
  */
 public final class DecorGameTests {
 

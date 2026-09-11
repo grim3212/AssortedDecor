@@ -34,11 +34,8 @@ public class ColorizerUnbakedModel implements IModelSpecification<ColorizerUnbak
     }
 
     /**
-     * The colorized shape is looked up with {@code baker.getModel(parent)} in
-     * {@link ColorizerBakedModel}, so it has to be marked here. Nothing else pulls those template
-     * models in - they are not the json {@code parent} of anything and no blockstate names them
-     * directly - so without this the bakery never discovers them and every colorizer block bakes to
-     * the missing model.
+     * Marks the shape template, which {@link ColorizerBakedModel} fetches with {@code getModel}.
+     * Nothing else references it, so without this every colorizer bakes to the missing model.
      */
     @Override
     public void resolveDependencies(ResolvableModel.Resolver resolver) {
@@ -46,14 +43,10 @@ public class ColorizerUnbakedModel implements IModelSpecification<ColorizerUnbak
     }
 
     /**
-     * The {@code "colorizer"} object of a colorizer model json: a parent model to inherit the shape
-     * from plus any texture slots that parent still needs filled in.
-     * <p>
-     * It used to be deserialized into a whole {@code BlockModel}. A 26.2 json model is a
-     * {@code CuboidModel} record whose element and face deserializers are package private, so it
-     * cannot be read from a foreign {@link JsonDeserializationContext}; the two fields the colorizer
-     * models actually use are read directly instead, and the parent is resolved through the
-     * {@link ModelBaker} at bake time like any other model reference.
+     * The {@code "colorizer"} object of a colorizer model json: the parent to take the shape from
+     * and the texture slots it still needs. Only these two fields are read, because a json model
+     * cannot be deserialized from outside its package; the parent resolves through the {@link
+     * ModelBaker}.
      */
     public record Colorizer(Identifier parent, ImmutableMap<String, String> textures) {
     }

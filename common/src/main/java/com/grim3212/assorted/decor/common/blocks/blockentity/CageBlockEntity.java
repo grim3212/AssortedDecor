@@ -169,11 +169,8 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
     }
 
     /**
-     * Drops the caged stack when the block goes away.
-     * <p>
-     * The block used to do this from {@code onRemove}, but that split in two in 26.x: by the time
-     * the block's {@code affectNeighborsAfterRemoval} runs the block entity has already been
-     * removed from the chunk, so anything that needs it has to happen here instead.
+     * Drops the caged stack. It has to happen here: the block entity is already gone by
+     * {@code affectNeighborsAfterRemoval}.
      */
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {

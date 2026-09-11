@@ -46,10 +46,8 @@ final class LightTests {
     }
 
     /**
-     * Lighting a fireplace makes it emit light, and putting it out stops it. The light did not come
-     * on at all until the block was re-textured during the port, so this is the regression that
-     * bug leaves behind: it needs {@code getLightEmission(state, level, pos)} to reach the light
-     * engine, which is a NeoForge block extension on one loader and a library mixin on the other.
+     * Lighting a fireplace makes it emit light, and putting it out stops it. Guards
+     * {@code getLightEmission(state, level, pos)} reaching the light engine on both loaders.
      */
     private static void fireplaceLightFollowsActive(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -67,13 +65,8 @@ final class LightTests {
                 .thenExecute(() -> rightClick(player, level, flintAndSteel, pos))
                 .thenExecute(() -> helper.assertBlockProperty(MAIN, ColorizerFireplaceBaseBlock.ACTIVE, true))
                 .thenExecute(() -> helper.assertValueEqual(lightEmission(helper, MAIN), 15, "a lit fireplace did not claim to emit light"))
-                // The one place in this suite that still asks the light engine, because the bug this
-                // test guards was the emission never reaching it - every assertion around this one
-                // would be satisfied by a getLightEmission the engine never queries. Written as "at
-                // least what the block declares" rather than "exactly 15" so a neighbouring test
-                // cannot break it: foreign light only ever pushes this number up, so the bound never
-                // fails spuriously, and the 5-and-6 box spacing keeps any foreign contribution well
-                // under 15, so it does not pass spuriously either.
+                // The one check against the light engine, since the bug was emission never reaching
+                // it. A lower bound, so light from a neighbouring test can only raise it.
                 .thenWaitUntil(() -> helper.assertTrue(level.getBrightness(LightLayer.BLOCK, pos) >= lightEmission(helper, MAIN),
                         "a lit fireplace's light emission never reached the light engine"))
                 .thenExecute(() -> level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(ColorizerFireplaceBaseBlock.ACTIVE, false)))

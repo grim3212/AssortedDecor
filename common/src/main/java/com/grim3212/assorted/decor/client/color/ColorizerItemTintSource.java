@@ -16,17 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Tints a colorizer item with the colour the block state it has stored would be tinted with.
- * <p>
- * {@code ItemColor} and the whole {@code ItemColors} registry are gone: an item's tints are a list of
- * {@link ItemTintSource} entries in its <em>item model json</em>, and the only thing registered from
- * code is the {@link MapCodec} that deserialises a custom source type, keyed by {@link #ID}. The item
- * model therefore has to carry {@code "tints": [{"type": "assorteddecor:colorizer"}]} for this to be
- * reached at all.
- * <p>
- * There is also no way left to ask for an arbitrary item's tint, so instead of building a stack for
- * the stored block and colouring that, the stored block's own {@link BlockTintSource} is evaluated
- * with no level - which is exactly what vanilla's item colours used to do for block items.
+ * Tints a colorizer item as its stored block state would be tinted, by evaluating that block's
+ * {@link BlockTintSource} with no level. Reached through
+ * {@code "tints": [{"type": "assorteddecor:colorizer"}]} in the item model.
  */
 public record ColorizerItemTintSource() implements ItemTintSource {
 

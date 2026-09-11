@@ -45,13 +45,8 @@ final class AssetTests {
     }
 
     /**
-     * The creative tab is registered, and every block and item this mod adds has a model and a
-     * name. Missing models and missing lang keys were the single most repeated bug of the port, and
-     * a headless server can see both: the mod's own assets are on its classpath even though it
-     * never loads them.
-     * <p>
-     * Everything missing is reported in one message rather than failing on the first, so fixing
-     * them is one pass and not a loop.
+     * The creative tab is registered, and every block and item has a model and a name. Every gap is
+     * reported at once.
      */
     private static void modAssetsAreComplete(GameTestHelper helper) {
         helper.assertTrue(BuiltInRegistries.CREATIVE_MODE_TAB.containsKey(DecorCreativeItems.CREATIVE_TAB_KEY),
@@ -94,11 +89,9 @@ final class AssetTests {
     }
 
     /**
-     * Every colorizer's item draws the block it holds: its item json has to name the
-     * {@code assorteddecor:colorizer} item model type. A plain {@code minecraft:model} over the same
-     * block model bakes one quad collection at load - the colorizer's empty state - and nothing warns.
-     * Read off the shipped jsons, which a headless server has on its classpath. What the model then
-     * draws, and the particle it throws, are checked in a real client by {@code DecorClientGameTests}.
+     * Every colorizer item json names the {@code assorteddecor:colorizer} item model type. A plain
+     * {@code minecraft:model} bakes the empty colorizer once and nothing warns. What the model
+     * draws is checked by {@code DecorClientGameTests}.
      */
     private static void colorizerItemsDrawTheirStoredBlock(GameTestHelper helper) {
         List<String> wrong = new ArrayList<>();
@@ -126,11 +119,9 @@ final class AssetTests {
     }
 
     /**
-     * Every custom blockstate model and every loader model this mod's blocks use is read by both
-     * loaders. The jsons are generated once and shared, but NeoForge reads a variant's custom type from
-     * {@code "type"} and a model's loader from {@code "loader"}, while Fabric reads both from
-     * {@code "fabric:type"} and ignores the others. A json carrying only NeoForge's key loads on Fabric
-     * as a plain static model - every colorizer drawing its empty state - and nothing warns.
+     * Every custom blockstate model and loader model carries both loaders' keys: NeoForge reads
+     * {@code "type"} and {@code "loader"}, Fabric only {@code "fabric:type"}. With only NeoForge's
+     * key, Fabric loads a plain static model and nothing warns.
      */
     private static void loaderModelsAreReadOnBothLoaders(GameTestHelper helper) {
         List<String> wrong = new ArrayList<>();
@@ -175,10 +166,8 @@ final class AssetTests {
     }
 
     /**
-     * Every recipe file this mod ships either loaded, or carries this loader's load conditions and was
-     * skipped by them. A file with neither failed to parse. On Fabric that was every conditional
-     * recipe for a while: Fabric's datagen wrote them without conditions, and the NeoForge copy that
-     * shadowed it carries a key Fabric ignores - so only this loader's own key counts.
+     * Every recipe file either loaded or was skipped by this loader's own load conditions; anything
+     * else failed to parse.
      */
     private static void everyRecipeLoadsOrIsConditionedOff(GameTestHelper helper) {
         MinecraftServer server = helper.getLevel().getServer();
@@ -207,11 +196,9 @@ final class AssetTests {
     }
 
     /**
-     * Every item tag outside minecraft has a name. Recipe viewers show it in place of the raw id,
-     * and it is the check Fabric API runs at dev startup ("Untranslated Item Tags detected"), made
-     * to fail here: the key is {@code tag.item.<namespace>.<path>} with each '/' in the path turned
-     * into '.'. Both loaders load every mod's lang file on a dedicated server and name the standard
-     * c: tags themselves, so whatever is still missing is one of ours.
+     * Every non-vanilla item tag has a {@code tag.item.<namespace>.<path>} name, the check Fabric
+     * API warns about at dev startup. Both loaders name the standard c: tags, so anything missing
+     * is ours.
      */
     private static void everyItemTagHasAName(GameTestHelper helper) {
         Language language = Language.getInstance();

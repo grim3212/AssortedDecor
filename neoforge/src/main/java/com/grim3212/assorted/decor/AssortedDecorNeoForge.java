@@ -3,7 +3,6 @@ package com.grim3212.assorted.decor;
 import com.grim3212.assorted.decor.client.data.DecorLanguageProvider;
 import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
 import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
-import com.grim3212.assorted.decor.common.blocks.blockentity.CageBlockEntity;
 import com.grim3212.assorted.decor.common.blocks.blockentity.DecorBlockEntityTypes;
 import com.grim3212.assorted.decor.data.DecorBlockLoot;
 import com.grim3212.assorted.decor.data.DecorBlockTagProvider;
@@ -15,7 +14,6 @@ import com.grim3212.assorted.lib.inventory.ForgePlatformInventoryStorageHandlerU
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -44,10 +42,8 @@ public class AssortedDecorNeoForge {
     }
 
     /**
-     * {@code ExistingFileHelper} was removed from datagen, the event owns the provider list now
-     * ({@code addProvider}), and the include flags are gone because the server and client halves are
-     * separate events. Getting the split wrong is quiet: the wrong event runs and reports
-     * "All providers took: 0 ms" with a successful build.
+     * Server datagen. The server and client halves are separate events; if the wrong one runs, the
+     * build still succeeds, with "All providers took: 0 ms".
      */
     private void gatherServerData(final GatherDataEvent.Server event) {
         PackOutput packOutput = event.getGenerator().getPackOutput();
@@ -61,11 +57,8 @@ public class AssortedDecorNeoForge {
     }
 
     /**
-     * The colorizer models used to need a second provider of their own, because Forge's
-     * {@code BlockStateProvider} could only emit {@code BlockModelBuilder}s and a custom loader block
-     * had to come from a {@code ModelProvider} with its own builder type. A custom loader is written
-     * by a {@code ModelTemplate} now, so {@code ColorizerModelProvider} is gone and
-     * {@link DecorBlockstateProvider} writes those models itself.
+     * Client datagen: block states and models, item models and the lang file. The two model
+     * providers split the mod between them so they never write the same file.
      */
     private void gatherClientData(final GatherDataEvent.Client event) {
         PackOutput packOutput = event.getGenerator().getPackOutput();
@@ -76,15 +69,8 @@ public class AssortedDecorNeoForge {
     }
 
     /**
-     * This used to be a mixin on {@link CageBlockEntity} overriding {@code getCapability}. Block
-     * entities do not answer capability lookups themselves any more - a capability is registered per
-     * {@link BlockEntityType} from {@link RegisterCapabilitiesEvent} - so the mixin was deleted and
-     * the registration lives here, mirroring what the Fabric side does with {@code ItemStorage.SIDED}.
-     * <p>
-     * {@code ForgeCapabilities.ITEM_HANDLER} and the deprecated {@code IItemHandler} it was typed with
-     * are replaced by {@code Capabilities.Item.BLOCK}, a transactional
-     * {@code ResourceHandler<ItemResource>}; the library's unsided handler already exposes one. The
-     * cage ignores the side, exactly as the {@code LazyOptional} it used to hand back did.
+     * Exposes the cage's inventory as {@code Capabilities.Item.BLOCK} through the library's unsided
+     * handler, the NeoForge side of Fabric's {@code ItemStorage.SIDED}.
      */
     private void registerCapabilities(final RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.Item.BLOCK, DecorBlockEntityTypes.CAGE.get(), (blockEntity, side) -> {

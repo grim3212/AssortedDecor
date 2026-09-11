@@ -19,12 +19,9 @@ import net.minecraft.util.ARGB;
 import net.minecraft.util.LightCoordsUtil;
 
 /**
- * Like {@link FrameRenderer}, the wallpaper's quads are loose geometry with no typed submit call, so
- * they are handed to {@link SubmitNodeCollector#submitCustomGeometry}. The four
- * {@code if (direction == ...)} arms the 1.20.1 version carried emitted byte identical vertices - the
- * facing only ever mattered through the yaw rotation applied before the geometry - so they are
- * collapsed here. The one arm that genuinely differed, the top edge on a NORTH facing wallpaper, is
- * kept.
+ * Draws a wallpaper through {@link SubmitNodeCollector#submitCustomGeometry}, like {@link
+ * FrameRenderer}. The facing only matters through the yaw rotation, except for the top edge of a
+ * NORTH-facing wallpaper.
  */
 public class WallpaperRenderer extends EntityRenderer<WallpaperEntity, WallpaperRenderer.WallpaperRenderState> {
 

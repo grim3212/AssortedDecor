@@ -39,14 +39,8 @@ public class DecorUtil {
     }
 
     /**
-     * Adds the AxisAlginedBB that it generates using getCollision to the blocks
-     * colliding boxes list
-     *
-     * @param pos       The pos we are checking for collision at
-     * @param worldIn   The world getter not used
-     * @param context   The context of collision
-     * @param state     The blockstate we are going to be evaluating
-     * @param numPieces The number of pieces that this Slope has
+     * The slope's collision shape: the union of its {@link #getCollision} boxes at the configured
+     * smoothness, for a slope made of {@code numPieces} pieces.
      */
     public static VoxelShape addAxisAlignedBoxes(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context, int numPieces) {
         VoxelShape endShape = Shapes.empty();
@@ -65,26 +59,9 @@ public class DecorUtil {
     }
 
     /**
-     * Returns a new AxisAlignedBB for the specified piece at the smoothness level
-     * <p>
-     * Based off of CarpentryBlocks
-     * https://github.com/Mineshopper/carpentersblocks/blob/master/src/main/java
-     * /com/carpentersblocks/util/slope/SlopeUtil.java#L56
-     *
-     * @param state      The BlockState that we are grabbing the collision for
-     * @param piece      The current piece that we are on
-     * @param smoothness The current smoothness we are evaluating
-     * @param numPieces  The number of pieces that this Slope has
-     * @return A new AxisAlignedBB at this smoothness level
-     */
-    /**
-     * The slope family of the block in {@code state}, or null if it is not a slope.
-     * <p>
-     * Replaces the {@code state.getBlock() == DecorBlocks.COLORIZER_*.get()} comparisons this method
-     * used to make. Those read the registry, and since block shapes are baked at construction the
-     * reads happened while {@code DecorBlocks}' static initialiser was still running - the entry
-     * came back null and took the whole game down at registration. The slope type is carried on the
-     * block instance, so asking it directly has no ordering hazard.
+     * The slope family of the block in {@code state}, or null if it is not a slope. Read from the
+     * block instance, because the {@code DecorBlocks} entries are still null while shapes are
+     * baked.
      */
     private static SlopeType slopeType(BlockState state) {
         if (state.getBlock() instanceof ColorizerSlopeBlock slope) {
@@ -98,6 +75,11 @@ public class DecorUtil {
         return null;
     }
 
+    /**
+     * The box for one piece of a slope at one smoothness step. Based on Carpenter's Blocks'
+     * SlopeUtil:
+     * https://github.com/Mineshopper/carpentersblocks/blob/master/src/main/java/com/carpentersblocks/util/slope/SlopeUtil.java#L56
+     */
     public static VoxelShape getCollision(BlockState state, int piece, int smoothness, int numPieces) {
         piece++;
 

@@ -19,12 +19,8 @@ public class ColorizerSlopeSideBlock extends ColorizerSideBlock {
     }
 
     /**
-     * The shape family this block belongs to.
-     * <p>
-     * {@code DecorUtil} used to tell these blocks apart by comparing them against
-     * {@code DecorBlocks.COLORIZER_*.get()}. That is a registry read, and the shapes are baked
-     * during block construction now, so it ran while {@code DecorBlocks}' static initialiser was
-     * still going and saw a null entry. The type is instance state and needs no registry.
+     * The shape family. Kept on the instance because shapes are baked while the {@code DecorBlocks}
+     * entries are still null.
      */
     public SlopeType getSlopeType() {
         return this.type;

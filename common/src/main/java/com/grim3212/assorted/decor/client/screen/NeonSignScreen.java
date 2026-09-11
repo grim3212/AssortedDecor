@@ -22,18 +22,9 @@ import net.minecraft.util.Util;
 import java.util.stream.IntStream;
 
 /**
- * Rebuilt on the retained-mode GUI, following vanilla's {@code AbstractSignEditScreen}: the screen
- * records elements into a {@link GuiGraphicsExtractor} from {@code extractRenderState} instead of
- * drawing from {@code render}, and the cursor and selection are drawn by
- * {@link TextCursorUtils} / {@link GuiGraphicsExtractor#textHighlight} rather than by a hand-built
- * {@code BufferBuilder} with a logic-op blend.
- * <p>
- * The 1.20.1 screen previewed the sign by rendering a {@code SignRenderer.SignModel} into the screen
- * through the {@code MultiBufferSource} behind {@code GuiGraphics#pose()}. That is gone -
- * {@code SignRenderer}, {@code Sheets.SIGN_SHEET} and {@code Material#buffer} were all deleted, and a
- * screen has no {@code MultiBufferSource} to write into - so the preview follows vanilla's own
- * answer instead: {@code SignEditScreen} blits a flat {@code textures/gui/signs/<wood>.png}, and this
- * blits one of {@link #SIGN_BACKGROUNDS} chosen by {@link NeonSignBlockEntity#mode}.
+ * The neon sign editor, modelled on vanilla's {@code AbstractSignEditScreen}. Like
+ * {@code SignEditScreen}, it previews the board as a flat texture, one of {@link #SIGN_BACKGROUNDS}
+ * chosen by {@link NeonSignBlockEntity#mode}, because a screen cannot draw the sign model.
  */
 public class NeonSignScreen extends Screen {
 
@@ -59,11 +50,8 @@ public class NeonSignScreen extends Screen {
     public static final Identifier NEON_SIGN_GUI_TEXTURE = Identifier.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/screen/neon_sign.png");
 
     /**
-     * The sign board preview, one per {@link NeonSignBlockEntity#mode}, indexed by it.
-     * <p>
-     * These are vanilla's {@code textures/gui/signs/} shape - 24x26, a 24x12 board over a 2x14 post -
-     * cut from the front faces of the matching {@code textures/model/neon_sign*.png} entity sheets, so
-     * the preview is the same artwork the placed sign draws.
+     * The board preview per {@link NeonSignBlockEntity#mode}: vanilla's 24x26 {@code gui/signs}
+     * shape, cut from the matching neon sign entity textures.
      */
     private static final Identifier[] SIGN_BACKGROUNDS = {
             signBackground("neon_sign"), signBackground("neon_sign_white"), signBackground("neon_sign_clear")
@@ -79,10 +67,8 @@ public class NeonSignScreen extends Screen {
     private static final int BOARD_TEXTURE_HEIGHT = 26;
 
     /**
-     * Only the board is drawn, never the post, which is why this is 12 rather than
-     * {@link #BOARD_TEXTURE_HEIGHT}. At {@link #BOARD_SCALE} the post would reach 55 pixels below the
-     * board and land on top of the colour buttons; vanilla has empty screen there, this panel does
-     * not. It is the same crop vanilla uses for a wall sign.
+     * Only the board is drawn, not the post, as vanilla crops a wall sign: at {@link #BOARD_SCALE}
+     * the post would cover the colour buttons.
      */
     private static final int BOARD_DISPLAYED_HEIGHT = 12;
 
@@ -246,13 +232,8 @@ public class NeonSignScreen extends Screen {
     }
 
     /**
-     * The screen's panel, blitted into the background stratum so the widgets - which are extracted
-     * from {@link #extractRenderState}, one stratum above - land on top of it.
-     * <p>
-     * {@code neon_sign.png} has always carried this 176x208 panel in its top left corner alongside
-     * the button sprites, and every widget in {@link #init} is positioned relative to it, but nothing
-     * ever drew it: the 1.20.1 screen only called {@code renderBackground}, which dims the world and
-     * nothing more. That left the buttons floating over the dimmed world.
+     * Draws the 176x208 panel from {@code neon_sign.png}, which every widget is positioned against,
+     * in the background stratum so the widgets land on top of it.
      */
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
@@ -266,12 +247,8 @@ public class NeonSignScreen extends Screen {
     }
 
     /**
-     * The sign board, centred on the same point {@link #extractSignText} centres the lines on, so the
-     * text sits on the board exactly as it does on the placed sign.
-     * <p>
-     * Drawn from {@code extractBackground} together with the panel: it is a backdrop, and everything
-     * extracted from {@link #extractRenderState} - the widgets, the title and the editable text - has
-     * to land on top of it.
+     * The sign board, centred where {@link #extractSignText} centres the lines. Drawn with the
+     * background so the widgets and text land on top.
      */
     private void extractSignBoard(GuiGraphicsExtractor graphics) {
         graphics.pose().pushMatrix();

@@ -23,14 +23,8 @@ import org.joml.Matrix4fc;
 import java.util.List;
 
 /**
- * The item model of a colorizer: the shape it was crafted as, drawn with the texture of the block the
- * stack has absorbed.
- * <p>
- * 1.20.1 did this with a {@code ColorizerItemOverrideList} hanging off the baked model, which read the
- * {@code stored_state} tag in {@code resolve} and returned a different {@code BakedModel}.
- * {@code ItemOverrides} is gone; this registers the {@code assorteddecor:colorizer} item model type,
- * which reads the stack's stored state and draws through AssortedLib's {@link DataAwareItemModel} -
- * the same model AssortedTech's bridge item uses.
+ * The {@code assorteddecor:colorizer} item model type: the colorizer's shape drawn with the texture
+ * of the block the stack has stored, through AssortedLib's {@link DataAwareItemModel}.
  */
 public final class ColorizerItemModel {
 
@@ -52,12 +46,9 @@ public final class ColorizerItemModel {
     }
 
     /**
-     * @param model The colorizer <em>block</em> model to draw - the json carrying the
-     *              {@code assorteddecor:colorizer} loader, which is the same model the blockstate
-     *              points at.
-     * @param tints Item tint sources, as on a vanilla {@code minecraft:model}. A colorizer wants
-     *              {@code assorteddecor:colorizer} here so that a stored block which is itself tinted
-     *              - grass, leaves - comes out the right colour.
+     * @param model the colorizer block model, the same json the blockstate points at
+     * @param tints item tint sources; {@code assorteddecor:colorizer} tints a stored grass or leaf
+     * block
      */
     public record Unbaked(Identifier model, List<ItemTintSource> tints) implements ItemModel.Unbaked {
 

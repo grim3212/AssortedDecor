@@ -18,12 +18,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * A block entity renderer is split in two in 26.x: {@code extractRenderState} copies everything the
- * draw needs off the block entity, and {@code submit} hands geometry to a {@link SubmitNodeCollector}
- * without touching the level. Text is submitted rather than written into a buffer, so
- * {@code Font#drawInBatch} is replaced by {@link SubmitNodeCollector#submitText}.
- */
+/** Draws the calendar's date as text, submitted through {@link SubmitNodeCollector#submitText}. */
 public class CalendarBlockEntityRenderer implements BlockEntityRenderer<CalendarBlockEntity, CalendarBlockEntityRenderer.CalendarRenderState> {
 
     private static final int TEXT_COLOR = ARGB.opaque(0);

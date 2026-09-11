@@ -22,10 +22,8 @@ public class NeonSignItem extends StandingAndWallBlockItem {
     }
 
     /**
-     * Whether the block entity data on {@code stack} may be applied: only by an operator, as vanilla
-     * does for a sign. Vanilla keeps its op-only block entity types in a set a modded type cannot
-     * join, so the check is made here. Without it, anyone could place a neon sign with any text or
-     * owner.
+     * Whether the block entity data on {@code stack} may be applied: only by an operator, as for a
+     * vanilla sign. Vanilla's op-only type set cannot take a modded type, so the check lives here.
      */
     public static boolean mayApplyBlockEntityData(@Nullable Player player, ItemStack stack) {
         return !stack.has(DataComponents.BLOCK_ENTITY_DATA) || player != null && player.canUseGameMasterBlocks();

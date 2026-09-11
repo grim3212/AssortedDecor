@@ -58,10 +58,8 @@ final class ColorizerTests {
     }
 
     /**
-     * A colorizer keeps the block it was given, hands it back, and survives being written out and
-     * read again. The stored state moved onto {@code BlockState.CODEC} through
-     * {@code ValueInput}/{@code ValueOutput} in the port, which is exactly what the round trip here
-     * exercises - a codec that silently wrote nothing would still compile.
+     * A colorizer keeps the block it was given, hands it back, and survives a save and reload,
+     * which catches a codec that silently writes nothing.
      */
     private static void colorizerStoresAndReloads(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -98,16 +96,9 @@ final class ColorizerTests {
     }
 
     /**
-     * The brush end to end, through the real interaction path: right clicking a full cube stores it
-     * on the brush, right clicking a colorizer applies it. Driven through
-     * {@code ServerPlayerGameMode#useItemOn} rather than {@code GameTestHelper#useBlock} on purpose -
-     * the brush hangs off the library's {@code UseBlockEvent}, which is NeoForge's
-     * {@code RightClickBlock} on one side and Fabric's {@code UseBlockCallback} on the other, and
-     * only a real use fires either.
-     * <p>
-     * Each click must also come back as consumed: the brush has already acted, so vanilla must not
-     * go on to use the block as well. NeoForge used to let it, running the picked-up block's
-     * interaction on the air left behind.
+     * The brush picks up a full cube and paints it onto a colorizer. Driven through
+     * {@code ServerPlayerGameMode#useItemOn}, because only a real use fires the library's
+     * {@code UseBlockEvent}. Each click must come back consumed, or vanilla also uses the block.
      */
     private static void colorizerBrushPicksUpAndPaints(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -134,18 +125,10 @@ final class ColorizerTests {
     }
 
     /**
-     * Every colorizer shape stores a block, hands it back and lets go of it again.
-     * <p>
-     * Driven off {@link DecorBlocks#colorizerBlocks()} rather than a list written out here, so a
-     * shape added later is covered the day it is registered. The multi block shapes are the
-     * interesting ones: the door and the lamp post override {@code setColorizer} to carry the block
-     * across every part of themselves, and refuse unless all of those parts are really there.
-     * <p>
-     * The result of {@code clearColorizer} is deliberately not asserted. Those same two shapes
-     * always return false from it - their outer call clears the other parts through the overridden
-     * {@code setColorizer} and then finds them already empty - so what is checked is the thing that
-     * matters and is actually true, that the colorizer ends up holding nothing. Nothing in
-     * {@code main} reads that return value.
+     * Every shape in {@link DecorBlocks#colorizerBlocks()} stores a block, hands it back and lets
+     * go of it; the door and lamp post carry it across all their parts. The result of {@code
+     * clearColorizer} is not asserted: those two always return false (the outer call finds the
+     * other parts already cleared), so the test checks that the colorizer ends up empty.
      */
     private static void colorizerShapesTakeTexture(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -179,11 +162,9 @@ final class ColorizerTests {
     }
 
     /**
-     * Breaking a filled colorizer leaves air behind instead of throwing. Everything the block
-     * overrides - sound type, friction, landing and running effects - reads the stored state out of
-     * the block entity by position, and the break path asks for some of that after the block entity
-     * has already gone. {@code ServerLevel.destroyBlock} rather than
-     * {@code GameTestHelper#destroyBlock}, which passes {@code dropBlock = false} and skips it all.
+     * Breaking a filled colorizer does not throw, although the break path reads the stored state
+     * after the block entity is gone. Uses {@code ServerLevel.destroyBlock}, because {@code
+     * GameTestHelper#destroyBlock} skips the drop path.
      */
     private static void breakingAColorizerDoesNotCrash(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -206,14 +187,9 @@ final class ColorizerTests {
     }
 
     /**
-     * The firepit, the covered firepit, the firering and the stove all light from flint and steel
-     * and reach the light engine. The fireplace has its own test above; these four share
-     * {@link ColorizerFireplaceBaseBlock} with it but are separate registrations, and it was only
-     * the fireplace that got checked when the light emission was fixed during the port.
-     * <p>
-     * Each is put out again before the test ends. Nothing asserts on ambient brightness any more -
-     * see {@link #lightEmission} - but a block left burning is still noise in a shared world, and
-     * the fireplace test next door does look at the light engine once.
+     * The firepit, covered firepit, firering and stove light from flint and steel. They share
+     * {@link ColorizerFireplaceBaseBlock} with the fireplace but are separate registrations. Each
+     * is put out again so it does not light the neighbouring tests.
      */
     private static void fireColorizersLightUp(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -246,10 +222,9 @@ final class ColorizerTests {
     }
 
     /**
-     * A colorizer placed from an item that carries a stored block keeps it, on every part. Nothing in
-     * play writes one onto a stack - pick-block writes air - but a command or another mod can, and
-     * the item model already draws it. The door and lamp post place their upper parts themselves,
-     * after the part the item placed has taken the block.
+     * A colorizer placed from an item carrying a stored block keeps it on every part. Only commands
+     * or other mods write one, but the item model draws it. The door and lamp post place their
+     * upper parts themselves.
      */
     private static void colorizersPlacedFromAnItemKeepTheirBlock(GameTestHelper helper) {
         ServerPlayer player = (ServerPlayer) helper.makeMockServerPlayer(GameType.CREATIVE);

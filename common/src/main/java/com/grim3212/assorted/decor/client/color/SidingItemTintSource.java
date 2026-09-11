@@ -15,13 +15,9 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Tints a colour-changing item (the sidings) with the map colour of the dye recorded in its
- * {@link DataComponents#BLOCK_STATE} component, matching what {@code ColorChangingItem} reads for
- * its name. The colour used to live in a {@code BlockStateTag} compound inside {@code CUSTOM_DATA};
- * it moved to the vanilla component, which {@code BlockItem} also applies on placement.
- * <p>
- * Item tinting is data-driven in 26.2, so the item model json has to carry
- * {@code "tints": [{"type": "assorteddecor:siding"}]} for this to be reached.
+ * Tints a siding item with the map colour of the dye in its {@link DataComponents#BLOCK_STATE}, as
+ * {@code ColorChangingItem} reads it for the name. Reached through
+ * {@code "tints": [{"type": "assorteddecor:siding"}]} in the item model.
  */
 public record SidingItemTintSource() implements ItemTintSource {
 

@@ -7,12 +7,8 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 
 /**
- * A widget records itself into a {@link GuiGraphicsExtractor} now instead of drawing: {@code Button}
- * is abstract and the hook is {@code extractContents}, called from {@code AbstractButton} after the
- * base widget has already worked out whether the mouse is over it. The manual bounds test, the
- * {@code RenderSystem} blend setup (the GUI pipeline owns blending) and the hover counter that
- * hand-rolled a tooltip delay are all gone with it - a widget carries a {@link Tooltip} which the
- * screen shows on its own schedule.
+ * A neon sign screen button, drawn from the {@code neon_sign.png} sprites. Its label is shown as a
+ * {@link Tooltip}, which the screen times.
  */
 public class NeonButton extends Button {
 

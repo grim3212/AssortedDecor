@@ -13,11 +13,8 @@ import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Tints an item with the default map colour of the block it places, which is how the fluro blocks get
- * one texture in sixteen colours.
- * <p>
- * Item tinting is data-driven in 26.2, so the item model json has to carry
- * {@code "tints": [{"type": "assorteddecor:block_map_color"}]} for this to be reached.
+ * Tints an item with the map colour of the block it places, so the fluro blocks share one texture.
+ * Reached through {@code "tints": [{"type": "assorteddecor:block_map_color"}]} in the item model.
  */
 public record BlockMapColorItemTintSource() implements ItemTintSource {
 

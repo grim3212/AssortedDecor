@@ -14,15 +14,10 @@ import net.minecraft.client.resources.model.sprite.TextureSlots;
 import net.minecraft.resources.Identifier;
 
 /**
- * The json flavour of the colorizer: the {@code "colorizer"} object names a parent model, and every
- * stored block state re-bakes that parent with the stored block's texture in the {@code stored} slot.
- * <p>
- * There is no mutable json model object to copy and retexture any more - {@code BlockModel} is a
- * {@code CuboidModel} record whose textures are a {@link TextureSlots.Data}, and its element and face
- * deserializers are package private, so an inline geometry object could not be re-read here either.
- * The parent chain is walked directly instead, which is what vanilla model inheritance does: the
- * overrides go in child-first, the parent's own slots after them, and
- * {@link ResolvedModel#findTopGeometry} supplies the geometry to bake against the resolved slots.
+ * The json colorizer: the {@code "colorizer"} object names a parent model, re-baked per stored
+ * block state with that block's texture in the {@code stored} slot. A json model cannot be copied
+ * and retextured, so the parent chain is walked here as vanilla inheritance does (overrides first,
+ * then the parent's slots), and {@link ResolvedModel#findTopGeometry} supplies the geometry.
  */
 public class ColorizerBakedModel extends ColorizerBaseBakedModel<ColorizerUnbakedModel.Colorizer> {
 

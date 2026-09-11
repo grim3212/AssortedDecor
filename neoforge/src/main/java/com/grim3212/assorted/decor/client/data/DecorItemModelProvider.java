@@ -21,18 +21,7 @@ import net.minecraft.world.level.block.Block;
 import java.util.List;
 import java.util.stream.Stream;
 
-/**
- * Forge's {@code ItemModelProvider} / {@code ItemModelBuilder} / {@code ExistingFileHelper} /
- * {@code ForgeRegistries} are all gone, and so is the idea that an item model is one json: an item
- * points at a data driven {@code ItemModel} in {@code assets/<ns>/items/}, which names the
- * {@code assets/<ns>/models/} geometry to draw. {@link ItemModelGenerators} writes both halves, so
- * {@code generatedItem} is just {@link ItemModelGenerators#generateFlatItem}.
- * <p>
- * Block items are not listed here at all - they belong to {@link DecorBlockstateProvider}, which
- * either points each one at its block model or registers a flat sprite for it. Because one
- * {@link ModelProvider} writes both halves, the two providers are kept apart by narrowing what each
- * claims to know about; see {@link DecorBlockstateProvider} for the other side of the split.
- */
+/** Item models for everything but block items, which {@link DecorBlockstateProvider} models. */
 public class DecorItemModelProvider extends ModelProvider {
 
     public DecorItemModelProvider(PackOutput output) {
@@ -74,15 +63,9 @@ public class DecorItemModelProvider extends ModelProvider {
     }
 
     /**
-     * The brush is the one item in this mod drawn by the colorizer model loader: its bristles read the
-     * {@code #stored} texture of whatever block state it has picked up. The 1.20.1 provider built this
-     * from {@code DecorBlockstateProvider}, because the colorizer builder belonged to the second
-     * {@code ModelProvider}; a custom loader is a {@link ModelTemplate} now, so it belongs here with
-     * the rest of the item models.
-     * <p>
-     * The tint source is what replaced the deleted {@code registerItemColor} handler: an item's tints
-     * are a list in its item model json and a source's position in that list is the tint index it
-     * answers for. Index 0 is the index {@code item/brush} stamps on its bristle faces.
+     * The brush, drawn by the colorizer model loader: its bristles take the {@code #stored} texture
+     * of the block it has picked up. Tint index 0, which {@code item/brush} stamps on the bristle
+     * faces, colours a tinted stored block.
      */
     private void colorizerBrush(ItemModelGenerators itemModels) {
         Item item = DecorItems.COLORIZER_BRUSH.get();

@@ -25,11 +25,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-// TODO(26.2): a colorizer used to mirror the light dampening and skylight propagation of the block it
-// stores, by overriding getLightBlock(state, reader, pos) / propagatesSkylightDown(state, reader, pos).
-// Both became position independent in 26.2 (BlockState.getLightDampening() / propagatesSkylightDown()),
-// so there is no level or position to look the stored state up from and those overrides had to go. A
-// filled colorizer now dampens light like its own (non occluding) block instead of like its contents.
+// TODO(26.2): a filled colorizer should dampen light and pass skylight like its stored block, but
+//  getLightBlock / propagatesSkylightDown no longer get a position to look the stored state up
+//  from, so it behaves like its own non-occluding block.
 public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
 
     default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {

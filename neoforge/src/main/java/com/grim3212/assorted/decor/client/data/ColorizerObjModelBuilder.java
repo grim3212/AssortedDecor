@@ -9,18 +9,9 @@ import net.neoforged.neoforge.client.model.generators.template.CustomLoaderBuild
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Writes the {@code assorteddecor:colorizer_obj} loader block into a colorizer model json - the
- * {@code model} key naming the {@code .obj} file whose geometry the colorizer takes on.
- * <p>
- * In 1.20.1 this was the second branch of one {@code ColorizerModelBuilder}. A
- * {@link CustomLoaderBuilder} carries exactly one loader id, and the two colorizer loaders are
- * separate ids reading separate keys, so the branch becomes its own builder.
- * <p>
- * The 1.20.1 builder also wrote a top level {@code textures} object alongside {@code model}. It is
- * dropped: {@link ColorizerObjModel.Loader#read} never looked at it, and the textures a colorizer OBJ
- * model actually needs are the ordinary model {@code textures} block that the
- * {@link net.minecraft.client.data.models.model.ModelTemplate} writes from its
- * {@link net.minecraft.client.data.models.model.TextureMapping}.
+ * Writes the {@code assorteddecor:colorizer_obj} loader block into a colorizer model json: the
+ * {@code model} key names the {@code .obj} file whose geometry the colorizer takes. Its textures go
+ * in the ordinary model {@code textures} block.
  */
 public class ColorizerObjModelBuilder extends LibCustomLoaderBuilder {
 

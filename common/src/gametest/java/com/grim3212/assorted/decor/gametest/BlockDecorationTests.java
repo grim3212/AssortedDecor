@@ -67,12 +67,9 @@ final class BlockDecorationTests {
     }
 
     /**
-     * Every road surface places from its item, and the three that react to being used react.
-     * <p>
-     * There is nothing to assert about roadways "connecting": they carry no connection properties
-     * at all, their textures simply tile. What the block states do carry is the manhole's
-     * {@code open}, the white roadway's marking {@code type} and the colour swap a roller does, and
-     * those are what is checked here.
+     * Every road surface places from its item, and the manhole, white roadway and paint roller
+     * react to use. Roadways have no connection properties (their textures just tile), so there is
+     * none to check.
      */
     private static void roadwayBlocksPlaceAndReact(GameTestHelper helper) {
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
@@ -140,12 +137,8 @@ final class BlockDecorationTests {
     }
 
     /**
-     * The four plain doors place as two halves and open together under redstone.
-     * <p>
-     * Redstone and not a right click on purpose: {@code DecorDoorBlock} passes
-     * {@link net.minecraft.world.level.block.state.properties.BlockSetType#IRON}, whose
-     * {@code canOpenByHand()} is false, so {@code DoorBlock#useWithoutItem} returns straight away.
-     * These doors have always behaved like iron doors; the checklist just did not say so.
+     * The four plain doors place as two halves and open together under redstone. Not by hand:
+     * {@code DecorDoorBlock} uses {@code BlockSetType#IRON}, which cannot be opened by hand.
      */
     private static void doorsOpenOnRedstone(GameTestHelper helper) {
         Player player = helper.makeMockPlayer(GameType.SURVIVAL);
@@ -185,11 +178,8 @@ final class BlockDecorationTests {
     }
 
     /**
-     * The calendar hangs on a wall with its block entity, and the date it renders is right.
-     * <p>
-     * {@link DateHandler#calculateDate} is pure arithmetic over the world time, so it can simply be
-     * asserted. The suffixes are the part worth pinning: {@code ordinalNo} has to get the teens
-     * right, which is exactly the case a naive last-digit switch gets wrong.
+     * The calendar hangs on a wall with its block entity, and {@link DateHandler#calculateDate} is
+     * right, including the ordinal suffixes of the teens, which a last-digit switch gets wrong.
      */
     private static void calendarShowsTheDate(GameTestHelper helper) {
         BlockPos wall = new BlockPos(4, 2, 5);
@@ -293,10 +283,8 @@ final class BlockDecorationTests {
     }
 
     /**
-     * Neon sign text and mode survive being written out and read back. The four lines moved onto
-     * {@code ComponentSerialization.CODEC} through {@code ValueInput}/{@code ValueOutput} in the
-     * port, and {@code loadAdditional} resolves each line against a command source on the way in -
-     * a step that has to cope with a block entity that has no level yet.
+     * Neon sign text and mode survive a save and reload. {@code loadAdditional} resolves each line
+     * against a command source, which has to cope with a block entity that has no level yet.
      */
     private static void neonSignTextSurvivesReload(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -325,12 +313,9 @@ final class BlockDecorationTests {
     }
 
     /**
-     * Block entity data on a neon sign item is applied for an operator only, as vanilla does for a
-     * sign. Without the check anyone could place a neon sign with any text or owner.
-     * <p>
-     * The rule is asked on both loaders. The real placement by a non-operator runs on Fabric only:
-     * placing as a player opens the editor with a packet, and NeoForge refuses to send it to a test
-     * player. The placement code is common, so the Fabric run covers it for both.
+     * Block entity data on a neon sign item applies only for an operator, as for a vanilla sign.
+     * The real placement by a non-operator runs on Fabric only, because NeoForge will not send the
+     * editor packet to a test player; the placement code is common, so that covers both.
      */
     private static void neonSignItemDataNeedsAnOperator(GameTestHelper helper) {
         CompoundTag data = new CompoundTag();

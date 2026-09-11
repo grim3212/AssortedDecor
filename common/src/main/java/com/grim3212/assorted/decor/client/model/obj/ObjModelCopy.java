@@ -39,12 +39,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A model loaded from an OBJ file.
- * <p>
- * Supports positions, texture coordinates, normals and colors. The
- * {@link ObjMaterialLibrary material library} has support for numerous
- * features, including support for {@link Identifier} textures
- * (non-standard).
+ * A model loaded from an OBJ file: positions, texture coordinates, normals and colours. The
+ * {@link ObjMaterialLibrary} also accepts {@link Identifier} textures (non-standard).
  */
 public class ObjModelCopy extends SimpleModelSpecification<ObjModelCopy> {
     private static final Logger LOGGER = LogManager.getLogger();

@@ -31,19 +31,10 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Draws a neon sign: the board, its post, and the four lines of text.
- * <p>
- * The board used to come from {@code SignRenderer.SignModel}, which 26.2 deleted along with
- * {@code SignRenderer} itself - a vanilla sign renders its board from an ordinary <em>block model</em>
- * now and its renderer only submits text. That does not work for a neon sign: which of the three
- * board textures it uses is {@link NeonSignBlockEntity#mode}, which lives in the block entity's NBT
- * rather than in the block state, and a block model is chosen per block state. So the board stays
- * here, as an equivalent {@link ModelPart} submitted against the texture the mode selects.
- * <p>
- * The mesh is the vanilla 1.20.1 sign mesh, value for value, so the sign keeps its proportions and
- * the existing 64x32 textures still line up. It is baked straight out of a {@link LayerDefinition}
- * rather than registered as a model layer: nothing else needs to look it up, and an entity model
- * layer would have to be registered through both loaders for no gain.
+ * Draws a neon sign: the board, its post and the four lines of text. The board texture depends on
+ * {@link NeonSignBlockEntity#mode}, which a block model cannot see, so the board is a {@link
+ * ModelPart} baked straight from a {@link LayerDefinition} (the vanilla sign mesh, matching the
+ * 64x32 textures).
  */
 public class NeonSignBlockEntityRenderer implements BlockEntityRenderer<NeonSignBlockEntity, NeonSignBlockEntityRenderer.NeonSignRenderState> {
 
