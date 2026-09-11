@@ -1,4 +1,19 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     "assorteddecor:roadway",

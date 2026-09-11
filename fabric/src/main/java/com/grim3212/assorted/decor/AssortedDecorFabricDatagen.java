@@ -1,5 +1,6 @@
 package com.grim3212.assorted.decor;
 
+import com.grim3212.assorted.lib.data.FabricConditionalRecipeProvider;
 import com.grim3212.assorted.decor.data.DecorBlockLoot;
 import com.grim3212.assorted.decor.data.DecorBlockTagProvider;
 import com.grim3212.assorted.decor.data.DecorItemTagProvider;
@@ -20,7 +21,7 @@ public class AssortedDecorFabricDatagen implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
         // Recipe providers are not data providers any more - the Runner owns the output.
-        pack.addProvider((output, registriesFuture) -> new DecorRecipes.Runner(output, registriesFuture));
+        pack.addProvider((output, registriesFuture) -> new FabricConditionalRecipeProvider(output, registriesFuture, new DecorRecipes.Runner(output, registriesFuture)));
         FabricBlockTagProvider provider = pack.addProvider((output, registriesFuture) -> new FabricBlockTagProvider(output, registriesFuture, new DecorBlockTagProvider(output, registriesFuture)));
         pack.addProvider((output, registriesFuture) -> new FabricItemTagProvider(output, registriesFuture, provider.contentsGetter(), new DecorItemTagProvider(output, registriesFuture, provider.contentsGetter())));
         // LootTableProvider takes the registries future now; it needs a HolderLookup to resolve the

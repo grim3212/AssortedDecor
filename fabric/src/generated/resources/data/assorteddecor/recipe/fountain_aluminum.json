@@ -1,4 +1,17 @@
 {
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "registry": "minecraft:item",
+      "values": [
+        "c:ingots/aluminum"
+      ]
+    },
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "key": {
     "I": "#c:ingots/aluminum",
