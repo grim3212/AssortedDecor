@@ -47,18 +47,6 @@ public class DecorClient {
         ClientServices.CLIENT.registerBlockEntityRenderer(DecorBlockEntityTypes.CALENDAR::get, CalendarBlockEntityRenderer::new);
         ClientServices.CLIENT.registerBlockEntityRenderer(DecorBlockEntityTypes.CAGE::get, CageBlockEntityRenderer::new);
 
-        // TODO(26.2): the block of registerRenderType calls that used to live here is gone.
-        //  What it did: told ItemBlockRenderTypes which chunk layer each of the mod's blocks draws in
-        //  - translucent for the colorizers, cutout for the doors, fences, lanterns, tubes and so on.
-        //  Why it cannot be expressed: ItemBlockRenderTypes was deleted and RenderType lost its
-        //  solid()/cutout()/translucent() factories - the chunk layer is a ChunkSectionLayer derived
-        //  per quad while baking, from the transparency of the sprite the quad uses (see
-        //  BakedQuad.MaterialInfo#of), and lands on BakedQuad.MaterialInfo#layer(). A block declares
-        //  its layer from its model json with "render_type" instead, so these blocks' block model
-        //  jsons need a "render_type": "minecraft:cutout" (or "minecraft:translucent" for the
-        //  colorizers) adding in datagen. AssortedLib keeps IClientHelper#registerRenderType as a
-        //  no-op on both loaders; calling it would have looked correct and done nothing.
-
         ClientServices.CLIENT.registerModelLoader(ColorizerUnbakedModel.LOADER_NAME, ColorizerUnbakedModel.Loader.INSTANCE);
         ClientServices.CLIENT.registerModelLoader(ColorizerObjModel.LOADER_NAME, ColorizerObjModel.Loader.INSTANCE);
 
@@ -100,13 +88,7 @@ public class DecorClient {
         ClientServices.CLIENT.registerBlockColor(state -> ARGB.opaque(state.getValue(ColorChangingBlock.COLOR).getMapColor().col), () -> Arrays.asList(DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get()));
     }
 
-    // TODO(26.2): registering these codecs is only half of what the four ItemColor handlers used to do.
-    //  ItemColor / ItemColors were deleted; an item's tints are a list of ItemTintSource entries in its
-    //  item model json and code only registers the MapCodec that reads a custom type. Each of the item
-    //  models that used to be covered by a handler therefore needs a "tints" entry naming the matching
-    //  id - assorteddecor:colorizer for the colorizer block items and the colorizer brush,
-    //  assorteddecor:block_map_color for the fluro block items, assorteddecor:siding for the two siding
-    //  items - which is a datagen change this class cannot make.
+    // The generated item models name these in their "tints" lists.
     private static void registerItemTintSources() {
         ClientServices.CLIENT.registerItemTintSource(ColorizerItemTintSource.ID, ColorizerItemTintSource.MAP_CODEC);
         ClientServices.CLIENT.registerItemTintSource(BlockMapColorItemTintSource.ID, BlockMapColorItemTintSource.MAP_CODEC);
