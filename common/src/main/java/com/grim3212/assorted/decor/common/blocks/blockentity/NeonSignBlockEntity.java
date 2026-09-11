@@ -49,11 +49,6 @@ public class NeonSignBlockEntity extends BlockEntity {
         this.signText[line] = signText;
     }
 
-    // TODO(26.2): BlockEntity.onlyOpCanSetNbt() is gone. Whether a block entity's custom data is
-    // op only is now decided by BlockEntityTypes.OP_ONLY_CUSTOM_DATA, a package private Set in vanilla
-    // with no registration hook, so a modded block entity cannot opt in any more. Neon sign NBT can
-    // therefore be set from an item without gamemaster permissions.
-
     public void setOwner(Entity newOwner) {
         this.owner = newOwner.getUUID();
     }

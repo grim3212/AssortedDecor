@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:neon_sign_item_data_needs_an_operator",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

@@ -1,5 +1,14 @@
 package com.grim3212.assorted.decor.gametest;
 
+import net.minecraft.server.level.ServerPlayer;
+import com.grim3212.assorted.lib.platform.Services;
+import com.grim3212.assorted.decor.common.items.NeonSignItem;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.item.component.TypedEntityData;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.core.component.DataComponents;
+import com.grim3212.assorted.decor.common.blocks.blockentity.DecorBlockEntityTypes;
 import com.grim3212.assorted.decor.api.util.DateHandler;
 import com.grim3212.assorted.decor.common.blocks.BoneDecorationBlock;
 import com.grim3212.assorted.decor.common.blocks.ClayDecorationBlock;
@@ -54,6 +63,7 @@ final class BlockDecorationTests {
         out.accept("planter_pot_holds_a_plant", BlockDecorationTests::planterPotHoldsAPlant);
         out.accept("decoration_blocks_place", BlockDecorationTests::decorationBlocksPlace);
         out.accept("neon_sign_text_survives_reload", BlockDecorationTests::neonSignTextSurvivesReload);
+        out.accept("neon_sign_item_data_needs_an_operator", BlockDecorationTests::neonSignItemDataNeedsAnOperator);
     }
 
     /**
@@ -311,6 +321,39 @@ final class BlockDecorationTests {
             helper.assertValueEqual(loaded.getText(i).getString(), "line " + (i + 1), "neon sign line " + (i + 1) + " after a save/load round trip");
         }
 
+        helper.succeed();
+    }
+
+    /**
+     * Block entity data on a neon sign item is applied for an operator only, as vanilla does for a
+     * sign. Without the check anyone could place a neon sign with any text or owner.
+     * <p>
+     * The rule is asked on both loaders. The real placement by a non-operator runs on Fabric only:
+     * placing as a player opens the editor with a packet, and NeoForge refuses to send it to a test
+     * player. The placement code is common, so the Fabric run covers it for both.
+     */
+    private static void neonSignItemDataNeedsAnOperator(GameTestHelper helper) {
+        CompoundTag data = new CompoundTag();
+        data.put("Text1", ComponentSerialization.CODEC.encodeStart(NbtOps.INSTANCE, Component.literal("from an item")).getOrThrow());
+        ItemStack sign = new ItemStack(DecorItems.NEON_SIGN.get());
+        sign.set(DataComponents.BLOCK_ENTITY_DATA, TypedEntityData.<BlockEntityType<?>>of(DecorBlockEntityTypes.NEON_SIGN.get(), data));
+
+        Player mock = helper.makeMockPlayer(GameType.CREATIVE);
+        helper.assertFalse(mock.canUseGameMasterBlocks(), "the test player is an operator, so the check is not exercised");
+        helper.assertFalse(NeonSignItem.mayApplyBlockEntityData(mock, sign), "a non-operator may apply neon sign data from an item");
+        helper.assertTrue(NeonSignItem.mayApplyBlockEntityData(mock, new ItemStack(DecorItems.NEON_SIGN.get())), "a neon sign item with no data counts as op-only");
+
+        if (!"Forge".equals(Services.PLATFORM.getPlatformName())) {
+            BlockPos floor = new BlockPos(4, 1, 4);
+            helper.setBlock(floor, Blocks.STONE);
+            ServerPlayer player = helper.makeMockServerPlayerInLevel();
+            helper.assertFalse(player.canUseGameMasterBlocks(), "the test player is an operator, so the check is not exercised");
+            player.setItemInHand(InteractionHand.MAIN_HAND, sign);
+            rightClick(player, helper.getLevel(), sign, helper.absolutePos(floor));
+
+            NeonSignBlockEntity placed = helper.getBlockEntity(floor.above(), NeonSignBlockEntity.class);
+            helper.assertTrue(placed.getText(0).getString().isEmpty(), "a non-operator set neon sign text from an item: " + placed.getText(0).getString());
+        }
         helper.succeed();
     }
 }
