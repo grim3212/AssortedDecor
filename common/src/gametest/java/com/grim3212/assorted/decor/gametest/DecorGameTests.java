@@ -48,7 +48,9 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.animal.sheep.Sheep;
@@ -67,6 +69,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -159,6 +162,14 @@ public final class DecorGameTests {
         helper.assertTrue(reloaded instanceof ColorizerBlockEntity loaded && loaded.getStoredBlockState() == stored,
                 "stored block state did not survive a save/load round trip");
 
+        // The update tag is what every other player is sent. It has to carry the stored block as well,
+        // or their colorizer keeps its old texture - AssortedLib re-renders a model-data block entity
+        // on the client once this is loaded into it.
+        helper.assertTrue(blockEntity.getUpdatePacket() != null, "a colorizer sends clients no update packet");
+        ColorizerBlockEntity onClient = new ColorizerBlockEntity(pos, blockEntity.getBlockState());
+        onClient.loadWithComponents(TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), blockEntity.getUpdateTag(level.registryAccess())));
+        helper.assertTrue(onClient.getStoredBlockState() == stored, "the stored block did not reach a client through the update tag");
+
         helper.assertTrue(colorizer.clearColorizer(level, pos, player, InteractionHand.MAIN_HAND), "clearColorizer refused a filled colorizer");
         helper.assertTrue(colorizer.getStoredState(level, pos).isAir(), "cleared colorizer still reports a stored block");
         helper.succeed();
@@ -171,6 +182,10 @@ public final class DecorGameTests {
      * the brush hangs off the library's {@code UseBlockEvent}, which is NeoForge's
      * {@code RightClickBlock} on one side and Fabric's {@code UseBlockCallback} on the other, and
      * only a real use fires either.
+     * <p>
+     * Each click must also come back as consumed: the brush has already acted, so vanilla must not
+     * go on to use the block as well. NeoForge used to let it, running the picked-up block's
+     * interaction on the air left behind.
      */
     private static void colorizerBrushPicksUpAndPaints(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -184,13 +199,15 @@ public final class DecorGameTests {
         ItemStack brush = new ItemStack(DecorItems.COLORIZER_BRUSH.get());
         player.setItemInHand(InteractionHand.MAIN_HAND, brush);
 
-        rightClick(player, level, brush, source);
+        InteractionResult pickUp = rightClick(player, level, brush, source);
         BlockState onBrush = NbtUtils.readBlockState(BuiltInRegistries.BLOCK, NBTHelper.getTag(brush, "stored_state"));
         helper.assertTrue(onBrush.is(Blocks.GOLD_BLOCK), "brush did not pick up the block it was used on");
+        helper.assertTrue(pickUp.consumesAction(), "picking a block up with the brush came back as " + pickUp + ", so vanilla used the block too");
 
-        rightClick(player, level, brush, colorizerPos);
+        InteractionResult paint = rightClick(player, level, brush, colorizerPos);
         helper.assertTrue(DecorBlocks.COLORIZER.get().getStoredState(level, colorizerPos).is(Blocks.GOLD_BLOCK),
                 "brush did not apply its stored block to the colorizer");
+        helper.assertTrue(paint.consumesAction(), "painting a colorizer with the brush came back as " + paint + ", so vanilla used the block too");
         helper.succeed();
     }
 
@@ -1011,8 +1028,8 @@ public final class DecorGameTests {
     }
 
     /** A right click on the top face of {@code pos}, through the path that fires the loader's use-block event. */
-    private static void rightClick(ServerPlayer player, ServerLevel level, ItemStack stack, BlockPos pos) {
-        player.gameMode.useItemOn(player, level, stack, InteractionHand.MAIN_HAND, hitTop(pos));
+    private static InteractionResult rightClick(ServerPlayer player, ServerLevel level, ItemStack stack, BlockPos pos) {
+        return player.gameMode.useItemOn(player, level, stack, InteractionHand.MAIN_HAND, hitTop(pos));
     }
 
     private static BlockHitResult hitTop(BlockPos pos) {
