@@ -160,5 +160,12 @@
 	"screen.assorteddecor.neon_sign.underline": "Underline",
 	"screen.assorteddecor.neon_sign.strikethrough": "Strikethrough",
 	"screen.assorteddecor.neon_sign.random": "Obfuscated",
-	"screen.assorteddecor.neon_sign.reset": "Reset"
+	"screen.assorteddecor.neon_sign.reset": "Reset",
+	"tag.item.assorteddecor.fluro": "Fluro Blocks",
+	"tag.item.assorteddecor.lantern_source": "Lantern Light Sources",
+	"tag.item.assorteddecor.paint_rollers": "Paint Rollers",
+	"tag.item.assorteddecor.roadways": "Roadways",
+	"tag.item.assorteddecor.roadways.all": "All Roadways",
+	"tag.item.assorteddecor.roadways.color": "Colored Roadways",
+	"tag.item.c.tar": "Tar"
 }
