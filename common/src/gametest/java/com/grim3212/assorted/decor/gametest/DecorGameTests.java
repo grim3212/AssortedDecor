@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * This mod is mostly a rendering mod, and a headless gametest sees none of that. What these tests
  * cover is the server side state underneath it: the block a colorizer stores, the colour a paint
  * roller writes into a block state, the light a fireplace emits, the entities frames and wallpapers
- * really are. Anything that needs eyes is in {@code TESTING-CHECKLIST.md}.
+ * really are. Anything that needs eyes is checked by hand.
  * <p>
  * The tests themselves are split by feature into the {@code *Tests} classes in this package,
  * with shared helpers in {@code DecorTestSupport}; this only lists them.
