@@ -6,12 +6,8 @@ import com.google.gson.JsonParser;
 import com.grim3212.assorted.decor.common.blocks.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerLampPost;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
@@ -23,17 +19,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
+import static com.grim3212.assorted.lib.test.TestSupport.hitTop;
+
 /**
- * Helpers, constants and fixtures shared by AssortedDecor's gametest classes, which import them statically.
+ * Helpers, constants and fixtures shared by AssortedDecor's gametest classes, which import them
+ * statically, alongside AssortedLib's {@code TestSupport}.
  */
 final class DecorTestSupport {
 
@@ -53,33 +48,6 @@ final class DecorTestSupport {
 
         helper.assertBlockPresent(siding, placed);
         helper.assertBlockProperty(placed, ColorChangingBlock.COLOR, color);
-    }
-
-    /** Every variant object in a blockstate json: each "variants" entry and each multipart "apply". */
-    static List<JsonObject> blockstateVariants(JsonObject blockstate) {
-        List<JsonObject> out = new ArrayList<>();
-        if (blockstate.has("variants")) {
-            for (Map.Entry<String, JsonElement> entry : blockstate.getAsJsonObject("variants").entrySet()) {
-                addVariants(entry.getValue(), out);
-            }
-        }
-        if (blockstate.has("multipart")) {
-            for (JsonElement part : blockstate.getAsJsonArray("multipart")) {
-                addVariants(part.getAsJsonObject().get("apply"), out);
-            }
-        }
-        return out;
-    }
-
-    static void addVariants(JsonElement element, List<JsonObject> out) {
-        if (element == null) {
-            return;
-        }
-        if (element.isJsonArray()) {
-            element.getAsJsonArray().forEach(variant -> out.add(variant.getAsJsonObject()));
-        } else {
-            out.add(element.getAsJsonObject());
-        }
     }
 
     /**
@@ -144,18 +112,5 @@ final class DecorTestSupport {
      */
     static int lightEmission(GameTestHelper helper, BlockPos rel) {
         return helper.getLevel().getLightEmission(helper.absolutePos(rel));
-    }
-
-    /** A right click on the top face of {@code pos}, through the path that fires the loader's use-block event. */
-    static InteractionResult rightClick(ServerPlayer player, ServerLevel level, ItemStack stack, BlockPos pos) {
-        return player.gameMode.useItemOn(player, level, stack, InteractionHand.MAIN_HAND, hitTop(pos));
-    }
-
-    static BlockHitResult hitTop(BlockPos pos) {
-        return hitSide(pos, Direction.UP);
-    }
-
-    static BlockHitResult hitSide(BlockPos pos, Direction face) {
-        return new BlockHitResult(Vec3.atCenterOf(pos).relative(face, 0.5D), face, pos, false);
     }
 }

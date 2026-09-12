@@ -1,7 +1,6 @@
 package com.grim3212.assorted.decor.gametest;
 
 import net.minecraft.server.level.ServerPlayer;
-import com.grim3212.assorted.lib.platform.Services;
 import com.grim3212.assorted.decor.common.items.NeonSignItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.item.component.TypedEntityData;
@@ -45,6 +44,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import static com.grim3212.assorted.lib.test.TestSupport.*;
 import static com.grim3212.assorted.decor.gametest.DecorTestSupport.*;
 
 /**
@@ -328,12 +328,11 @@ final class BlockDecorationTests {
         helper.assertFalse(NeonSignItem.mayApplyBlockEntityData(mock, sign), "a non-operator may apply neon sign data from an item");
         helper.assertTrue(NeonSignItem.mayApplyBlockEntityData(mock, new ItemStack(DecorItems.NEON_SIGN.get())), "a neon sign item with no data counts as op-only");
 
-        if (!"Forge".equals(Services.PLATFORM.getPlatformName())) {
+        if (!onNeoForge()) {
             BlockPos floor = new BlockPos(4, 1, 4);
             helper.setBlock(floor, Blocks.STONE);
-            ServerPlayer player = helper.makeMockServerPlayerInLevel();
+            ServerPlayer player = survivalPlayer(helper, sign);
             helper.assertFalse(player.canUseGameMasterBlocks(), "the test player is an operator, so the check is not exercised");
-            player.setItemInHand(InteractionHand.MAIN_HAND, sign);
             rightClick(player, helper.getLevel(), sign, helper.absolutePos(floor));
 
             NeonSignBlockEntity placed = helper.getBlockEntity(floor.above(), NeonSignBlockEntity.class);
