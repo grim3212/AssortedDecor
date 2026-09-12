@@ -78,11 +78,6 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer, EntityB
     }
 
     @Override
-    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        return this.getStoredState(world, pos) != Blocks.AIR.defaultBlockState() ? this.getStoredState(world, pos).getLightEmission() : state.getLightEmission();
-    }
-
-    @Override
     public float getFriction(BlockState state, LevelReader levelReader, BlockPos pos, @Nullable Entity entity) {
         return this.getStoredState(levelReader, pos) != Blocks.AIR.defaultBlockState() ? this.getStoredState(levelReader, pos).getBlock().getFriction() : state.getBlock().getFriction();
     }
@@ -120,5 +115,11 @@ public class ColorizerDoorBlock extends DoorBlock implements IColorizer, EntityB
     @Override
     public boolean addRunningEffects(BlockState state, Level level, BlockPos pos, Entity entity) {
         return ServerEffectUtils.addRunningEffects(this.getStoredState(level, pos), level, entity);
+    }
+
+    /** NeoForge gives every Block a default of the same name (IBlockExtension), so the choice has to be spelled out. */
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        return IColorizer.super.getLightEmission(state, world, pos);
     }
 }

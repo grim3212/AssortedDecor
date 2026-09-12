@@ -35,7 +35,7 @@ public class DecorBlocks {
     // Blocks and their item forms get registered before other items
     public static final RegistryProvider<Item> ITEMS = RegistryProvider.create(Registries.ITEM, Constants.MOD_ID);
 
-    public static final IRegistryObject<ColorizerBlock> COLORIZER = register("colorizer", props -> new ColorizerBlock(colorizer(props).lightLevel(BlockState::getLightEmission)));
+    public static final IRegistryObject<ColorizerBlock> COLORIZER = register("colorizer", props -> new ColorizerFullCubeBlock(colorizer(props).lightLevel(BlockState::getLightEmission)));
     public static final IRegistryObject<ColorizerBlock> COLORIZER_CHAIR = register("colorizer_chair", props -> new ColorizerChairBlock(colorizer(props)));
     public static final IRegistryObject<ColorizerBlock> COLORIZER_TABLE = register("colorizer_table", props -> new ColorizerTableBlock(colorizer(props)));
     public static final IRegistryObject<ColorizerBlock> COLORIZER_COUNTER = register("colorizer_counter", props -> new ColorizerCounterBlock(colorizer(props)));

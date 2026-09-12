@@ -74,6 +74,12 @@ public class ColorizerFourWayBlock extends ColorizerBlock implements SimpleWater
 		return !state.getValue(WATERLOGGED);
 	}
 
+	/** Vanilla's answer for a cross-collision block, not the stored block's, as in 1.20.1. */
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+		return this.propagatesSkylightDown(state);
+	}
+
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 		return this.shapes[this.getIndex(state)];

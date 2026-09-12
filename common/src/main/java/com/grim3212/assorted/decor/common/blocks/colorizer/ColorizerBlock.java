@@ -1,7 +1,6 @@
 package com.grim3212.assorted.decor.common.blocks.colorizer;
 
 import com.grim3212.assorted.decor.api.colorizer.IColorizer;
-import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.blockentity.ColorizerBlockEntity;
 import com.grim3212.assorted.lib.core.block.ExtraPropertyBlock;
 import com.grim3212.assorted.lib.core.block.effects.ServerEffectUtils;
@@ -40,17 +39,6 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter reader, BlockPos pos) {
-        BlockState stored = this.getStoredState(reader, pos);
-
-        if (stored.isAir() || !(state.getBlock() == DecorBlocks.COLORIZER.get() || state.getBlock() == DecorBlocks.COLORIZER_CHIMNEY.get())) {
-            return super.getShadeBrightness(state, reader, pos);
-        }
-
-        return stored.getShadeBrightness(reader, pos);
-    }
-
-    @Override
     public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         ItemStack itemstack = new ItemStack(this);
         NBTHelper.putTag(itemstack, "stored_state", NbtUtils.writeBlockState(Blocks.AIR.defaultBlockState()));
@@ -62,19 +50,22 @@ public class ColorizerBlock extends ExtraPropertyBlock implements IColorizer, En
         return new ColorizerBlockEntity(pos, state);
     }
 
+    /** ExtraPropertyBlock's own answer would win over the interface default, so hand it on by hand. */
     @Override
     public int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
-        return this.getStoredState(world, pos) != Blocks.AIR.defaultBlockState() ? this.getStoredState(world, pos).getLightEmission() : state.getLightEmission();
+        return IColorizer.super.getLightEmission(state, world, pos);
     }
 
     @Override
     public float getFriction(BlockState state, LevelReader levelReader, BlockPos pos, @Nullable Entity entity) {
-        return this.getStoredState(levelReader, pos) != Blocks.AIR.defaultBlockState() ? this.getStoredState(levelReader, pos).getBlock().getFriction() : state.getBlock().getFriction();
+        BlockState stored = this.getStoredState(levelReader, pos);
+        return stored.isAir() ? state.getBlock().getFriction() : stored.getBlock().getFriction();
     }
 
     @Override
     public SoundType getSoundType(BlockState state, LevelReader levelReader, BlockPos pos, @Nullable Entity entity) {
-        return this.getStoredState(levelReader, pos) != Blocks.AIR.defaultBlockState() ? this.getStoredState(levelReader, pos).getSoundType() : state.getSoundType();
+        BlockState stored = this.getStoredState(levelReader, pos);
+        return stored.isAir() ? state.getSoundType() : stored.getSoundType();
     }
 
     @Override

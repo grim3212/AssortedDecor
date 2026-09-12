@@ -19,7 +19,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerFullCubeBlock;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +80,19 @@ public class ColorizerBlockEntity extends BlockEntity implements IBlockEntityWit
         this.storedBlockState = blockState;
 
         if (level != null) {
+            // Light dampening is baked into the block state, so a full cube carries its stored
+            // block's in a property. Changing it is an ordinary block update, and vanilla does the
+            // rest: relights, recomputes the sky column and sends the state to every client. Server
+            // only; a client takes the state from that update.
+            if (!level.isClientSide() && getBlockState().getBlock() instanceof ColorizerFullCubeBlock) {
+                final BlockState lit = ColorizerFullCubeBlock.withStoredDampening(getBlockState(), blockState);
+                if (lit != getBlockState()) {
+                    level.setBlock(worldPosition, lit, Block.UPDATE_ALL);
+                }
+            }
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            // Emission is still read from the stored block per position, so the light has to be
+            // asked to look again.
             level.getLightEngine().checkBlock(getBlockPos());
             if (!level.isClientSide()) {
                 level.updateNeighborsAt(worldPosition, getBlockState().getBlock(), null);

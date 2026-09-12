@@ -25,10 +25,33 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
-// TODO(26.2): a filled colorizer should dampen light and pass skylight like its stored block, but
-//  getLightBlock / propagatesSkylightDown no longer get a position to look the stored state up
-//  from, so it behaves like its own non-occluding block.
-public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
+/**
+ * A colorizer stands in for the block it stores: its light, sound, friction, harvest behaviour and
+ * effects all come from that block rather than from the colorizer itself.
+ * <p>
+ * Light dampening is the awkward one. Vanilla bakes it into the block state at state-bake time, so
+ * it cannot vary with position; the full cubes carry their stored block's in a block state property
+ * instead ({@code ColorizerFullCubeBlock#LIGHT_DAMPENING}), which is what lets a filled colorizer
+ * shadow like what it holds. Only they take it: a stairs or a fence holding stone is still mostly
+ * air, and would otherwise cast the shadow of a solid block.
+ */
+public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockLightDampening, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
+
+    /** A colorizer's own dampening. The full cubes override this to take their stored block's. */
+    @Override
+    default int getLightDampening(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        return state.getLightDampening();
+    }
+
+    /**
+     * Every shape lets skylight through when its stored block would, which is what the library
+     * reports for it; the light engines themselves decide from {@link #getLightDampening}.
+     */
+    @Override
+    default boolean propagatesSkylightDown(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+        final BlockState stored = getStoredState(blockGetter, pos);
+        return stored.isAir() ? state.propagatesSkylightDown() : stored.propagatesSkylightDown();
+    }
 
     default boolean clearColorizer(Level worldIn, BlockPos pos, Player player, InteractionHand hand) {
         BlockEntity te = worldIn.getBlockEntity(pos);
@@ -90,10 +113,21 @@ public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlo
         }
     }
 
+    /**
+     * Every shape emits the light of its stored block. Read once: the light engines ask this per
+     * node, from their own thread. A class that extends {@code ExtraPropertyBlock} inherits its
+     * implementation instead and delegates here itself.
+     */
+    @Override
+    default int getLightEmission(BlockState state, BlockGetter world, BlockPos pos) {
+        final BlockState stored = getStoredState(world, pos);
+        return stored.isAir() ? state.getLightEmission() : stored.getLightEmission();
+    }
+
+    /** Read the way the light engine reads it - from any thread - since that is who asks for the emission. */
     default BlockState getStoredState(BlockGetter worldIn, BlockPos pos) {
-        BlockEntity te = worldIn.getBlockEntity(pos);
-        if (te instanceof ColorizerBlockEntity) {
-            return ((ColorizerBlockEntity) te).getStoredBlockState();
+        if (IBlockLightEmission.blockEntityAt(worldIn, pos) instanceof ColorizerBlockEntity colorizer) {
+            return colorizer.getStoredBlockState();
         }
         return Blocks.AIR.defaultBlockState();
     }
