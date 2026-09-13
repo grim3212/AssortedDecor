@@ -23,14 +23,16 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
 /**
- * How a colorizer is drawn, as an item and as a placed block, the brush's tooltip as Fabric builds
- * it, and that a caged mob survives render state extraction: what a headless server cannot see. Run
+ * How a colorizer is drawn, as an item and as a placed block, how one somebody else filled lights
+ * this client, the brush's tooltip as Fabric builds it, and that a caged mob survives render state
+ * extraction: what a headless server cannot see. Run
  * with {@code ./gradlew :fabric:runClientGameTest}; it exits non-zero on a failure. Each drawing
  * check compares the particle, which the item and block paths both take from the same model data.
  */
@@ -90,6 +92,38 @@ public class DecorClientGameTests implements FabricClientGameTest {
             });
             if (!GOLD.equals(placedParticle)) {
                 throw new AssertionError("a placed colorizer holding gold breaks into " + placedParticle + " particles, not " + GOLD);
+            }
+
+            // A colorizer somebody else filled. The server changes only the block entity - a full
+            // cube dampens light like stone whether it is empty or holds glowstone, so its block
+            // state never changes - and whole-chunk light goes only to players a chunk is on the
+            // tracked border for, which this one is not. The client therefore has to relight from
+            // the block entity it was sent, or the glowstone inside stays dark for every player but
+            // the one who put it there.
+            BlockPos litPos = world.getServer().computeOnServer(server -> {
+                ServerLevel level = server.overworld();
+                BlockPos at = server.getPlayerList().getPlayers().get(0).blockPosition().above(6);
+                level.setBlockAndUpdate(at, DecorBlocks.COLORIZER.get().defaultBlockState());
+                return at;
+            });
+            // The client has to see the colorizer placed and empty first. Filling one that arrives
+            // in the same breath as the block proves nothing: the block state change queues a light
+            // check of its own, and the stored block is there by the time that check runs.
+            context.waitFor(client -> client.level != null
+                    && client.level.getBlockEntity(litPos) instanceof ColorizerBlockEntity colorizer
+                    && colorizer.getStoredBlockState().isAir());
+
+            world.getServer().runOnServer(server -> ((ColorizerBlockEntity) server.overworld().getBlockEntity(litPos))
+                    .setStoredBlockState(Blocks.GLOWSTONE.defaultBlockState()));
+            context.waitFor(client -> client.level.getBlockEntity(litPos) instanceof ColorizerBlockEntity colorizer
+                    && colorizer.getStoredBlockState().is(Blocks.GLOWSTONE));
+            // The relight is queued as the block entity arrives and runs with the client's own light
+            // updates on a later tick.
+            context.waitTicks(5);
+
+            int clientLight = context.computeOnClient(client -> client.level.getBrightness(LightLayer.BLOCK, litPos));
+            if (clientLight != 15) {
+                throw new AssertionError("a colorizer holding glowstone lights this client at " + clientLight + ", not 15");
             }
 
             // A caged mob is built on the client and drawn without ever being added to the level, so

@@ -12,7 +12,8 @@ Run each list on **both** NeoForge and Fabric.
 - [ ] The fireplace's inside is lit, not black
 - [ ] A placed colorizer shows its stored block
 - [ ] A wall-mounted colorizer table with two neighbours looks right
-- [ ] On a dedicated server, a colorizer painted by one player updates for a second player
+- [ ] On a dedicated server, a colorizer painted by one player updates for a second player, and
+      one painted with glowstone lights the room for them too
 - [ ] A colorizer holding stone darkens the room behind it and casts a shadow on the client too; a
       stone-filled colorizer stairs or fence does not. The gametests only watch the server's light
       engine, and the client sees the `light_dampening` state through a block update
