@@ -217,9 +217,8 @@ public class CageBlockEntity extends BlockEntity implements IInventoryBlockEntit
     /**
      * Builds the caged mob. It is only ever drawn, never added to a level, so it has to be marked as
      * a display entity the way a spawner marks its own: {@link Level#getNextEntityId()} answers 0 on
-     * the client, and {@link Entity#getId()} now throws on an id of 0 rather than returning it. The
-     * renderer reaches that through {@code ItemModelResolver#updateForLiving}, which every living
-     * entity's render state extraction calls for the head slot whether or not anything is worn.
+     * the client and {@link Entity#getId()} throws on an id of 0. Every living entity's render state
+     * extraction reads the id for the head slot, whether or not anything is worn.
      */
     private void storeEntity(ItemStack stack, String tag) {
         if (stack.getItem() instanceof SpawnEggItem) {

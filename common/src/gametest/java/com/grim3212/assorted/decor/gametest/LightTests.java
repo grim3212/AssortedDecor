@@ -55,10 +55,9 @@ final class LightTests {
 
     /**
      * A glowstone filled colorizer glows in the server's light engine, not only the client's. The
-     * engine asks the block from its own thread with the level in hand, where {@code Level#getBlockEntity}
-     * answers null, which is what {@code IColorizer#getStoredState}'s chunk read is for. A stairs is
-     * checked beside the cube, since every shape emits what it stores. Asserted at the colorizer's
-     * own position: an emitter reads 15 there, and no other test's light can be 15 that far away.
+     * engine asks from its own thread, where {@code Level#getBlockEntity} answers null, which is what
+     * {@code IColorizer#getStoredState}'s chunk read is for. Asserted at the colorizer's own
+     * position, where no other test's light can reach 15.
      */
     private static void colorizerEmitsLightLikeItsBlock(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -101,12 +100,9 @@ final class LightTests {
     }
 
     /**
-     * The same statement for sky light, which is a separate engine with its own copy of the opacity
-     * question - block light passing is no evidence that sky light does.
-     * <p>
-     * The probe is walled in on all four sides with the colorizer as its roof and open sky above
-     * that, because sky light spreads sideways as well as down: without the walls it would arrive
-     * from the neighbouring columns and the test would pass whatever the roof did.
+     * The same for sky light, a separate engine with its own copy of the opacity question. The probe
+     * is walled in on all four sides under the colorizer, because sky light spreads sideways as well
+     * as down and would otherwise arrive from the neighbouring columns.
      */
     private static void colorizerBlocksSkylightLikeItsBlock(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -146,13 +142,9 @@ final class LightTests {
 
     /**
      * A filled colorizer stops block light the way its stored block would, asserted through the light
-     * engine itself rather than by asking the block.
-     * <p>
-     * The probe is sealed in stone on five sides, with the colorizer as the sixth and a glowstone
-     * block beyond it, so the only path light can take is through the colorizer - which also makes
-     * the assertion immune to the light a concurrently running neighbouring test box bleeds in. A
-     * glass filled colorizer dampens by one, so light arrives; a stone filled one takes all fifteen,
-     * so none does. (An empty one is a whole block and stops it too.)
+     * engine itself. The probe is sealed in stone on five sides with the colorizer as the sixth and
+     * glowstone beyond it, so the only path is through the colorizer and no neighbouring test box can
+     * bleed in. Glass dampens by one, so light arrives; stone takes all fifteen, so none does.
      */
     private static void colorizerBlocksLightLikeItsBlock(GameTestHelper helper) {
         ServerLevel level = helper.getLevel();
@@ -195,17 +187,15 @@ final class LightTests {
 
     /**
      * A filled colorizer answers the light questions with the block it stands in for, and only the
-     * full cube does: a stairs colorizer keeps its own dampening, as in 1.20.1, or a colorized
-     * staircase would cast the shadow of a solid block. Every answer is stated as "the same answer
-     * the real block gives", which is the whole point of the feature and keeps absolute light
-     * values, which a concurrently running neighbouring test can influence, out of it:
+     * full cube does: a stairs colorizer keeps its own dampening, or a colorized staircase would cast
+     * the shadow of a solid block. Every answer is stated as "the same answer the real block gives",
+     * which keeps absolute light values, which a neighbouring test can influence, out of it:
      * <ul>
      * <li>the dampening the light engines are handed per position,</li>
      * <li>whether skylight passes, as the library reports it, and</li>
-     * <li>the skylight heightmap, which decides where a column stops seeing sky. A colorizer's block
-     * state does not change when its stored block does, so the column has to be recomputed when it
-     * is filled. Glass is the telling case: an empty colorizer already stops the column, being a
-     * whole block, so only a stored block that lets the sky through can move the answer.</li>
+     * <li>the skylight heightmap. A colorizer's block state does not change when its stored block
+     * does, so the column has to be recomputed when it is filled; glass is the telling case, since an
+     * empty colorizer already stops the column on its own.</li>
      * </ul>
      */
     private static void colorizerTakesItsBlocksLightDampening(GameTestHelper helper) {

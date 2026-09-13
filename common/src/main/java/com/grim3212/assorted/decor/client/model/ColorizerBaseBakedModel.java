@@ -24,15 +24,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A colorizer: a fixed shape textured with the block state stored in its block entity, so each
- * baked colorizer caches one model per stored state.
- * <p> It only works when reached from the blockstate side. A model json loader contributes geometry
- * baked once against empty model data, so the blockstate names {@code assortedlib:specification},
- * which keeps this model whole and passes the block entity's data to {@link
- * #collectParts(RandomSource, IBlockModelData, List)}. Items reach it through {@code
- * ColorizerItemModel}, with the stack's stored state as the model data.
- * <p> The {@link ModelBaker} is held past baking because stored states are only known while
- * rendering; a resource reload rebuilds it together with the baked models.
+ * A colorizer: a fixed shape textured with the block state stored in its block entity, so each baked
+ * colorizer caches one model per stored state. It only sees that state when reached from the
+ * blockstate side, which names {@code assortedlib:specification}; a model json loader is baked once
+ * against empty model data. Items reach it through {@code ColorizerItemModel}. The {@link ModelBaker}
+ * is held past baking because stored states are only known while rendering.
  */
 public abstract class ColorizerBaseBakedModel<T> implements IDataAwareBakedModel {
 
