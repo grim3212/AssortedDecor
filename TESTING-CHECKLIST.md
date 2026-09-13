@@ -18,7 +18,9 @@ Run each list on **both** NeoForge and Fabric.
       engine, and the client sees the `light_dampening` state through a block update
 
 ## Lighting and roads
-- [ ] Roadway, sidewalk and stone path textures line up between neighbours
+- [ ] Sidewalk sprinting feels faster than the roadway beside it. That it *is* faster is the
+      `sidewalk_is_the_faster_surface` gametest; what a hand check adds is whether 1.35 is the
+      right amount
 - [ ] Fences, lanterns and tubes draw cutout
 
 ## Signs, clocks, cages
@@ -27,10 +29,11 @@ Run each list on **both** NeoForge and Fabric.
 - [ ] Wall clock shows the time and updates
 - [ ] Calendar display updates as the day passes
 - [ ] Cage spins the mob it holds
-- [ ] Fountain animates
+- [ ] Fountain has water particles
 
 ## Entities and misc
-- [ ] Wood frame and iron frame hold an item
+- [ ] Wood frame and iron frame can be changed and dyed
+- [ ] Frames save their design and dye across loads
 - [ ] Glass, quartz and steel doors are not solid-shaded (redstone only, no hand click)
 
 ## Rendering

@@ -70,10 +70,6 @@ public class ColorizerTrapDoorBlock extends TrapDoorBlock implements IColorizer,
         return player.hasCorrectToolForDrops(state);
     }
 
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, BlockGetter blockGetter, BlockPos pos, Player player) {
-        return blockGetter instanceof LevelReader levelReader ? this.getCloneItemStack(levelReader, pos, state, true) : new ItemStack(this);
-    }
 
     @Override
     public float getExplosionResistance(BlockState state, BlockGetter blockGetter, BlockPos position, Explosion explosion) {

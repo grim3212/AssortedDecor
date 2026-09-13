@@ -111,7 +111,15 @@ public class DecorBlocks {
     public static final IRegistryObject<LanternBlock> BONE_LANTERN = register("bone_lantern", props -> new LanternBlock(props.mapColor(MapColor.COLOR_RED).sound(SoundType.BONE_BLOCK).noCollision().strength(0.1F)));
     public static final IRegistryObject<LanternBlock> IRON_LANTERN = register("iron_lantern", props -> new LanternBlock(props.mapColor(MapColor.COLOR_GRAY).sound(SoundType.METAL).noCollision().strength(0.5F)));
 
-    public static final IRegistryObject<Block> SIDEWALK = register("sidewalk", props -> new Block(props.mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().friction(0.4F)));
+    /**
+     * What makes the sidewalk the quicker surface. Not {@code friction}: below vanilla's 0.6
+     * {@code LivingEntity#getFrictionInfluencedSpeed} no longer pays the acceleration back, so a low
+     * friction only shortens the momentum carried between ticks. The factor multiplies horizontal
+     * velocity every tick, settling a walk at {@code s / (1 - 0.546 * s)} times the base speed.
+     */
+    public static final float SIDEWALK_SPEED_FACTOR = 1.35F;
+
+    public static final IRegistryObject<Block> SIDEWALK = register("sidewalk", props -> new Block(props.mapColor(MapColor.COLOR_LIGHT_GRAY).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.STONE).strength(1.0F, 15.0F).requiresCorrectToolForDrops().speedFactor(SIDEWALK_SPEED_FACTOR)));
     public static final IRegistryObject<CageBlock> CAGE = register("cage", props -> new CageBlock(props.mapColor(MapColor.METAL).sound(SoundType.METAL).strength(0.8F, 5.0F).requiresCorrectToolForDrops().noOcclusion().isValidSpawn(DecorBlocks::never).isRedstoneConductor(DecorBlocks::never).isSuffocating(DecorBlocks::never).isViewBlocking(DecorBlocks::never)));
 
     public static final IRegistryObject<ColorChangingBlock> SIDING_VERTICAL = registerColorChanging("siding_vertical", props -> new ColorChangingBlock(props.mapColor(MapColor.METAL).sound(SoundType.STONE).strength(1.0F, 10.0F).requiresCorrectToolForDrops()));

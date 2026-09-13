@@ -9,13 +9,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 /**
  * The colorizer shapes that are a whole block: the cube and the chimney. Only these take their
- * stored block's light dampening and shade, as in 1.20.1; a chair or a slope holding stone is still
- * mostly air, and a real stone chair casts no solid shadow.
- * <p>
+ * stored block's light dampening and shade; a chair or a slope holding stone is still mostly air.
  * Vanilla bakes light dampening into the block state, so the stored block's is carried in
- * {@link #LIGHT_DAMPENING}, set by the block entity when its block changes. Everything downstream is
- * then vanilla's own: the state change relights, recomputes the sky column, and reaches every client
- * as a block update, on whichever thread the light engine runs.
+ * {@link #LIGHT_DAMPENING}, set by the block entity when its block changes; vanilla then relights,
+ * recomputes the sky column and syncs the state itself.
  */
 public class ColorizerFullCubeBlock extends ColorizerBlock {
 

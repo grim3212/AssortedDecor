@@ -39,6 +39,11 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import com.grim3212.assorted.decor.Constants;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -64,6 +69,45 @@ final class BlockDecorationTests {
         out.accept("decoration_blocks_place", BlockDecorationTests::decorationBlocksPlace);
         out.accept("neon_sign_text_survives_reload", BlockDecorationTests::neonSignTextSurvivesReload);
         out.accept("neon_sign_item_data_needs_an_operator", BlockDecorationTests::neonSignItemDataNeedsAnOperator);
+        out.accept("sidewalk_is_the_faster_surface", BlockDecorationTests::sidewalkIsTheFasterSurface);
+    }
+
+    /**
+     * A sidewalk is walked along faster than the stone beside it, and no block of ours is slowed by
+     * a friction below vanilla's. One rule, two halves: {@code getFrictionInfluencedSpeed} only pays
+     * the acceleration back above 0.6, so a lower friction just shortens momentum. Speeding a
+     * surface up is {@code speedFactor}, which the nudge below measures through {@code Entity#move}.
+     */
+    private static void sidewalkIsTheFasterSurface(GameTestHelper helper) {
+        double onStone = nudge(helper, new BlockPos(1, 1, 1), Blocks.STONE);
+        double onSidewalk = nudge(helper, new BlockPos(5, 1, 1), DecorBlocks.SIDEWALK.get());
+
+        helper.assertTrue(onSidewalk > onStone, "a nudge along the sidewalk ended at " + onSidewalk + " where the same nudge along stone ended at " + onStone + "; the sidewalk is meant to be the faster surface");
+
+        float vanilla = Blocks.STONE.getFriction();
+        List<String> slowed = new ArrayList<>();
+        for (Map.Entry<ResourceKey<Block>, Block> entry : BuiltInRegistries.BLOCK.entrySet()) {
+            if (Constants.MOD_ID.equals(entry.getKey().identifier().getNamespace()) && entry.getValue().getFriction() < vanilla) {
+                slowed.add(entry.getKey().identifier() + " (" + entry.getValue().getFriction() + ")");
+            }
+        }
+
+        helper.assertTrue(slowed.isEmpty(), "a friction under " + vanilla + " only slows a walker down since 26.2, so it cannot be how a block is made quick: " + slowed);
+        helper.succeed();
+    }
+
+    /** The horizontal speed one step of movement along a floor of {@code block} is left with. */
+    private static double nudge(GameTestHelper helper, BlockPos floor, Block block) {
+        helper.setBlock(floor, block);
+
+        ItemEntity walker = new ItemEntity(helper.getLevel(), 0.0D, 0.0D, 0.0D, new ItemStack(Items.STICK));
+        stand(helper, walker, floor);
+        helper.getLevel().addFreshEntity(walker);
+        helper.runBeforeTestEnd(walker::discard);
+
+        walker.setDeltaMovement(0.2D, 0.0D, 0.0D);
+        walker.move(MoverType.SELF, walker.getDeltaMovement());
+        return walker.getDeltaMovement().x;
     }
 
     /**

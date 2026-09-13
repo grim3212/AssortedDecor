@@ -27,15 +27,12 @@ import java.util.function.Supplier;
 
 /**
  * A colorizer stands in for the block it stores: its light, sound, friction, harvest behaviour and
- * effects all come from that block rather than from the colorizer itself.
- * <p>
- * Light dampening is the awkward one. Vanilla bakes it into the block state at state-bake time, so
- * it cannot vary with position; the full cubes carry their stored block's in a block state property
- * instead ({@code ColorizerFullCubeBlock#LIGHT_DAMPENING}), which is what lets a filled colorizer
- * shadow like what it holds. Only they take it: a stairs or a fence holding stone is still mostly
- * air, and would otherwise cast the shadow of a solid block.
+ * effects all come from that block rather than from the colorizer itself. Light dampening is the
+ * exception - vanilla bakes it into the block state, so the full cubes carry their stored block's in
+ * {@code ColorizerFullCubeBlock#LIGHT_DAMPENING}. Only they take it: a stairs or a fence holding
+ * stone is still mostly air.
  */
-public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockLightDampening, IBlockCanHarvest, IBlockCloneStack, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
+public interface IColorizer extends IBlockExtraProperties, IBlockSoundType, IBlockLightEmission, IBlockLightDampening, IBlockCanHarvest, IBlockLandingEffects, IBlockRunningEffects, IBlockEffectSupplier {
 
     /** A colorizer's own dampening. The full cubes override this to take their stored block's. */
     @Override
