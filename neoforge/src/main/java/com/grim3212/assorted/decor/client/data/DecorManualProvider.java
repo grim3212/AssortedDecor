@@ -28,7 +28,7 @@ public class DecorManualProvider extends LibManualProvider {
 
     @Override
     protected void addChapters() {
-        this.section(25, DecorBlocks.COLORIZER.get());
+        this.section(60, DecorBlocks.COLORIZER.get());
 
         this.addColorizer();
         this.addFurniture();
