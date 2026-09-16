@@ -201,10 +201,15 @@
     },
     {
       "blocks": [
-        "assorteddecor:sidewalk",
-        "assorteddecor:stone_path"
+        "assorteddecor:sidewalk"
       ],
       "page": "assorteddecor:roads/sidewalk"
+    },
+    {
+      "blocks": [
+        "assorteddecor:stone_path"
+      ],
+      "page": "assorteddecor:roads/stone_path"
     },
     {
       "items": [
@@ -230,14 +235,21 @@
     },
     {
       "blocks": [
-        "assorteddecor:clay_decoration",
+        "assorteddecor:clay_decoration"
+      ],
+      "items": [
+        "assorteddecor:unfired_clay_decoration"
+      ],
+      "page": "assorteddecor:decorations/clay"
+    },
+    {
+      "blocks": [
         "assorteddecor:planter_pot"
       ],
       "items": [
-        "assorteddecor:unfired_clay_decoration",
         "assorteddecor:unfired_planter_pot"
       ],
-      "page": "assorteddecor:decorations/clay"
+      "page": "assorteddecor:decorations/planter_pot"
     },
     {
       "blocks": [

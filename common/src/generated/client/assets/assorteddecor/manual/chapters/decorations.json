@@ -2,19 +2,46 @@
   "pages": [
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
       "id": "clay",
       "interval": 50,
       "recipes": [
         "assorteddecor:unfired_clay_decoration",
-        "assorteddecor:clay_decoration",
-        "assorteddecor:unfired_planter_pot",
-        "assorteddecor:planter_pot"
+        "assorteddecor:clay_decoration"
       ],
       "text": "manual.assorteddecor.chapter.decorations.clay",
       "title": "manual.assorteddecor.chapter.decorations.clay.title"
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "planter_pot"
+        }
+      ],
+      "id": "planter_pot",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:unfired_planter_pot",
+        "assorteddecor:planter_pot"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.planter_pot",
+      "title": "manual.assorteddecor.chapter.decorations.planter_pot.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
       "id": "bone",
       "recipes": [
         "assorteddecor:bone_decoration"
@@ -24,6 +51,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
       "id": "stone",
       "interval": 60,
       "recipes": [
@@ -35,6 +68,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ],
       "id": "siding",
       "interval": 60,
       "recipes": [
@@ -46,6 +85,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
       "id": "fountain",
       "recipes": [
         "assorteddecor:fountain"
@@ -55,6 +100,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "cage"
+        }
+      ],
       "id": "cage",
       "recipes": [
         "assorteddecor:cage"

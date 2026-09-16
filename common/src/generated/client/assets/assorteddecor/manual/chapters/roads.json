@@ -2,6 +2,12 @@
   "pages": [
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "roadways"
+        }
+      ],
       "id": "roadway",
       "interval": 50,
       "recipes": [
@@ -14,6 +20,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "roadways"
+        }
+      ],
       "id": "asphalt",
       "recipes": [
         "assorteddecor:asphalt"
@@ -23,17 +35,42 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "roadways"
+        }
+      ],
       "id": "sidewalk",
-      "interval": 50,
       "recipes": [
-        "assorteddecor:sidewalk",
-        "assorteddecor:stone_path_stonecutting"
+        "assorteddecor:sidewalk"
       ],
       "text": "manual.assorteddecor.chapter.roads.sidewalk",
       "title": "manual.assorteddecor.chapter.roads.sidewalk.title"
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
+      "id": "stone_path",
+      "recipes": [
+        "assorteddecor:stone_path_stonecutting"
+      ],
+      "text": "manual.assorteddecor.chapter.roads.stone_path",
+      "title": "manual.assorteddecor.chapter.roads.stone_path.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ],
       "id": "rollers",
       "interval": 60,
       "recipes": [

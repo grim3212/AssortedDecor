@@ -2,6 +2,12 @@
   "pages": [
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "fluro"
+        }
+      ],
       "id": "fluro",
       "interval": 30,
       "recipes": [
@@ -27,6 +33,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "fluro"
+        }
+      ],
       "id": "illumination",
       "interval": 50,
       "recipes": [
@@ -38,6 +50,12 @@
     },
     {
       "type": "assortedlib:recipe",
+      "conditions": [
+        {
+          "type": "assortedlib:part_enabled",
+          "part": "decorations"
+        }
+      ],
       "id": "lanterns",
       "interval": 50,
       "recipes": [

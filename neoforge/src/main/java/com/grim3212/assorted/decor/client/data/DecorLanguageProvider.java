@@ -232,6 +232,11 @@ public class DecorLanguageProvider extends LibLanguageProvider {
         this.add("manual.assorteddecor.chapter.roads.sidewalk",
                 "Sidewalk allow you to walk faster than you otherwise would and paths just look nice. 🙂");
 
+        this.add("manual.assorteddecor.chapter.roads.stone_path.title", "Stone Path");
+        this.add("manual.assorteddecor.chapter.roads.stone_path",
+                "A stone path is the quieter surface for a garden, cut from plain stone on the "
+                        + "stonecutter.");
+
         this.add("manual.assorteddecor.chapter.roads.rollers.title", "Paint Rollers");
         this.add("manual.assorteddecor.chapter.roads.rollers",
                 "A paint roller loaded with a dye is how road markings and siding get their color. Use it on wool, "
@@ -244,10 +249,16 @@ public class DecorLanguageProvider extends LibLanguageProvider {
 
         this.add("manual.assorteddecor.chapter.decorations.clay.title", "Clay Decorations");
         this.add("manual.assorteddecor.chapter.decorations.clay",
-                "Clay decorations and planter pots are crafted unfired and have to go through a furnace before "
+                "Clay decorations are crafted unfired and have to go through a furnace before "
                         + "they are any use." + BREAK
-                        + "Once placed, right click to cycle through the planter filling. A planter pot will hold "
-                        + "whatever plants suit the filling it currently has.");
+                        + "Once placed, right click to cycle through the options.");
+
+        this.add("manual.assorteddecor.chapter.decorations.planter_pot.title", "Planter Pots");
+        this.add("manual.assorteddecor.chapter.decorations.planter_pot",
+                "A planter pot is crafted unfired and has to go through a furnace before it will hold "
+                        + "anything." + BREAK
+                        + "Once placed, right click to cycle through the filling material. The pot supports whichever "
+                        + "plants suit the filling material it is set to.");
 
         this.add("manual.assorteddecor.chapter.decorations.bone.title", "Bone Decorations");
         this.add("manual.assorteddecor.chapter.decorations.bone",
