@@ -1,0 +1,29 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "chain_link",
+      "interval": 60,
+      "recipes": [
+        "assorteddecor:chain_link",
+        "assorteddecor:chain_link_fence",
+        "assorteddecor:chain_link_door"
+      ],
+      "text": "manual.assorteddecor.chapter.doors.chain_link",
+      "title": "manual.assorteddecor.chapter.doors.chain_link.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "doors",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:glass_door",
+        "assorteddecor:quartz_door",
+        "assorteddecor:steel_door"
+      ],
+      "text": "manual.assorteddecor.chapter.doors.doors",
+      "title": "manual.assorteddecor.chapter.doors.doors.title"
+    }
+  ],
+  "sort_order": 70
+}

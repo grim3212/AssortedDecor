@@ -1,0 +1,75 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "colorizer",
+      "recipes": [
+        "assorteddecor:colorizer"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.colorizer",
+      "title": "manual.assorteddecor.chapter.colorizer.colorizer.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "brush",
+      "recipes": [
+        "assorteddecor:colorizer_brush"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.brush",
+      "title": "manual.assorteddecor.chapter.colorizer.brush.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "shapes",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_slab",
+        "assorteddecor:colorizer_vertical_slab",
+        "assorteddecor:colorizer_stairs",
+        "assorteddecor:colorizer_wall",
+        "assorteddecor:colorizer_fence",
+        "assorteddecor:colorizer_fence_gate"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.shapes",
+      "title": "manual.assorteddecor.chapter.colorizer.shapes.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "slopes",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_slope",
+        "assorteddecor:colorizer_oblique_slope",
+        "assorteddecor:colorizer_slanted_corner",
+        "assorteddecor:colorizer_sloped_angle",
+        "assorteddecor:colorizer_sloped_intersection",
+        "assorteddecor:colorizer_sloped_post",
+        "assorteddecor:colorizer_corner"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.slopes",
+      "title": "manual.assorteddecor.chapter.colorizer.slopes.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "pyramids",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_pyramid",
+        "assorteddecor:colorizer_full_pyramid"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.pyramids",
+      "title": "manual.assorteddecor.chapter.colorizer.pyramids.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "doors",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_door",
+        "assorteddecor:colorizer_trap_door"
+      ],
+      "text": "manual.assorteddecor.chapter.colorizer.doors",
+      "title": "manual.assorteddecor.chapter.colorizer.doors.title"
+    }
+  ]
+}

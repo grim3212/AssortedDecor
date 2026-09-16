@@ -1,0 +1,49 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "roadway",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:roadway",
+        "assorteddecor:roadway_light",
+        "assorteddecor:roadway_manhole"
+      ],
+      "text": "manual.assorteddecor.chapter.roads.roadway",
+      "title": "manual.assorteddecor.chapter.roads.roadway.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "asphalt",
+      "recipes": [
+        "assorteddecor:asphalt"
+      ],
+      "text": "manual.assorteddecor.chapter.roads.asphalt",
+      "title": "manual.assorteddecor.chapter.roads.asphalt.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "sidewalk",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:sidewalk",
+        "assorteddecor:stone_path_stonecutting"
+      ],
+      "text": "manual.assorteddecor.chapter.roads.sidewalk",
+      "title": "manual.assorteddecor.chapter.roads.sidewalk.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "rollers",
+      "interval": 60,
+      "recipes": [
+        "assorteddecor:paint_roller",
+        "assorteddecor:white_wool_paint_roll",
+        "assorteddecor:white_concrete_paint_roll"
+      ],
+      "text": "manual.assorteddecor.chapter.roads.rollers",
+      "title": "manual.assorteddecor.chapter.roads.rollers.title"
+    }
+  ],
+  "sort_order": 50
+}

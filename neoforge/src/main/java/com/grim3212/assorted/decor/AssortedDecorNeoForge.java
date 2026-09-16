@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor;
 
 import com.grim3212.assorted.decor.client.data.DecorLanguageProvider;
+import com.grim3212.assorted.decor.client.data.DecorManualProvider;
 import com.grim3212.assorted.decor.client.data.DecorBlockstateProvider;
 import com.grim3212.assorted.decor.client.data.DecorItemModelProvider;
 import com.grim3212.assorted.decor.common.blocks.blockentity.DecorBlockEntityTypes;
@@ -66,6 +67,7 @@ public class AssortedDecorNeoForge {
         event.addProvider(new DecorBlockstateProvider(packOutput));
         event.addProvider(new DecorItemModelProvider(packOutput));
         event.addProvider(new DecorLanguageProvider(packOutput));
+        event.addProvider(new DecorManualProvider(packOutput));
     }
 
     /**

@@ -1,0 +1,36 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "tables",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_table",
+        "assorteddecor:colorizer_counter"
+      ],
+      "text": "manual.assorteddecor.chapter.furniture.tables",
+      "title": "manual.assorteddecor.chapter.furniture.tables.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "seats",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_chair",
+        "assorteddecor:colorizer_stool"
+      ],
+      "text": "manual.assorteddecor.chapter.furniture.seats",
+      "title": "manual.assorteddecor.chapter.furniture.seats.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "lamp_post",
+      "recipes": [
+        "assorteddecor:colorizer_lamp_post"
+      ],
+      "text": "manual.assorteddecor.chapter.furniture.lamp_post",
+      "title": "manual.assorteddecor.chapter.furniture.lamp_post.title"
+    }
+  ],
+  "sort_order": 10
+}

@@ -1,0 +1,292 @@
+{
+  "links": [
+    {
+      "blocks": [
+        "assorteddecor:colorizer"
+      ],
+      "page": "assorteddecor:colorizer/colorizer"
+    },
+    {
+      "items": [
+        "assorteddecor:colorizer_brush"
+      ],
+      "page": "assorteddecor:colorizer/brush"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_slab",
+        "assorteddecor:colorizer_vertical_slab",
+        "assorteddecor:colorizer_stairs",
+        "assorteddecor:colorizer_wall",
+        "assorteddecor:colorizer_fence",
+        "assorteddecor:colorizer_fence_gate"
+      ],
+      "page": "assorteddecor:colorizer/shapes"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_slope",
+        "assorteddecor:colorizer_oblique_slope",
+        "assorteddecor:colorizer_slanted_corner",
+        "assorteddecor:colorizer_sloped_angle",
+        "assorteddecor:colorizer_sloped_intersection",
+        "assorteddecor:colorizer_sloped_post",
+        "assorteddecor:colorizer_corner"
+      ],
+      "page": "assorteddecor:colorizer/slopes"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_pyramid",
+        "assorteddecor:colorizer_full_pyramid"
+      ],
+      "page": "assorteddecor:colorizer/pyramids"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_door",
+        "assorteddecor:colorizer_trap_door"
+      ],
+      "page": "assorteddecor:colorizer/doors"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_table",
+        "assorteddecor:colorizer_counter"
+      ],
+      "page": "assorteddecor:furniture/tables"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_chair",
+        "assorteddecor:colorizer_stool"
+      ],
+      "page": "assorteddecor:furniture/seats"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_lamp_post"
+      ],
+      "page": "assorteddecor:furniture/lamp_post"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_fireplace"
+      ],
+      "page": "assorteddecor:fires/fireplace"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_stove"
+      ],
+      "page": "assorteddecor:fires/stove"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_firepit",
+        "assorteddecor:colorizer_firepit_covered"
+      ],
+      "page": "assorteddecor:fires/firepit"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_firering"
+      ],
+      "page": "assorteddecor:fires/firering"
+    },
+    {
+      "blocks": [
+        "assorteddecor:colorizer_chimney"
+      ],
+      "page": "assorteddecor:fires/chimney"
+    },
+    {
+      "blocks": [
+        "assorteddecor:fluro_white",
+        "assorteddecor:fluro_orange",
+        "assorteddecor:fluro_magenta",
+        "assorteddecor:fluro_light_blue",
+        "assorteddecor:fluro_yellow",
+        "assorteddecor:fluro_lime",
+        "assorteddecor:fluro_pink",
+        "assorteddecor:fluro_gray",
+        "assorteddecor:fluro_light_gray",
+        "assorteddecor:fluro_cyan",
+        "assorteddecor:fluro_purple",
+        "assorteddecor:fluro_blue",
+        "assorteddecor:fluro_brown",
+        "assorteddecor:fluro_green",
+        "assorteddecor:fluro_red",
+        "assorteddecor:fluro_black"
+      ],
+      "page": "assorteddecor:lights/fluro"
+    },
+    {
+      "blocks": [
+        "assorteddecor:illumination_tube",
+        "assorteddecor:illumination_plate"
+      ],
+      "page": "assorteddecor:lights/illumination"
+    },
+    {
+      "blocks": [
+        "assorteddecor:bone_lantern",
+        "assorteddecor:iron_lantern",
+        "assorteddecor:paper_lantern"
+      ],
+      "page": "assorteddecor:lights/lanterns"
+    },
+    {
+      "items": [
+        "assorteddecor:wallpaper"
+      ],
+      "page": "assorteddecor:hanging/wallpaper"
+    },
+    {
+      "items": [
+        "assorteddecor:wood_frame",
+        "assorteddecor:iron_frame"
+      ],
+      "page": "assorteddecor:hanging/frames"
+    },
+    {
+      "blocks": [
+        "assorteddecor:calendar"
+      ],
+      "page": "assorteddecor:hanging/calendar"
+    },
+    {
+      "blocks": [
+        "assorteddecor:wall_clock"
+      ],
+      "page": "assorteddecor:hanging/clock"
+    },
+    {
+      "blocks": [
+        "assorteddecor:neon_sign",
+        "assorteddecor:neon_sign_wall"
+      ],
+      "page": "assorteddecor:hanging/neon_sign"
+    },
+    {
+      "blocks": [
+        "assorteddecor:roadway",
+        "assorteddecor:roadway_light",
+        "assorteddecor:roadway_manhole",
+        "assorteddecor:roadway_white",
+        "assorteddecor:roadway_orange",
+        "assorteddecor:roadway_magenta",
+        "assorteddecor:roadway_light_blue",
+        "assorteddecor:roadway_yellow",
+        "assorteddecor:roadway_lime",
+        "assorteddecor:roadway_pink",
+        "assorteddecor:roadway_gray",
+        "assorteddecor:roadway_light_gray",
+        "assorteddecor:roadway_cyan",
+        "assorteddecor:roadway_purple",
+        "assorteddecor:roadway_blue",
+        "assorteddecor:roadway_brown",
+        "assorteddecor:roadway_green",
+        "assorteddecor:roadway_red",
+        "assorteddecor:roadway_black"
+      ],
+      "page": "assorteddecor:roads/roadway"
+    },
+    {
+      "items": [
+        "assorteddecor:asphalt",
+        "assorteddecor:tarball"
+      ],
+      "page": "assorteddecor:roads/asphalt"
+    },
+    {
+      "blocks": [
+        "assorteddecor:sidewalk",
+        "assorteddecor:stone_path"
+      ],
+      "page": "assorteddecor:roads/sidewalk"
+    },
+    {
+      "items": [
+        "assorteddecor:paint_roller",
+        "assorteddecor:paint_roller_white",
+        "assorteddecor:paint_roller_orange",
+        "assorteddecor:paint_roller_magenta",
+        "assorteddecor:paint_roller_light_blue",
+        "assorteddecor:paint_roller_yellow",
+        "assorteddecor:paint_roller_lime",
+        "assorteddecor:paint_roller_pink",
+        "assorteddecor:paint_roller_gray",
+        "assorteddecor:paint_roller_light_gray",
+        "assorteddecor:paint_roller_cyan",
+        "assorteddecor:paint_roller_purple",
+        "assorteddecor:paint_roller_blue",
+        "assorteddecor:paint_roller_brown",
+        "assorteddecor:paint_roller_green",
+        "assorteddecor:paint_roller_red",
+        "assorteddecor:paint_roller_black"
+      ],
+      "page": "assorteddecor:roads/rollers"
+    },
+    {
+      "blocks": [
+        "assorteddecor:clay_decoration",
+        "assorteddecor:planter_pot"
+      ],
+      "items": [
+        "assorteddecor:unfired_clay_decoration",
+        "assorteddecor:unfired_planter_pot"
+      ],
+      "page": "assorteddecor:decorations/clay"
+    },
+    {
+      "blocks": [
+        "assorteddecor:bone_decoration"
+      ],
+      "page": "assorteddecor:decorations/bone"
+    },
+    {
+      "blocks": [
+        "assorteddecor:decorative_stone"
+      ],
+      "page": "assorteddecor:decorations/stone"
+    },
+    {
+      "blocks": [
+        "assorteddecor:siding_horizontal",
+        "assorteddecor:siding_vertical"
+      ],
+      "page": "assorteddecor:decorations/siding"
+    },
+    {
+      "blocks": [
+        "assorteddecor:fountain"
+      ],
+      "page": "assorteddecor:decorations/fountain"
+    },
+    {
+      "blocks": [
+        "assorteddecor:cage"
+      ],
+      "page": "assorteddecor:decorations/cage"
+    },
+    {
+      "blocks": [
+        "assorteddecor:chain_link_door",
+        "assorteddecor:chain_link_fence"
+      ],
+      "items": [
+        "assorteddecor:chain_link"
+      ],
+      "page": "assorteddecor:doors/chain_link"
+    },
+    {
+      "blocks": [
+        "assorteddecor:glass_door",
+        "assorteddecor:quartz_door",
+        "assorteddecor:steel_door"
+      ],
+      "page": "assorteddecor:doors/doors"
+    }
+  ]
+}

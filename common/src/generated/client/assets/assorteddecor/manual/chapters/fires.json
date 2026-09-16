@@ -1,0 +1,52 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "fireplace",
+      "recipes": [
+        "assorteddecor:colorizer_fireplace"
+      ],
+      "text": "manual.assorteddecor.chapter.fires.fireplace",
+      "title": "manual.assorteddecor.chapter.fires.fireplace.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "stove",
+      "recipes": [
+        "assorteddecor:colorizer_stove"
+      ],
+      "text": "manual.assorteddecor.chapter.fires.stove",
+      "title": "manual.assorteddecor.chapter.fires.stove.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "firepit",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:colorizer_firepit",
+        "assorteddecor:colorizer_firepit_covered"
+      ],
+      "text": "manual.assorteddecor.chapter.fires.firepit",
+      "title": "manual.assorteddecor.chapter.fires.firepit.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "firering",
+      "recipes": [
+        "assorteddecor:colorizer_firering"
+      ],
+      "text": "manual.assorteddecor.chapter.fires.firering",
+      "title": "manual.assorteddecor.chapter.fires.firering.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "chimney",
+      "recipes": [
+        "assorteddecor:colorizer_chimney"
+      ],
+      "text": "manual.assorteddecor.chapter.fires.chimney",
+      "title": "manual.assorteddecor.chapter.fires.chimney.title"
+    }
+  ],
+  "sort_order": 20
+}

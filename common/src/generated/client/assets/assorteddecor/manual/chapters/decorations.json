@@ -1,0 +1,67 @@
+{
+  "pages": [
+    {
+      "type": "assortedlib:recipe",
+      "id": "clay",
+      "interval": 50,
+      "recipes": [
+        "assorteddecor:unfired_clay_decoration",
+        "assorteddecor:clay_decoration",
+        "assorteddecor:unfired_planter_pot",
+        "assorteddecor:planter_pot"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.clay",
+      "title": "manual.assorteddecor.chapter.decorations.clay.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "bone",
+      "recipes": [
+        "assorteddecor:bone_decoration"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.bone",
+      "title": "manual.assorteddecor.chapter.decorations.bone.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "stone",
+      "interval": 60,
+      "recipes": [
+        "assorteddecor:decorative_path_stonecutting",
+        "assorteddecor:stone_path_stonecutting"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.stone",
+      "title": "manual.assorteddecor.chapter.decorations.stone.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "siding",
+      "interval": 60,
+      "recipes": [
+        "assorteddecor:siding_horizontal_white",
+        "assorteddecor:siding_vertical_white"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.siding",
+      "title": "manual.assorteddecor.chapter.decorations.siding.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "fountain",
+      "recipes": [
+        "assorteddecor:fountain"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.fountain",
+      "title": "manual.assorteddecor.chapter.decorations.fountain.title"
+    },
+    {
+      "type": "assortedlib:recipe",
+      "id": "cage",
+      "recipes": [
+        "assorteddecor:cage"
+      ],
+      "text": "manual.assorteddecor.chapter.decorations.cage",
+      "title": "manual.assorteddecor.chapter.decorations.cage.title"
+    }
+  ],
+  "sort_order": 60
+}
