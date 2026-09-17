@@ -24,6 +24,12 @@
       "trigger": "minecraft:inventory_changed"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",

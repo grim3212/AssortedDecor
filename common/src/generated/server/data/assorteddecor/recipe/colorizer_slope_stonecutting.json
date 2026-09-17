@@ -6,6 +6,12 @@
     }
   ],
   "type": "minecraft:stonecutting",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
   "ingredient": "assorteddecor:colorizer",
   "result": {
     "id": "assorteddecor:colorizer_slope"

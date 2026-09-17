@@ -15,6 +15,21 @@
     }
   ],
   "type": "minecraft:crafting_shapeless",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
   "ingredients": [
     "assorteddecor:roadway",
     "assorteddecor:paint_roller_yellow"

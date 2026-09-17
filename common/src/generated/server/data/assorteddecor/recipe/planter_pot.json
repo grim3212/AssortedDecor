@@ -7,6 +7,12 @@
   ],
   "type": "minecraft:smelting",
   "experience": 0.35,
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "planter_pot"
+    }
+  ],
   "ingredient": "assorteddecor:unfired_planter_pot",
   "result": {
     "id": "assorteddecor:planter_pot"

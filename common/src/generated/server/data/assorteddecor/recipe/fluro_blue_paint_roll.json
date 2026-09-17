@@ -6,6 +6,12 @@
     }
   ],
   "type": "minecraft:crafting_shapeless",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "painting"
+    }
+  ],
   "ingredients": [
     "assorteddecor:paint_roller_blue",
     "#assorteddecor:fluro"

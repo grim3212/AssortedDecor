@@ -19,6 +19,7 @@ public final class DecorGameTests {
         ColorizerTests.register(out);
         PaintTests.register(out);
         LightTests.register(out);
+        CrossLoaderDataTests.register(out);
         LightBenchmark.register(out);
         EntityDecorationTests.register(out);
         MenuTests.register(out);

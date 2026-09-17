@@ -6,6 +6,12 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
   "key": {
     "A": "#c:dyes/red",
     "G": "#c:glass_blocks",

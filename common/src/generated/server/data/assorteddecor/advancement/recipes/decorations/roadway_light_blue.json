@@ -33,6 +33,21 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:and",
+      "values": [
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "roadways"
+        },
+        {
+          "condition": "assortedlib:part_enabled",
+          "part": "painting"
+        }
+      ]
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",

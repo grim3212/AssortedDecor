@@ -34,6 +34,12 @@
       "trigger": "minecraft:inventory_changed"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "fluro"
+    }
+  ],
   "requirements": [
     [
       "has_the_recipe",

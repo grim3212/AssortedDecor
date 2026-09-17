@@ -7,6 +7,12 @@
   ],
   "type": "minecraft:smelting",
   "experience": 0.35,
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
   "ingredient": "assorteddecor:unfired_clay_decoration",
   "result": {
     "id": "assorteddecor:clay_decoration"

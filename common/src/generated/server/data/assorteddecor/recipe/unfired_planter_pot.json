@@ -6,6 +6,12 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "planter_pot"
+    }
+  ],
   "key": {
     "X": "minecraft:clay_ball"
   },

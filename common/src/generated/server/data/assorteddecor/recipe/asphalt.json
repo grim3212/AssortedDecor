@@ -7,6 +7,12 @@
   ],
   "type": "minecraft:smelting",
   "experience": 0.35,
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "roadways"
+    }
+  ],
   "ingredient": "#c:tar",
   "result": {
     "id": "assorteddecor:asphalt"

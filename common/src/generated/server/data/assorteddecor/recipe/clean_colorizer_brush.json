@@ -6,9 +6,16 @@
     }
   ],
   "type": "minecraft:crafting_shapeless",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "colorizer"
+    }
+  ],
   "ingredients": [
     {
       "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
       "fluid": "minecraft:water"
     },
     "assorteddecor:colorizer_brush"

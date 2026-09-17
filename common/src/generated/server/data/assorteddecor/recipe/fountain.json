@@ -6,10 +6,17 @@
     }
   ],
   "type": "minecraft:crafting_shaped",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "decorations"
+    }
+  ],
   "key": {
     "I": "#c:ingots/iron",
     "W": {
       "neoforge:ingredient_type": "assortedlib:stored_fluid_ingredient",
+      "fabric:type": "assortedlib:stored_fluid_ingredient",
       "fluid": "minecraft:water"
     },
     "X": "#c:cobblestones"
