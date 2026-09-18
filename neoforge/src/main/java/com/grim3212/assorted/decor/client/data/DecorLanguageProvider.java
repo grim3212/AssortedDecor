@@ -78,6 +78,7 @@ public class DecorLanguageProvider extends LibLanguageProvider {
         this.addRoadsChapter();
         this.addDecorationsChapter();
         this.addDoorsChapter();
+        this.addGatesChapter();
     }
 
     private void addColorizerChapter() {
@@ -281,6 +282,25 @@ public class DecorLanguageProvider extends LibLanguageProvider {
         this.add("manual.assorteddecor.chapter.decorations.cage.title", "Cage");
         this.add("manual.assorteddecor.chapter.decorations.cage",
                 "A cage displays whatever you put in it, turning slowly. Use it with a Pokeball from Assorted Tools to show the caught monster.");
+    }
+
+    private void addGatesChapter() {
+        this.add("assorteddecor.subtitle.gate_trumpet", "Gate trumpet blows");
+        this.add("assorteddecor.subtitle.garage_remote", "Garage remote clicks");
+
+        this.add("manual.assorteddecor.chapter.gates", "Gates");
+
+        this.add("manual.assorteddecor.chapter.gates.castle_gate.title", "Castle Gate");
+        this.add("manual.assorteddecor.chapter.gates.castle_gate",
+                "Place a castle gate against the underside of a solid block and it drops all the way "
+                        + "down to the ground. Gates side by side and facing the same way will open and close as one." + BREAK
+                        + "Blow the gate trumpet to open it up from afar." + BREAK
+                        + "Redstone holds it open while it is powered.");
+
+        this.add("manual.assorteddecor.chapter.gates.garage_door.title", "Garage Door");
+        this.add("manual.assorteddecor.chapter.gates.garage_door",
+                "A garage door hangs and fills down the same way a castle gate does, as a solid panel rather than "
+                        + "bars. The garage remote opens and closes it, and redstone works on it too.");
     }
 
     private void addDoorsChapter() {

@@ -38,6 +38,7 @@ public class DecorManualProvider extends LibManualProvider {
         this.addRoads();
         this.addDecorations();
         this.addDoors();
+        this.addGates();
     }
 
     private void addColorizer() {
@@ -174,6 +175,14 @@ public class DecorManualProvider extends LibManualProvider {
                 .whenPartEnabled(DecorConditions.Parts.DECORATIONS);
         decorations.recipes("cage", DecorBlocks.CAGE.get()).opens(DecorBlocks.CAGE.get())
                 .whenPartEnabled(DecorConditions.Parts.CAGE);
+    }
+
+    private void addGates() {
+        ChapterBuilder chapter = this.chapter("gates").whenPartEnabled(DecorConditions.Parts.GATES);
+        chapter.recipes("castle_gate", DecorItems.GATE_GRATING.get(), DecorBlocks.CASTLE_GATE.get(), DecorItems.GATE_TRUMPET.get()).every(60)
+                .opens(DecorBlocks.CASTLE_GATE.get(), DecorItems.GATE_GRATING.get(), DecorItems.GATE_TRUMPET.get());
+        chapter.recipes("garage_door", DecorItems.GARAGE_PANEL.get(), DecorBlocks.GARAGE_DOOR.get(), DecorItems.GARAGE_REMOTE.get()).every(60)
+                .opens(DecorBlocks.GARAGE_DOOR.get(), DecorItems.GARAGE_PANEL.get(), DecorItems.GARAGE_REMOTE.get());
     }
 
     private void addDoors() {

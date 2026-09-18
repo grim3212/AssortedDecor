@@ -85,6 +85,15 @@ public class DecorCreativeItems {
             items.add(DecorBlocks.SIDEWALK.get());
         }
 
+        if (DecorCommonMod.COMMON_CONFIG.gatesEnabled.get()) {
+            items.add(DecorItems.GATE_GRATING.get());
+            items.add(DecorBlocks.CASTLE_GATE.get());
+            items.add(DecorItems.GATE_TRUMPET.get());
+            items.add(DecorItems.GARAGE_PANEL.get());
+            items.add(DecorBlocks.GARAGE_DOOR.get());
+            items.add(DecorItems.GARAGE_REMOTE.get());
+        }
+
         if (DecorCommonMod.COMMON_CONFIG.extrasEnabled.get()) {
             items.add(DecorItems.CHAIN_LINK.get());
             items.add(DecorBlocks.CHAIN_LINK_FENCE.get());

@@ -9,6 +9,7 @@ import com.grim3212.assorted.decor.common.helpers.DecorCreativeItems;
 import com.grim3212.assorted.decor.common.inventory.DecorContainerTypes;
 import com.grim3212.assorted.decor.common.items.DecorDataComponents;
 import com.grim3212.assorted.decor.common.items.DecorItems;
+import com.grim3212.assorted.decor.common.sounds.DecorSounds;
 import com.grim3212.assorted.decor.common.network.DecorPackets;
 import com.grim3212.assorted.decor.config.DecorCommonConfig;
 
@@ -22,6 +23,7 @@ public class DecorCommonMod {
         DecorDataComponents.init();
         DecorBlocks.init();
         DecorItems.init();
+        DecorSounds.init();
         DecorBlockEntityTypes.init();
         DecorEntityTypes.init();
         DecorContainerTypes.init();

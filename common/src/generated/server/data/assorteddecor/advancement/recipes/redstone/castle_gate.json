@@ -1,0 +1,44 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_gate_grating": {
+      "conditions": {
+        "items": [
+          {
+            "items": "assorteddecor:gate_grating"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "assorteddecor:castle_gate"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_gate_grating"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "assorteddecor:castle_gate"
+    ]
+  }
+}

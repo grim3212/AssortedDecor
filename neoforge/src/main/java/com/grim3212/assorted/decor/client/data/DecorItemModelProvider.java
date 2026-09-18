@@ -55,6 +55,10 @@ public class DecorItemModelProvider extends ModelProvider {
         generatedItem(itemModels, DecorItems.TARBALL.get());
         generatedItem(itemModels, DecorItems.ASPHALT.get());
         generatedItem(itemModels, DecorItems.CHAIN_LINK.get());
+        generatedItem(itemModels, DecorItems.GATE_GRATING.get());
+        generatedItem(itemModels, DecorItems.GARAGE_PANEL.get());
+        handheldItem(itemModels, DecorItems.GATE_TRUMPET.get());
+        generatedItem(itemModels, DecorItems.GARAGE_REMOTE.get());
 
         handheldItem(itemModels, DecorItems.PAINT_ROLLER.get());
         DecorItems.PAINT_ROLLER_COLORS.forEach((color, roller) -> handheldItem(itemModels, roller.get()));

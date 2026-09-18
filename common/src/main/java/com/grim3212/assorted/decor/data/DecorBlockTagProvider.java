@@ -45,6 +45,7 @@ public class DecorBlockTagProvider extends LibBlockTagProvider {
         tagger.apply(BlockTags.DOORS).add(DecorBlocks.QUARTZ_DOOR.get(), DecorBlocks.GLASS_DOOR.get(), DecorBlocks.CHAIN_LINK_DOOR.get(), DecorBlocks.STEEL_DOOR.get());
 
         tagger.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.QUARTZ_DOOR.get(), DecorBlocks.IRON_LANTERN.get(), DecorBlocks.ILLUMINATION_PLATE.get(), DecorBlocks.SIDEWALK.get(), DecorBlocks.ROADWAY.get(), DecorBlocks.ROADWAY_LIGHT.get(), DecorBlocks.ROADWAY_MANHOLE.get(), DecorBlocks.SIDING_HORIZONTAL.get(), DecorBlocks.SIDING_VERTICAL.get(), DecorBlocks.STEEL_DOOR.get(), DecorBlocks.STONE_PATH.get(), DecorBlocks.DECORATIVE_STONE.get());
+        tagger.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.CASTLE_GATE.get(), DecorBlocks.GARAGE_DOOR.get());
         tagger.apply(BlockTags.MINEABLE_WITH_PICKAXE).add(DecorBlocks.colorizerBlocks().stream().map(IRegistryObject::get).toArray(Block[]::new));
 
         tagger.apply(DecorTags.Blocks.ROADWAYS).add(DecorBlocks.ROADWAY.get());

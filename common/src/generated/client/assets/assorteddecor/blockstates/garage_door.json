@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,open=false,top=false": {
+      "model": "assorteddecor:block/garage_door"
+    },
+    "facing=east,open=false,top=true": {
+      "model": "assorteddecor:block/garage_door"
+    },
+    "facing=east,open=true,top=false": {
+      "model": "assorteddecor:block/garage_door_open"
+    },
+    "facing=east,open=true,top=true": {
+      "model": "assorteddecor:block/garage_door_open_top"
+    },
+    "facing=north,open=false,top=false": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 270
+    },
+    "facing=north,open=false,top=true": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 270
+    },
+    "facing=north,open=true,top=false": {
+      "model": "assorteddecor:block/garage_door_open",
+      "y": 270
+    },
+    "facing=north,open=true,top=true": {
+      "model": "assorteddecor:block/garage_door_open_top",
+      "y": 270
+    },
+    "facing=south,open=false,top=false": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 90
+    },
+    "facing=south,open=false,top=true": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 90
+    },
+    "facing=south,open=true,top=false": {
+      "model": "assorteddecor:block/garage_door_open",
+      "y": 90
+    },
+    "facing=south,open=true,top=true": {
+      "model": "assorteddecor:block/garage_door_open_top",
+      "y": 90
+    },
+    "facing=west,open=false,top=false": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 180
+    },
+    "facing=west,open=false,top=true": {
+      "model": "assorteddecor:block/garage_door",
+      "y": 180
+    },
+    "facing=west,open=true,top=false": {
+      "model": "assorteddecor:block/garage_door_open",
+      "y": 180
+    },
+    "facing=west,open=true,top=true": {
+      "model": "assorteddecor:block/garage_door_open_top",
+      "y": 180
+    }
+  }
+}

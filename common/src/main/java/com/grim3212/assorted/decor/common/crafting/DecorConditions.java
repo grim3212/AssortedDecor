@@ -16,6 +16,7 @@ public class DecorConditions {
         public static final String CAGE = "cage";
         public static final String PLANTER_POT = "planter_pot";
         public static final String EXTRAS = "extras";
+        public static final String GATES = "gates";
     }
 
 
@@ -30,5 +31,6 @@ public class DecorConditions {
         Services.CONDITIONS.registerPartCondition(Parts.CAGE, () -> DecorCommonMod.COMMON_CONFIG.cageEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.PLANTER_POT, () -> DecorCommonMod.COMMON_CONFIG.planterPotEnabled.get());
         Services.CONDITIONS.registerPartCondition(Parts.EXTRAS, () -> DecorCommonMod.COMMON_CONFIG.extrasEnabled.get());
+        Services.CONDITIONS.registerPartCondition(Parts.GATES, () -> DecorCommonMod.COMMON_CONFIG.gatesEnabled.get());
     }
 }

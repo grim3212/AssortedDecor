@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "key": {
+    "B": "#minecraft:stone_buttons",
+    "I": "#c:ingots/iron",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "B",
+    "R",
+    "I"
+  ],
+  "result": {
+    "id": "assorteddecor:garage_remote"
+  }
+}

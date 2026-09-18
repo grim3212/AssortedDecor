@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "fabric:load_conditions": [
+    {
+      "condition": "assortedlib:part_enabled",
+      "part": "gates"
+    }
+  ],
+  "key": {
+    "G": "#c:ingots/gold",
+    "I": "#c:ingots/iron",
+    "W": "#minecraft:wool"
+  },
+  "pattern": [
+    "G  ",
+    "WG ",
+    " WI"
+  ],
+  "result": {
+    "id": "assorteddecor:gate_trumpet"
+  }
+}

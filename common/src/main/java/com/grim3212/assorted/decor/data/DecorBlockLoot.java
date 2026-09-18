@@ -4,6 +4,7 @@ import com.grim3212.assorted.decor.api.util.VerticalSlabType;
 import com.grim3212.assorted.decor.common.blocks.ColorChangingBlock;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.FluroBlock;
+import com.grim3212.assorted.decor.common.blocks.GateBlock;
 import com.grim3212.assorted.decor.common.blocks.colorizer.ColorizerVerticalSlabBlock;
 import com.grim3212.assorted.lib.data.LibBlockLootProvider;
 import net.minecraft.core.HolderLookup;
@@ -103,6 +104,9 @@ public class DecorBlockLoot extends LibBlockLootProvider {
         this.add(DecorBlocks.COLORIZER_SLAB.get(), createSlabItemTable(DecorBlocks.COLORIZER_SLAB.get()));
         this.add(DecorBlocks.COLORIZER_VERTICAL_SLAB.get(), createVerticalSlabItemTable(DecorBlocks.COLORIZER_VERTICAL_SLAB.get()));
 
+        this.add(DecorBlocks.CASTLE_GATE.get(), createGateTable(DecorBlocks.CASTLE_GATE.get()));
+        this.add(DecorBlocks.GARAGE_DOOR.get(), createGateTable(DecorBlocks.GARAGE_DOOR.get()));
+
         this.add(DecorBlocks.SIDING_VERTICAL.get(), createColorTable(DecorBlocks.SIDING_VERTICAL.get()));
         this.add(DecorBlocks.SIDING_HORIZONTAL.get(), createColorTable(DecorBlocks.SIDING_HORIZONTAL.get()));
 
@@ -110,6 +114,13 @@ public class DecorBlockLoot extends LibBlockLootProvider {
 
     private LootTable.Builder createVerticalSlabItemTable(Block b) {
         return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(applyExplosionDecay(b, LootItem.lootTableItem(b).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2.0F)).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(ColorizerVerticalSlabBlock.TYPE, VerticalSlabType.DOUBLE)))))));
+    }
+
+    /** One item per column: only the block at the top of a gate drops. */
+    private LootTable.Builder createGateTable(Block b) {
+        return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(b)
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(GateBlock.TOP, true))))
+                .when(ExplosionCondition.survivesExplosion()));
     }
 
     private LootTable.Builder createColorTable(Block b) {

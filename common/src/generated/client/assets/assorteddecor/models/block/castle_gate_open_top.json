@@ -1,0 +1,89 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            4.0,
+            10.0,
+            2.0,
+            6.0
+          ]
+        },
+        "east": {
+          "texture": "#texture"
+        },
+        "north": {
+          "texture": "#texture"
+        },
+        "south": {
+          "texture": "#texture"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#texture"
+        },
+        "west": {
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        12,
+        7,
+        6
+      ],
+      "to": [
+        14,
+        16,
+        10
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            4.0,
+            16.0,
+            2.0,
+            0.0
+          ]
+        },
+        "east": {
+          "texture": "#texture"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#texture"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#texture"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#texture"
+        },
+        "west": {
+          "texture": "#texture"
+        }
+      },
+      "from": [
+        12,
+        14,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "assorteddecor:block/castle_gate",
+    "texture": "assorteddecor:block/castle_gate"
+  }
+}

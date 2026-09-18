@@ -24,6 +24,7 @@ public final class DecorGameTests {
         EntityDecorationTests.register(out);
         MenuTests.register(out);
         BlockDecorationTests.register(out);
+        GateTests.register(out);
         TooltipTests.register(out);
         AssetTests.register(out);
     }

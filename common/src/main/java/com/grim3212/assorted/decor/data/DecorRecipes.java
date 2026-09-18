@@ -19,6 +19,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -63,6 +64,7 @@ public class DecorRecipes extends ConditionalRecipeProvider {
         this.addConditions(partEnabled(DecorConditions.Parts.CAGE), DecorBlocks.CAGE.getId());
         this.addConditions(partEnabled(DecorConditions.Parts.PLANTER_POT), DecorBlocks.PLANTER_POT.getId(), DecorItems.UNFIRED_PLANTER_POT.getId());
         this.addConditions(partEnabled(DecorConditions.Parts.DECORATIONS), DecorItems.UNFIRED_CLAY_DECORATION.getId(), DecorBlocks.BONE_DECORATION.getId(), DecorBlocks.PAPER_LANTERN.getId(), DecorBlocks.BONE_LANTERN.getId(), DecorBlocks.IRON_LANTERN.getId(), DecorBlocks.CLAY_DECORATION.getId(), prefix("decorative_path_stonecutting"), prefix("stone_path_stonecutting"), prefix("fountain_aluminum"), prefix("fountain_steel"), DecorBlocks.FOUNTAIN.getId());
+        this.addConditions(partEnabled(DecorConditions.Parts.GATES), DecorItems.GATE_GRATING.getId(), DecorItems.GARAGE_PANEL.getId(), DecorItems.GATE_TRUMPET.getId(), DecorItems.GARAGE_REMOTE.getId(), DecorBlocks.CASTLE_GATE.getId(), DecorBlocks.GARAGE_DOOR.getId());
         this.addConditions(partEnabled(DecorConditions.Parts.EXTRAS), DecorItems.CHAIN_LINK.getId(), DecorBlocks.CHAIN_LINK_FENCE.getId(), DecorBlocks.QUARTZ_DOOR.getId(), DecorBlocks.GLASS_DOOR.getId(), DecorBlocks.CHAIN_LINK_DOOR.getId(), DecorBlocks.STEEL_DOOR.getId(), prefix("chain_link_steel"), prefix("chain_link_aluminum"));
 
         // Fluro
@@ -158,6 +160,13 @@ public class DecorRecipes extends ConditionalRecipeProvider {
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorBlocks.CHAIN_LINK_FENCE.get(), 8).define('X', DecorItems.CHAIN_LINK.get()).pattern("XXX").pattern("XXX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(this.output);
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorBlocks.QUARTZ_DOOR.get(), 3).define('X', Items.QUARTZ).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_quartz", has(Items.QUARTZ)).save(this.output);
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorBlocks.GLASS_DOOR.get(), 3).define('X', LibCommonTags.Items.GLASS).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_glass", has(LibCommonTags.Items.GLASS)).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.MISC, DecorItems.GATE_GRATING.get(), 4).define('I', LibCommonTags.Items.INGOTS_IRON).pattern(" I ").pattern("III").pattern(" I ").unlockedBy("has_iron", has(LibCommonTags.Items.INGOTS_IRON)).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.MISC, DecorItems.GARAGE_PANEL.get(), 4).define('I', LibCommonTags.Items.INGOTS_IRON).define('G', LibCommonTags.Items.GLASS).pattern("III").pattern(" G ").pattern("III").unlockedBy("has_iron", has(LibCommonTags.Items.INGOTS_IRON)).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.REDSTONE, DecorBlocks.CASTLE_GATE.get()).define('G', DecorItems.GATE_GRATING.get()).pattern("G").pattern("G").pattern("G").unlockedBy("has_gate_grating", has(DecorItems.GATE_GRATING.get())).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.REDSTONE, DecorBlocks.GARAGE_DOOR.get()).define('P', DecorItems.GARAGE_PANEL.get()).pattern("P").pattern("P").pattern("P").unlockedBy("has_garage_panel", has(DecorItems.GARAGE_PANEL.get())).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, DecorItems.GATE_TRUMPET.get()).define('W', ItemTags.WOOL).define('G', LibCommonTags.Items.INGOTS_GOLD).define('I', LibCommonTags.Items.INGOTS_IRON).pattern("G  ").pattern("WG ").pattern(" WI").unlockedBy("has_gate_grating", has(DecorItems.GATE_GRATING.get())).save(this.output);
+        ShapedRecipeBuilder.shaped(this.items, RecipeCategory.TOOLS, DecorItems.GARAGE_REMOTE.get()).define('B', BlockItemTags.STONE_BUTTONS.item()).define('R', LibCommonTags.Items.DUSTS_REDSTONE).define('I', LibCommonTags.Items.INGOTS_IRON).pattern("B").pattern("R").pattern("I").unlockedBy("has_garage_panel", has(DecorItems.GARAGE_PANEL.get())).save(this.output);
+
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorBlocks.CHAIN_LINK_DOOR.get(), 3).define('X', DecorItems.CHAIN_LINK.get()).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_chain_link", has(DecorItems.CHAIN_LINK.get())).save(this.output);
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorBlocks.STEEL_DOOR.get(), 3).define('X', DecorTags.Items.INGOTS_STEEL).pattern("XX").pattern("XX").pattern("XX").unlockedBy("has_steel", has(DecorTags.Items.INGOTS_STEEL)).save(this.output, key(DecorBlocks.STEEL_DOOR.getId().getPath()));
         ShapedRecipeBuilder.shaped(this.items, RecipeCategory.DECORATIONS, DecorItems.CHAIN_LINK.get(), 4).define('X', DecorTags.Items.INGOTS_STEEL).define('N', DecorTags.Items.NUGGETS_STEEL).pattern(" N ").pattern("NXN").pattern(" N ").unlockedBy("has_ingot", has(DecorTags.Items.INGOTS_STEEL)).save(this.output, key("chain_link_steel"));

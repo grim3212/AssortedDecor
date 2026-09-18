@@ -1,0 +1,74 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#texture",
+          "uv": [
+            4.0,
+            16.0,
+            2.0,
+            0.0
+          ]
+        },
+        "east": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            7.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#texture",
+          "uv": [
+            2.0,
+            7.0,
+            4.0,
+            16.0
+          ]
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#texture",
+          "uv": [
+            12.0,
+            7.0,
+            14.0,
+            16.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#texture"
+        },
+        "west": {
+          "texture": "#texture",
+          "uv": [
+            0.0,
+            7.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        12,
+        7,
+        0
+      ],
+      "to": [
+        14,
+        16,
+        16
+      ]
+    }
+  ],
+  "textures": {
+    "particle": "assorteddecor:block/garage_door",
+    "texture": "assorteddecor:block/garage_door"
+  }
+}

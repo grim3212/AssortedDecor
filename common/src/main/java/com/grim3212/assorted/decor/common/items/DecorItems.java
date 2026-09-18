@@ -1,6 +1,7 @@
 package com.grim3212.assorted.decor.common.items;
 
 import com.google.common.collect.Maps;
+import com.grim3212.assorted.decor.common.sounds.DecorSounds;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.items.FrameItem.FrameMaterial;
 import com.grim3212.assorted.decor.Constants;
@@ -32,6 +33,11 @@ public class DecorItems {
 
     public static final IRegistryObject<Item> PAINT_ROLLER = register("paint_roller", props -> new Item(props.stacksTo(1)));
     public static final IRegistryObject<Item> CHAIN_LINK = register("chain_link", props -> new Item(props));
+
+    public static final IRegistryObject<Item> GATE_GRATING = register("gate_grating", props -> new Item(props));
+    public static final IRegistryObject<Item> GARAGE_PANEL = register("garage_panel", props -> new Item(props));
+    public static final IRegistryObject<GateActivatorItem> GATE_TRUMPET = register("gate_trumpet", props -> new GateActivatorItem(DecorBlocks.CASTLE_GATE::get, DecorSounds.GATE_TRUMPET::get, 60, props.stacksTo(1)));
+    public static final IRegistryObject<GateActivatorItem> GARAGE_REMOTE = register("garage_remote", props -> new GateActivatorItem(DecorBlocks.GARAGE_DOOR::get, DecorSounds.GARAGE_REMOTE::get, 18, props.stacksTo(1)));
 
     public static final Map<DyeColor, IRegistryObject<PaintRollerItem>> PAINT_ROLLER_COLORS = Maps.newEnumMap(DyeColor.class);
 

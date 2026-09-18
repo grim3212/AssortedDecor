@@ -299,6 +299,26 @@
         "assorteddecor:steel_door"
       ],
       "page": "assorteddecor:doors/doors"
+    },
+    {
+      "blocks": [
+        "assorteddecor:castle_gate"
+      ],
+      "items": [
+        "assorteddecor:gate_grating",
+        "assorteddecor:gate_trumpet"
+      ],
+      "page": "assorteddecor:gates/castle_gate"
+    },
+    {
+      "blocks": [
+        "assorteddecor:garage_door"
+      ],
+      "items": [
+        "assorteddecor:garage_panel",
+        "assorteddecor:garage_remote"
+      ],
+      "page": "assorteddecor:gates/garage_door"
     }
   ]
 }
