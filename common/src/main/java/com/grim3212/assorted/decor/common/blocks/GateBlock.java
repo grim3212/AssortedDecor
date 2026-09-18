@@ -42,20 +42,22 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 /**
- * A castle gate or garage door: a column hung from a solid ceiling that, once placed, fills down to
- * the floor. Opening it retracts every block but the top into it, and columns side by side with the
- * same facing open and close together. Its activator item, or a change in redstone power, opens and
- * closes it.
+ * A castle gate or garage door: a column hung from a solid ceiling that reaches down to the first
+ * thing in its way, up to {@link #MAX_LENGTH} blocks. Opening it takes away every block but the
+ * {@link #TOP} one, which stays retracted against the ceiling, so the doorway is really empty and
+ * can be built in; closing it lets it down again as far as it can now reach. Columns side by side
+ * with the same facing open and
+ * close together, by the activator item or by a change in redstone power at their top blocks.
  */
 public class GateBlock extends Block {
 
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-    /** The block hanging from the ceiling, the one that stays visible while the gate is open. */
+    /** The block hanging from the ceiling, the only one an open gate keeps. */
     public static final BooleanProperty TOP = BooleanProperty.create("top");
 
-    /** How far a placed gate fills down, and how many columns open as one. */
+    /** How far a gate reaches down from its top, and how many columns open as one. */
     public static final int MAX_LENGTH = 64;
     public static final int MAX_COLUMNS = 64;
 
@@ -123,18 +125,30 @@ public class GateBlock extends Block {
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        if (level.isClientSide()) {
+        if (!level.isClientSide()) {
+            this.fillBelow(level, pos);
+        }
+    }
+
+    /** Where a closed gate can reach into: empty or replaceable, and not holding a fluid. */
+    private static boolean canFill(BlockState state) {
+        return state.canBeReplaced() && state.getFluidState().isEmpty();
+    }
+
+    /**
+     * Lets a closed column down from {@code from} to the first thing in its way, never further than
+     * {@link #MAX_LENGTH} below its top.
+     */
+    private void fillBelow(Level level, BlockPos from) {
+        BlockState state = level.getBlockState(from);
+        if (!state.is(this) || state.getValue(OPEN)) {
             return;
         }
 
+        BlockPos top = this.topOf(level, from);
         BlockState lower = state.setValue(TOP, false);
-        for (int i = 1; i <= MAX_LENGTH; i++) {
-            BlockPos below = pos.below(i);
-            BlockState there = level.getBlockState(below);
-            if (!there.canBeReplaced() || !there.getFluidState().isEmpty()) {
-                break;
-            }
-            level.setBlock(below, lower, Block.UPDATE_ALL);
+        for (BlockPos p = from.below(); top.getY() - p.getY() <= MAX_LENGTH && canFill(level.getBlockState(p)); p = p.below()) {
+            level.setBlock(p, lower, Block.UPDATE_ALL);
         }
     }
 
@@ -177,37 +191,64 @@ public class GateBlock extends Block {
             if (stack.getItem() instanceof GateActivatorItem activator) {
                 activator.sound(level, player, stack);
             }
-            this.setOpen(player, level, pos, !state.getValue(OPEN));
+            this.setOpen(player, level, pos, !state.getValue(OPEN), state.getValue(POWERED));
         }
         return InteractionResult.SUCCESS;
     }
 
-    /** Redstone opens the gate while any block of it is powered, and only acts on a change. */
+    /**
+     * Redstone opens the gate while it powers the top block of any of its columns, and acts only on
+     * a change. Only the tops count: they are the blocks an open gate keeps, so they always hear it.
+     */
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, @Nullable Orientation orientation, boolean movedByPiston) {
         if (level.isClientSide()) {
             return;
         }
 
-        List<BlockPos> gate = this.connected(level, pos);
-        boolean powered = gate.stream().anyMatch(level::hasNeighborSignal);
-        if (powered == state.getValue(POWERED)) {
-            return;
+        boolean powered = this.isPowered(level, pos);
+        if (powered != state.getValue(POWERED)) {
+            this.setOpen(null, level, pos, powered, powered);
         }
-
-        for (BlockPos p : gate) {
-            BlockState s = level.getBlockState(p);
-            level.setBlock(p, s.setValue(POWERED, powered).setValue(OPEN, powered), Block.UPDATE_CLIENTS);
-        }
-        this.playSound(null, level, pos, powered);
     }
 
-    /** Opens or closes the gate at {@code pos}, with every column joined to it. */
+    private boolean isPowered(Level level, BlockPos pos) {
+        return this.connectedTops(level, pos).stream().anyMatch(level::hasNeighborSignal);
+    }
+
     public void setOpen(@Nullable Player player, Level level, BlockPos pos, boolean open) {
-        for (BlockPos p : this.connected(level, pos)) {
-            BlockState s = level.getBlockState(p);
-            if (s.getValue(OPEN) != open) {
-                level.setBlock(p, s.setValue(OPEN, open), Block.UPDATE_CLIENTS);
+        this.setOpen(player, level, pos, open, level.getBlockState(pos).getValue(POWERED));
+    }
+
+    /**
+     * Opens or closes the gate at {@code pos} with every column joined to it. Opening lifts each
+     * column into its top block; closing lets each one down as far as it now reaches.
+     */
+    public void setOpen(@Nullable Player player, Level level, BlockPos pos, boolean open, boolean powered) {
+        List<BlockPos> tops = this.connectedTops(level, pos);
+
+        // POWERED goes on every block first, quietly: the moves below notify the gate's own blocks,
+        // and one still reading the old value would start this all over again.
+        for (BlockPos top : tops) {
+            for (BlockPos p = top; top.getY() - p.getY() <= MAX_LENGTH && level.getBlockState(p).is(this); p = p.below()) {
+                level.setBlock(p, level.getBlockState(p).setValue(POWERED, powered), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+            }
+        }
+
+        for (BlockPos top : tops) {
+            if (open) {
+                List<BlockPos> lower = new ArrayList<>();
+                for (BlockPos p = top.below(); lower.size() < MAX_LENGTH && level.getBlockState(p).is(this); p = p.below()) {
+                    lower.add(p);
+                }
+                // From the bottom up, so nothing is left hanging to break on its own.
+                for (int i = lower.size() - 1; i >= 0; i--) {
+                    level.setBlock(lower.get(i), Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+                }
+                level.setBlock(top, level.getBlockState(top).setValue(OPEN, true), Block.UPDATE_ALL);
+            } else {
+                level.setBlock(top, level.getBlockState(top).setValue(OPEN, false), Block.UPDATE_ALL);
+                this.fillBelow(level, top);
             }
         }
         this.playSound(player, level, pos, open);
@@ -217,6 +258,8 @@ public class GateBlock extends Block {
         level.playSound(null, pos, open ? this.openSound : this.closeSound, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
         level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
     }
+
+    // ------------------------------------------------------------------ finding the gate
 
     /** The top of the column {@code pos} is in. */
     public BlockPos topOf(BlockGetter level, BlockPos pos) {
@@ -228,13 +271,30 @@ public class GateBlock extends Block {
     }
 
     /**
-     * Every block of every column joined to the one at {@code pos}: side by side, the same gate, the
-     * same facing. Found a column at a time from each column's top.
+     * Everywhere the column under {@code top} is or could be: its blocks, then the space it would
+     * close into, to the first thing in the way or {@link #MAX_LENGTH}.
      */
-    public List<BlockPos> connected(BlockGetter level, BlockPos pos) {
+    public List<BlockPos> reach(BlockGetter level, BlockPos top) {
+        List<BlockPos> reach = new ArrayList<>();
+        reach.add(top);
+        for (BlockPos p = top.below(); reach.size() <= MAX_LENGTH; p = p.below()) {
+            BlockState state = level.getBlockState(p);
+            if (!state.is(this) && !canFill(state)) {
+                break;
+            }
+            reach.add(p);
+        }
+        return reach;
+    }
+
+    /**
+     * The tops of every column joined to the one at {@code pos}: side by side anywhere along their
+     * reach, the same gate, the same facing.
+     */
+    public List<BlockPos> connectedTops(BlockGetter level, BlockPos pos) {
         Direction facing = level.getBlockState(pos).getValue(FACING);
-        List<BlockPos> blocks = new ArrayList<>();
         Set<BlockPos> tops = new HashSet<>();
+        List<BlockPos> ordered = new ArrayList<>();
         Deque<BlockPos> queue = new ArrayDeque<>();
         queue.add(this.topOf(level, pos));
 
@@ -243,10 +303,9 @@ public class GateBlock extends Block {
             if (!tops.add(top)) {
                 continue;
             }
+            ordered.add(top);
 
-            BlockPos p = top;
-            for (int i = 0; i < MAX_LENGTH && level.getBlockState(p).is(this); i++, p = p.below()) {
-                blocks.add(p);
+            for (BlockPos p : this.reach(level, top)) {
                 for (Direction side : Direction.Plane.HORIZONTAL) {
                     BlockState neighbour = level.getBlockState(p.relative(side));
                     if (neighbour.is(this) && neighbour.getValue(FACING) == facing) {
@@ -255,6 +314,6 @@ public class GateBlock extends Block {
                 }
             }
         }
-        return blocks;
+        return ordered;
     }
 }

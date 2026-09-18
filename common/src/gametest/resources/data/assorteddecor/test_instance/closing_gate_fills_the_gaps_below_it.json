@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:function",
+  "environment": "minecraft:default",
+  "function": "assorteddecor:closing_gate_fills_the_gaps_below_it",
+  "structure": "assorteddecor:test_box",
+  "max_ticks": 1,
+  "setup_ticks": 0,
+  "required": true
+}

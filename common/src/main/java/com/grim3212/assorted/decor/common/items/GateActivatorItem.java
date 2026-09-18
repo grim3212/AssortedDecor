@@ -2,30 +2,31 @@ package com.grim3212.assorted.decor.common.items;
 
 import com.grim3212.assorted.decor.common.blocks.GateBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
 /**
  * The gate trumpet and garage remote. Right clicking the gate works the way any block does; used in
- * the air it works the first of its gates straight ahead of the player, within {@link #RANGE}
- * blocks and a few blocks above or below.
+ * the air it works the nearest of its gates along where the player is looking, within
+ * {@link #RANGE} blocks.
  */
 public class GateActivatorItem extends Item {
 
     public static final int RANGE = 32;
-    private static final int ABOVE = 3;
-    private static final int BELOW = 2;
+    /** How far along the look to step between checks; half a block misses no block the look crosses. */
+    private static final double STEP = 0.5D;
 
     private final Supplier<? extends Block> gate;
     private final Supplier<SoundEvent> sound;
@@ -50,7 +51,7 @@ public class GateActivatorItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide()) {
             this.sound(level, player, stack);
-            BlockPos found = this.find(level, player.blockPosition(), player.getDirection());
+            BlockPos found = this.find(level, player.getEyePosition(), player.getViewVector(1.0F));
             if (found != null && level.getBlockState(found).getBlock() instanceof GateBlock gateBlock) {
                 gateBlock.setOpen(player, level, found, !level.getBlockState(found).getValue(GateBlock.OPEN));
             }
@@ -58,16 +59,43 @@ public class GateActivatorItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    private BlockPos find(Level level, BlockPos from, Direction facing) {
-        for (int distance = 0; distance < RANGE; distance++) {
-            BlockPos along = from.relative(facing, distance);
-            for (int dy = ABOVE; dy >= -BELOW; dy--) {
-                BlockPos pos = along.above(dy);
-                BlockState state = level.getBlockState(pos);
-                if (state.is(this.gate.get())) {
-                    return pos;
+    /**
+     * The nearest of its gates along the look from {@code eye}. Each step checks the block the look
+     * is in and the ones around it, so the gate does not have to be aimed at exactly, and an open
+     * gate is found by its empty doorway as well as by its top.
+     */
+    private @Nullable BlockPos find(Level level, Vec3 eye, Vec3 look) {
+        for (double distance = STEP; distance <= RANGE; distance += STEP) {
+            BlockPos center = BlockPos.containing(eye.add(look.scale(distance)));
+            for (BlockPos pos : BlockPos.withinManhattan(center, 1, 1, 1)) {
+                if (level.getBlockState(pos).is(this.gate.get())) {
+                    return pos.immutable();
                 }
             }
+
+            BlockPos doorway = this.openGateOver(level, center);
+            if (doorway != null) {
+                return doorway;
+            }
+        }
+        return null;
+    }
+
+    /** The top of an open gate whose doorway {@code pos} is in, if there is one. */
+    private @Nullable BlockPos openGateOver(Level level, BlockPos pos) {
+        if (!level.getBlockState(pos).isAir()) {
+            return null;
+        }
+        for (BlockPos p = pos.above(); p.getY() - pos.getY() <= GateBlock.MAX_LENGTH; p = p.above()) {
+            BlockState state = level.getBlockState(p);
+            if (state.isAir()) {
+                continue;
+            }
+            if (state.is(this.gate.get()) && state.getBlock() instanceof GateBlock gateBlock && state.getValue(GateBlock.OPEN)
+                    && gateBlock.reach(level, p).getLast().getY() <= pos.getY()) {
+                return p;
+            }
+            return null;
         }
         return null;
     }

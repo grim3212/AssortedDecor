@@ -295,7 +295,7 @@ public class DecorLanguageProvider extends LibLanguageProvider {
                 "Place a castle gate against the underside of a solid block and it drops all the way "
                         + "down to the ground. Gates side by side and facing the same way will open and close as one." + BREAK
                         + "Blow the gate trumpet to open it up from afar." + BREAK
-                        + "Redstone holds it open while it is powered.");
+                        + "Redstone at the top block holds it open while it is powered.");
 
         this.add("manual.assorteddecor.chapter.gates.garage_door.title", "Garage Door");
         this.add("manual.assorteddecor.chapter.gates.garage_door",

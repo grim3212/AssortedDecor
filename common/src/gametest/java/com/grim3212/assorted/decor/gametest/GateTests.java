@@ -3,6 +3,7 @@ package com.grim3212.assorted.decor.gametest;
 import com.grim3212.assorted.decor.common.blocks.DecorBlocks;
 import com.grim3212.assorted.decor.common.blocks.GateBlock;
 import com.grim3212.assorted.decor.common.items.DecorItems;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
 import java.util.function.BiConsumer;
@@ -37,9 +39,12 @@ final class GateTests {
         out.accept("gate_needs_a_ceiling", GateTests::gateNeedsACeiling);
         out.accept("gate_opens_as_one_with_the_columns_beside_it", GateTests::gateOpensAsOneWithTheColumnsBesideIt);
         out.accept("gate_activator_works_from_a_distance", GateTests::gateActivatorWorksFromADistance);
+        out.accept("gate_activator_works_looking_from_the_side", GateTests::gateActivatorWorksLookingFromTheSide);
         out.accept("gate_redstone_holds_it_open", GateTests::gateRedstoneHoldsItOpen);
         out.accept("breaking_a_gate_block_takes_the_column_and_drops_one", GateTests::breakingAGateBlockTakesTheColumnAndDropsOne);
         out.accept("gate_comes_down_with_its_ceiling", GateTests::gateComesDownWithItsCeiling);
+        out.accept("open_gate_leaves_a_doorway_to_build_in", GateTests::openGateLeavesADoorwayToBuildIn);
+        out.accept("closing_gate_fills_the_gaps_below_it", GateTests::closingGateFillsTheGapsBelowIt);
     }
 
     /** Places a gate by hand against the underside of a stone block over {@code x, z}. */
@@ -52,13 +57,38 @@ final class GateTests {
         return player;
     }
 
+    /** A closed column from the ceiling to the floor, or an open one: its top block and air beneath. */
     private static void assertColumn(GameTestHelper helper, GateBlock gate, int x, int z, boolean open) {
-        for (int y = 1; y < CEILING; y++) {
+        assertColumn(helper, gate, x, z, open, 1);
+    }
+
+    private static void assertColumn(GameTestHelper helper, GateBlock gate, int x, int z, boolean open, int bottom) {
+        BlockPos top = new BlockPos(x, CEILING - 1, z);
+        helper.assertBlockPresent(gate, top);
+        helper.assertBlockProperty(top, GateBlock.OPEN, open);
+        helper.assertBlockProperty(top, GateBlock.TOP, true);
+        for (int y = bottom; y < CEILING - 1; y++) {
             BlockPos pos = new BlockPos(x, y, z);
-            helper.assertBlockPresent(gate, pos);
-            helper.assertBlockProperty(pos, GateBlock.OPEN, open);
-            helper.assertBlockProperty(pos, GateBlock.TOP, y == CEILING - 1);
+            if (open) {
+                helper.assertBlockPresent(Blocks.AIR, pos);
+            } else {
+                helper.assertBlockPresent(gate, pos);
+                helper.assertBlockProperty(pos, GateBlock.OPEN, false);
+                helper.assertBlockProperty(pos, GateBlock.TOP, false);
+            }
         }
+    }
+
+    private static ServerPlayer trumpeter(GameTestHelper helper) {
+        ServerPlayer player = survivalPlayer(helper, new ItemStack(DecorItems.GATE_TRUMPET.get()));
+        stand(helper, player, new BlockPos(1, 0, 1));
+        return player;
+    }
+
+    /** Right clicks the gate block at {@code rel}, clearing the trumpet's cooldown first. */
+    private static void blow(GameTestHelper helper, ServerPlayer player, BlockPos rel) {
+        player.getCooldowns().removeCooldown(player.getCooldowns().getCooldownGroup(player.getMainHandItem()));
+        rightClick(player, helper.getLevel(), player.getMainHandItem(), helper.absolutePos(rel));
     }
 
     private static void gateFillsDownFromACeiling(GameTestHelper helper) {
@@ -101,7 +131,7 @@ final class GateTests {
 
         BlockPos lower = new BlockPos(4, 2, 4);
         BlockPos top = new BlockPos(4, CEILING - 1, 4);
-        helper.assertTrue(helper.getBlockState(lower).getCollisionShape(helper.getLevel(), helper.absolutePos(lower), CollisionContext.empty()).isEmpty(), "an open gate's lower block is still solid");
+        helper.assertBlockPresent(Blocks.AIR, lower);
         helper.assertValueEqual(helper.getBlockState(top).getCollisionShape(helper.getLevel(), helper.absolutePos(top), CollisionContext.empty()).min(Direction.Axis.Y), 7.0D / 16.0D, "the bottom of an open gate's top block");
 
         // Straight away the trumpet is still sounding, and does nothing.
@@ -133,17 +163,87 @@ final class GateTests {
         player.getMainHandItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
         assertColumn(helper, door, 4, 7, true);
 
+        // And again to close it, now that only its retracted top is left to find.
+        player.getCooldowns().removeCooldown(player.getCooldowns().getCooldownGroup(player.getMainHandItem()));
+        player.getMainHandItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
+        assertColumn(helper, door, 4, 7, false);
+
         helper.succeed();
     }
 
-    /** Power opens it and holds it open; losing the power closes it again. */
+    /**
+     * Used in the air from off to one side, the remote follows where the player is looking rather
+     * than the compass direction they face: a door diagonally away is found, and a straight line
+     * along their facing would have missed it.
+     */
+    private static void gateActivatorWorksLookingFromTheSide(GameTestHelper helper) {
+        GateBlock door = DecorBlocks.GARAGE_DOOR.get();
+        hang(helper, door, 7, 7);
+
+        ServerPlayer player = survivalPlayer(helper, new ItemStack(DecorItems.GARAGE_REMOTE.get()));
+        stand(helper, player, new BlockPos(1, 0, 2));
+        player.lookAt(EntityAnchorArgument.Anchor.EYES, helper.absoluteVec(new Vec3(7.5D, 2.5D, 7.5D)));
+        player.getMainHandItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
+        assertColumn(helper, door, 7, 7, true);
+
+        // Open, only the doorway is left along the same look, and that still finds it.
+        player.getCooldowns().removeCooldown(player.getCooldowns().getCooldownGroup(player.getMainHandItem()));
+        player.getMainHandItem().use(helper.getLevel(), player, InteractionHand.MAIN_HAND);
+        assertColumn(helper, door, 7, 7, false);
+
+        helper.succeed();
+    }
+
+    /**
+     * Power at the top block opens the gate and holds it open, and losing it closes the gate. Power
+     * down in the doorway does nothing.
+     */
     private static void gateRedstoneHoldsItOpen(GameTestHelper helper) {
         GateBlock gate = DecorBlocks.CASTLE_GATE.get();
         hang(helper, gate, 4, 4);
 
         helper.setBlock(new BlockPos(5, 1, 4), Blocks.REDSTONE_BLOCK);
+        assertColumn(helper, gate, 4, 4, false);
+
+        helper.setBlock(new BlockPos(5, CEILING - 1, 4), Blocks.REDSTONE_BLOCK);
         assertColumn(helper, gate, 4, 4, true);
-        helper.setBlock(new BlockPos(5, 1, 4), Blocks.AIR);
+        helper.setBlock(new BlockPos(5, CEILING - 1, 4), Blocks.AIR);
+        assertColumn(helper, gate, 4, 4, false);
+
+        helper.succeed();
+    }
+
+    /** An open gate leaves an empty doorway; what is built in it is where the gate stops when it closes. */
+    private static void openGateLeavesADoorwayToBuildIn(GameTestHelper helper) {
+        GateBlock gate = DecorBlocks.CASTLE_GATE.get();
+        hang(helper, gate, 4, 4);
+        ServerPlayer player = trumpeter(helper);
+        blow(helper, player, new BlockPos(4, 2, 4));
+        assertColumn(helper, gate, 4, 4, true);
+
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(Blocks.STONE));
+        useOnTopOf(helper, player, new BlockPos(4, 0, 4));
+        helper.assertBlockPresent(Blocks.STONE, new BlockPos(4, 1, 4));
+
+        player.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(DecorItems.GATE_TRUMPET.get()));
+        blow(helper, player, new BlockPos(4, CEILING - 1, 4));
+        assertColumn(helper, gate, 4, 4, false, 2);
+        helper.assertBlockPresent(Blocks.STONE, new BlockPos(4, 1, 4));
+
+        helper.succeed();
+    }
+
+    /** What was broken out from under a gate is filled again when it next closes. */
+    private static void closingGateFillsTheGapsBelowIt(GameTestHelper helper) {
+        GateBlock gate = DecorBlocks.CASTLE_GATE.get();
+        helper.setBlock(new BlockPos(4, 1, 4), Blocks.STONE);
+        hang(helper, gate, 4, 4);
+        assertColumn(helper, gate, 4, 4, false, 2);
+
+        ServerPlayer player = trumpeter(helper);
+        blow(helper, player, new BlockPos(4, 2, 4));
+        helper.setBlock(new BlockPos(4, 1, 4), Blocks.AIR);
+        blow(helper, player, new BlockPos(4, CEILING - 1, 4));
         assertColumn(helper, gate, 4, 4, false);
 
         helper.succeed();
