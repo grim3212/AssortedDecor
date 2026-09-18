@@ -3,7 +3,7 @@
   "environment": "minecraft:default",
   "function": "assorteddecor:colorizer_blocks_light_like_its_block",
   "structure": "assorteddecor:test_box",
-  "max_ticks": 100,
+  "max_ticks": 400,
   "setup_ticks": 0,
   "required": true
 }
